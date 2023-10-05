@@ -20,15 +20,17 @@ public class CommandLineInterface {
     //TODO: Implement option 5
 
     public static void startCLI(){
-        int userChoice = getUserChoice();
+        while (true) {
+            int userChoice = getUserChoice();
 
-        switch (userChoice) {
-            case 1 -> System.out.println("Option 1");
-            case 2 -> System.out.println("Option 2");
-            case 3 -> System.out.println("Option 3");
-            case 4 -> System.out.println("Option 4");
-            case 5 -> System.out.println("Option 5");
-            default -> throw new IllegalArgumentException("There is a bug in getUserChoice");
+            switch (userChoice) {
+                case 1 -> System.out.println("Option 1");
+                case 2 -> System.out.println("Option 2");
+                case 3 -> System.out.println("Option 3");
+                case 4 -> System.out.println("Option 4");
+                case 5 -> exit();
+                default -> System.out.println("There is a bug in getUserChoice");
+            }
         }
     }
 
