@@ -58,7 +58,6 @@ public class CommandLineInterface {
             }
         }
 
-        scan.close();
         return userInput;
     }
 
@@ -78,7 +77,6 @@ public class CommandLineInterface {
             //TODO: Call Save when implemented
         }
 
-        scan.close();
         System.exit(0);
     }
 }
