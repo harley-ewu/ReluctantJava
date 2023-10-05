@@ -37,29 +37,32 @@ public class CommandLineInterface {
     * Use Case: Call this to get a clean user input
     * */
 
-    private static int getUserChoice(){
-
+    private static int getUserChoice() {
         Scanner scan = new Scanner(System.in);
         int userInput = -1;
 
-        boolean userInputIsValid = false;
         System.out.println("Enter a number:\n\n1 - Option 1\n2 - Option 2\n3 - Option 3\n4 - Option 4\n5 - Option 5");
 
-        while(!userInputIsValid){
-            try{
+        while (true) {
+            try {
                 userInput = Integer.parseInt(scan.nextLine());
-                if(userInput < 1 || userInput > 5){
-                    throw new IllegalArgumentException("Invalid input");
+                if (isValidUserInput(userInput)) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number between 1 and 5.");
                 }
-                userInputIsValid = true;
-            }
-            catch(Exception e){
-                System.out.println("Please enter a valid input");
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
             }
         }
 
         return userInput;
     }
+
+    private static boolean isValidUserInput(int userInput) {
+        return userInput >= 1 && userInput <= 5;
+    }
+
 
     /*
     * Description: This method will prompt the user to save, and then close the program
