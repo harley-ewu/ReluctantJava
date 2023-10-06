@@ -9,6 +9,7 @@ public class Attribute {
     private String name;
     private String type;
 
+    public Attribute() {}
     public Attribute(final String name, final String type) {
         this.name = name;
         this.type = type;
@@ -30,5 +31,23 @@ public class Attribute {
                 break;
             }
         }
+    }
+
+    public List<Attribute> getAttributes() {
+        return this.attributes;
+    }
+    
+    @Override
+    public String toString(){
+        StringBuilder builtString = new StringBuilder();
+        // Loop to append all the attributes to a built string.
+        for (Attribute attribute :attributes) {
+            builtString.append(attribute.name).append(": ").append(attribute.type).append("\n");
+        }
+        // Removing the new line character/list is empty error check.
+        if(!builtString.isEmpty()) {
+            builtString.setLength(builtString.length() - 1);
+        }
+        return builtString.toString();
     }
 }
