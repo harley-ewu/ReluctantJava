@@ -11,7 +11,7 @@ public class Relationship
       Generalization,
    }
    //list of relationships, to be moved to the Class that manages classes later
-   private List<Relationship> relationships;
+   private List<Relationship> relationships = new ArrayList<Relationship>();
    
    //variables of a given relationship
    private RelationshipType relationshipType;//The type of relationship this given relationship is between the given classes
@@ -25,7 +25,7 @@ public class Relationship
    public Relationship(final RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner)
    {
       this.relationshipType = relationshipType;
-      this.className = className;
+      this.className = className; //To be removed when relationship list is contained in the Class that manages classes
       this.otherClassName = otherClassName;
       this.thisClassCardinality = thisClassCardinality;
       this.otherClassCardinality = otherClassCardinality;
@@ -33,44 +33,75 @@ public class Relationship
    }
    
    //to be moved to the Class that manages classes later with the list of relationships
-   public void AddRelationship(final RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner)
+   public void addRelationship(final RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner)
    {
-      if(ContainsRelationship(className, otherClassName))
+      Relationship newRelationship = new Relationship(relationshipType, className, otherClassName, thisClassCardinality, otherClassCardinality, owner);
+   
+      if(relationships.contains(newRelationship))
       {
          System.out.println("There is already a relationship between these two classes");
          return;
       }
-   
-      Relationship newRelationship = new Relationship(relationshipType, className, otherClassName, thisClassCardinality, otherClassCardinality, owner);
+      
       relationships.add(newRelationship);
    }
    
    //to be moved to the Class that manages classes later with the list of relationships, will have to add way to delete the relationship from both classes relationship lists
-   public void DeleteRelationship(final String className, final String otherClassName) //will be able to change this to just search by otherClassName when moved
+   public void deleteRelationship(Relationship relationship)
    {
-      //loop through relationship list looking for the given relationship
-      for(Relationship relationship : relationships)
+      //checks if given relationship is null and if it is contained withing the relationsihp list
+      if(relationship != null && relationships.contains(relationship))
       {
-         if(relationship.className == className && relationship.otherClassName == otherClassName)
-         {
-            //Deleteing the relationship from the list and returning to end the method call
-            relationships.remove(relationship);
-            return;
-         }
+         relationships.remove(relationship);
       }
    }
    
-   public boolean ContainsRelationship(final String className, final String otherClassName)
+   /*some get and set functions for the values that make up a Relationship below, 
+   className is to be removed so didn't inlcude, 
+   and the otherClassName should never change otherwise it would be a new relationship, so only included get for that variable*/
+    
+   public boolean getIsOwner(final Relationship relationship)
    {
-      for(Relationship relationship : relationships)
-      {
-         if(relationship.className == className && relationship.otherClassName == otherClassName)
-         {
-            return true;
-         }
-      }
-      
-      return false;
+      return relationship.owner;
    }
    
+   public void setIsOwner(final Relationship relationship, final boolean isOwner)
+   {
+      relationship.owner = isOwner;
+   }
+   
+   public int getThisClassCardinality(final Relationship relationship)
+   {
+      return relationship.thisClassCardinality;
+   }
+   
+   public void setThisClassCardinality(final Relationship relationship, final int cardinality)
+   {
+      relationship.thisClassCardinality = cardinality;
+   }
+   
+   public int getOtherClassCardinality(final Relationship relationship)
+   {
+      return relationship.otherClassCardinality;
+   }
+   
+   public void setOtherClassCardinality(final Relationship relationship, final int cardinality)
+   {
+      relationship.otherClassCardinality = cardinality;
+   }
+   
+   public RelationshipType getRelationshipType(final Relationship relationship)
+   {
+      return relationship.relationshipType;
+   }
+   
+   public void setRelationshipType(final Relationship relationship, final RelationshipType relationshipType)
+   {
+      relationship.relationshipType = relationshipType;
+   }
+   
+   public String getOtherClassName(final Relationship relationship)
+   {
+      return relationship.otherClassName;
+   }
 }
