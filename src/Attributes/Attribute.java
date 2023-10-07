@@ -34,9 +34,9 @@ public class Attribute {
     }
 
     public List<Attribute> getAttributes() {
-        return this.attributes;
+        return new ArrayList<>(this.attributes);
     }
-    
+
     @Override
     public String toString(){
         StringBuilder builtString = new StringBuilder();

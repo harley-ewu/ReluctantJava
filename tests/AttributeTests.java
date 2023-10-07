@@ -1,5 +1,8 @@
 import Attributes.Attribute;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AttributeTests {
@@ -16,5 +19,17 @@ public class AttributeTests {
     void toStringErrorCheck() {
         Attribute attribute = new Attribute();
         assertEquals("", attribute.toString());
+    }
+
+    @Test
+    void getAttributesTest(){
+        Attribute attribute = new Attribute();
+        attribute.addAttribute("age", "int");
+        attribute.addAttribute("name", "String");
+
+        List<Attribute> result = attribute.getAttributes();
+
+        // Check if the returned list contains the expected attributes
+        assertEquals(2, result.size());
     }
 }
