@@ -1,7 +1,16 @@
 package SaveLoadSystem;
 
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonException;
+import com.github.cliftonlabs.json_simple.JsonObject;
+import com.github.cliftonlabs.json_simple.Jsoner;
+
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 
 /**
  * Description: This class will contain code regarding the save/load system
@@ -22,11 +31,11 @@ public class SaveLoadSystem {
     }
 
     /**
-     * Description: Saves the project under the specified filename to the default filepath.
+     * Description: Saves the project under the specified filename to the default filepath (User.home).
      * Use Case: Call if the user wants to save to the default filepath.
      */
-    public void defaultPathSave(String filename){
-        save(getDefaultPath(filename), "");
+    public void defaultPathSave(String filename, ArrayList<MockUmlClass> classList){
+        save(null, filename, classList, true);
     }
 
     /**
@@ -34,12 +43,57 @@ public class SaveLoadSystem {
      * Use Case: Call if user wants to save project into specific directory.
      */
 
-    //TODO: Convert list of class objects into JsonArray, pass list of class objects as argument
-    public void save(Path path, String filename) {
+    public void save(String path, String filename, ArrayList<MockUmlClass> classList, boolean isDefaultPath) {
+        JsonArray jsonArray = new JsonArray();
+        Path filePath;
+
+        for (MockUmlClass mockClass : classList) {
+            jsonArray.add(mockClass.toJsonObject());
+        }
+
+        if(isDefaultPath) {
+            filePath = getDefaultPath(filename);
+        } else {
+            filePath = Paths.get(path).resolve(filename + ".json");
+        }
+
+        String jsonText = Jsoner.serialize(jsonArray);
+
+        try{
+            Files.write(filePath, jsonText.getBytes(), StandardOpenOption.CREATE);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
-    //TODO: Create default load method
+    /**
+     * Description: Loads the project from a specified filepath.
+     * Use Case: Call if user wants to load a project from a specific filepath.
+     */
+    public ArrayList<MockUmlClass> load(Path path){
+        String jsonText;
+        JsonArray jsonArray;
+        ArrayList<MockUmlClass> classList = new ArrayList<MockUmlClass>();
 
-    //TODO: Create specified filepath load method
+        try{
+            jsonText = new String(Files.readAllBytes(path));
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try{
+            jsonArray = (JsonArray) Jsoner.deserialize(jsonText);
+        } catch (JsonException e) {
+            throw new RuntimeException(e);
+        }
+
+        for(Object object : jsonArray){
+            JsonObject jsonObject = (JsonObject) object;
+            MockUmlClass umlClass = MockUmlClass.fromJsonObject(jsonObject);
+            classList.add(umlClass);
+        }
+
+        return classList;
+    }
 }
