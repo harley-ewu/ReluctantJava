@@ -2,8 +2,7 @@
 package Relationships;
 import java.util.*;
 
-public class Relationship
-{
+public class Relationship {
    public static enum RelationshipType {
       Association,
       Aggregation,
@@ -22,8 +21,7 @@ public class Relationship
    private boolean owner; //meaning the "contains" side in Aggregation or Composition, or the class that others are Inheirting from in Generalization.
    
    
-   public Relationship(final RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner)
-   {
+   public Relationship(final RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
       this.relationshipType = relationshipType;
       this.className = className; //To be removed when relationship list is contained in the Class that manages classes
       this.otherClassName = otherClassName;
@@ -33,12 +31,10 @@ public class Relationship
    }
    
    //to be moved to the Class that manages classes later with the list of relationships
-   public void addRelationship(final RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner)
-   {
+   public void addRelationship(final RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
       Relationship newRelationship = new Relationship(relationshipType, className, otherClassName, thisClassCardinality, otherClassCardinality, owner);
    
-      if(relationships.contains(newRelationship))
-      {
+      if(relationships.contains(newRelationship)) {
          System.out.println("There is already a relationship between these two classes");
          return;
       }
@@ -47,11 +43,9 @@ public class Relationship
    }
    
    //to be moved to the Class that manages classes later with the list of relationships, will have to add way to delete the relationship from both classes relationship lists
-   public void deleteRelationship(Relationship relationship)
-   {
+   public void deleteRelationship(Relationship relationship) {
       //checks if given relationship is null and if it is contained withing the relationsihp list
-      if(relationship != null && relationships.contains(relationship))
-      {
+      if(relationship != null && relationships.contains(relationship)) {
          relationships.remove(relationship);
       }
    }
@@ -60,48 +54,39 @@ public class Relationship
    className is to be removed so didn't inlcude, 
    and the otherClassName should never change otherwise it would be a new relationship, so only included get for that variable*/
     
-   public boolean getIsOwner(final Relationship relationship)
-   {
+   public static boolean getIsOwner(final Relationship relationship) {
       return relationship.owner;
    }
    
-   public void setIsOwner(final Relationship relationship, final boolean isOwner)
-   {
+   public static void setIsOwner(final Relationship relationship, final boolean isOwner) {
       relationship.owner = isOwner;
    }
    
-   public int getThisClassCardinality(final Relationship relationship)
-   {
+   public static int getThisClassCardinality(final Relationship relationship) {
       return relationship.thisClassCardinality;
    }
    
-   public void setThisClassCardinality(final Relationship relationship, final int cardinality)
-   {
+   public static void setThisClassCardinality(final Relationship relationship, final int cardinality) {
       relationship.thisClassCardinality = cardinality;
    }
    
-   public int getOtherClassCardinality(final Relationship relationship)
-   {
+   public static int getOtherClassCardinality(final Relationship relationship) {
       return relationship.otherClassCardinality;
    }
    
-   public void setOtherClassCardinality(final Relationship relationship, final int cardinality)
-   {
+   public static void setOtherClassCardinality(final Relationship relationship, final int cardinality) {
       relationship.otherClassCardinality = cardinality;
    }
    
-   public RelationshipType getRelationshipType(final Relationship relationship)
-   {
+   public static RelationshipType getRelationshipType(final Relationship relationship) {
       return relationship.relationshipType;
    }
    
-   public void setRelationshipType(final Relationship relationship, final RelationshipType relationshipType)
-   {
+   public static void setRelationshipType(final Relationship relationship, final RelationshipType relationshipType) {
       relationship.relationshipType = relationshipType;
    }
    
-   public String getOtherClassName(final Relationship relationship)
-   {
+   public static String getOtherClassName(final Relationship relationship) {
       return relationship.otherClassName;
    }
 }
