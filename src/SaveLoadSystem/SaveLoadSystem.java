@@ -71,13 +71,14 @@ public class SaveLoadSystem {
      * Description: Loads the project from a specified filepath.
      * Use Case: Call if user wants to load a project from a specific filepath.
      */
-    public ArrayList<MockUmlClass> load(Path path){
+    public ArrayList<MockUmlClass> load(String path){
         String jsonText;
         JsonArray jsonArray;
         ArrayList<MockUmlClass> classList = new ArrayList<MockUmlClass>();
+        Path filepath = Paths.get(path);
 
         try{
-            jsonText = new String(Files.readAllBytes(path));
+            jsonText = new String(Files.readAllBytes(filepath));
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
