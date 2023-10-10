@@ -1,10 +1,8 @@
 package SaveLoadSystem;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -13,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SaveLoadSystemTest {
 
     @Test
-    protected void testSaveFileToDefaultPath() throws Exception {
+    protected void testSaveFileToDefaultPath() {
         MockUmlClass testClass = new MockUmlClass("test", "This is a test");
         ArrayList<MockUmlClass> list = new ArrayList<>();
         SaveLoadSystem saveLoad = new SaveLoadSystem();
@@ -25,7 +23,7 @@ public class SaveLoadSystemTest {
         File file = new File(path);
 
         // I assert that the file created is not empty
-        Assert.assertTrue(file.length() > 0);
+        assertTrue(file.length() > 0);
     }
 
     @Test
@@ -59,9 +57,9 @@ public class SaveLoadSystemTest {
         list = saveLoad.load(path);
 
         // I assert that the description of the saved class is the same as the loaded class.
-        assertTrue(testClass.getDescription().equals(list.getFirst().getDescription()));
+        assertEquals(testClass.getDescription(), list.getFirst().getDescription());
 
         // I assert that the name of the saved class is the same as the loaded class.
-        assertTrue(testClass.getName().equals(list.getFirst().getName()));
+        assertEquals(testClass.getName(), list.getFirst().getName());
     }
 }
