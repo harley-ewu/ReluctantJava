@@ -9,10 +9,10 @@ public class AttributeTests {
     @Test
     void toStringTest() {
         Attribute attribute = new Attribute();
-        attribute.addAttribute("Test1", "String");
-        attribute.addAttribute("Test2", "Boolean");
+        attribute.addAttribute("Test1");
+        attribute.addAttribute("Test2");
 
-        assertEquals("Test1: String\nTest2: Boolean", attribute.toString());
+        assertEquals("Test1\nTest2", attribute.toString());
     }
 
     @Test
@@ -24,8 +24,8 @@ public class AttributeTests {
     @Test
     void getAttributesTest(){
         Attribute attribute = new Attribute();
-        attribute.addAttribute("age", "int");
-        attribute.addAttribute("name", "String");
+        attribute.addAttribute("age");
+        attribute.addAttribute("name");
 
         List<Attribute> result = attribute.getAttributes();
 
