@@ -1,4 +1,5 @@
 package Diagram;
+import Class.*;
 
 import java.util.HashMap;
 
@@ -14,18 +15,46 @@ public class Diagram {
    
    public class Diagram(final HashMap diagram) {
       if (diagram == null) {
-         throw new IllegalArgumentException("invalid paramter");
+         throw new IllegalArgumentException("invalid param in Diagram constructor");
       }
       
       this.diagram = diagram;
    }
    
+   /*
+   Lists out all of the classes present in the diagram
+   */
    public void listClasses() {
-      for (Class c : this.diagram.keySey()){
-         System.out.println("Class: " + c);
-         System.out.println("Attributes: " + this.diagram.get(c));
+      for (Class c : this.diagram.keySet()){
+         System.out.println(c);
       }
    } 
+   
+   /*
+   If exists, prints out single class and all attributes of given class
+   */
+   public Class findSingleClass(final String name) {
+      if(name == null || name.isEmpty()) {
+         throw new IllegalArgumentException("param invalid in findSingleClass");
+      }
+      for (Class c : this.diagram.keySet()) {
+         if (c.getClassName() == name) {
+            System.out.println(
+         }
+      }
+      
+   }
+   
+   /*
+   Prints out all information about a given class
+   */
+   public void printSingleClass(final Class class) {
+      if (class == null) {
+         throw new IllegalArgumentException("invalid param in printSingleClass");
+      }
+      
+      System.out.println(class);
+   }
    
 
 }
