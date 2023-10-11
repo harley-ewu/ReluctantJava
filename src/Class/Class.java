@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Class {
 
-    //TODO: finish toString representation for relationships
+    //TODO: write toString representation for relationships
     //TODO: relationships needs a toString
     //TODO: add relationship menu init function
 
