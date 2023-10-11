@@ -44,8 +44,8 @@ public class Class {
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
     //pulled from the relationship class
-    public void addRelationship(final Relationship.RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
-        Relationship newRelationship = new Relationship(relationshipType, className, otherClassName, thisClassCardinality, otherClassCardinality, owner);
+    public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
+        Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
 
         if (this.relationships == null) {
             throw new NullPointerException("relationships list is null");
