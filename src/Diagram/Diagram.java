@@ -1,6 +1,6 @@
 package Diagram;
 import Class.*;
-
+import Attributes.*;
 import java.util.HashMap;
 
 //Class name subject to change for what we name the project
