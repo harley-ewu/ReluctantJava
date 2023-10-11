@@ -1,3 +1,5 @@
+package tests;
+
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
 
@@ -7,7 +9,7 @@ class CommandLineInterfaceTest {
 
     @Test
     void testIsValidUserInputForValidInputs() throws Exception {
-        Method method = CLI.CommandLineInterface.class.getDeclaredMethod("isValidUserInput", int.class);
+        Method method = src.CLI.CommandLineInterface.class.getDeclaredMethod("isValidUserInput", int.class);
         method.setAccessible(true);
 
         assertTrue((Boolean) method.invoke(null, 1));
@@ -19,7 +21,7 @@ class CommandLineInterfaceTest {
 
     @Test
     void testIsValidUserInputForInvalidInputs() throws Exception {
-        Method method = CLI.CommandLineInterface.class.getDeclaredMethod("isValidUserInput", int.class);
+        Method method = src.CLI.CommandLineInterface.class.getDeclaredMethod("isValidUserInput", int.class);
         method.setAccessible(true);
 
         // Testing invalid inputs

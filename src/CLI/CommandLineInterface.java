@@ -1,4 +1,4 @@
-package CLI;
+package src.CLI;
 
 import java.util.Scanner;
 
@@ -8,6 +8,11 @@ import java.util.Scanner;
 * */
 public class CommandLineInterface {
 
+    public static void main(String[] args){
+        boolean shouldTerminate = false;
+        startCLI(shouldTerminate);
+    }
+
     /*
     * Description: This method will start the CLI
     * Use Case: Call this from main
@@ -16,19 +21,18 @@ public class CommandLineInterface {
     //TODO: Implement option 1
     //TODO: Implement option 2
     //TODO: Implement option 3
-    //TODO: Implement option 4
-    //TODO: Implement option 5
 
-    public static void startCLI(){
-        while (true) {
+    private static void startCLI(boolean shouldTerminate){
+
+        while (!shouldTerminate) {
             int userChoice = getUserChoice();
 
             switch (userChoice) {
                 case 1 -> System.out.println("Option 1");
                 case 2 -> System.out.println("Option 2");
-                case 3 -> System.out.println("Option 3");
-                case 4 -> System.out.println("Option 4");
-                case 5 -> exit();
+                case 3 -> listRelationships();
+                case 4 -> help();
+                case 5 -> shouldTerminate = exit();
                 default -> System.out.println("There is a bug in getUserChoice");
             }
         }
@@ -43,7 +47,17 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
         int userInput = -1;
 
-        System.out.println("Enter a number:\n\n1 - Option 1\n2 - Option 2\n3 - Option 3\n4 - Option 4\n5 - Option 5");
+        System.out.println("""
+                
+                
+                Enter a number:
+                
+                1 - List Classes
+                2 - List Class
+                3 - List Relationships
+                4 - Help
+                5 - Exit
+                """);
 
         while (true) {
             try {
@@ -61,27 +75,54 @@ public class CommandLineInterface {
         return userInput;
     }
 
+    /*
+    * Description: Validates user input
+    * Use Case: Validate user choice input
+    * */
     private static boolean isValidUserInput(int userInput) {
         return userInput >= 1 && userInput <= 5;
     }
 
+    private static void listRelationships(){
+        //TODO: Implement when relationships are ready to be listed
+    }
+
+    /*
+    * Description: Prints description of each command to the console
+    * Use Case: Call under 'help' switch block
+    * */
+    private static void help(){
+        System.out.println("""
+
+
+                Option 1 - List Classes: Lists all of the classes in your project
+                
+                Option 2 - List Class: Lists the contents of a specified class
+                
+                Option 3 - List Relationships: Lists all class relationships in your project
+                
+                Option 4 - Help: Lists a description of all available commands
+                
+                Option 5 - Exit: Exit the program
+                """);
+    }
 
     /*
     * Description: This method will prompt the user to save, and then close the program
     * Use Case: Call this under 'exit' switch block
     * */
 
-    private static void exit(){
+    private static boolean exit() {
         char userChoice;
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Would you like to save before exiting?\n\n1 - Yes\nAnything else - No");
         userChoice = scan.next().charAt(0); // Pull first entered character
 
-        if(userChoice == '1'){
+        if (userChoice == '1') {
             //TODO: Call Save when implemented
         }
 
-        System.exit(0);
+        return true;
     }
 }
