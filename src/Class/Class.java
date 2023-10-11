@@ -8,20 +8,25 @@ import java.util.Scanner;
 public class Class {
 
     //TODO: finish toString representation for relationships
-   //TODO: relationships needs a toString
+    //TODO: relationships needs a toString
+    //TODO: add relationship menu init function
 
     private String className;
     private Attribute attributes;
-    private Scanner scanner;
-    private List<Relationship> relationships = new ArrayList<Relationship>();
-
+    private Scanner scanner = new Scanner(System.in);
+    private List<Relationship> relationships = new ArrayList();
     public Class(final String className) {
         if (className == null) {
             throw new NullPointerException("class name is null");
         }
-
+        this.attributes = new Attribute();
         this.className = className;
-
+        //initializing constructor will automatically prompt the user to enter desired attributes and relationships
+        this.initAttributes();
+        //displays the newly created class along with its attributes and relationships
+        System.out.println("You have created a class with the name: " + this.getClassName()
+                +"\n\nWith attributes: \n" + attributes.toString() + "\n\n"
+                + "With relationships: ");
     }
     //getters
     public String getClassName() {
@@ -37,33 +42,22 @@ public class Class {
         this.className = newClassName;
     }
 //----------------------------------------------------------------------------------------
-    public void addAttribute(final String attributeName) {
-        if (this.attributes != null && !attributeName.isEmpty()) {
-            this.attributes.addAttribute(attributeName);
-        } else {
-            System.out.println("Please enter a name for the attribute");
-        }
-    }
-
-    public void deleteAttribute(final String attributeName) {
-        if (this.attributes != null || this.attributes.getAttributes().contains(attributeName)) {
-            this.attributes.deleteAttribute(attributeName);
-        } else {
-            System.out.println("There are no attributes assigned to this class");
-        }
-
-    }
+    //note: add and delete methods for attributes are handled in the attributes class
     //pulled from the relationship class
     public void addRelationship(final Relationship.RelationshipType relationshipType, final String className, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
         Relationship newRelationship = new Relationship(relationshipType, className, otherClassName, thisClassCardinality, otherClassCardinality, owner);
 
-        if (this.relationships != null) {
-            if (this.relationships.contains(newRelationship)) {
+        if (this.relationships == null) {
+            throw new NullPointerException("relationships list is null");
+
+        }
+        else if (this.relationships.contains(newRelationship)) {
                 System.out.println("There is already a relationship between these two classes");
                 return;
-            }
-            relationships.add(newRelationship);
         }
+
+        relationships.add(newRelationship);
+
 
     }
     //pulled from the relationship class
@@ -80,73 +74,38 @@ public class Class {
     }
     public void initAttributes() {
         //asks the user if they want to add an attribute
-        int choice = -99;
-        do {
-            System.out.println("Do you want to add an Attribute?");
-            System.out.println("1. Yes\n2. No");
-            choice = Integer.parseInt(this.scanner.nextLine());
+        int cont = -99, choice = -99;
 
-        }while (choice < 0);
+        /*
+            * prompts the user with a menu allowing them to add an attribute
+            * this code will loop infinitely until the user decides that they do not want to add anymore attributes
+         */
 
-        switch(choice) {
-            case 1:
-                String attributeName;
-                System.out.print("enter attribute name: ");
-                attributeName = this.scanner.nextLine();
-                this.addAttribute(attributeName);
-                initAttributes();
-            case 2:
-                break;
-            default:
-                initAttributes();
+        while (cont < 0) {
+            do {
+                System.out.println("Do you want to add an Attribute?");
+                System.out.println("1. Yes\n2. No");
+                choice = Integer.parseInt(this.scanner.nextLine());
+            } while (choice < 0 || choice > 2);
+            switch (choice) {
+                case 1:
+                    String attributeName;
+                    System.out.print("enter attribute name: ");
+                    attributeName = this.scanner.nextLine();
+                    this.attributes.addAttribute(attributeName);
+                    System.out.println(this.attributes.toString());
+                    break;
+                case 2:
+                    cont = 1;
+                default:
+                    break;
+            }
         }
-
-        this.attributes.toString();
     }
-
-    public void initRelationships() {
-        //asks the user if they want to add a relationship
-        int choice = -99;
-        do {
-            System.out.println("Do you want to add a relationship?");
-            System.out.println("1. Yes\n2. No");
-            choice = Integer.parseInt(this.scanner.nextLine());
-
-        }while (choice < 0);
-
-        switch(choice) {
-            case 1:
-                String relationshipName;
-                System.out.print("enter relationship name: ");
-                relationshipName = this.scanner.nextLine();
-                this.addAttribute(relationshipName);
-                initRelationships();
-            case 2:
-                break;
-            default:
-                initRelationships();
-        }
-
-        this.relationships.toString();
-    }
-
-
-
-
-    /*
     @Override
     public String toString() {
-        String output;
-        //String attributesList;
-
-        //TODO: the attributes array list is set to private ~ needs to either change accessibility level or a getter needs to be created
-
-        output = "Class Name: " + this.getClassName() +"\n"
-        +"Attributes: \n\n"
-        +"Relationships: \n\n";
-
-        return output;
+        return null;
     }
-    */
+
 
 }
