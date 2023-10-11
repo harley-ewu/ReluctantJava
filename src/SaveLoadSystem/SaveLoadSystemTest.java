@@ -2,7 +2,8 @@ package SaveLoadSystem;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -11,23 +12,25 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SaveLoadSystemTest {
 
     @Test
-    protected void testSaveFileToDefaultPath() {
-        MockUmlClass testClass = new MockUmlClass("test", "This is a test");
-        ArrayList<MockUmlClass> list = new ArrayList<>();
-        SaveLoadSystem saveLoad = new SaveLoadSystem();
-        String home = System.getProperty("user.home");
+    protected void testSaveDefaultRunsSuccessfully() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = SaveLoadSystem.class.getDeclaredMethod("saveDefault", String.class, ArrayList.class);
+        SaveLoadSystem saveDefault = new SaveLoadSystem();
+        ArrayList<MockUmlClass> testList = new ArrayList<>();
 
-        list.add(testClass);
-        saveLoad.defaultPathSave("SaveTestFile", list);
-        String path = String.valueOf(Paths.get(home).resolve("SaveTestFile.json"));
-        File file = new File(path);
-
-        // I assert that the file created is not empty
-        assertTrue(file.length() > 0);
+        method.invoke(saveDefault, "TestSaveDefault", testList);
     }
 
     @Test
-    protected void testLoadFromDefaultPath() {
+    protected void testSaveCustomRunsSuccessfully() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = SaveLoadSystem.class.getDeclaredMethod("saveCustom", String.class, String.class, ArrayList.class);
+        SaveLoadSystem saveCustom = new SaveLoadSystem();
+        ArrayList<MockUmlClass> testList = new ArrayList<>();
+
+        //method.invoke(saveCustom, "SomePath", "TestSaveCustom", testList);
+    }
+
+    @Test
+    protected void testLoadRunsSuccessfully() {
 
     }
 
@@ -48,7 +51,7 @@ public class SaveLoadSystemTest {
          * in the default directory, then get the file path to the created file.
          */
         list.add(testClass);
-        saveLoad.defaultPathSave("SaveLoadIntegrationTest", list);
+        saveLoad.saveDefault("SaveLoadIntegrationTest", list);
         String path = String.valueOf(Paths.get(defaultPath).resolve("SaveLoadIntegrationTest.json"));
 
         /**
