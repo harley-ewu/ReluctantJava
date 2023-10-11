@@ -1,19 +1,18 @@
 package Diagram;
 import Class.*;
-import Attributes.*;
-import java.util.HashMap;
+import java.util.*;
 
 //Class name subject to change for what we name the project
 public class Diagram {
    
-   //TODO: Implement add/remove/rename class
+   //TODO: Implement add/delete/rename class
    //TODO: Implement class listing function
    //TODO: Implement listing single class 
    //TODO: Implement listing class relationships
    
-   private HashMap<Class, Attributes> diagram = new HashMap<Class, Attributes>();
+   private List<Class> diagram = new List<Class>();
    
-   public class Diagram(final HashMap diagram) {
+   public class Diagram(final List diagram) {
       if (diagram == null) {
          throw new IllegalArgumentException("invalid param in Diagram constructor");
       }
@@ -25,21 +24,21 @@ public class Diagram {
    Lists out all of the classes present in the diagram
    */
    public void listClasses() {
-      for (Class c : this.diagram.keySet()){
-         System.out.println(c);
+      for(int i = 0; i < this.diagram.size(); i++){
+         System.out.println(this.diagram[i].getClassName());
       }
    } 
    
    /*
-   If exists, prints out single class and all attributes of given class
+   Finds out if class exists
    */
    public Class findSingleClass(final String name) {
       if(name == null || name.isEmpty()) {
          throw new IllegalArgumentException("param invalid in findSingleClass");
       }
-      for (Class c : this.diagram.keySet()) {
-         if (c.getClassName() == name) {
-            System.out.println(
+      for (int i = 0; i < this.diagram.size()) {
+         if (this.diagram[i].getClassName() == name) {
+            return this.diagram[i];
          }
       }
       
@@ -53,6 +52,7 @@ public class Diagram {
          throw new IllegalArgumentException("invalid param in printSingleClass");
       }
       
+      //Need to come back to when class information is set
       System.out.println(class);
    }
    
