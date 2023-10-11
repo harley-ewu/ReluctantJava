@@ -14,12 +14,39 @@ public class Attribute {
     }
 
     public void addAttribute(final String name) {
+        // Null check.
+        if (name == null) {
+            throw new IllegalArgumentException("Name can't be null.");
+        }
+
+        //Initializing a variable to check if the attribute is already in the list.
+        boolean found = false;
+
         // Initializing a new attribute and adding it to the list.
         Attribute newAttribute = new Attribute(name);
-        attributes.add(newAttribute);
+
+        //Checking if the attribute is already contained within the list.
+        for (Attribute attribute : attributes) {
+            // Checking if the name of the attribute to be deleted matches with the attribute that was found.
+            if (attribute.name.equals(name)) {
+                // Removing the attribute and leaving the loop.
+                found = true;
+                break;
+            }
+        }
+
+        //Adding if it is already not in the list.
+        if (!found) {
+            attributes.add(newAttribute);
+        }
     }
 
     public void deleteAttribute(final String name) {
+        // Null check.
+        if (name == null) {
+            throw new IllegalArgumentException("Name can't be null.");
+        }
+
         // Loop to check each attribute in the list.
         for (Attribute attribute : attributes) {
             // Checking if the name of the attribute to be deleted matches with the attribute that was found.
