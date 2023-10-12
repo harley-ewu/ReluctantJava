@@ -4,7 +4,7 @@ import Relationships.Relationship;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import Diagram.Diagram;
 public class Class {
 
     //TODO: write toString representation for relationships
@@ -15,17 +15,15 @@ public class Class {
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
     private List<Relationship> relationships = new ArrayList();
-    public Class(final String className) {
+
+    private Diagram diagram;
+    public Class(final String className, final Diagram diagram) {
         if (className == null) {
             throw new NullPointerException("class name is null");
         }
         this.attributes = new Attribute();
         this.className = className;
-        //initializing constructor will automatically prompt the user to enter desired attributes and relationships
-        //displays the newly created class along with its attributes and relationships
-        System.out.println("You have created a class with the name: " + this.getClassName()
-                +"\n\nWith attributes: \n" + attributes.toString() + "\n\n"
-                + "With relationships: ");
+        this.diagram = diagram;
     }
     //getters
     public String getClassName() {
@@ -35,7 +33,7 @@ public class Class {
     //setters
     public void setClassName(String newClassName) {
         if (newClassName == null) {
-            throw new NullPointerException("Class name param is null.");
+            throw new NullPointerException("Class name paramete is null.");
         }
 
         this.className = newClassName;
@@ -53,9 +51,7 @@ public class Class {
                 System.out.println("There is already a relationship between these two classes.");
                 return;
         }
-
         relationships.add(newRelationship);
-
     }
     //pulled from the relationship class
     public void deleteRelationship(Relationship relationship) {
@@ -99,28 +95,43 @@ public class Class {
     }
 
     public void subMenu() {
-        int choice = -99;
-        do {
-            System.out.println("Edit menu for " + this.getClassName() + " class\n\n");
-            System.out.println("1. Add attribute\n2. Delete attribute\n3. Add relationship\n4. Delete relationship \n 5. Go back");
-            choice = Integer.parseInt(scanner.nextLine());
+        boolean on = true;
 
-        } while (choice < 0 || choice > 5);
+        while (on) {
+            int choice = -99;
+            do {
+                System.out.println("Edit menu for " + this.getClassName() + " class\n\n");
+                System.out.println("1. Add attribute\n2. Delete attribute\n3. Add relationship\n4. Delete relationship \n 5. Go back");
+                choice = Integer.parseInt(scanner.nextLine());
 
-        switch(choice) {
+            } while (choice < 0 || choice > 5);
 
-            case 1: //add attribute
-                break;
-            case 2: //delete attribute
-                break;
-            case 3: //add relationship
-                break;
-            case 4: //remove relationship
-                break;
-            case 5: //go back
-                break;
+            switch (choice) {
+
+                case 1: //add attribute
+                    String newAttribute;
+                    System.out.print("\nPlease enter a name for the attribute: ");
+                    newAttribute = this.scanner.nextLine();
+                    this.attributes.addAttribute(newAttribute);
+                    System.out.println("The attribute, " + newAttribute + ", was successfully added to "
+                            + this.getClassName() + " class");
+                    break;
+                case 2: //delete attribute
+                    String attribute;
+                    System.out.print("\nPlease enter an attribute to remove: ");
+                    attribute = this.scanner.nextLine();
+                    this.attributes.deleteAttribute(attribute);
+                    break;
+                case 3: //add relationship
+                    break;
+                case 4: //remove relationship
+                    break;
+                case 5: //go back
+                    on = false;
+                    d
+                    break;
+            }
         }
-
     }
 
     @Override
