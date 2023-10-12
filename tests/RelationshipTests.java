@@ -4,10 +4,11 @@ import Relationships.Relationship;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RelationshipTests {
     @Test
-    void toStringTest() {
+    void toStringTest() throws IllegalArgumentException{
         Class testClass = new Class("testClass");
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Association, testClass, 1, 2, false);
         String testResult = "Class has a Association relationship with testClass\n" +
@@ -16,6 +17,18 @@ public class RelationshipTests {
                 "testClass Class Cardinality: 2\n" ;
 
         assertEquals(testResult, testRelationship.toString());
+
+        assertThrows(IllegalArgumentException.class, () ->
+        {Relationship testRelationship2 = new Relationship(null, testClass, 1, 2, false);});
+
+        assertThrows(IllegalArgumentException.class, () ->
+        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Association, null, 1, 2, false);});
+
+        assertThrows(IllegalArgumentException.class, () ->
+        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Association, testClass, -2, 2, false);});
+
+        assertThrows(IllegalArgumentException.class, () ->
+        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Association, testClass, 2, -2, false);});
     }
 
     @Test
@@ -26,10 +39,12 @@ public class RelationshipTests {
         assertEquals(Relationship.RelationshipType.Aggregation, testRelationship.getRelationshipType());
         testRelationship.setRelationshipType(Relationship.RelationshipType.Composition);
         assertEquals(Relationship.RelationshipType.Composition, testRelationship.getRelationshipType());
+
+        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setRelationshipType(null);});
     }
 
     @Test
-    void otherClassNameGetterSetterTest() {
+    void otherClassNameGetterTest() {
         Class testClass = new Class("testClass");
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
 
@@ -44,6 +59,8 @@ public class RelationshipTests {
         assertEquals(1, testRelationship.getThisClassCardinality());
         testRelationship.setThisClassCardinality(2);
         assertEquals(2, testRelationship.getThisClassCardinality());
+
+        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setThisClassCardinality(-2);});
     }
 
     @Test
@@ -64,5 +81,7 @@ public class RelationshipTests {
         assertEquals(false, testRelationship.getIsOwner());
         testRelationship.setIsOwner(true);
         assertEquals(true, testRelationship.getIsOwner());
+
+        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setOtherClassCardinality(-2);});
     }
 }
