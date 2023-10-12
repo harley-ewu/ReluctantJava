@@ -78,7 +78,7 @@ public class Class {
          */
         while (cont < 0) {
             do {
-                System.out.println("Do you want to add an Attribute?");
+                System.out.println("Do you want to add an attribute?");
                 System.out.println("1. Yes\n2. No");
                 choice = Integer.parseInt(this.scanner.nextLine());
             } while (choice < 0 || choice > 2);
