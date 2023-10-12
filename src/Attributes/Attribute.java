@@ -46,15 +46,21 @@ public class Attribute {
         if (name == null) {
             throw new IllegalArgumentException("Name can't be null.");
         }
-
+        boolean found = false;
         // Loop to check each attribute in the list.
         for (Attribute attribute : attributes) {
             // Checking if the name of the attribute to be deleted matches with the attribute that was found.
             if (attribute.name.equals(name)) {
                 // Removing the attribute and leaving the loop.
                 attributes.remove(attribute);
+                found = true;
                 break;
             }
+        }
+
+        // If the attribute was not found, let the user know no changes have been made.
+        if (!found) {
+            System.out.println("Attribute was not found. No changes have occurred.");
         }
     }
 
