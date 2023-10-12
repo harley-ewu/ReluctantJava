@@ -8,6 +8,7 @@ import java.util.Scanner;
 * */
 public class CommandLineInterface {
 
+    private static final int MAX_CHOICES = 7;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
@@ -18,9 +19,6 @@ public class CommandLineInterface {
     * Use Case: Call this from main
     * */
 
-    //TODO: Implement option 1
-    //TODO: Implement option 2
-    //TODO: Implement option 3
 
     private static void startCLI(boolean shouldTerminate){
 
@@ -28,11 +26,13 @@ public class CommandLineInterface {
             int userChoice = getUserChoice();
 
             switch (userChoice) {
-                case 1 -> System.out.println("Option 1");
-                case 2 -> System.out.println("Option 2");
-                case 3 -> listRelationships();
-                case 4 -> help();
-                case 5 -> shouldTerminate = exit();
+                case 1 -> createNewDiagram();
+                case 2 -> viewDiagram(); // May call external menu method if it's implemented in a separate class
+                case 3 -> editDiagram(); // May call external menu method if it's implemented in a separate class
+                case 4 -> saveDiagram(); // May call external menu method if it's implemented in a separate class
+                case 5 -> loadDiagram(); // May call external menu method if it's implemented in a separate class
+                case 6 -> help();
+                case 7 -> shouldTerminate = exit();
                 default -> System.out.println("There is a bug in getUserChoice");
             }
         }
@@ -52,11 +52,13 @@ public class CommandLineInterface {
                 
                 Enter a number:
                 
-                1 - List Classes
-                2 - List Class
-                3 - List Relationships
-                4 - Help
-                5 - Exit
+                1 - New Diagram
+                2 - View Existing Diagram
+                3 - Edit Existing Diagram
+                4 - Save Current Diagram
+                5 - Load Diagram
+                6 - Help
+                7 - Exit
                 """);
 
         while (true) {
@@ -65,7 +67,7 @@ public class CommandLineInterface {
                 if (isValidUserInput(userInput)) {
                     break;
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and 5.");
+                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
@@ -80,11 +82,23 @@ public class CommandLineInterface {
     * Use Case: Validate user choice input
     * */
     private static boolean isValidUserInput(int userInput) {
-        return userInput >= 1 && userInput <= 5;
+        return userInput >= 1 && userInput <= MAX_CHOICES;
     }
 
-    private static void listRelationships(){
-        //TODO: Implement when relationships are ready to be listed
+    private static void createNewDiagram(){
+        //TODO: Implement
+    }
+    private static void viewDiagram(){
+        //TODO: Implement
+    }
+    private static void editDiagram(){
+        //TODO: Implement
+    }
+    private static void saveDiagram(){
+        //TODO: Implement
+    }
+    private static void loadDiagram(){
+        //TODO: Implement
     }
 
     /*
@@ -93,17 +107,21 @@ public class CommandLineInterface {
     * */
     private static void help(){
         System.out.println("""
+                MAIN MENU COMMANDS:
 
-
-                Option 1 - List Classes: Lists all of the classes in your project
+                Option 1 - New Diagram: Create a new UML Diagram
                 
-                Option 2 - List Class: Lists the contents of a specified class
+                Option 2 - View Existing Diagram: View the currently loaded diagram
                 
-                Option 3 - List Relationships: Lists all class relationships in your project
+                Option 3 - Edit Diagram: Edit the currently loaded diagram
                 
-                Option 4 - Help: Lists a description of all available commands
+                Option 4 - Save Diagram: Saves the currently loaded diagram
                 
-                Option 5 - Exit: Exit the program
+                Option 5 - Load Diagram: Loads an existing diagram from a file
+                
+                Option 5 - Help: Lists a description of all available commands
+                
+                Option 6 - Exit: Exit the program
                 """);
     }
 
