@@ -35,8 +35,8 @@ class CommandLineInterfaceTest {
 
         int maxChoices = (int) maxChoicesField.get(CommandLineInterface.class);
 
-        for(int i = maxChoices; i < 100; i++){
-            assertFalse((Boolean) method.invoke(null, (int) (Math.random() * 100)));
+        for(int i = maxChoices + 1; i < 100; i++){
+            assertFalse((Boolean) method.invoke(null, (int) (Math.random() * 100) + maxChoices + 1));
         }
 
         assertFalse((Boolean) method.invoke(null, 0));
