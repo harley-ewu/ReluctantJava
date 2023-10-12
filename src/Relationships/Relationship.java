@@ -1,5 +1,6 @@
 //Nick Parkman 10/9/2023 @10:30am
 package Relationships;
+import Class.Class;
 import java.util.*;
 
 public class Relationship {
@@ -12,13 +13,13 @@ public class Relationship {
    
    //variables of a given relationship
    private RelationshipType relationshipType;//The type of relationship this given relationship is between the given classes
-   private String otherClassName; //the other class in the given relaitonship
+   private Class otherClassName; //the other class in the given relaitonship
    private int thisClassCardinality; //thinking -1 in case of * amount of cardinality
    private int otherClassCardinality; //thinking -1 in case of * amount of cardinality
    private boolean owner; //meaning the "contains" side in Aggregation or Composition, or the class that others are Inheirting from in Generalization.
    
    
-   public Relationship(final RelationshipType relationshipType, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
+   public Relationship(final RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
       this.relationshipType = relationshipType;
       this.otherClassName = otherClassName;
       this.thisClassCardinality = thisClassCardinality;
@@ -62,7 +63,7 @@ public class Relationship {
       this.relationshipType = relationshipType;
    }
    
-   public String getOtherClassName() {
+   public Class getOtherClassName() {
       return this.otherClassName;
    }
    
