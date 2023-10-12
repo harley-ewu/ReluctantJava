@@ -1,10 +1,10 @@
-//Nick Parkman 10/9/2023 @10:30am
+//Nick Parkman 10/12/2023 @10:30am
 package Relationships;
+
 import Class.Class;
-import java.util.*;
 
 public class Relationship {
-   public static enum RelationshipType {
+   public enum RelationshipType {
       Association,
       Aggregation,
       Composition,
@@ -13,7 +13,7 @@ public class Relationship {
    
    //variables of a given relationship
    private RelationshipType relationshipType;//The type of relationship this given relationship is between the given classes
-   private Class otherClassName; //the other class in the given relaitonship
+   private final Class otherClassName; //the other class in the given relationship
    private int thisClassCardinality; //thinking -1 in case of * amount of cardinality
    private int otherClassCardinality; //thinking -1 in case of * amount of cardinality
    private boolean owner; //meaning the "contains" side in Aggregation or Composition, or the class that others are Inheirting from in Generalization.
