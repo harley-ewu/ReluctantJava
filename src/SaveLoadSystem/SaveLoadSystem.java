@@ -20,6 +20,12 @@ public class SaveLoadSystem {
 
     public SaveLoadSystem(){}
 
+    /**
+     * Description: Saves the project to the home directory of the user.
+     * Use case: Call if user wants to save to the default directory.
+     * @param filename: the name of the file to be saved
+     * @param classList: the list of classes that need to be saved
+     */
     public void saveDefault(String filename, ArrayList<MockUmlClass> classList){
 
         if(filename == null || filename.isEmpty()) {
@@ -41,10 +47,12 @@ public class SaveLoadSystem {
     }
 
     /**
-     * Description: Saves the project under the specified filename to a specified filepath.
-     * Use Case: Call if user wants to save project into specific directory.
+     * Description: Saves the project to a specified file path.
+     * Use case: Call if user wants to save project to specific directory.
+     * @param path: the file path that the file will be saved to
+     * @param filename: the name of the file to be saved
+     * @param classList: the list of classes to be saved
      */
-
     public void saveCustom(String path, String filename, ArrayList<MockUmlClass> classList) {
 
         if(path == null) {
@@ -71,8 +79,10 @@ public class SaveLoadSystem {
     }
 
     /**
-     * Description: Loads the project from a specified filepath.
-     * Use Case: Call if user wants to load a project from a specific filepath.
+     * Description: Loads the project file from a specific file path.
+     * Use case: Call if user wants to load a project.
+     * @param path: the path to the file that the user wishes to load
+     * @return : An ArrayList containing the classes saved in the project file.
      */
     public ArrayList<MockUmlClass> load(String path){
 
@@ -80,7 +90,7 @@ public class SaveLoadSystem {
             throw new IllegalArgumentException("The file path cannot be null or empty.");
         }
 
-        ArrayList<MockUmlClass> classList = new ArrayList<MockUmlClass>();
+        ArrayList<MockUmlClass> classList = new ArrayList<>();
         Path filepath = Paths.get(path);
 
         String jsonText = convertJsonTextToString(filepath);
@@ -91,11 +101,6 @@ public class SaveLoadSystem {
 
         return classList;
     }
-
-    /**
-     * Description: Sets the default file path to the users home directory.
-     * Use Case: Is only called inside the defaultPathSave() method.
-     */
 
     private Path getDefaultPath(String filename){
         String home = System.getProperty("user.home");
@@ -119,7 +124,7 @@ public class SaveLoadSystem {
     }
 
     private String convertJsonTextToString(Path filepath){
-        String text = null;
+        String text;
 
         try{
             text = new String(Files.readAllBytes(filepath));
@@ -131,7 +136,7 @@ public class SaveLoadSystem {
     }
 
     private JsonArray convertStringToJsonArray(String jsonText){
-        JsonArray array = null;
+        JsonArray array;
 
         try{
             array = (JsonArray) Jsoner.deserialize(jsonText);
