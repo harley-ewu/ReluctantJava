@@ -71,9 +71,9 @@ public class Relationship {
    @Override
    public String toString()
    {
-      return "Class has a "+this.relationshipType+" relationship with "+this.otherClassName+"\n"
+      return "Class has a "+this.relationshipType+" relationship with "+this.otherClassName.getClassName()+"\n"
             +"Owner: "+this.owner+"\n"
             +"This Class Cardinality: "+this.thisClassCardinality+"\n"
-            +this.otherClassName+" Class Cardinality: "+this.otherClassCardinality+"\n";
+            +this.otherClassName.getClassName()+" Class Cardinality: "+this.otherClassCardinality+"\n";
    }
 }

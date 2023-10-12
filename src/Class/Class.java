@@ -43,11 +43,7 @@ public class Class {
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
     //pulled from the relationship class
-<<<<<<< HEAD
     public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
-=======
-    public void addRelationship(final Relationship.RelationshipType relationshipType, final String otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
->>>>>>> ClassBranch
         Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
 
         if (this.relationships == null) {
