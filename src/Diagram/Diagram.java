@@ -6,16 +6,24 @@ import java.util.*;
 public class Diagram {
    
    private String title;
-   private List<Class> diagram = new ArrayList<Class>();
+   private List<Class> classList = new ArrayList<Class>();
    private Scanner scanner = new Scanner(System.in);
    
-   public Diagram(final String title, final List<Class> diagram) {
-      if (diagram == null || title == null) {
+   public Diagram(final String title, final List<Class> classList) {
+	  
+      if (title == null) {
          throw new IllegalArgumentException("invalid param in Diagram constructor");
       }
-      
+      //if diagram comes in as null/empty, should we initialize and empty arraylist?
       this.title = title;
-      this.diagram = diagram;
+      
+      if (classList == null) {
+    	  this.classList = new ArrayList<>();
+      }
+      else {
+    	  this.classList = classList;
+      }
+      this.classList = classList;
    }
    
    /*
@@ -28,6 +36,13 @@ public class Diagram {
    /*Setter for diagram title*/
    public void setTitle(final String title){
       this.title = title;
+   }
+   
+   /*
+    * Getter for classList
+    * */
+   public List<Class> getClassList(){
+	   return this.classList;
    }
    
    /*
@@ -47,14 +62,14 @@ public class Diagram {
             case 1:
                System.out.println("Enter a class name to add: ");
                className = this.scanner.nextLine();
-               this.diagram.addClass(className);
+               this.classList.addClass(className);
                break;
                
             //Delete Class - name needed
             case 2:
                System.out.println("Enter a class name to delete: ");
                className = this.scanner.nextLine();
-               this.diagram.deleteClass(className);
+               this.classList.deleteClass(className);
                break;
             
             //Rename Class - current and new name needed
@@ -65,7 +80,7 @@ public class Diagram {
                if(findSingleClass(oldClassName) != null){
                   System.out.println("Class exists. Enter new name for the class.");
                   newClassName = this.scanner.nextLine();
-                  this.diagram.renameClass(oldClassName, newClassName);
+                  this.classtList.renameClass(oldClassName, newClassName);
                }
                else {
                   System.out.println("Class does not exist.");
@@ -79,9 +94,9 @@ public class Diagram {
                if(findSingleClass == null){
                   System.out.println("Class does not exist.");
                }
-               for (int i = 0; i < this.diagram.size(); i++){
-                  if(this.diagram[i].getClassName() == className) {
-                     this.diagram[i].subMenu();
+               for (int i = 0; i < this.classList.size(); i++){
+                  if(this.classList[i].getClassName() == className) {
+                     this.classList[i].subMenu();
                   }
                }
                break;
@@ -98,7 +113,7 @@ public class Diagram {
                
             //View Diagram
             case 6:
-               System.out.println(this.diagram)
+               System.out.println(this.classList)
                break;
             case 7: 
                cont = 1;
@@ -111,23 +126,23 @@ public class Diagram {
    }
    
    /*
-   Adds a class to the diagram
+   Adds a class to the classList
    */
    public void addClass(final String className){
       if (className == null) {
          throw new IllegalArgumentException("invalid param in addClass method");
       }
-      for(int i = 0; i < this.diagram.size(); i++) {
-         if (className == this.diagram[i].getClassName()){
+      for(int i = 0; i < this.classList.size(); i++) {
+         if (className == this.classList[i].getClassName()){
             System.out.println("Class name already exists.");
             
          }
       }
-      this.diagram.add(new Class(className));
+      this.classList.add(new Class(className));
    }
    
    /*
-   Deletes a class from the diagram
+   Deletes a class from the classList
    TODO: Need to check for relationships with other classes and sever them before deleting class
    */
    public void deleteClass(final String className){
@@ -140,7 +155,7 @@ public class Diagram {
    }
    
    /*
-   Renames a class in the diagram
+   Renames a class in the classList
    */
    public void renameClass(final String oldClassName, final String newClassName) {
       if (oldClassName == null || newClassName == null) {
@@ -155,16 +170,16 @@ public class Diagram {
    }
    
    /*
-   Lists out all of the classes present in the diagram
+   Lists out all of the classes present in the classList
    */
    public void listClasses() {
-      if(this.diagram.size() == 0){
+      if(this.classList.size() == 0){
          System.out.println("Diagram is empty.");
       }
       else {
          System.out.println("Classes: ");
-         for(int i = 0; i < this.diagram.size(); i++){
-            System.out.println(this.diagram[i].toString());
+         for(int i = 0; i < this.classList.size(); i++){
+            System.out.println(this.classList[i].toString());
          }
       }
       
@@ -174,12 +189,12 @@ public class Diagram {
    Finds out if class exists
    */
    public Class findSingleClass(final String className) {
-      if(name == null) {
+      if(className == null) {
          throw new IllegalArgumentException("param invalid in findSingleClass");
       }
-      for (int i = 0; i < this.diagram.size(); i++) {
-         if (this.diagram[i].getClassName().equals(name)) {
-            return this.diagram[i];
+      for (int i = 0; i < this.classList.size(); i++) {
+         if (this.classList[i].getClassName().equals(className)) {
+            return this.classList[i];
          }
       }
       return null;
@@ -188,12 +203,12 @@ public class Diagram {
    /*
    Prints out all information about a given class
    */
-   public void printSingleClass(final Class class) {
-      if (class == null) {
+   public void printSingleClass(final Class c) {
+      if (c == null) {
          throw new IllegalArgumentException("class is null");
       }
       
-      System.out.println(class.toString());
+      System.out.println(c.toString());
    }
    
    public void addRelationship(final Class c1, final Class c2) {
@@ -211,14 +226,14 @@ public class Diagram {
    Printing out entire diagram
    */
    public String toString(){
-      if (this.diagram == null) {
+      if (this.classList == null) {
          throw new IllegalArgumentException("Diagram is null");
       }
       String diagramString;
       diagramString += this.title + "\n";
       
-      for(int i = 0; i < this.diagram.size(); i++){
-         diagramString += this.diagram[i].toString();
+      for(int i = 0; i < this.classList.size(); i++){
+         diagramString += this.classList[i].toString();
       }
 
       return diagramString;
