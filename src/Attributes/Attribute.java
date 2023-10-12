@@ -1,6 +1,7 @@
 package Attributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Attribute {
     // List of attributes for the class.
@@ -15,15 +16,10 @@ public class Attribute {
 
     public void addAttribute(final String name) {
         // Null check.
-        if (name == null) {
-            throw new IllegalArgumentException("Name can't be null.");
-        }
+        Objects.requireNonNull(name, "Name can't be null.");
 
         //Initializing a variable to check if the attribute is already in the list.
         boolean found = false;
-
-        // Initializing a new attribute and adding it to the list.
-        Attribute newAttribute = new Attribute(name);
 
         //Checking if the attribute is already contained within the list.
         for (Attribute attribute : attributes) {
@@ -37,31 +33,26 @@ public class Attribute {
 
         //Adding if it is already not in the list.
         if (!found) {
+            // Initializing a new attribute and adding it to the list.
+            Attribute newAttribute = new Attribute(name);
             attributes.add(newAttribute);
         }
     }
 
     public void deleteAttribute(final String name) {
         // Null check.
-        if (name == null) {
-            throw new IllegalArgumentException("Name can't be null.");
-        }
-        boolean found = false;
-        // Loop to check each attribute in the list.
-        for (Attribute attribute : attributes) {
-            // Checking if the name of the attribute to be deleted matches with the attribute that was found.
+        Objects.requireNonNull(name, "Name can't be null.");
+
+        // Loop to look for the missing attribute.
+        for (int i = 0; i < attributes.size(); i++) {
+            Attribute attribute = attributes.get(i);
             if (attribute.name.equals(name)) {
-                // Removing the attribute and leaving the loop.
-                attributes.remove(attribute);
-                found = true;
-                break;
+                attributes.remove(i);
+                return;
             }
         }
 
-        // If the attribute was not found, let the user know no changes have been made.
-        if (!found) {
-            System.out.println("Attribute was not found. No changes have occurred.");
-        }
+        System.out.println("Attribute was not found. No changes have occurred.");
     }
 
     public List<Attribute> getAttributes() {
