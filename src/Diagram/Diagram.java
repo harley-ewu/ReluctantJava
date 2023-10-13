@@ -1,5 +1,6 @@
 package Diagram;
 import Class.Class;
+import CLI.CommandLineInterface;
 
 import java.util.*;
 
@@ -50,7 +51,7 @@ public class Diagram {
             System.out.println("UML Diagram Editor Menu");
             System.out.println("Enter a number:\n\n1 - Add Class\n2 - Delete Class\n3 - Rename Class\n4 - Edit Class\n5 - View Class\n6 - View Diagram\n7 - Exit");
             choice = Integer.parseInt(this.scanner.nextLine());
-            }while(choice < 0 && choice > 6);
+            }while(choice < 0 && choice > 7);
             String className;
             switch (choice) {
                //Add Class - name needed
@@ -58,7 +59,8 @@ public class Diagram {
                case 1:
                   System.out.println("Enter a class name to add: ");
                   className = this.scanner.nextLine();
-                  this.addClass(className);
+                  Class newClass = this.addClass(className);
+                  this.classMenu(newClass);
                   break;
                   
                //Delete Class - name needed
@@ -112,7 +114,8 @@ public class Diagram {
                case 6:
                   System.out.println(this.toString());
                   break;
-               case 7: 
+               case 7:
+                  CLI.CommandLineInterface.startCLI(false);
                   cont = 1;
                default:
                   break;
@@ -121,11 +124,37 @@ public class Diagram {
       }
       
    }
+
+   public void classMenu(final Class currentClass) {
+      int cont = -99, choice = -99;
+      while (cont < 0) {
+         do {
+            System.out.println("Class Editor");
+            System.out.println("Enter a number: \n\n1 - Add Attribute\n2 - Add Relationship\n3 - Back to Diagram Menu");
+            choice = Integer.parseInt(this.scanner.nextLine());
+         }while(choice < 0 && choice > 3);
+         switch(choice) {
+            //Add attribute
+            case 1:
+               currentClass.addAttribute();
+               break;
+            
+            //Add relationship
+            case 2:
+               break;
+
+            case 3:
+               cont = 1;
+            default:
+               break;
+         }
+      }
+   }
    
    /*
    Adds a class to the classList
    */
-   public void addClass(final String className){
+   public Class addClass(final String className){
       if (className == null) {
          throw new IllegalArgumentException("invalid param in addClass method");
       }
@@ -135,7 +164,9 @@ public class Diagram {
             
          }
       }
-      this.classList.add(new Class(className, this));
+      Class c = new Class(className, this);
+      this.classList.add(c);
+      return c;
    }
    
    /*
@@ -223,8 +254,7 @@ public class Diagram {
       //either add a get relationship method to Class class
       //or iterate through c1's relationship list to find the relationship with c2
       //and iterate through c2's relationship list to find the relationship with c1
-      //c1.deleteRelationship(c2);
-      //c2.deleteRelationship(c1);
+      
    }
 
 
@@ -237,7 +267,7 @@ public class Diagram {
          throw new IllegalArgumentException("Diagram is null");
       }
       String diagramString = "";
-      diagramString += this.title + "\n";
+      diagramString += this.title + "\n\n";
       
       for(int i = 0; i < this.classList.size(); i++){
          diagramString += this.classList.get(i).toString();
