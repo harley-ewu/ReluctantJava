@@ -1,8 +1,9 @@
 import Diagram.Diagram;
-import org.junit.jupiter.api.Tests;
-import org.w3c.dom.Attr;
+import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import Class.Class;
+
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,29 +13,30 @@ public class DiagramTests {
 	void getTitleTest() {
 		
 		Diagram diagram = new Diagram("test", null);
-		assertEquals("test", diagram.getName());
+		assertEquals("test", diagram.getTitle());
 	}
 	
 	@Test 
     void setTitleTest() {
-		Diagram diagram = new Diagram();
+		Diagram diagram = new Diagram("", null);
 		diagram.setTitle("test");
 		assertEquals("test", diagram.getTitle());
 	}
 	
-	@Test nullClassList() {
-		Diagram diagram = new Diagram();
-		assertEquals(new ArrayList<>(), diagram.getClassList())
+	@Test 
+	void nullClassList() {
+		Diagram diagram = new Diagram("", null);
+		assertEquals(new ArrayList<>(), diagram.getClassList());
 	}
 	
 	@Test void testAddClass() {
-		Diagram UMLdiagram = new Diagram();
-		UMLdiagram.setTitle("test");
-		classList = UMLDiagram.getDiagram();
+		Diagram UMLDiagram = new Diagram("", null);
+		UMLDiagram.setTitle("test");
+		List<Class> classList = UMLDiagram.getClassList();
 		
 		Class c = new Class("testClass");
 		
-		classList.addClass("testClass");
+		UMLDiagram.addClass(c.getClassName());
 		
 		assertEquals(c, classList.get(0));
 		
