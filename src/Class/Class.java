@@ -4,7 +4,7 @@ import Relationships.Relationship;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import Diagram.Diagram;
 public class Class {
 
     //TODO: write toString representation for relationships
@@ -15,17 +15,15 @@ public class Class {
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
     private List<Relationship> relationships = new ArrayList();
-    public Class(final String className) {
+
+    private Diagram diagram;
+    public Class(final String className, final Diagram diagram) {
         if (className == null) {
-            throw new NullPointerException("class name is null");
+            throw new NullPointerException("Class name is null.");
         }
         this.attributes = new Attribute();
         this.className = className;
-        //initializing constructor will automatically prompt the user to enter desired attributes and relationships
-        //displays the newly created class along with its attributes and relationships
-        System.out.println("You have created a class with the name: " + this.getClassName()
-                +"\n\nWith attributes: \n" + attributes.toString() + "\n\n"
-                + "With relationships: ");
+        this.diagram = diagram;
     }
     //getters
     public String getClassName() {
@@ -33,16 +31,16 @@ public class Class {
 
     }
     //setters
-    public void setClassName(String newClassName) {
+    public void setClassName(final String newClassName) {
         if (newClassName == null) {
-            throw new NullPointerException("Class name param is null.");
+            throw new NullPointerException("Class name parameter is null.");
         }
 
         this.className = newClassName;
     }
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
-    //pulled from the relationship class
+
     public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
         Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
 
@@ -53,12 +51,10 @@ public class Class {
                 System.out.println("There is already a relationship between these two classes.");
                 return;
         }
-
         relationships.add(newRelationship);
-
     }
-    //pulled from the relationship class
-    public void deleteRelationship(Relationship relationship) {
+    //TODO: To be moved to diagram class
+    public void deleteRelationship(final Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
         }
@@ -69,58 +65,84 @@ public class Class {
             System.out.println("This relationship is not assigned to this class.");
         }
     }
-    public void initAttributes() {
-        //asks the user if they want to add an attribute
-        int cont = -99, choice = -99;
-        /*
-            * prompts the user with a menu allowing them to add an attribute
-            * this code will loop infinitely until the user decides that they do not want to add anymore attributes
-         */
-        while (cont < 0) {
-            do {
-                System.out.println("Do you want to add an attribute?");
-                System.out.println("1. Yes\n2. No");
-                choice = Integer.parseInt(this.scanner.nextLine());
-            } while (choice < 0 || choice > 2);
-            switch (choice) {
-                case 1:
-                    String attributeName;
-                    System.out.print("Enter a name for an attribute: ");
-                    attributeName = this.scanner.nextLine();
-                    this.attributes.addAttribute(attributeName);
-                    System.out.println(this.attributes.toString());
-                    break;
-                case 2:
-                    cont = 1;
-                default:
-                    break;
-            }
+
+    public void addAttribute() {
+        String newAttribute;
+        System.out.print("\nPlease enter a name for the attribute: ");
+        newAttribute = this.scanner.nextLine();
+
+        if (newAttribute.isEmpty()) {
+            System.out.println("\nNothing was typed, please enter a name for the attribute.");
+
+        }else {
+            this.attributes.addAttribute(newAttribute); //will eventually contain messages for the user
         }
     }
 
-    public void subMenu() {
-        int choice = -99;
-        do {
-            System.out.println("Edit menu for " + this.getClassName() + " class\n\n");
-            System.out.println("1. Add attribute\n2. Delete attribute\n3. Add relationship\n4. Delete relationship \n 5. Go back");
-            choice = Integer.parseInt(scanner.nextLine());
+    public void deleteAttribute() {
+        String attribute;
+        System.out.print("\nPlease enter an attribute to remove: ");
+        attribute = this.scanner.nextLine();
 
-        } while (choice < 0 || choice > 5);
+        if (attribute.isEmpty()) {
+            System.out.println("\nNothing was typed, please enter a name for the attribute that you want to remove.");
+        } else {
+            this.attributes.deleteAttribute(attribute); //this will eventually include messages for the user
 
-        switch(choice) {
-
-            case 1: //add attribute
-                break;
-            case 2: //delete attribute
-                break;
-            case 3: //add relationship
-                break;
-            case 4: //remove relationship
-                break;
-            case 5: //go back
-                break;
         }
+    }
 
+    public String displayAttributes() {
+       return "Attributes in the " + this.getClassName() + " class: \n" + this.attributes.toString();
+
+    }
+
+    public String displayRelationships() {
+        StringBuilder relationships = new StringBuilder();
+
+        for (Relationship relationship: this.relationships) {
+            relationships.append(relationship.toString()).append("\n");
+        }
+        return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
+
+    }
+
+    public void subMenu() {
+        boolean on = true;
+        //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
+        while (on) {
+            int choice = -99;
+            do {
+                System.out.println("\nEdit menu for the " + this.getClassName() + " class\n");
+                System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Display attributes" +
+                        "\n4.Display relationships\n5.Display all contents\n6.Return to Diagram Menu");
+                choice = Integer.parseInt(scanner.nextLine());
+
+            } while (choice < 0 || choice > 6);
+
+            switch (choice) {
+
+                case 1: //add attribute
+                    this.addAttribute();
+                    break;
+                case 2: //delete attribute
+                    this.deleteAttribute();
+                    break;
+                case 3: //display attributes
+                    this.displayAttributes();
+                    break;
+                case 4: //display relationships
+                    this.displayRelationships();
+                    break;
+                case 5: //display all contents
+                    System.out.println(this);
+                    break;
+                case 6: //return to diagram menu
+                    on = false;
+                    this.diagram.menu();
+                    break;
+            }
+        }
     }
 
     @Override
@@ -133,8 +155,7 @@ public class Class {
 
         return "Class Name: " + this.getClassName() + "\n"
                 + "Attributes: \n" + this.attributes.toString() +
-                "\n\n" + "Relationships: \n" + relationships;
+                "\n" + "Relationships: \n" + relationships;
     }
-
 
 }
