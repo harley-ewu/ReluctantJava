@@ -80,8 +80,8 @@ public class Attribute {
      * @return : The Attribute object that was saved to the file.
      */
     public static Attribute fromJsonObject(JsonObject jsonObject){
-        String title = (String) jsonObject.get("name");
+        String name = (String) jsonObject.get("name");
         ArrayList<Attribute> attributes = (ArrayList<Attribute>) jsonObject.get("attributes");
-        return new Attribute(title, attributes);
+        return new Attribute(name, attributes);
     }
 }

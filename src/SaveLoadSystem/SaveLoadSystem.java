@@ -5,6 +5,7 @@ import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 
+import Class.Class;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,7 +27,7 @@ public class SaveLoadSystem {
      * @param filename: the name of the file to be saved
      * @param classList: the list of classes that need to be saved
      */
-    public void saveDefault(String filename, ArrayList<MockUmlClass> classList){
+    public void saveDefault(String filename, ArrayList<Class> classList){
 
         if(filename == null || filename.isEmpty()) {
             throw new IllegalArgumentException("The filename cannot be null or empty.");
@@ -53,7 +54,7 @@ public class SaveLoadSystem {
      * @param filename: the name of the file to be saved
      * @param classList: the list of classes to be saved
      */
-    public void saveCustom(String path, String filename, ArrayList<MockUmlClass> classList) {
+    public void saveCustom(String path, String filename, ArrayList<Class> classList) {
 
         if(path == null) {
             throw new IllegalArgumentException("The file path is null.");
@@ -84,13 +85,13 @@ public class SaveLoadSystem {
      * @param path: the path to the file that the user wishes to load
      * @return : An ArrayList containing the classes saved in the project file.
      */
-    public ArrayList<MockUmlClass> load(String path){
+    public ArrayList<Class> load(String path){
 
         if(path == null || path.isEmpty()){
             throw new IllegalArgumentException("The file path cannot be null or empty.");
         }
 
-        ArrayList<MockUmlClass> classList = new ArrayList<>();
+        ArrayList<Class> classList = new ArrayList<>();
         Path filepath = Paths.get(path);
 
         String jsonText = convertJsonTextToString(filepath);
@@ -107,9 +108,9 @@ public class SaveLoadSystem {
         return Paths.get(home).resolve(filename + ".json");
     }
 
-    private void fillJsonArray(ArrayList<MockUmlClass> classList, JsonArray array){
-        for (MockUmlClass mockClass : classList) {
-            array.add(mockClass.toJsonObject());
+    private void fillJsonArray(ArrayList<Class> classList, JsonArray array){
+        for (Class classes : classList) {
+            array.add(classes.toJsonObject());
         }
     }
 
@@ -147,10 +148,10 @@ public class SaveLoadSystem {
         return array;
     }
 
-    private void loadUmlClassesIntoArrayList(JsonArray jsonArray, ArrayList<MockUmlClass> classList){
+    private void loadUmlClassesIntoArrayList(JsonArray jsonArray, ArrayList<Class> classList){
         for(Object object : jsonArray){
             JsonObject jsonObject = (JsonObject) object;
-            MockUmlClass umlClass = MockUmlClass.fromJsonObject(jsonObject);
+            Class umlClass = Class.fromJsonObject(jsonObject);
             classList.add(umlClass);
         }
     }
