@@ -4,6 +4,7 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.jar.Attributes;
 
 public class Attribute {
@@ -28,21 +29,48 @@ public class Attribute {
     }
 
     public void addAttribute(final String name) {
-        // Initializing a new attribute and adding it to the list.
-        Attribute newAttribute = new Attribute(name);
-        attributes.add(newAttribute);
-    }
+        // Null check.
+        Objects.requireNonNull(name, "Name can't be null.");
 
-    public void deleteAttribute(final String name) {
-        // Loop to check each attribute in the list.
+        //Initializing a variable to check if the attribute is already in the list.
+        boolean found = false;
+
+        //Checking if the attribute is already contained within the list.
         for (Attribute attribute : attributes) {
             // Checking if the name of the attribute to be deleted matches with the attribute that was found.
             if (attribute.name.equals(name)) {
                 // Removing the attribute and leaving the loop.
-                attributes.remove(attribute);
+                found = true;
                 break;
             }
         }
+
+        //Adding if it is already not in the list.
+        if (!found) {
+            // Initializing a new attribute and adding it to the list.
+            Attribute newAttribute = new Attribute(name);
+            attributes.add(newAttribute);
+            System.out.println("Successfully added attribute " + name);
+        } else {
+            System.out.println("Attribute is already in the list!");
+        }
+    }
+
+    public void deleteAttribute(final String name) {
+        // Null check.
+        Objects.requireNonNull(name, "Name can't be null.");
+
+        // Loop to look for the missing attribute.
+        for (int i = 0; i < attributes.size(); i++) {
+            Attribute attribute = attributes.get(i);
+            if (attribute.name.equals(name)) {
+                attributes.remove(i);
+                System.out.println("Successfully deleted attribute " + name);
+                return;
+            }
+        }
+
+        System.out.println("Attribute was not found. No changes have occurred.");
     }
 
     public List<Attribute> getAttributes() {
