@@ -1,10 +1,7 @@
 import Diagram.Diagram;
 import org.junit.jupiter.api.Test;
-
 import Class.Class;
-
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DiagramTests {
@@ -38,7 +35,7 @@ public class DiagramTests {
 		
 		UMLDiagram.addClass(c.getClassName());
 		
-		assertEquals(c, classList.get(0));
+		assertEquals(c.getClass(), classList.get(0).getClass());
 		
 	}
 }

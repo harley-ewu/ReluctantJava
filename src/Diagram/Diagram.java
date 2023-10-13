@@ -248,7 +248,7 @@ public class Diagram {
          diagramString += this.classList.get(i).toString();
       }
 
-      return diagramString;
+      return "Diagram: " + diagramString;
    }
    
 
