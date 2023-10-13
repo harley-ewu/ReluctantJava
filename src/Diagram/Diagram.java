@@ -1,8 +1,11 @@
 package Diagram;
-import Class.Class;
-import CLI.CommandLineInterface;
 
-import java.util.*;
+import Class.Class;
+import Relationships.Relationship;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 //Class name subject to change for what we name the project
 public class Diagram {
@@ -12,7 +15,7 @@ public class Diagram {
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
-	  
+
       if (title == null) {
          throw new IllegalArgumentException("invalid param in Diagram constructor");
       }
@@ -181,9 +184,18 @@ public class Diagram {
       if (deletedClass == null) {
          throw new IllegalArgumentException("invalid param in removeClass method");
       }
+
+      int i = 0;
+      for (i = 0; i < classList.size(); i++){
+         if(classList.get(i) == deletedClass) {
+            break;
+         }
+      }
+      classList.remove(classList.get(i));
       
-      
-      
+      for(Class item : classList){
+         deleteRelationship(deletedClass, item);
+      }
    }
    
    /*
@@ -245,15 +257,83 @@ public class Diagram {
    
    public void addRelationship(final Class c1, final Class c2) {
       //update to prompt for additional info
-      //c1.addRelationship(c2);
-      //c2.addRelationship(c1);
+      Relationship.RelationshipType relationshipType = null;
+      int c1Cardinality = -2;
+      int c2Cardinality = -2;
+      Boolean owner = false;
+
+      int choice;
+      while(relationshipType == null) {
+         System.out.println("What Type of Relationship?\n" +
+                 "1. Association \n2. Aggregation \n3.Composition \n4.Generalization");
+         choice = Integer.parseInt(this.scanner.nextLine());
+         if(choice < 1 || choice > 4){
+            System.out.println("Please enter 1 through 4 as your choice");
+         }
+         else if(choice == 1){
+            relationshipType = Relationship.RelationshipType.Association;
+         }
+         else if(choice == 2) {
+            relationshipType = Relationship.RelationshipType.Aggregation;
+         }
+         else if (choice == 3){
+            relationshipType = Relationship.RelationshipType.Composition;
+         }
+         else{
+            relationshipType = Relationship.RelationshipType.Generalization;
+         }
+
+      }
+
+      while(c1Cardinality < -1){
+         System.out.println("What is "+c1.getClassName()+"'s Class Cardinality? (Enter -1 for * Cardinality)");
+         c1Cardinality = Integer.parseInt(this.scanner.nextLine());
+         if(c1Cardinality < -1){
+            System.out.println("Please enter a valid cardinality");
+         }
+      }
+
+      while(c2Cardinality < -1){
+         System.out.println("What is "+c2.getClassName()+"'s Class Cardinality? (Enter -1 for * Cardinality)");
+         c2Cardinality = Integer.parseInt(this.scanner.nextLine());
+         if(c2Cardinality < -1){
+            System.out.println("Please enter a valid cardinality");
+         }
+      }
+
+      choice = 0;
+      while(choice != 1 || choice != 2){
+         System.out.println("Which class is the owner?\n" +
+                 "1. "+c1.getClassName()+"\n2. "+c2.getClassName()+"\n");
+         choice = Integer.parseInt(this.scanner.nextLine());
+
+         if(choice != 1 || choice != 2){
+            System.out.println("Please enter 1 or 2 as your choice");
+         }
+         else if(choice == 1){
+            owner = true;
+         }
+         else {
+            owner = false;
+         }
+      }
+
+      c1.addRelationship(relationshipType, c2, c1Cardinality, c2Cardinality, owner);
+      c2.addRelationship(relationshipType, c1, c2Cardinality, c1Cardinality, !owner);
    }
    
    public void deleteRelationship(final Class c1, final Class c2){
-      //relationship passed in
-      //either add a get relationship method to Class class
-      //or iterate through c1's relationship list to find the relationship with c2
-      //and iterate through c2's relationship list to find the relationship with c1
+      Relationship c1Relationship = c1.getRelationship(c2);
+      Relationship c2Relationship = c2.getRelationship(c1);
+
+      if(c1Relationship != null)
+      {
+         c1.deleteRelationship(c1Relationship);
+      }
+      if(c2Relationship != null)
+      {
+         c2.deleteRelationship(c2Relationship);
+      }
       
    }
 

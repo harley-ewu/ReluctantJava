@@ -1,10 +1,10 @@
-//Nick Parkman 10/9/2023 @10:30am
+//Nick Parkman 10/12/2023 @10:30am
 package Relationships;
+
 import Class.Class;
-import java.util.*;
 
 public class Relationship {
-   public static enum RelationshipType {
+   public enum RelationshipType {
       Association,
       Aggregation,
       Composition,
@@ -13,13 +13,18 @@ public class Relationship {
    
    //variables of a given relationship
    private RelationshipType relationshipType;//The type of relationship this given relationship is between the given classes
-   private Class otherClassName; //the other class in the given relaitonship
+   private final Class otherClassName; //the other class in the given relationship
    private int thisClassCardinality; //thinking -1 in case of * amount of cardinality
    private int otherClassCardinality; //thinking -1 in case of * amount of cardinality
    private boolean owner; //meaning the "contains" side in Aggregation or Composition, or the class that others are Inheirting from in Generalization.
    
    
-   public Relationship(final RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
+   public Relationship(final RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality,
+                       final int otherClassCardinality, final boolean owner) throws IllegalArgumentException {
+      if(relationshipType == null || otherClassName == null || thisClassCardinality < -1 || otherClassCardinality < -1) {
+         throw new IllegalArgumentException("Invalid Arguments");
+      }
+
       this.relationshipType = relationshipType;
       this.otherClassName = otherClassName;
       this.thisClassCardinality = thisClassCardinality;
@@ -35,7 +40,7 @@ public class Relationship {
       return this.owner;
    }
    
-   public void setIsOwner(final boolean isOwner) {
+   public void setIsOwner(final boolean isOwner)  {
       this.owner = isOwner;
    }
    
@@ -43,7 +48,11 @@ public class Relationship {
       return this.thisClassCardinality;
    }
    
-   public void setThisClassCardinality(final int cardinality) {
+   public void setThisClassCardinality(final int cardinality) throws IllegalArgumentException {
+      if(cardinality < -1) {
+         throw new IllegalArgumentException("* cardinality == -1, cardinality cannot be negative");
+      }
+
       this.thisClassCardinality = cardinality;
    }
    
@@ -51,7 +60,11 @@ public class Relationship {
       return this.otherClassCardinality;
    }
    
-   public void setOtherClassCardinality(final int cardinality) {
+   public void setOtherClassCardinality(final int cardinality) throws IllegalArgumentException {
+      if(cardinality < -1) {
+         throw new IllegalArgumentException("* cardinality == -1, cardinality cannot be negative");
+      }
+
       this.otherClassCardinality = cardinality;
    }
    
@@ -59,7 +72,11 @@ public class Relationship {
       return this.relationshipType;
    }
    
-   public void setRelationshipType(final RelationshipType relationshipType) {
+   public void setRelationshipType(final RelationshipType relationshipType) throws IllegalArgumentException {
+      if(relationshipType == null) {
+         throw new IllegalArgumentException("relationship type cannot be null!");
+      }
+
       this.relationshipType = relationshipType;
    }
    
@@ -69,11 +86,33 @@ public class Relationship {
    
    //toString method
    @Override
-   public String toString()
-   {
-      return "Class has a "+this.relationshipType+" relationship with "+this.otherClassName+"\n"
-            +"Owner: "+this.owner+"\n"
-            +"This Class Cardinality: "+this.thisClassCardinality+"\n"
-            +this.otherClassName+" Class Cardinality: "+this.otherClassCardinality+"\n";
+   public String toString() {
+      String str;
+      if(this.thisClassCardinality == -1 && this.otherClassCardinality == -1) {
+         str = "Class has a " + this.relationshipType + " relationship with " + this.otherClassName.getClassName() + "\n"
+                 + "Owner: " + this.owner + "\n"
+                 + "This Class Cardinality: *\n"
+                 + this.otherClassName.getClassName() + " Class Cardinality: *\n";
+      }
+      else if(this.thisClassCardinality == -1){
+         str = "Class has a " + this.relationshipType + " relationship with " + this.otherClassName.getClassName() + "\n"
+                 + "Owner: " + this.owner + "\n"
+                 + "This Class Cardinality: *\n"
+                 + this.otherClassName.getClassName() + " Class Cardinality: " + this.otherClassCardinality + "\n";
+      }
+      else if(this.otherClassCardinality == -1){
+         str = "Class has a " + this.relationshipType + " relationship with " + this.otherClassName.getClassName() + "\n"
+                 + "Owner: " + this.owner + "\n"
+                 + "This Class Cardinality: " + this.thisClassCardinality + "\n"
+                 + this.otherClassName.getClassName() + " Class Cardinality: *\n";
+      }
+      else {
+         str = "Class has a " + this.relationshipType + " relationship with " + this.otherClassName.getClassName() + "\n"
+                 + "Owner: " + this.owner + "\n"
+                 + "This Class Cardinality: " + this.thisClassCardinality + "\n"
+                 + this.otherClassName.getClassName() + " Class Cardinality: " + this.otherClassCardinality + "\n";
+      }
+
+      return str;
    }
 }
