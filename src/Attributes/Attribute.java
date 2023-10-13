@@ -1,6 +1,10 @@
 package Attributes;
+
+import com.github.cliftonlabs.json_simple.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes;
 
 public class Attribute {
     // List of attributes for the class.
@@ -11,6 +15,16 @@ public class Attribute {
     public Attribute() {}
     public Attribute(final String name) {
         this.name = name;
+    }
+
+    /**
+     * Description: Constructor used to create Attribute objects from a load file.
+     * @param name: the name of the attribute.
+     * @param attributes: the list of attributes.
+     */
+    public Attribute(final String name, final List<Attribute> attributes){
+        this.name = name;
+        this.attributes = attributes;
     }
 
     public void addAttribute(final String name) {
@@ -47,5 +61,27 @@ public class Attribute {
             builtString.setLength(builtString.length() - 1);
         }
         return builtString.toString();
+    }
+
+    /**
+     * Description: Converts an Attribute object into a JsonObject for saving.
+     * @return : returns a JsonObject of the Attribute object.
+     */
+    public JsonObject toJsonObject(){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put("name", name);
+        jsonObject.put("attributes", attributes);
+        return jsonObject;
+    }
+
+    /**
+     * Description: Converts a JsonObject from a loaded file back into an Attribute object.
+     * @param jsonObject: the JsonObject read from the file.
+     * @return : The Attribute object that was saved to the file.
+     */
+    public static Attribute fromJsonObject(JsonObject jsonObject){
+        String name = (String) jsonObject.get("name");
+        ArrayList<Attribute> attributes = (ArrayList<Attribute>) jsonObject.get("attributes");
+        return new Attribute(name, attributes);
     }
 }
