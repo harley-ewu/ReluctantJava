@@ -19,7 +19,7 @@ public class Class {
     private Diagram diagram;
     public Class(final String className, final Diagram diagram) {
         if (className == null) {
-            throw new NullPointerException("class name is null");
+            throw new NullPointerException("Class name is null.");
         }
         this.attributes = new Attribute();
         this.className = className;
@@ -33,14 +33,14 @@ public class Class {
     //setters
     public void setClassName(String newClassName) {
         if (newClassName == null) {
-            throw new NullPointerException("Class name paramete is null.");
+            throw new NullPointerException("Class name parameter is null.");
         }
 
         this.className = newClassName;
     }
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
-    //pulled from the relationship class
+    //TODO: To be moved to diagram class
     public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
         Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
 
@@ -53,7 +53,7 @@ public class Class {
         }
         relationships.add(newRelationship);
     }
-    //pulled from the relationship class
+    //TODO: To be moved to diagram class
     public void deleteRelationship(Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
@@ -65,70 +65,81 @@ public class Class {
             System.out.println("This relationship is not assigned to this class.");
         }
     }
-    public void initAttributes() {
-        //asks the user if they want to add an attribute
-        int cont = -99, choice = -99;
-        /*
-            * prompts the user with a menu allowing them to add an attribute
-            * this code will loop infinitely until the user decides that they do not want to add anymore attributes
-         */
-        while (cont < 0) {
-            do {
-                System.out.println("Do you want to add an attribute?");
-                System.out.println("1. Yes\n2. No");
-                choice = Integer.parseInt(this.scanner.nextLine());
-            } while (choice < 0 || choice > 2);
-            switch (choice) {
-                case 1:
-                    String attributeName;
-                    System.out.print("Enter a name for an attribute: ");
-                    attributeName = this.scanner.nextLine();
-                    this.attributes.addAttribute(attributeName);
-                    System.out.println(this.attributes.toString());
-                    break;
-                case 2:
-                    cont = 1;
-                default:
-                    break;
-            }
+
+    public void addAttribute() {
+        String newAttribute;
+        System.out.print("\nPlease enter a name for the attribute: ");
+        newAttribute = this.scanner.nextLine();
+
+        if (newAttribute.isEmpty()) {
+            System.out.println("\nNothing was typed, please enter a name for the attribute.");
+
+        }else {
+            this.attributes.addAttribute(newAttribute); //will eventually contain messages for the user
         }
+    }
+
+    public void deleteAttribute() {
+        String attribute;
+        System.out.print("\nPlease enter an attribute to remove: ");
+        attribute = this.scanner.nextLine();
+
+        if (attribute.isEmpty()) {
+            System.out.println("\nNothing was typed, please enter a name for the attribute that you want to remove.");
+        } else {
+            this.attributes.deleteAttribute(attribute); //this will eventually include messages for the user
+
+        }
+    }
+
+    public String displayAttributes() {
+       return "Attributes in the " + this.getClassName() + " class: \n" + this.attributes.toString();
+
+    }
+
+    public String displayRelationships() {
+        StringBuilder relationships = new StringBuilder();
+
+        for (Relationship relationship: this.relationships) {
+            relationships.append(relationship.toString()).append("\n");
+        }
+        return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
+
     }
 
     public void subMenu() {
         boolean on = true;
-
+        //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
         while (on) {
             int choice = -99;
             do {
-                System.out.println("Edit menu for " + this.getClassName() + " class\n\n");
-                System.out.println("1. Add attribute\n2. Delete attribute\n3. Add relationship\n4. Delete relationship \n 5. Go back");
+                System.out.println("\nEdit menu for the " + this.getClassName() + " class\n");
+                System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Display attributes" +
+                        "\n4.Display relationships\n5.Display all contents\n6.Return to Diagram Menu");
                 choice = Integer.parseInt(scanner.nextLine());
 
-            } while (choice < 0 || choice > 5);
+            } while (choice < 0 || choice > 6);
 
             switch (choice) {
 
                 case 1: //add attribute
-                    String newAttribute;
-                    System.out.print("\nPlease enter a name for the attribute: ");
-                    newAttribute = this.scanner.nextLine();
-                    this.attributes.addAttribute(newAttribute);
-                    System.out.println("The attribute, " + newAttribute + ", was successfully added to "
-                            + this.getClassName() + " class");
+                    this.addAttribute();
                     break;
                 case 2: //delete attribute
-                    String attribute;
-                    System.out.print("\nPlease enter an attribute to remove: ");
-                    attribute = this.scanner.nextLine();
-                    this.attributes.deleteAttribute(attribute);
+                    this.deleteAttribute();
                     break;
-                case 3: //add relationship
+                case 3: //display attributes
+                    this.displayAttributes();
                     break;
-                case 4: //remove relationship
+                case 4: //display relationships
+                    this.displayRelationships();
                     break;
-                case 5: //go back
+                case 5: //display all contents
+                    System.out.println(this);
+                    break;
+                case 6: //return to diagram menu
                     on = false;
-                    d
+                    this.diagram.menu();
                     break;
             }
         }
@@ -144,8 +155,7 @@ public class Class {
 
         return "Class Name: " + this.getClassName() + "\n"
                 + "Attributes: \n" + this.attributes.toString() +
-                "\n\n" + "Relationships: \n" + relationships;
+                "\n" + "Relationships: \n" + relationships;
     }
-
 
 }
