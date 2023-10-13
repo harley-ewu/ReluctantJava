@@ -1,5 +1,4 @@
 package Diagram;
-import Class.*;
 import Class.Class;
 
 import java.util.*;
@@ -11,20 +10,15 @@ public class Diagram {
    private List<Class> classList = new ArrayList<Class>();
    private Scanner scanner = new Scanner(System.in);
    
-   public Diagram(final String title, final List<Class> classList) {
+   public Diagram(final String title) {
 	  
       if (title == null) {
          throw new IllegalArgumentException("invalid param in Diagram constructor");
       }
-      //if diagram comes in as null/empty, should we initialize and empty arraylist?
+      //if diagram comes in as null/empty, should we initialize an empty arraylist?
       this.title = title;
-      
-      if (classList == null) {
-    	  this.classList = new ArrayList<>();
-      }
-      else {
-    	  this.classList = classList;
-      }
+    	this.classList = new ArrayList<>();
+
    }
    
    /*
@@ -53,76 +47,77 @@ public class Diagram {
       int cont = -99, choice = -99;
       while (cont < 0) {
          do {
-         System.out.println("Enter a number:\n\n1 - Add Class\n2 - Delete Class\n3 - Rename Class\n4 - Edit Class\n5 - View Class\n6 - View Diagram\n7 - Exit");
-         choice = Integer.parseInt(this.scanner.nextLine());
-         }while(choice < 0 && choice > 6);
-         String className;
-         switch (choice) {
-            //Add Class - name needed
-            
-            case 1:
-               System.out.println("Enter a class name to add: ");
-               className = this.scanner.nextLine();
-               this.addClass(className);
-               break;
+            System.out.println("UML Diagram Editor Menu");
+            System.out.println("Enter a number:\n\n1 - Add Class\n2 - Delete Class\n3 - Rename Class\n4 - Edit Class\n5 - View Class\n6 - View Diagram\n7 - Exit");
+            choice = Integer.parseInt(this.scanner.nextLine());
+            }while(choice < 0 && choice > 6);
+            String className;
+            switch (choice) {
+               //Add Class - name needed
                
-            //Delete Class - name needed
-            case 2:
-               System.out.println("Enter a class name to delete: ");
-               className = this.scanner.nextLine();
-               Class c = findSingleClass(className);
-               this.deleteClass(c);
-               break;
-            
-            //Rename Class - current and new name needed
-            case 3:
-               String oldClassName, newClassName;
-               System.out.println("Enter the original name of the class.");
-               oldClassName = this.scanner.nextLine();
-               if(findSingleClass(oldClassName) != null){
-                  System.out.println("Class exists. Enter new name for the class.");
-                  newClassName = this.scanner.nextLine();
-                  this.renameClass(oldClassName, newClassName);
-               }
-               else {
-                  System.out.println("Class does not exist.");
-               }
-               break;
+               case 1:
+                  System.out.println("Enter a class name to add: ");
+                  className = this.scanner.nextLine();
+                  this.addClass(className);
+                  break;
+                  
+               //Delete Class - name needed
+               case 2:
+                  System.out.println("Enter a class name to delete: ");
+                  className = this.scanner.nextLine();
+                  Class c = findSingleClass(className);
+                  this.deleteClass(c);
+                  break;
                
-            //Edit Class - name needed
-            case 4:
-               System.out.println("Enter name of class to edit: ");
-               className = this.scanner.nextLine();
-               if(findSingleClass(className) == null){
-                  System.out.println("Class does not exist.");
-               }
-               for (int i = 0; i < this.classList.size(); i++){
-                  if(this.classList.get(i).getClassName().equals(className)) {
-                     this.classList.get(i).subMenu();
+               //Rename Class - current and new name needed
+               case 3:
+                  String oldClassName, newClassName;
+                  System.out.println("Enter the original name of the class.");
+                  oldClassName = this.scanner.nextLine();
+                  if(findSingleClass(oldClassName) != null){
+                     System.out.println("Class exists. Enter new name for the class.");
+                     newClassName = this.scanner.nextLine();
+                     this.renameClass(oldClassName, newClassName);
                   }
-               }
-               break;
+                  else {
+                     System.out.println("Class does not exist.");
+                  }
+                  break;
+                  
+               //Edit Class - name needed
+               case 4:
+                  System.out.println("Enter name of class to edit: ");
+                  className = this.scanner.nextLine();
+                  if(findSingleClass(className) == null){
+                     System.out.println("Class does not exist.");
+                  }
+                  for (int i = 0; i < this.classList.size(); i++){
+                     if(this.classList.get(i).getClassName().equals(className)) {
+                        this.classList.get(i).subMenu();
+                     }
+                  }
+                  break;
+                  
+               //View class - name needed
+               case 5:
+                  System.out.println("Enter name of class to view: ");
+                  className = this.scanner.nextLine();
+                  c = findSingleClass(className);
+                  if(c != null) {
+                     printSingleClass(c);
+                  }
+                  break;
+                  
+               //View Diagram
+               case 6:
+                  System.out.println(this.toString());
+                  break;
+               case 7: 
+                  cont = 1;
+               default:
+                  break;
                
-            //View class - name needed
-            case 5:
-               System.out.println("Enter name of class to view: ");
-               className = this.scanner.nextLine();
-               c = findSingleClass(className);
-               if(c != null) {
-                  printSingleClass(c);
-               }
-               break;
-               
-            //View Diagram
-            case 6:
-               System.out.println(this.classList);
-               break;
-            case 7: 
-               cont = 1;
-            default:
-               break;
-            
-         }
+            }
       }
       
    }
@@ -140,7 +135,7 @@ public class Diagram {
             
          }
       }
-      this.classList.add(new Class(className));
+      this.classList.add(new Class(className, this));
    }
    
    /*
