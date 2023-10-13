@@ -36,6 +36,9 @@ public class Attribute {
             // Initializing a new attribute and adding it to the list.
             Attribute newAttribute = new Attribute(name);
             attributes.add(newAttribute);
+            System.out.println("Successfully added attribute " + name);
+        } else {
+            System.out.println("Attribute is already in the list!");
         }
     }
 
@@ -48,6 +51,7 @@ public class Attribute {
             Attribute attribute = attributes.get(i);
             if (attribute.name.equals(name)) {
                 attributes.remove(i);
+                System.out.println("Successfully deleted attribute " + name);
                 return;
             }
         }
