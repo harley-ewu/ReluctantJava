@@ -31,7 +31,7 @@ public class Class {
 
     }
     //setters
-    public void setClassName(String newClassName) {
+    public void setClassName(final String newClassName) {
         if (newClassName == null) {
             throw new NullPointerException("Class name parameter is null.");
         }
@@ -54,7 +54,7 @@ public class Class {
         relationships.add(newRelationship);
     }
     //TODO: To be moved to diagram class
-    public void deleteRelationship(Relationship relationship) {
+    public void deleteRelationship(final Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
         }
