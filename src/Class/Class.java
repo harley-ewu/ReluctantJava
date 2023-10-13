@@ -1,10 +1,12 @@
 package Class;
+
 import Attributes.Attribute;
+import Diagram.Diagram;
 import Relationships.Relationship;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import Diagram.Diagram;
 public class Class {
 
     //TODO: write toString representation for relationships
@@ -64,6 +66,18 @@ public class Class {
         } else {
             System.out.println("This relationship is not assigned to this class.");
         }
+    }
+
+    public Relationship getRelationship(final Class otherClass){
+        Relationship relationship = null;
+        for(int i = 0; i < relationships.size(); i++){
+            if(relationships.get(i).getOtherClassName() == otherClass){
+                relationship = relationships.get(i);
+                break;
+            }
+        }
+
+        return relationship;
     }
 
     public void addAttribute() {
