@@ -144,6 +144,28 @@ public class Diagram {
             
             //Add relationship
             case 2:
+               Class c1 = null, c2 = null;
+
+               while(c1 == null) {
+                  System.out.println("Enter first class for relationship");
+                  String className1 = this.scanner.nextLine();
+                  c1 = findSingleClass(className1);
+
+                  if(c1 == null){
+                     System.out.println("Please enter the name of an existing class!");
+                  }
+               }
+               while(c2 == null){
+                  System.out.println("Enter first class for relationship");
+                  String className2 = this.scanner.nextLine();
+                  c2 = findSingleClass(className2);
+
+                  if(c2 == null){
+                     System.out.println("Please enter the name of an existing class!");
+                  }
+               }
+
+               addRelationship(c1, c2);
                break;
 
             case 3:
