@@ -18,8 +18,8 @@ public class Class {
 
 
     private Diagram diagram;
-    public Class(final String className, final Diagram diagram) {
-        if (className == null || diagram == null) {
+    public Class(final String className) {
+        if (className == null) {
             throw new NullPointerException("Class name is null.");
         }
         this.attributes = new Attribute();
@@ -241,7 +241,6 @@ public class Class {
                     break;
                 case 6: //return to diagram menu
                     on = false;
-                    this.diagram.menu();
                     break;
                 default:
                     System.out.println("Please enter a valid option");
