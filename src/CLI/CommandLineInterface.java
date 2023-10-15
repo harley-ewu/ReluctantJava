@@ -1,4 +1,4 @@
-package CLI;
+package src.CLI;
 
 import java.util.Scanner;
 
@@ -20,7 +20,7 @@ public class CommandLineInterface {
     * */
 
 
-    public static void startCLI(boolean shouldTerminate){
+    private static void startCLI(boolean shouldTerminate){
 
         while (!shouldTerminate) {
             int userChoice = getUserChoice();
