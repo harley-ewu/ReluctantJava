@@ -1,5 +1,5 @@
 package Class;
-import Attributes.*;
+import Attributes.Attribute;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
 import java.util.ArrayList;

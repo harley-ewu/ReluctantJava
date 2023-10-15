@@ -1,6 +1,7 @@
 //Nick Parkman 10/9/2023 @10:30am
 package Relationships;
-import java.util.*;
+import com.github.cliftonlabs.json_simple.JsonObject;
+
 
 public class Relationship {
    public static enum RelationshipType {
@@ -74,5 +75,33 @@ public class Relationship {
             +"Owner: "+this.owner+"\n"
             +"This Class Cardinality: "+this.thisClassCardinality+"\n"
             +this.otherClassName+" Class Cardinality: "+this.otherClassCardinality+"\n";
+   }
+
+   /**
+    * Description: Converts a Relationship object into a JsonObject for saving.
+    * @return : returns a JsonObject of the Relationship object.
+    */
+   public JsonObject toJsonObject(){
+      JsonObject jsonObject = new JsonObject();
+      jsonObject.put("relationshipType", relationshipType);
+      jsonObject.put("otherClassName", otherClassName);
+      jsonObject.put("thisClassCardinality", thisClassCardinality);
+      jsonObject.put("otherClassCardinality", otherClassCardinality);
+      jsonObject.put("owner", owner);
+      return jsonObject;
+   }
+
+   /**
+    * Description: Converts a JsonObject from a loaded file back into a Relationship object.
+    * @param jsonObject: the JsonObject read from the file.
+    * @return : The Relationship object that was saved to the file.
+    */
+   public static Relationship fromJsonObject(JsonObject jsonObject){
+      RelationshipType relationshipType = (RelationshipType) jsonObject.get("relationshipType");
+      String otherClassName = (String) jsonObject.get("otherClassName");
+      int thisClassCardinality = (int) jsonObject.get("thisClassCardinality");
+      int otherClassCardinality = (int) jsonObject.get("otherClassCardinality");
+      boolean owner = (boolean) jsonObject.get("owner");
+      return new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
    }
 }

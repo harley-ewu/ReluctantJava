@@ -1,6 +1,8 @@
+package tests;
+
+import Class.Class;
 import Attributes.Attribute;
 import SaveLoadSystem.SaveLoadSystem;
-import Class.Class;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
