@@ -17,7 +17,7 @@ public class Diagram {
    public Diagram(final String title) {
 
       if (title == null) {
-         throw new IllegalArgumentException("invalid param in Diagram constructor");
+         throw new NullPointerException("invalid param in Diagram constructor");
       }
       //if diagram comes in as null/empty, should we initialize an empty arraylist?
       this.title = title;
@@ -55,70 +55,32 @@ public class Diagram {
             System.out.println("Enter a number:\n\n1 - Add Class\n2 - Delete Class\n3 - Rename Class\n4 - Edit Class\n5 - View Class\n6 - View Diagram\n7 - Exit");
             choice = Integer.parseInt(this.scanner.nextLine());
             }while(choice < 0 && choice > 7);
-            String className;
             switch (choice) {
                //Add Class - name needed
-               
                case 1:
-                  System.out.println("Enter a class name to add: ");
-                  className = this.scanner.nextLine();
-                  Class newClass = this.addClass(className);
-                  this.classMenu(newClass);
+                  this.addClass();
                   break;
-                  
                //Delete Class - name needed
                case 2:
-                  System.out.println("Enter a class name to delete: ");
-                  className = this.scanner.nextLine();
-                  Class c = findSingleClass(className);
-                  this.deleteClass(c);
+                  this.deleteClass();
                   break;
-               
                //Rename Class - current and new name needed
                case 3:
-                  String oldClassName, newClassName;
-                  System.out.println("Enter the original name of the class.");
-                  oldClassName = this.scanner.nextLine();
-                  if(findSingleClass(oldClassName) != null){
-                     System.out.println("Class exists. Enter new name for the class.");
-                     newClassName = this.scanner.nextLine();
-                     this.renameClass(oldClassName, newClassName);
-                  }
-                  else {
-                     System.out.println("Class does not exist.");
-                  }
+                  this.renameClass();
                   break;
-                  
                //Edit Class - name needed
                case 4:
-                  System.out.println("Enter name of class to edit: ");
-                  className = this.scanner.nextLine();
-                  if(findSingleClass(className) == null){
-                     System.out.println("Class does not exist.");
-                  }
-                  for (int i = 0; i < this.classList.size(); i++){
-                     if(this.classList.get(i).getClassName().equals(className)) {
-                        this.classList.get(i).subMenu();
-                     }
-                  }
+                  this.editClass();
                   break;
-                  
                //View class - name needed
                case 5:
-                  System.out.println("Enter name of class to view: ");
-                  className = this.scanner.nextLine();
-                  c = findSingleClass(className);
-                  if(c != null) {
-                     printSingleClass(c);
-                  }
+                  this.printSingleClass();
                   break;
-                  
                //View Diagram
                case 6:
-                  System.out.println(this.toString());
+                  System.out.println(this);
                   break;
                case 7:
-                  CLI.CommandLineInterface.startCLI(false);
                   cont = 1;
                default:
                   break;
@@ -127,7 +89,9 @@ public class Diagram {
       }
       
    }
-
+   /*
+    * sub menu for when class is first added, user is immediately prompted to add attributes/relationships
+    */
    public void classMenu(final Class currentClass) {
       int cont = -99, choice = -99;
       while (cont < 0) {
@@ -141,33 +105,10 @@ public class Diagram {
             case 1:
                currentClass.addAttribute();
                break;
-            
             //Add relationship
             case 2:
-               Class c1 = null, c2 = null;
-
-               while(c1 == null) {
-                  System.out.println("Enter first class for relationship");
-                  String className1 = this.scanner.nextLine();
-                  c1 = findSingleClass(className1);
-
-                  if(c1 == null){
-                     System.out.println("Please enter the name of an existing class!");
-                  }
-               }
-               while(c2 == null){
-                  System.out.println("Enter first class for relationship");
-                  String className2 = this.scanner.nextLine();
-                  c2 = findSingleClass(className2);
-
-                  if(c2 == null){
-                     System.out.println("Please enter the name of an existing class!");
-                  }
-               }
-
-               addRelationship(c1, c2);
+               this.addRelationship();
                break;
-
             case 3:
                cont = 1;
             default:
@@ -179,30 +120,33 @@ public class Diagram {
    /*
    Adds a class to the classList
    */
-   public Class addClass(final String className){
-      if (className == null) {
-         throw new IllegalArgumentException("invalid param in addClass method");
-      }
+   public void addClass(){
+      System.out.println("Enter a class name to add: ");
+      String className = this.scanner.nextLine();
+      
       for(int i = 0; i < this.classList.size(); i++) {
          if (className == this.classList.get(i).getClassName()){
             System.out.println("Class name already exists.");
-            
+            return;
          }
       }
+
       Class c = new Class(className, this);
       this.classList.add(c);
-      return c;
+      this.classMenu(c);
    }
    
    /*
-   Deletes a class from the classList
-   TODO: Need to check for relationships with other classes and sever them before deleting class
+   Deletes a class from the classList and also severs existing relationships
    - Iterate through the classList
    - For each class, iterate through relationship list
    - If relationship list contains relationship.otherClassName == deletedNameName
    - call current class that the loop is on, .deleterelationship(deletedClass)
    */
-   public void deleteClass(final Class deletedClass){
+   public void deleteClass(){
+      System.out.println("Enter a class name to delete: ");
+      String className = this.scanner.nextLine();
+      Class deletedClass = findSingleClass(className);
       if (deletedClass == null) {
          throw new IllegalArgumentException("invalid param in removeClass method");
       }
@@ -216,25 +160,58 @@ public class Diagram {
       classList.remove(classList.get(i));
       
       for(Class item : classList){
-         deleteRelationship(deletedClass, item);
+         Relationship c1Relationship = deletedClass.getRelationship(item);
+         Relationship c2Relationship = item.getRelationship(deletedClass);
+
+         if(c1Relationship != null)
+         {
+            deletedClass.deleteRelationship(c1Relationship);
+         }
+         if(c2Relationship != null)
+         {
+            item.deleteRelationship(c2Relationship);
+         }
       }
    }
    
    /*
    Renames a class in the classList
    */
-   public void renameClass(final String oldClassName, final String newClassName) {
-      if (oldClassName == null || newClassName == null) {
-         throw new IllegalArgumentException("invalid param in renameClass method");
+   public void renameClass() {
+      String oldClassName, newClassName;
+      System.out.println("Enter the original name of the class.");
+      oldClassName = this.scanner.nextLine();
+      if(findSingleClass(oldClassName) != null){
+         System.out.println("Class exists. Enter new name for the class.");
+         newClassName = this.scanner.nextLine();
+         Class c = findSingleClass(oldClassName);
+         if (c != null){
+            c.setClassName(newClassName);
+         }
       }
-      
-      Class c = findSingleClass(oldClassName);
-      if (c != null){
-         c.setClassName(newClassName);
+      else {
+         System.out.println("Class does not exist.");
       }
       
    }
    
+
+   /*
+    * Checks to see if class exists then calls subMenu method from Class class
+    */
+   public void editClass(){
+      System.out.println("Enter name of class to edit: ");
+      String className = this.scanner.nextLine();
+      if(findSingleClass(className) == null){
+         System.out.println("Class does not exist.");
+      }
+      for (int i = 0; i < this.classList.size(); i++){
+         if(this.classList.get(i).getClassName().equals(className)) {
+            this.classList.get(i).subMenu();
+         }
+      }
+   }
+
    /*
    Lists out all of the classes present in the classList
    */
@@ -269,15 +246,26 @@ public class Diagram {
    /*
    Prints out all information about a given class
    */
-   public void printSingleClass(final Class c) {
-      if (c == null) {
-         throw new IllegalArgumentException("class is null");
+   public void printSingleClass() {
+      System.out.println("Enter name of class to view: ");
+      String className = this.scanner.nextLine();
+      Class c = findSingleClass(className);
+      if(c != null) {
+         System.out.println(c.toString());
       }
-      
-      System.out.println(c.toString());
    }
-   
-   public void addRelationship(final Class c1, final Class c2) {
+   /*
+    * Prompts user for both class names, then prompts for all relevant relationship information 
+    * and builds relationships between the classes, then adds it to either of their relationship lists
+    */
+   public void addRelationship() {
+      System.out.println("What is the name of the owner class?");
+      String ownerString = this.scanner.nextLine();
+      System.out.println("What is the name of the other class?");
+      String otherString = this.scanner.nextLine();
+      Class c1 = findSingleClass(ownerString);
+      Class c2 = findSingleClass(otherString);
+
       //update to prompt for additional info
       Relationship.RelationshipType relationshipType = null;
       int c1Cardinality = -2;
@@ -344,7 +332,19 @@ public class Diagram {
       c2.addRelationship(relationshipType, c1, c2Cardinality, c1Cardinality, !owner);
    }
    
-   public void deleteRelationship(final Class c1, final Class c2){
+
+      /*
+    * Finds out both classes beloning to the relationship and deletes the relationship from both of the classes corresponding lists
+    */
+   public void deleteRelationship(){
+      System.out.println("What is the name of the owner class?");
+      String ownerString = this.scanner.nextLine();
+      System.out.println("Whats is the name of the other class?");
+      String otherString = this.scanner.nextLine();
+
+      Class c1 = findSingleClass(ownerString);
+      Class c2 = findSingleClass(otherString);
+
       Relationship c1Relationship = c1.getRelationship(c2);
       Relationship c2Relationship = c2.getRelationship(c1);
 
