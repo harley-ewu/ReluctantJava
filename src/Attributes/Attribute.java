@@ -73,6 +73,23 @@ public class Attribute {
         System.out.println("Attribute was not found. No changes have occurred.");
     }
 
+    public void renameAttribute(final String name, final String newName) {
+        Objects.requireNonNull(name, "Name can't be null.");
+        Objects.requireNonNull(newName, "New name can't be null.");
+
+        //Checking if the attribute is already contained within the list.
+        for (int i = 0; i < attributes.size(); i++) {
+            Attribute attribute = attributes.get(i);
+            if (attribute.name.equals(name)) {
+                Attribute newAttribute = new Attribute(newName);
+                attributes.set(i, newAttribute);
+                System.out.println("Successfully changed " + name + " to " + newName);
+                return;
+            }
+        }
+        System.out.println("Attribute was not contained in the list.");
+    }
+
     public List<Attribute> getAttributes() {
         return new ArrayList<>(this.attributes);
     }
