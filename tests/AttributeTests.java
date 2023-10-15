@@ -58,4 +58,18 @@ public class AttributeTests {
         String check = "Name\nAge";
         assertEquals(check, attribute.toString());
     }
+
+    @Test
+    void renameAttributeTest() {
+        Attribute attribute = new Attribute();
+        attribute.addAttribute("Name");
+        attribute.addAttribute("Birthday");
+        attribute.addAttribute("Age");
+
+        assertEquals("Name\nBirthday\nAge", attribute.toString());
+
+        attribute.renameAttribute("Birthday", "Weight");
+        System.out.println(attribute.toString());
+        assertEquals("Name\nWeight\nAge", attribute.toString());
+    }
 }

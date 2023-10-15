@@ -16,12 +16,15 @@ public class Class {
     private Scanner scanner = new Scanner(System.in);
     private List<Relationship> relationships = new ArrayList();
 
+
+    private Diagram diagram;
     public Class(final String className) {
         if (className == null) {
             throw new NullPointerException("Class name is null.");
         }
         this.attributes = new Attribute();
         this.className = className;
+        this.diagram = diagram;
     }
 
     /**
@@ -180,7 +183,28 @@ public class Class {
      * @return
      */
     public String displayAttributes() {
-       return "Attributes in the " + this.getClassName() + " class:\n" + this.attributes.toString();
+        if (this.attributes.getAttributes().isEmpty()) {
+            return "There are no attributes in this class";
+        } else {
+            return "Attributes in the " + this.getClassName() + " class:\n" + this.attributes.toString();
+        }
+
+    }
+
+    /**
+     * description: menu option prompting the user to rename an attribute. If the attribute exists in the list,
+     * the attribute will be successfully named, if not, the user will be prompted so.
+     */
+
+    public void renameAttribute() {
+        String attribute;
+        String newName;
+        System.out.println("Please enter an attribute to rename: ");
+        attribute = this.scanner.nextLine();
+        System.out.println("Please enter a new name for the attribute: ");
+        newName = this.scanner.nextLine();
+
+        this.attributes.renameAttribute(attribute, newName);
 
     }
 
@@ -188,15 +212,19 @@ public class Class {
      * description: returns a string of all relationships attached to the class
      */
     public String displayRelationships() {
-        StringBuilder relationships = new StringBuilder();
+        if (this.relationships.isEmpty()) {
+            return "There are no relationships assigned to this class.";
+        } else {
+            StringBuilder relationships = new StringBuilder();
 
-        for (Relationship relationship: this.relationships) {
-            relationships.append(relationship.toString()).append("\n");
+            for (Relationship relationship: this.relationships) {
+                relationships.append(relationship.toString()).append("\n");
+            }
+            return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
         }
-        return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
 
     }
-
+    
     /**
      * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
      * the user can use this menu to edit attributes and relationships (wip)
@@ -208,8 +236,8 @@ public class Class {
             int choice = -99;
             do {
                 System.out.println("\nEdit menu for the " + this.getClassName() + " class\n");
-                System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Display attributes" +
-                        "\n4.Display relationships\n5.Display all contents\n6.Return to Diagram Menu");
+                System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Rename Attribute" +
+                        "\n4.Display attributes\n5.Display relationships\n6.Display all contents\n7.Return to Diagram Menu");
                 String op = scanner.nextLine();
                 if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
                     choice = Integer.parseInt(op);
@@ -217,8 +245,7 @@ public class Class {
                     choice = -99;
                 }
 
-
-            } while (choice < 0 || choice > 6);
+            } while (choice < 1 || choice > 7);
 
             switch (choice) {
 
@@ -228,21 +255,23 @@ public class Class {
                 case 2: //delete attribute
                     this.deleteAttribute();
                     break;
-                case 3: //display attributes
+                case 3: //rename attribute
+                    this.renameAttribute();
+                    break;
+                case 4: //display attributes
                     System.out.println(this.displayAttributes());
                     break;
-                case 4: //display relationships
+                case 5: //display relationships
                     System.out.println(this.displayRelationships());
                     break;
-                case 5: //display all contents
+                case 6: //display all contents
                     System.out.println(this);
                     break;
-                case 6: //return to diagram menu
+                case 7: //return to diagram menu
                     on = false;
-                    //this.diagram.menu();
                     break;
                 default:
-                    System.out.println("Please enter a valid option");
+                    System.out.println("Please enter a number between 1 and 7");
                     break;
             }
         }
@@ -260,8 +289,9 @@ public class Class {
             relationships.append(relationship.toString()).append("\n");
         }
 
-        return "Class Name: " + this.getClassName() + "\n\n"
-                + "\nAttributes: \n" + this.attributes.toString() +
+        return "Class Name: " + this.getClassName() + "\n"
+                +"---------------------\n"
+                + "Attributes: \n" + this.attributes.toString() +
                 "\n\n" + "Relationships: \n\n" + relationships;
     }
 
