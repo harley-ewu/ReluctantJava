@@ -261,12 +261,19 @@ public class Diagram {
    public void addRelationship() {
       System.out.println("What is the name of the owner class?");
       String ownerString = this.scanner.nextLine();
+      Class c1 = findSingleClass(ownerString);
+      if (c1 == null) {
+         System.out.println("Class does not exist");
+         return;
+      }
       System.out.println("What is the name of the other class?");
       String otherString = this.scanner.nextLine();
-      Class c1 = findSingleClass(ownerString);
       Class c2 = findSingleClass(otherString);
+      if (c2 == null) {
+         System.out.println("Class does not exist");
+         return;
+      }
 
-      //update to prompt for additional info
       Relationship.RelationshipType relationshipType = null;
       int c1Cardinality = -2;
       int c2Cardinality = -2;
@@ -312,12 +319,12 @@ public class Diagram {
       }
 
       choice = 0;
-      while(choice != 1 || choice != 2){
+      while(choice != 1 && choice != 2){
          System.out.println("Which class is the owner?\n" +
                  "1. "+c1.getClassName()+"\n2. "+c2.getClassName()+"\n");
          choice = Integer.parseInt(this.scanner.nextLine());
 
-         if(choice != 1 || choice != 2){
+         if(choice != 1 && choice != 2){
             System.out.println("Please enter 1 or 2 as your choice");
          }
          else if(choice == 1){
@@ -339,11 +346,18 @@ public class Diagram {
    public void deleteRelationship(){
       System.out.println("What is the name of the owner class?");
       String ownerString = this.scanner.nextLine();
+      Class c1 = findSingleClass(ownerString);
+      if (c1 == null) {
+         System.out.println("Class does not exist");
+         return;
+      }
       System.out.println("Whats is the name of the other class?");
       String otherString = this.scanner.nextLine();
-
-      Class c1 = findSingleClass(ownerString);
       Class c2 = findSingleClass(otherString);
+      if (c2 == null) {
+         System.out.println("Class does not exist");
+         return;
+      }
 
       Relationship c1Relationship = c1.getRelationship(c2);
       Relationship c2Relationship = c2.getRelationship(c1);
