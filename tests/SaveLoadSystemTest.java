@@ -70,8 +70,7 @@ public class SaveLoadSystemTest {
 
         //Initialize the test class, the ArrayList to store the test class,
         //the test attribute, the save/load class, and get the path to the default directory.
-        Attribute attribute = new Attribute("testAttribute");
-        Class testClass = new Class("test", attribute);
+        Class testClass = new Class("test");
         ArrayList<Class> list = new ArrayList<>();
         SaveLoadSystem saveLoad = new SaveLoadSystem();
         String defaultPath = System.getProperty("user.home");
