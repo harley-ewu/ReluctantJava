@@ -7,7 +7,7 @@ import Relationships.Relationship;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import com.github.cliftonlabs.json_simple.JsonObject;
+//import com.github.cliftonlabs.json_simple.JsonObject;
 
 public class Class {
 
@@ -16,28 +16,26 @@ public class Class {
     private Scanner scanner = new Scanner(System.in);
     private List<Relationship> relationships = new ArrayList();
 
-
-    private Diagram diagram;
-    public Class(final String className, final Diagram diagram) {
-        if (className == null || diagram == null) {
+    public Class(final String className) {
+        if (className == null) {
             throw new NullPointerException("Class name is null.");
         }
         this.attributes = new Attribute();
         this.className = className;
-        this.diagram = diagram;
     }
 
     /**
      * Description: Converts a Class object into a JsonObject for saving.
      * @return : returns a JsonObject of the Class object.
      */
+    /*
     public JsonObject toJsonObject(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("name", className);
         jsonObject.put("attributes", attributes.toJsonObject());
         return jsonObject;
     }
-
+*/
 
     /**
      * returns the current name of the class
@@ -241,7 +239,7 @@ public class Class {
                     break;
                 case 6: //return to diagram menu
                     on = false;
-                    this.diagram.menu();
+                    //this.diagram.menu();
                     break;
                 default:
                     System.out.println("Please enter a valid option");
