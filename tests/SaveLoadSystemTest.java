@@ -1,13 +1,13 @@
-package SaveLoadSystem;
-
+import Attributes.Attribute;
+import SaveLoadSystem.SaveLoadSystem;
+import Class.Class;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class SaveLoadSystemTest {
 
@@ -21,7 +21,7 @@ public class SaveLoadSystemTest {
     protected void testSaveDefaultRunsSuccessfully() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method method = SaveLoadSystem.class.getDeclaredMethod("saveDefault", String.class, ArrayList.class);
         SaveLoadSystem saveDefault = new SaveLoadSystem();
-        ArrayList<MockUmlClass> testList = new ArrayList<>();
+        ArrayList<Class> testList = new ArrayList<>();
 
         method.invoke(saveDefault, "TestSaveDefault", testList);
     }
@@ -37,7 +37,7 @@ public class SaveLoadSystemTest {
         Method method = SaveLoadSystem.class.getDeclaredMethod("saveCustom", String.class, String.class, ArrayList.class);
         SaveLoadSystem saveCustom = new SaveLoadSystem();
         String path = Paths.get(System.getProperty("user.home")).toString();
-        ArrayList<MockUmlClass> testList = new ArrayList<>();
+        ArrayList<Class> testList = new ArrayList<>();
 
         method.invoke(saveCustom, path, "TestSaveCustom", testList);
     }
@@ -52,7 +52,7 @@ public class SaveLoadSystemTest {
     protected void testLoadRunsSuccessfully() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method method = SaveLoadSystem.class.getDeclaredMethod("load", String.class);
         SaveLoadSystem load = new SaveLoadSystem();
-        ArrayList<MockUmlClass> testList = new ArrayList<>();
+        ArrayList<Class> testList = new ArrayList<>();
         String path = Paths.get(System.getProperty("user.home")).resolve("TestLoad.json").toString();
 
         load.saveDefault("TestLoad", testList);
@@ -67,9 +67,10 @@ public class SaveLoadSystemTest {
     protected void testIntegrationOfSaveAndLoad() {
 
         //Initialize the test class, the ArrayList to store the test class,
-        //the save/load class, and get the path to the default directory.
-        MockUmlClass testClass = new MockUmlClass("test", "This is a test");
-        ArrayList<MockUmlClass> list = new ArrayList<>();
+        //the test attribute, the save/load class, and get the path to the default directory.
+        Attribute attribute = new Attribute("testAttribute");
+        Class testClass = new Class("test", attribute);
+        ArrayList<Class> list = new ArrayList<>();
         SaveLoadSystem saveLoad = new SaveLoadSystem();
         String defaultPath = System.getProperty("user.home");
 
@@ -82,10 +83,8 @@ public class SaveLoadSystemTest {
         // Load the file into the ArrayList.
         list = saveLoad.load(path);
 
-        // I assert that the description of the saved class is the same as the loaded class.
-        assertEquals(testClass.getDescription(), list.getFirst().getDescription());
-
         // I assert that the name of the saved class is the same as the loaded class.
-        assertEquals(testClass.getName(), list.getFirst().getName());
+        Assertions.assertEquals(testClass.getClassName(), list.getFirst().getClassName());
+
     }
 }
