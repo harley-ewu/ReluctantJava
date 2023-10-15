@@ -52,9 +52,14 @@ public class Diagram {
       while (cont < 0) {
          do {
             System.out.println("UML Diagram Editor Menu");
-            System.out.println("Enter a number:\n\n1 - Add Class\n2 - Delete Class\n3 - Rename Class\n4 - Edit Class\n5 - View Class\n6 - View Diagram\n7 - Exit");
-            choice = Integer.parseInt(this.scanner.nextLine());
-            }while(choice < 0 && choice > 7);
+            System.out.println("Enter a number:\n\n1 - Add Class\n2 - Delete Class\n3 - Rename Class\n4 - Edit Class\n5 - Edit Relationships\n6 - View Class\n7 - View Diagram\n8 - Exit");
+            String op = scanner.nextLine();
+            if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
+               choice = Integer.parseInt(op);
+            } else {
+               choice = -99;
+            }
+            }while(choice < 0 && choice > 8);
             switch (choice) {
                //Add Class - name needed
                case 1:
@@ -72,15 +77,19 @@ public class Diagram {
                case 4:
                   this.editClass();
                   break;
-               //View class - name needed
+               //edit relationships
                case 5:
+                  this.editRelationships();
+                  break;
+               //View class - name needed
+               case 6:
                   this.printSingleClass();
                   break;
                //View Diagram
-               case 6:
+               case 7:
                   System.out.println(this);
                   break;
-               case 7:
+               case 8:
                   cont = 1;
                default:
                   break;
@@ -98,7 +107,12 @@ public class Diagram {
          do {
             System.out.println("Class Editor");
             System.out.println("Enter a number: \n\n1 - Add Attribute\n2 - Add Relationship\n3 - Back to Diagram Menu");
-            choice = Integer.parseInt(this.scanner.nextLine());
+            String op = scanner.nextLine();
+            if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
+               choice = Integer.parseInt(op);
+            } else {
+               choice = -99;
+            }
          }while(choice < 0 && choice > 3);
          switch(choice) {
             //Add attribute
@@ -211,6 +225,32 @@ public class Diagram {
          }
       }
    }
+
+   /*
+    * Submenu to edit relationships (add/delete) calls those methods in this method
+    */
+
+   public void editRelationships(){
+      int choice = -99;
+      System.out.println("Enter a number:\n1.Add Relationship.\n2.Delete Relationship");
+      String op = scanner.nextLine();
+      if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
+         choice = Integer.parseInt(op);
+      } else {
+            choice = -99;
+         }
+
+      if (choice == 1) {
+         this.addRelationship();
+      }
+      else if(choice == 2) {
+         this.deleteRelationship();
+      }
+      else {
+         System.out.println("Invalid option");
+      }
+   }
+
 
    /*
    Lists out all of the classes present in the classList
