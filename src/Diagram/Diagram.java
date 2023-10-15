@@ -145,7 +145,7 @@ public class Diagram {
          }
       }
 
-      Class c = new Class(className, this);
+      Class c = new Class(className);
       this.classList.add(c);
       this.classMenu(c);
    }
