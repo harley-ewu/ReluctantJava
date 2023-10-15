@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 public class Class {
 
-    //TODO: write toString representation for relationships
-    //TODO: relationships needs a toString
-    //TODO: add relationship menu init function
-    //TODO: update add relationship to prompt for relationship info
     private String className;
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
@@ -55,7 +51,7 @@ public class Class {
         }
         relationships.add(newRelationship);
     }
-    //TODO: To be moved to diagram class
+
     public void deleteRelationship(final Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
