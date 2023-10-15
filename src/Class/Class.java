@@ -16,7 +16,7 @@ public class Class {
 
     private Diagram diagram;
     public Class(final String className, final Diagram diagram) {
-        if (className == null) {
+        if (className == null || diagram == null) {
             throw new NullPointerException("Class name is null.");
         }
         this.attributes = new Attribute();
