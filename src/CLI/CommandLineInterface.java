@@ -1,4 +1,4 @@
-package CLI;
+package src.CLI;
 
 import java.util.Scanner;
 
@@ -8,27 +8,31 @@ import java.util.Scanner;
 * */
 public class CommandLineInterface {
 
+    private static final int MAX_CHOICES = 7;
+    public static void main(String[] args){
+        boolean shouldTerminate = false;
+        startCLI(shouldTerminate);
+    }
+
     /*
     * Description: This method will start the CLI
     * Use Case: Call this from main
     * */
 
-    //TODO: Implement option 1
-    //TODO: Implement option 2
-    //TODO: Implement option 3
-    //TODO: Implement option 4
-    //TODO: Implement option 5
 
-    public static void startCLI(){
-        while (true) {
+    private static void startCLI(boolean shouldTerminate){
+
+        while (!shouldTerminate) {
             int userChoice = getUserChoice();
 
             switch (userChoice) {
-                case 1 -> System.out.println("Option 1");
-                case 2 -> System.out.println("Option 2");
-                case 3 -> System.out.println("Option 3");
-                case 4 -> System.out.println("Option 4");
-                case 5 -> exit();
+                case 1 -> createNewDiagram();
+                case 2 -> viewDiagram(); // May call external menu method if it's implemented in a separate class
+                case 3 -> editDiagram(); // May call external menu method if it's implemented in a separate class
+                case 4 -> saveDiagram(); // May call external menu method if it's implemented in a separate class
+                case 5 -> loadDiagram(); // May call external menu method if it's implemented in a separate class
+                case 6 -> help();
+                case 7 -> shouldTerminate = exit();
                 default -> System.out.println("There is a bug in getUserChoice");
             }
         }
@@ -43,7 +47,19 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
         int userInput = -1;
 
-        System.out.println("Enter a number:\n\n1 - Option 1\n2 - Option 2\n3 - Option 3\n4 - Option 4\n5 - Option 5");
+        System.out.println("""
+                
+                
+                Enter a number:
+                
+                1 - New Diagram
+                2 - View Existing Diagram
+                3 - Edit Existing Diagram
+                4 - Save Current Diagram
+                5 - Load Diagram
+                6 - Help
+                7 - Exit
+                """);
 
         while (true) {
             try {
@@ -51,7 +67,7 @@ public class CommandLineInterface {
                 if (isValidUserInput(userInput)) {
                     break;
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and 5.");
+                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
@@ -61,27 +77,70 @@ public class CommandLineInterface {
         return userInput;
     }
 
+    /*
+    * Description: Validates user input
+    * Use Case: Validate user choice input
+    * */
     private static boolean isValidUserInput(int userInput) {
-        return userInput >= 1 && userInput <= 5;
+        return userInput >= 1 && userInput <= MAX_CHOICES;
     }
 
+    private static void createNewDiagram(){
+        //TODO: Implement
+    }
+    private static void viewDiagram(){
+        //TODO: Implement
+    }
+    private static void editDiagram(){
+        //TODO: Implement
+    }
+    private static void saveDiagram(){
+        //TODO: Implement
+    }
+    private static void loadDiagram(){
+        //TODO: Implement
+    }
+
+    /*
+    * Description: Prints description of each command to the console
+    * Use Case: Call under 'help' switch block
+    * */
+    private static void help(){
+        System.out.println("""
+                MAIN MENU COMMANDS:
+
+                Option 1 - New Diagram: Create a new UML Diagram
+                
+                Option 2 - View Existing Diagram: View the currently loaded diagram
+                
+                Option 3 - Edit Diagram: Edit the currently loaded diagram
+                
+                Option 4 - Save Diagram: Saves the currently loaded diagram
+                
+                Option 5 - Load Diagram: Loads an existing diagram from a file
+                
+                Option 5 - Help: Lists a description of all available commands
+                
+                Option 6 - Exit: Exit the program
+                """);
+    }
 
     /*
     * Description: This method will prompt the user to save, and then close the program
     * Use Case: Call this under 'exit' switch block
     * */
 
-    private static void exit(){
+    private static boolean exit() {
         char userChoice;
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Would you like to save before exiting?\n\n1 - Yes\nAnything else - No");
         userChoice = scan.next().charAt(0); // Pull first entered character
 
-        if(userChoice == '1'){
+        if (userChoice == '1') {
             //TODO: Call Save when implemented
         }
 
-        System.exit(0);
+        return true;
     }
 }
