@@ -28,6 +28,10 @@ public class Class {
         return this.className;
 
     }
+
+    public Attribute getAttributes() {
+        return this.attributes;
+    }
     //setters
     public void setClassName(final String newClassName) {
         if (newClassName == null) {
@@ -36,10 +40,15 @@ public class Class {
 
         this.className = newClassName;
     }
+
+    public void setAttributes(final Attribute attribute) {
+        this.attributes = new Attribute();
+    }
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
 
-    public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
+    public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality,
+                                final int otherClassCardinality, final boolean owner) {
         Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
 
         if (this.relationships == null) {
@@ -64,10 +73,10 @@ public class Class {
         }
     }
 
-    public Relationship getRelationship(final Class otherClass){
+    public Relationship getRelationship(final String otherClass){
         Relationship relationship = null;
         for(int i = 0; i < relationships.size(); i++){
-            if(relationships.get(i).getOtherClassName() == otherClass){
+            if(relationships.get(i).getOtherClassName().equals(otherClass)){
                 relationship = relationships.get(i);
                 break;
             }
