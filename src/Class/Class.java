@@ -23,15 +23,34 @@ public class Class {
         this.className = className;
         this.diagram = diagram;
     }
+
+    /**
+     * returns the current name of the class
+     * @return
+     */
     //getters
     public String getClassName() {
         return this.className;
 
     }
 
+    /**
+     * returns the attributes object attached to the Class class
+     * @return
+     */
+
     public Attribute getAttributes() {
         return this.attributes;
     }
+
+    public ArrayList getRelationships(){
+        return new ArrayList<>(this.relationships);
+    }
+
+    /**
+     * description: used to set a name for the class or rename a class
+     * @param newClassName
+     */
     //setters
     public void setClassName(final String newClassName) {
         if (newClassName == null) {
@@ -41,12 +60,26 @@ public class Class {
         this.className = newClassName;
     }
 
+    /**
+     * description: this method will set the attributes variable to a new attribute object
+     * @param attribute
+     */
     public void setAttributes(final Attribute attribute) {
         this.attributes = new Attribute();
     }
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
 
+    /**
+     * description: addRelationship will create a new relationship between two classes and add it to the relationships array list
+     * addRelationship will search the array list and check to see if a relationship between two classes exists, if not, the user will be notified
+     * and the attribute will not be added
+     * @param relationshipType
+     * @param otherClassName
+     * @param thisClassCardinality
+     * @param otherClassCardinality
+     * @param owner
+     */
     public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality,
                                 final int otherClassCardinality, final boolean owner) {
         Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
@@ -61,6 +94,12 @@ public class Class {
         relationships.add(newRelationship);
     }
 
+    /**
+     * description: delete relationship will take in a relationship object and search the relationship array list to see if the relationship exists
+     * if not, the user will be notified and nothing will be deleted
+     * @param relationship
+     */
+
     public void deleteRelationship(final Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
@@ -73,10 +112,16 @@ public class Class {
         }
     }
 
-    public Relationship getRelationship(final String otherClass){
+    /**
+     * description: getRelationship will search the relationship list for a desired related class, if found it will return the class to the user
+     * @param otherClass
+     * @return
+     */
+
+    public Relationship getRelationship(final Class otherClass){
         Relationship relationship = null;
         for(int i = 0; i < relationships.size(); i++){
-            if(relationships.get(i).getOtherClassName().equals(otherClass)){
+            if(relationships.get(i).getOtherClassName() == otherClass){
                 relationship = relationships.get(i);
                 break;
             }
@@ -85,6 +130,9 @@ public class Class {
         return relationship;
     }
 
+    /**
+     * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
+     */
     public void addAttribute() {
         String newAttribute;
         System.out.print("\nPlease enter a name for the attribute: ");
@@ -98,6 +146,9 @@ public class Class {
         }
     }
 
+    /**
+     * description: deleteAttribute is a menu option method, prompting the user to enter an attribute to delete
+     */
     public void deleteAttribute() {
         String attribute;
         System.out.print("\nPlease enter an attribute to remove: ");
@@ -111,11 +162,18 @@ public class Class {
         }
     }
 
+    /**
+     * description: returns a string of all attributes currently within the class
+     * @return
+     */
     public String displayAttributes() {
-       return "Attributes in the " + this.getClassName() + " class: \n" + this.attributes.toString();
+       return "Attributes in the " + this.getClassName() + " class:\n" + this.attributes.toString();
 
     }
 
+    /**
+     * description: returns a string of all relationships attached to the class
+     */
     public String displayRelationships() {
         StringBuilder relationships = new StringBuilder();
 
@@ -126,6 +184,10 @@ public class Class {
 
     }
 
+    /**
+     * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
+     * the user can use this menu to edit attributes and relationships (wip)
+     */
     public void subMenu() {
         boolean on = true;
         //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
@@ -135,7 +197,13 @@ public class Class {
                 System.out.println("\nEdit menu for the " + this.getClassName() + " class\n");
                 System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Display attributes" +
                         "\n4.Display relationships\n5.Display all contents\n6.Return to Diagram Menu");
-                choice = Integer.parseInt(scanner.nextLine());
+                String op = scanner.nextLine();
+                if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
+                    choice = Integer.parseInt(op);
+                } else {
+                    choice = -99;
+                }
+
 
             } while (choice < 0 || choice > 6);
 
@@ -148,10 +216,10 @@ public class Class {
                     this.deleteAttribute();
                     break;
                 case 3: //display attributes
-                    this.displayAttributes();
+                    System.out.println(this.displayAttributes());
                     break;
                 case 4: //display relationships
-                    this.displayRelationships();
+                    System.out.println(this.displayRelationships());
                     break;
                 case 5: //display all contents
                     System.out.println(this);
@@ -160,10 +228,17 @@ public class Class {
                     on = false;
                     this.diagram.menu();
                     break;
+                default:
+                    System.out.println("Please enter a valid option");
+                    break;
             }
         }
     }
 
+    /**
+     * description: toString will display all contents of the class object including: name, attributes, and relationships
+     * @return
+     */
     @Override
     public String toString() {
         StringBuilder relationships = new StringBuilder();
@@ -172,9 +247,9 @@ public class Class {
             relationships.append(relationship.toString()).append("\n");
         }
 
-        return "Class Name: " + this.getClassName() + "\n"
-                + "Attributes: \n" + this.attributes.toString() +
-                "\n" + "Relationships: \n" + relationships;
+        return "Class Name: " + this.getClassName() + "\n\n"
+                + "\nAttributes: \n" + this.attributes.toString() +
+                "\n\n" + "Relationships: \n\n" + relationships;
     }
 
 }
