@@ -219,8 +219,7 @@ public class Class {
                     choice = -99;
                 }
 
-
-            } while (choice < 0 || choice > 6);
+            } while (choice < 1 || choice > 6);
 
             switch (choice) {
 
