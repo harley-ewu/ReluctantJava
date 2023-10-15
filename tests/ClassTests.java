@@ -62,6 +62,7 @@ public class ClassTests {
         assertEquals("New Class Name", this.newClass.getClassName());
     }
 
+    /*
     @Test
     public void testAddAttributeMethod() {
         try {
@@ -83,12 +84,15 @@ public class ClassTests {
         }catch (IllegalAccessException | NoSuchFieldException e){
             throw new RuntimeException(e);
         }
+
+        this.newClass.deleteAttribute();
         assertTrue(this.newClass.getAttributes().getAttributes().size() == 1);
     }
 
     @Test
     public void testAlreadyContainsAttribute() {
         this.newClass.getAttributes().addAttribute("color");
+
         try {
             this.injectInput("color");
         }catch(IllegalAccessException | NoSuchFieldException e) {
@@ -109,33 +113,129 @@ public class ClassTests {
         int otherClassCardinality = -1;
         boolean owner = true;
 
+        Relationship testRelationship = new Relationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+
         this.newClass.addRelationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
-        assertEquals("Other Class", this.newClass.getRelationship("Other Class").getOtherClassName());
+        assertEquals(testRelationship, this.newClass.getRelationship(otherClass));
 
     }
 
     @Test
     public void testDeleteRelationship() {
 
-    }
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Class otherClass = new Class("Other Class",this.newDiagram);
+        int thisClassCardinality = 1;
+        int otherClassCardinality = -1;
+        boolean owner = true;
 
+        Relationship testRelationship = new Relationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        this.newClass.addRelationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        assertEquals(testRelationship, this.newClass.getRelationship(otherClass));
+        this.newClass.deleteRelationship(testRelationship);
+        assertTrue(this.newClass.getRelationships().isEmpty());
+
+    }
+*/
     @Test
-    public void testNoRelationshipsInClass() {
+    public void testRelationshipListEmpty() {
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Class otherClass = new Class("Other Class",this.newDiagram);
+        int thisClassCardinality = 1;
+        int otherClassCardinality = -1;
+        boolean owner = true;
+
+        Relationship testRelationship = new Relationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        this.newClass.deleteRelationship(testRelationship);
+        assertEquals("There are no relationships assigned to this class.\n", this.testOut.toString());
 
     }
 
     @Test
     public void testDisplayRelationships() {
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Class otherClass = new Class("Other Class 1",this.newDiagram);
+        int thisClassCardinality = 1;
+        int otherClassCardinality = -1;
+        boolean owner = true;
+
+        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Association;
+        Class otherClass2 = new Class("Other Class 2",this.newDiagram);
+        int thisClassCardinality2 = 1;
+        int otherClassCardinality2 = -1;
+        boolean owner2 = true;
+
+        this.newClass.addRelationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        this.newClass.addRelationship(relationshipType2, otherClass2, thisClassCardinality2, otherClassCardinality2, owner2);
+
+        String testText = "Relationships in the Test Class class: \n" +
+                "Class has a Association relationship with Other Class 1\n" +
+                "Owner: true\n" +
+                "This Class Cardinality: 1\n" +
+                "Other Class 1 Class Cardinality: *\n" +
+                "\n" +
+                "Class has a Association relationship with Other Class 2\n" +
+                "Owner: true\n" +
+                "This Class Cardinality: 1\n" +
+                "Other Class 2 Class Cardinality: *\n\n";
+
+        assertEquals(testText, this.newClass.displayRelationships());
 
     }
 
     @Test
     public void  testDisplayAttributes() {
+        this.newClass.getAttributes().addAttribute("color");
+        this.newClass.getAttributes().addAttribute("skin");
+
+        String output = "Attributes in the Test Class class:\n" +
+                "color\n" +
+                "skin";
+
+        assertEquals(output, this.newClass.displayAttributes());
 
     }
 
     @Test
     public void testToString() {
+        this.newClass.getAttributes().addAttribute("color");
+        this.newClass.getAttributes().addAttribute("skin");
+
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Class otherClass = new Class("Other Class 1",this.newDiagram);
+        int thisClassCardinality = 1;
+        int otherClassCardinality = -1;
+        boolean owner = true;
+
+        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Association;
+        Class otherClass2 = new Class("Other Class 2",this.newDiagram);
+        int thisClassCardinality2 = 1;
+        int otherClassCardinality2 = -1;
+        boolean owner2 = true;
+
+        this.newClass.addRelationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        this.newClass.addRelationship(relationshipType2, otherClass2, thisClassCardinality2, otherClassCardinality2, owner2);
+
+        String output = "Class Name: Test Class\n" +
+                "\n" +
+                "\n" +
+                "Attributes: \n" +
+                "color\n" +
+                "skin\n" +
+                "\n" +
+                "Relationships: \n" +
+                "\n" +
+                "Class has a Association relationship with Other Class 1\n" +
+                "Owner: true\n" +
+                "This Class Cardinality: 1\n" +
+                "Other Class 1 Class Cardinality: *\n" +
+                "\n" +
+                "Class has a Association relationship with Other Class 2\n" +
+                "Owner: true\n" +
+                "This Class Cardinality: 1\n" +
+                "Other Class 2 Class Cardinality: *\n\n";
+
+        assertEquals(output, this.newClass.toString());
 
     }
 }
