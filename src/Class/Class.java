@@ -7,12 +7,15 @@ import Relationships.Relationship;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import com.github.cliftonlabs.json_simple.JsonObject;
+
 public class Class {
 
     private String className;
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
     private List<Relationship> relationships = new ArrayList();
+
 
     private Diagram diagram;
     public Class(final String className, final Diagram diagram) {
@@ -23,6 +26,18 @@ public class Class {
         this.className = className;
         this.diagram = diagram;
     }
+
+    /**
+     * Description: Converts a Class object into a JsonObject for saving.
+     * @return : returns a JsonObject of the Class object.
+     */
+    public JsonObject toJsonObject(){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put("name", className);
+        jsonObject.put("attributes", attributes.toJsonObject());
+        return jsonObject;
+    }
+
 
     /**
      * returns the current name of the class
