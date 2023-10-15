@@ -7,7 +7,7 @@ import Relationships.Relationship;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import com.github.cliftonlabs.json_simple.JsonObject;
+//import com.github.cliftonlabs.json_simple.JsonObject;
 
 public class Class {
 
@@ -31,13 +31,14 @@ public class Class {
      * Description: Converts a Class object into a JsonObject for saving.
      * @return : returns a JsonObject of the Class object.
      */
+    /*
     public JsonObject toJsonObject(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("name", className);
         jsonObject.put("attributes", attributes.toJsonObject());
         return jsonObject;
     }
-
+*/
 
     /**
      * returns the current name of the class
@@ -182,7 +183,11 @@ public class Class {
      * @return
      */
     public String displayAttributes() {
-       return "Attributes in the " + this.getClassName() + " class:\n" + this.attributes.toString();
+        if (this.attributes.getAttributes().isEmpty()) {
+            return "There are no attributes in this class";
+        } else {
+            return "Attributes in the " + this.getClassName() + " class:\n" + this.attributes.toString();
+        }
 
     }
 
@@ -190,12 +195,16 @@ public class Class {
      * description: returns a string of all relationships attached to the class
      */
     public String displayRelationships() {
-        StringBuilder relationships = new StringBuilder();
+        if (this.relationships.isEmpty()) {
+            return "There are no relationships assigned to this class.";
+        } else {
+            StringBuilder relationships = new StringBuilder();
 
-        for (Relationship relationship: this.relationships) {
-            relationships.append(relationship.toString()).append("\n");
+            for (Relationship relationship: this.relationships) {
+                relationships.append(relationship.toString()).append("\n");
+            }
+            return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
         }
-        return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
 
     }
 
@@ -242,7 +251,7 @@ public class Class {
                     on = false;
                     break;
                 default:
-                    System.out.println("Please enter a valid option");
+                    System.out.println("Please enter a number between 1 and 6");
                     break;
             }
         }
@@ -260,8 +269,9 @@ public class Class {
             relationships.append(relationship.toString()).append("\n");
         }
 
-        return "Class Name: " + this.getClassName() + "\n\n"
-                + "\nAttributes: \n" + this.attributes.toString() +
+        return "Class Name: " + this.getClassName() + "\n"
+                +"---------------------\n"
+                + "Attributes: \n" + this.attributes.toString() +
                 "\n\n" + "Relationships: \n\n" + relationships;
     }
 
