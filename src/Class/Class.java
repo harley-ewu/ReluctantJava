@@ -31,14 +31,14 @@ public class Class {
      * Description: Converts a Class object into a JsonObject for saving.
      * @return : returns a JsonObject of the Class object.
      */
-    /*
+
     public JsonObject toJsonObject(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("name", className);
         jsonObject.put("attributes", attributes.toJsonObject());
         return jsonObject;
     }
-*/
+
 
     /**
      * returns the current name of the class

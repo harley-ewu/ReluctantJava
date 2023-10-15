@@ -59,7 +59,7 @@ public class Diagram {
             } else {
                choice = -99;
             }
-            }while(choice < 0 && choice > 8);
+            }while(choice < 1 && choice > 8);
             switch (choice) {
                //Add Class - name needed
                case 1:
@@ -113,7 +113,7 @@ public class Diagram {
             } else {
                choice = -99;
             }
-         }while(choice < 0 && choice > 3);
+         }while(choice < 1 && choice > 3);
          switch(choice) {
             //Add attribute
             case 1:
