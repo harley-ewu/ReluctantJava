@@ -74,6 +74,8 @@ public class Attribute {
     }
 
     public void renameAttribute(final String name, final String newName) {
+        Objects.requireNonNull(name, "Name can't be null.");
+        Objects.requireNonNull(newName, "New name can't be null.");
 
         //Checking if the attribute is already contained within the list.
         for (int i = 0; i < attributes.size(); i++) {
