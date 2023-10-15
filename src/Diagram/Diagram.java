@@ -58,6 +58,7 @@ public class Diagram {
                choice = Integer.parseInt(op);
             } else {
                choice = -99;
+               System.out.println("Please enter a valid option, 1-8");
             }
             }while(choice < 1 && choice > 8);
             switch (choice) {
@@ -112,6 +113,7 @@ public class Diagram {
                choice = Integer.parseInt(op);
             } else {
                choice = -99;
+               System.out.println("Please enter a valid option, 1-3");
             }
          }while(choice < 1 && choice > 3);
          switch(choice) {

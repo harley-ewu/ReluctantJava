@@ -243,6 +243,7 @@ public class Class {
                     choice = Integer.parseInt(op);
                 } else {
                     choice = -99;
+                    System.out.println("Please enter a valid option, 1-7");
                 }
 
             } while (choice < 1 || choice > 7);
@@ -271,7 +272,6 @@ public class Class {
                     on = false;
                     break;
                 default:
-                    System.out.println("Please enter a number between 1 and 7");
                     break;
             }
         }
