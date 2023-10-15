@@ -31,6 +31,7 @@ public class Class {
      * Description: Converts a Class object into a JsonObject for saving.
      * @return : returns a JsonObject of the Class object.
      */
+
     public JsonObject toJsonObject(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("name", className);
@@ -38,6 +39,7 @@ public class Class {
         jsonObject.put("relationships", relationships);
         return jsonObject;
     }
+
 
     /**
      * Description: Converts a JsonObject from the load file back into a Class object.
@@ -53,7 +55,6 @@ public class Class {
         newClass.setRelationships(relationships);
         return newClass;
     }
-
 
     /**
      * returns the current name of the class
@@ -211,6 +212,23 @@ public class Class {
     }
 
     /**
+     * description: menu option prompting the user to rename an attribute. If the attribute exists in the list,
+     * the attribute will be successfully named, if not, the user will be prompted so.
+     */
+
+    public void renameAttribute() {
+        String attribute;
+        String newName;
+        System.out.println("Please enter an attribute to rename: ");
+        attribute = this.scanner.nextLine();
+        System.out.println("Please enter a new name for the attribute: ");
+        newName = this.scanner.nextLine();
+
+        this.attributes.renameAttribute(attribute, newName);
+
+    }
+
+    /**
      * description: returns a string of all relationships attached to the class
      */
     public String displayRelationships() {
@@ -226,7 +244,7 @@ public class Class {
         }
 
     }
-
+    
     /**
      * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
      * the user can use this menu to edit attributes and relationships (wip)
@@ -238,16 +256,17 @@ public class Class {
             int choice = -99;
             do {
                 System.out.println("\nEdit menu for the " + this.getClassName() + " class\n");
-                System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Display attributes" +
-                        "\n4.Display relationships\n5.Display all contents\n6.Return to Diagram Menu");
+                System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Rename Attribute" +
+                        "\n4.Display attributes\n5.Display relationships\n6.Display all contents\n7.Return to Diagram Menu");
                 String op = scanner.nextLine();
                 if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
                     choice = Integer.parseInt(op);
                 } else {
                     choice = -99;
+                    System.out.println("Please enter a valid option, 1-7");
                 }
 
-            } while (choice < 1 || choice > 6);
+            } while (choice < 1 || choice > 7);
 
             switch (choice) {
 
@@ -257,20 +276,22 @@ public class Class {
                 case 2: //delete attribute
                     this.deleteAttribute();
                     break;
-                case 3: //display attributes
+                case 3: //rename attribute
+                    this.renameAttribute();
+                    break;
+                case 4: //display attributes
                     System.out.println(this.displayAttributes());
                     break;
-                case 4: //display relationships
+                case 5: //display relationships
                     System.out.println(this.displayRelationships());
                     break;
-                case 5: //display all contents
+                case 6: //display all contents
                     System.out.println(this);
                     break;
-                case 6: //return to diagram menu
+                case 7: //return to diagram menu
                     on = false;
                     break;
                 default:
-                    System.out.println("Please enter a number between 1 and 6");
                     break;
             }
         }

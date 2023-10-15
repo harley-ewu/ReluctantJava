@@ -47,7 +47,7 @@ public class ClassTests {
     @BeforeEach
     void setUp() {
         this.newDiagram = new Diagram("Test Diagram");
-        this.newClass = new Class("Test Class", newDiagram);
+        this.newClass = new Class("Test Class");
         //newDiagram.addClass(this.newClass);
     }
 
@@ -140,7 +140,7 @@ public class ClassTests {
     @Test
     public void testRelationshipListEmpty() {
         Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
-        Class otherClass = new Class("Other Class",this.newDiagram);
+        Class otherClass = new Class("Other Class");
         int thisClassCardinality = 1;
         int otherClassCardinality = -1;
         boolean owner = true;
@@ -154,13 +154,13 @@ public class ClassTests {
     @Test
     public void testDisplayRelationships() {
         Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
-        Class otherClass = new Class("Other Class 1",this.newDiagram);
+        Class otherClass = new Class("Other Class 1");
         int thisClassCardinality = 1;
         int otherClassCardinality = -1;
         boolean owner = true;
 
         Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Association;
-        Class otherClass2 = new Class("Other Class 2",this.newDiagram);
+        Class otherClass2 = new Class("Other Class 2");
         int thisClassCardinality2 = 1;
         int otherClassCardinality2 = -1;
         boolean owner2 = true;
@@ -202,13 +202,13 @@ public class ClassTests {
         this.newClass.getAttributes().addAttribute("skin");
 
         Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
-        Class otherClass = new Class("Other Class 1",this.newDiagram);
+        Class otherClass = new Class("Other Class 1");
         int thisClassCardinality = 1;
         int otherClassCardinality = -1;
         boolean owner = true;
 
         Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Association;
-        Class otherClass2 = new Class("Other Class 2",this.newDiagram);
+        Class otherClass2 = new Class("Other Class 2");
         int thisClassCardinality2 = 1;
         int otherClassCardinality2 = -1;
         boolean owner2 = true;
