@@ -7,10 +7,6 @@ import java.util.Scanner;
 import Diagram.Diagram;
 public class Class {
 
-    //TODO: write toString representation for relationships
-    //TODO: relationships needs a toString
-    //TODO: add relationship menu init function
-    //TODO: update add relationship to prompt for relationship info
     private String className;
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
@@ -40,7 +36,7 @@ public class Class {
     }
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
-    //TODO: To be moved to diagram class
+
     public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality, final int otherClassCardinality, final boolean owner) {
         Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
 
@@ -53,7 +49,7 @@ public class Class {
         }
         relationships.add(newRelationship);
     }
-    //TODO: To be moved to diagram class
+    
     public void deleteRelationship(final Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
