@@ -49,7 +49,7 @@ public class Class {
         }
         relationships.add(newRelationship);
     }
-    
+
     public void deleteRelationship(final Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
