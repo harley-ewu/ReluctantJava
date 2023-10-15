@@ -1,6 +1,6 @@
 package Class;
 import Attributes.*;
-import com.github.cliftonlabs.json_simple.JsonObject;
+//import com.github.cliftonlabs.json_simple.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,22 +59,22 @@ public class Class {
      * Description: Converts a Class object into a JsonObject for saving.
      * @return : returns a JsonObject of the Class object.
      */
-    public JsonObject toJsonObject(){
+    /*public JsonObject toJsonObject(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("name", className);
         jsonObject.put("attributes", attributes.toJsonObject());
         return jsonObject;
     }
 
-    /**
+    *//**
      * Description: Converts a JsonObject from a loaded file back into an Class object.
      * @param jsonObject: the JsonObject read from the file.
      * @return : The Class object that was saved to the file.
-     */
+     *//*
     public static Class fromJsonObject(JsonObject jsonObject){
         String className = (String) jsonObject.get("name");
         Attribute attributes = Attribute.fromJsonObject((JsonObject) jsonObject.get("attributes"));
         return new Class(className, attributes);
-    }
+    }*/
 
 }
