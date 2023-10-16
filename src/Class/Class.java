@@ -3,11 +3,11 @@ package Class;
 import Attributes.Attribute;
 import Diagram.Diagram;
 import Relationships.Relationship;
+import com.github.cliftonlabs.json_simple.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-//import com.github.cliftonlabs.json_simple.JsonObject;
 
 public class Class {
 
@@ -36,9 +36,25 @@ public class Class {
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("name", className);
         jsonObject.put("attributes", attributes.toJsonObject());
+        jsonObject.put("relationships", relationships);
         return jsonObject;
     }
 
+
+    /**
+     * Description: Converts a JsonObject from the load file back into a Class object.
+     * @param jsonObject : the JsonObject read from the load file.
+     * @return : returns a Class object from the information in the JsonObject.
+     */
+    public static Class fromJsonObject(JsonObject jsonObject){
+        String className = (String) jsonObject.get("name");
+        Attribute attributes = Attribute.fromJsonObject((JsonObject) jsonObject.get("attributes"));
+        ArrayList<Relationship> relationships = (ArrayList<Relationship>) jsonObject.get("relationships");
+        Class newClass = new Class(className);
+        newClass.setAttributes(attributes);
+        newClass.setRelationships(relationships);
+        return newClass;
+    }
 
     /**
      * returns the current name of the class
@@ -81,7 +97,7 @@ public class Class {
      * @param attribute
      */
     public void setAttributes(final Attribute attribute) {
-        this.attributes = new Attribute();
+        this.attributes = attribute;
     }
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
@@ -144,6 +160,10 @@ public class Class {
         }
 
         return relationship;
+    }
+
+    public void setRelationships(ArrayList<Relationship> relationship){
+        this.relationships = relationship;
     }
 
     /**

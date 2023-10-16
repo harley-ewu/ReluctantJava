@@ -1,11 +1,12 @@
 package SaveLoadSystem;
 
+import Class.Class;
+
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 
-import Class.Class;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
