@@ -119,6 +119,11 @@ public class CommandLineInterface {
     }
 
     private static void savePrompt(Diagram diagram) {
+
+        if(diagram == null){
+            System.out.println("There is no diagram loaded");
+            return;
+        }
         char userChoice;
         Scanner scan = new Scanner(System.in);
 
@@ -139,7 +144,7 @@ public class CommandLineInterface {
     }
 
     private static void saveToDefaultPath(Diagram diagram) {
-        SaveLoadSystem.saveDefault("", diagram.getClassList());
+        SaveLoadSystem.saveDefault(diagram.getTitle(), diagram.getClassList());
         System.out.println("Saved to the default path.");
     }
 
@@ -153,7 +158,7 @@ public class CommandLineInterface {
 
             try {
                 Path filePath = Paths.get(customPath);
-                SaveLoadSystem.saveCustom(filePath.toString(), "", diagram.getClassList());
+                SaveLoadSystem.saveCustom(filePath.toString(), diagram.getTitle(), diagram.getClassList());
                 System.out.println("Saved to custom path: " + filePath);
                 saveSuccessful = true;
             } catch (InvalidPathException e) {
