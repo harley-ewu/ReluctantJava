@@ -11,12 +11,14 @@ public class RelationshipTests {
     @Test
     void toStringTest() throws IllegalArgumentException{
         Diagram testDiagram = new Diagram("testDiagram");
-        Class testClass = new Class("testClass", testDiagram);
+        Class testClass = new Class("testClass");
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Association, testClass, 1, 2, false);
-        String testResult = "Class has a Association relationship with testClass\n" +
-                "Owner: false\n" +
-                "This Class Cardinality: 1\n" +
-                "testClass Class Cardinality: 2\n" ;
+        String testResult = """
+                Class has a Association relationship with testClass
+                Owner: false
+                This Class Cardinality: 1
+                testClass Class Cardinality: 2
+                """;
 
         assertEquals(testResult, testRelationship.toString());
 
@@ -36,7 +38,7 @@ public class RelationshipTests {
     @Test
     void relationshipTypeGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
-        Class testClass = new Class("testClass", testDiagram);
+        Class testClass = new Class("testClass");
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
 
         assertEquals(Relationship.RelationshipType.Aggregation, testRelationship.getRelationshipType());
@@ -49,7 +51,7 @@ public class RelationshipTests {
     @Test
     void otherClassNameGetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
-        Class testClass = new Class("testClass", testDiagram);
+        Class testClass = new Class("testClass");
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
 
         assertEquals(testClass, testRelationship.getOtherClassName());
@@ -58,7 +60,7 @@ public class RelationshipTests {
     @Test
     void thisClassCardinalityGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
-        Class testClass = new Class("testClass", testDiagram);
+        Class testClass = new Class("testClass");
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
 
         assertEquals(1, testRelationship.getThisClassCardinality());
@@ -71,7 +73,7 @@ public class RelationshipTests {
     @Test
     void otherClassCardinalityGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
-        Class testClass = new Class("testClass", testDiagram);
+        Class testClass = new Class("testClass");
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
 
         assertEquals(2, testRelationship.getOtherClassCardinality());
@@ -82,7 +84,7 @@ public class RelationshipTests {
     @Test
     void ownerGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
-        Class testClass = new Class("testClass", testDiagram);
+        Class testClass = new Class("testClass");
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
 
         assertEquals(false, testRelationship.getIsOwner());

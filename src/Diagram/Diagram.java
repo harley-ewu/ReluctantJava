@@ -43,7 +43,14 @@ public class Diagram {
    public List<Class> getClassList(){
 	   return this.classList;
    }
-   
+
+   /*
+   * Setter for classList
+   * */
+
+   public void setClassList(List<Class> classList){
+      this.classList = classList;
+   }
    /*
    Menu of choices once inside an existing diagram, or when creating a new diagram
    */

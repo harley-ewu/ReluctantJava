@@ -1,5 +1,3 @@
-package tests;
-
 import Class.Class;
 import Attributes.Attribute;
 import SaveLoadSystem.SaveLoadSystem;
@@ -10,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SaveLoadSystemTest {
 
@@ -71,7 +70,7 @@ public class SaveLoadSystemTest {
         //Initialize the test class, the ArrayList to store the test class,
         //the test attribute, the save/load class, and get the path to the default directory.
         Class testClass = new Class("test");
-        ArrayList<Class> list = new ArrayList<>();
+        List<Class> list = new ArrayList<>();
         SaveLoadSystem saveLoad = new SaveLoadSystem();
         String defaultPath = System.getProperty("user.home");
 
