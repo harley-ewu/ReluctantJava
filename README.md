@@ -6,9 +6,10 @@ and install.
 2. Clone the reposistory from our Github here: https://github.com/harley-ewu/ReluctantJava
 3. Open a terminal.
 4. Navigate to the cloned repo in your terminal.
-5. Run the command javac {**PLACEHOLDER TEXT**}.java to compile the program. **NEEDS TO BE CHANGED WHEN WE HAVE ACTUAL FILE**
-6. Run the command java {**PLACEHOLDER TEXT**}.
-7. Follow the prompts from there!
+5. Navigate into the src folder.
+6. Run the command `javac Class/*.java CLI/*.java Diagram/*.java Relationships/*.java Attributes/*.java` to compile the program.
+7. While still in the src folder, run the command `java CLI/CommandLineInterface.java`.
+8. Follow the prompts from there!
 
 ### Current team roles:
 Matt - Add/Delete/Rename Classes<br>
