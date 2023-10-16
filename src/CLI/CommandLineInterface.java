@@ -96,6 +96,7 @@ public class CommandLineInterface {
         String userChoice = "";
         while(true) {
             try {
+                System.out.println("Enter a title for the new diagram");
                 userChoice = scan.nextLine();
 
                 if(userChoice.length() < 1 || userChoice.length() > 50) {
