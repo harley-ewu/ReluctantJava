@@ -39,7 +39,7 @@ public class CommandLineInterface {
                 case 2 -> viewDiagram(currentDiagram); // May call external menu method if it's implemented in a separate class
                 case 3 -> editDiagram(currentDiagram); // May call external menu method if it's implemented in a separate class
                 case 4 -> saveDiagram(currentDiagram); // May call external menu method if it's implemented in a separate class
-                case 5 -> loadDiagram(); // May call external menu method if it's implemented in a separate class
+                case 5 -> currentDiagram = loadDiagram(); // May call external menu method if it's implemented in a separate class
                 case 6 -> help();
                 case 7 -> shouldTerminate = exit(currentDiagram);
                 default -> System.out.println("There is a bug in getUserChoice");
