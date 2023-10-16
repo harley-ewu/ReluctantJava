@@ -171,7 +171,8 @@ public class Diagram {
       String className = this.scanner.nextLine();
       Class deletedClass = findSingleClass(className);
       if (deletedClass == null) {
-         throw new IllegalArgumentException("invalid param in removeClass method");
+         System.out.println("Class does not exist.");
+         return;
       }
 
       int i = 0;
@@ -282,7 +283,8 @@ public class Diagram {
    */
    public Class findSingleClass(final String className) {
       if(className == null) {
-         throw new IllegalArgumentException("param invalid in findSingleClass");
+         System.out.println("Invalid class name.");
+         return null;
       }
       for (int i = 0; i < this.classList.size(); i++) {
          if (this.classList.get(i).getClassName().equals(className)) {
@@ -429,7 +431,7 @@ public class Diagram {
    */
    public String toString(){
       if (this.classList == null) {
-         throw new IllegalArgumentException("Diagram is null");
+         return "Diagram does not exist.";
       }
       String diagramString = "";
       diagramString += this.title + "\n\n";
