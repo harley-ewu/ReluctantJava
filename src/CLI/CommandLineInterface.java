@@ -1,5 +1,12 @@
-package src.CLI;
+package CLI;
 
+import Diagram.Diagram;
+import SaveLoadSystem.SaveLoadSystem;
+
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -22,17 +29,19 @@ public class CommandLineInterface {
 
     private static void startCLI(boolean shouldTerminate){
 
+        Diagram currentDiagram = null;
+
         while (!shouldTerminate) {
             int userChoice = getUserChoice();
 
             switch (userChoice) {
-                case 1 -> createNewDiagram();
-                case 2 -> viewDiagram(); // May call external menu method if it's implemented in a separate class
-                case 3 -> editDiagram(); // May call external menu method if it's implemented in a separate class
-                case 4 -> saveDiagram(); // May call external menu method if it's implemented in a separate class
+                case 1 -> currentDiagram = createNewDiagram(currentDiagram);
+                case 2 -> viewDiagram(currentDiagram); // May call external menu method if it's implemented in a separate class
+                case 3 -> editDiagram(currentDiagram); // May call external menu method if it's implemented in a separate class
+                case 4 -> saveDiagram(currentDiagram); // May call external menu method if it's implemented in a separate class
                 case 5 -> loadDiagram(); // May call external menu method if it's implemented in a separate class
                 case 6 -> help();
-                case 7 -> shouldTerminate = exit();
+                case 7 -> shouldTerminate = exit(currentDiagram);
                 default -> System.out.println("There is a bug in getUserChoice");
             }
         }
@@ -41,6 +50,7 @@ public class CommandLineInterface {
     /*
     * Description: This method will handle collecting and validating CLI input
     * Use Case: Call this to get a clean user input
+    * @return: Int representing the users choice
     * */
 
     private static int getUserChoice() {
@@ -78,6 +88,28 @@ public class CommandLineInterface {
     }
 
     /*
+    * Description: Gets a diagram title from the user
+    * Use case: Call in create diagram to get a title for the diagram constructor
+    * */
+    private static String getDiagramName(){
+        Scanner scan = new Scanner(System.in);
+        String userChoice = "";
+        while(true) {
+            try {
+                userChoice = scan.nextLine();
+
+                if(userChoice.length() < 1 || userChoice.length() > 50) {
+                    throw new IllegalArgumentException();
+                }
+                break;
+            }
+            catch(IllegalArgumentException e){
+                System.out.println("Please enter a title between 1 and 50 characters inclusive");
+            }
+        }
+        return userChoice;
+    }
+    /*
     * Description: Validates user input
     * Use Case: Validate user choice input
     * */
@@ -85,20 +117,121 @@ public class CommandLineInterface {
         return userInput >= 1 && userInput <= MAX_CHOICES;
     }
 
-    private static void createNewDiagram(){
-        //TODO: Implement
+    private static void savePrompt(Diagram diagram) {
+        char userChoice;
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("""
+                    1 - Save to Default Path
+                    2 - Save to Custom Path
+                    Any other key - Do Not Save
+                    """);
+
+
+        userChoice = scan.next().charAt(0);
+
+        switch (userChoice) {
+            case '1' -> saveToDefaultPath(diagram);
+            case '2' -> saveToCustomPath(diagram);
+            default -> System.out.println("Continuing without saving.");
+        }
     }
-    private static void viewDiagram(){
-        //TODO: Implement
+
+    private static void saveToDefaultPath(Diagram diagram) {
+        SaveLoadSystem.saveDefault("", diagram.getClassList());
+        System.out.println("Saved to the default path.");
     }
-    private static void editDiagram(){
-        //TODO: Implement
+
+    private static void saveToCustomPath(Diagram diagram) {
+        Scanner scan = new Scanner(System.in);
+        boolean saveSuccessful = false;
+
+        while (!saveSuccessful) {
+            System.out.println("Enter the custom file path:");
+            String customPath = scan.nextLine();
+
+            try {
+                Path filePath = Paths.get(customPath);
+                SaveLoadSystem.saveCustom(filePath.toString(), "", diagram.getClassList());
+                System.out.println("Saved to custom path: " + filePath);
+                saveSuccessful = true;
+            } catch (InvalidPathException e) {
+                System.out.println("Invalid file path. Please enter a valid path.");
+                char userChoice;
+
+                System.out.println("""
+                1 - Retry with a new path
+                2 - Save to Default Path
+                Any other key - Do Not Save
+                """);
+
+                userChoice = scan.next().charAt(0);
+                scan.nextLine();
+
+                switch (userChoice) {
+                    case '1', '2' -> {
+                        if (userChoice == '2') {
+                            saveToDefaultPath(diagram);
+                        }
+                    }
+                    default -> {
+                        System.out.println("Exiting without saving.");
+                        saveSuccessful = true;
+                    }
+                }
+            }
+        }
     }
-    private static void saveDiagram(){
-        //TODO: Implement
+
+
+
+    private static Diagram createNewDiagram(Diagram currentDiagram){
+        if(currentDiagram != null){
+            savePrompt(currentDiagram);
+        }
+
+        String diagramName = getDiagramName();
+        return new Diagram(diagramName);
     }
-    private static void loadDiagram(){
-        //TODO: Implement
+    private static void viewDiagram(Diagram currentDiagram){
+        if(currentDiagram == null){
+            System.out.println("There is no diagram currently loaded");
+            return;
+        }
+
+        System.out.println(currentDiagram);
+    }
+    private static void editDiagram(Diagram currentDiagram){
+        if(currentDiagram == null){
+            System.out.println("There is no diagram currently loaded");
+            return;
+        }
+
+        currentDiagram.menu();
+    }
+    private static void saveDiagram(Diagram currentDiagram){
+        savePrompt(currentDiagram);
+    }
+    private static Diagram loadDiagram() {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Enter the path to the file you want to load:");
+
+        String filePath = scan.nextLine();
+
+        try {
+            var loadedClasses = SaveLoadSystem.load(filePath);
+            System.out.println("Diagram loaded successfully.");
+            Diagram diagram = new Diagram("");
+            diagram.setClassList(loadedClasses);
+            return new Diagram("");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid file path. Please enter a valid path.");
+        } catch (Exception e) {
+            System.out.println("An error occurred while loading the diagram.");
+        }
+
+        return null;
     }
 
     /*
@@ -128,19 +261,12 @@ public class CommandLineInterface {
     /*
     * Description: This method will prompt the user to save, and then close the program
     * Use Case: Call this under 'exit' switch block
+    * @param currentDiagram: The active diagram
+    * @returns: true (Assign value to menu flag)
     * */
 
-    private static boolean exit() {
-        char userChoice;
-        Scanner scan = new Scanner(System.in);
-
-        System.out.println("Would you like to save before exiting?\n\n1 - Yes\nAnything else - No");
-        userChoice = scan.next().charAt(0); // Pull first entered character
-
-        if (userChoice == '1') {
-            //TODO: Call Save when implemented
-        }
-
+    private static boolean exit(Diagram currentDiagram) {
+        savePrompt(currentDiagram);
         return true;
     }
 }

@@ -31,9 +31,9 @@ public class DiagramTests {
 		UMLDiagram.setTitle("test");
 		List<Class> classList = UMLDiagram.getClassList();
 		
-		Class c = new Class("testClass", UMLDiagram);
+		Class c = new Class("testClass");
 		
-		UMLDiagram.addClass(c.getClassName());
+		UMLDiagram.addClass();
 		
 		assertEquals(c.getClass(), classList.get(0).getClass());
 		

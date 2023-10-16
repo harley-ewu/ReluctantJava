@@ -14,17 +14,14 @@ public class Class {
     private String className;
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
-    private List<Relationship> relationships = new ArrayList();
+    private List<Relationship> relationships = new ArrayList<>();
 
-
-    private Diagram diagram;
     public Class(final String className) {
         if (className == null) {
             throw new NullPointerException("Class name is null.");
         }
         this.attributes = new Attribute();
         this.className = className;
-        this.diagram = diagram;
     }
 
     /**
