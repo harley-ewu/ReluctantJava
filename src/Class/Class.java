@@ -3,7 +3,7 @@ package Class;
 import Attributes.Attribute;
 import Diagram.Diagram;
 import Relationships.Relationship;
-import com.github.cliftonlabs.json_simple.JsonObject;
+//import com.github.cliftonlabs.json_simple.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +29,13 @@ public class Class {
      * @return : returns a JsonObject of the Class object.
      */
 
-    public JsonObject toJsonObject(){
+    /*public JsonObject toJsonObject(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("name", className);
         jsonObject.put("attributes", attributes.toJsonObject());
         jsonObject.put("relationships", relationships);
         return jsonObject;
-    }
+    }*/
 
 
     /**
@@ -43,7 +43,7 @@ public class Class {
      * @param jsonObject : the JsonObject read from the load file.
      * @return : returns a Class object from the information in the JsonObject.
      */
-    public static Class fromJsonObject(JsonObject jsonObject){
+    /*public static Class fromJsonObject(JsonObject jsonObject){
         String className = (String) jsonObject.get("name");
         Attribute attributes = Attribute.fromJsonObject((JsonObject) jsonObject.get("attributes"));
         ArrayList<Relationship> relationships = (ArrayList<Relationship>) jsonObject.get("relationships");
@@ -51,7 +51,7 @@ public class Class {
         newClass.setAttributes(attributes);
         newClass.setRelationships(relationships);
         return newClass;
-    }
+    }*/
 
     /**
      * returns the current name of the class

@@ -1,7 +1,7 @@
 package CLI;
 
 import Diagram.Diagram;
-import SaveLoadSystem.SaveLoadSystem;
+//import SaveLoadSystem.SaveLoadSystem;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -38,7 +38,7 @@ public class CommandLineInterface {
                 case 1 -> currentDiagram = createNewDiagram(currentDiagram);
                 case 2 -> viewDiagram(currentDiagram);
                 case 3 -> editDiagram(currentDiagram);
-                case 4 -> saveDiagram(currentDiagram);
+                //case 4 -> saveDiagram(currentDiagram);
                 case 5 -> currentDiagram = loadDiagram();
                 case 6 -> help();
                 case 7 -> shouldTerminate = exit(currentDiagram);
@@ -118,7 +118,7 @@ public class CommandLineInterface {
         return userInput >= 1 && userInput <= MAX_CHOICES;
     }
 
-    private static void savePrompt(Diagram diagram) {
+    /*private static void savePrompt(Diagram diagram) {
         char userChoice;
         Scanner scan = new Scanner(System.in);
 
@@ -136,14 +136,14 @@ public class CommandLineInterface {
             case '2' -> saveToCustomPath(diagram);
             default -> System.out.println("Continuing without saving.");
         }
-    }
+    }*/
 
-    private static void saveToDefaultPath(Diagram diagram) {
+    /*private static void saveToDefaultPath(Diagram diagram) {
         SaveLoadSystem.saveDefault("", diagram.getClassList());
         System.out.println("Saved to the default path.");
-    }
+    }*/
 
-    private static void saveToCustomPath(Diagram diagram) {
+    /*private static void saveToCustomPath(Diagram diagram) {
         Scanner scan = new Scanner(System.in);
         boolean saveSuccessful = false;
 
@@ -182,14 +182,14 @@ public class CommandLineInterface {
                 }
             }
         }
-    }
+    }*/
 
 
 
     private static Diagram createNewDiagram(Diagram currentDiagram){
-        if(currentDiagram != null){
+        /*if(currentDiagram != null){
             savePrompt(currentDiagram);
-        }
+        }*/
 
         String diagramName = getDiagramName();
         return new Diagram(diagramName);
@@ -210,9 +210,9 @@ public class CommandLineInterface {
 
         currentDiagram.menu();
     }
-    private static void saveDiagram(Diagram currentDiagram){
+    /*private static void saveDiagram(Diagram currentDiagram){
         savePrompt(currentDiagram);
-    }
+    }*/
     private static Diagram loadDiagram() {
         Scanner scan = new Scanner(System.in);
 
@@ -221,10 +221,10 @@ public class CommandLineInterface {
         String filePath = scan.nextLine();
 
         try {
-            var loadedClasses = SaveLoadSystem.load(filePath);
+            //var loadedClasses = SaveLoadSystem.load(filePath);
             System.out.println("Diagram loaded successfully.");
             Diagram diagram = new Diagram("");
-            diagram.setClassList(loadedClasses);
+            //diagram.setClassList(loadedClasses);
             return new Diagram("");
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid file path. Please enter a valid path.");
@@ -267,7 +267,7 @@ public class CommandLineInterface {
     * */
 
     private static boolean exit(Diagram currentDiagram) {
-        savePrompt(currentDiagram);
+        //savePrompt(currentDiagram);
         return true;
     }
 }

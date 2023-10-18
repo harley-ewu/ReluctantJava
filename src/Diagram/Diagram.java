@@ -208,6 +208,10 @@ public class Diagram {
       if(findSingleClass(oldClassName) != null){
          System.out.println("Class exists. Enter new name for the class.");
          newClassName = this.scanner.nextLine();
+         while(newClassName.isEmpty()){
+            System.out.println("Please enter a non-blank class name.");
+            newClassName = this.scanner.nextLine();
+         }
          Class c = findSingleClass(oldClassName);
          if (c != null){
             c.setClassName(newClassName);
