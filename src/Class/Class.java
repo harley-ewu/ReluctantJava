@@ -1,7 +1,6 @@
 package Class;
 
 import Attributes.Attribute;
-import Diagram.Diagram;
 import Relationships.Relationship;
 //import com.github.cliftonlabs.json_simple.JsonObject;
 
@@ -104,7 +103,8 @@ public class Class {
      * addRelationship will search the array list and check to see if a relationship between two classes exists, if not, the user will be notified
      * and the attribute will not be added
      * @param relationshipType
-     * @param otherClassName
+     * @param class1
+     * @param class2
      * @param thisClassCardinality
      * @param otherClassCardinality
      * @param owner
@@ -150,7 +150,7 @@ public class Class {
     public Relationship getRelationship(final Class otherClass){
         Relationship relationship = null;
         for(int i = 0; i < relationships.size(); i++){
-            if(relationships.get(i).getOtherClassName() == otherClass){
+            if(relationships.get(i).getClass2() == otherClass){
                 relationship = relationships.get(i);
                 break;
             }

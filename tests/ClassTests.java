@@ -139,7 +139,7 @@ public class ClassTests {
 */
     @Test
     public void testRelationshipListEmpty() {
-        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Realization;
         Class otherClass = new Class("Other Class");
         int thisClassCardinality = 1;
         int otherClassCardinality = -1;
@@ -153,13 +153,13 @@ public class ClassTests {
 
     @Test
     public void testDisplayRelationships() {
-        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Realization;
         Class otherClass = new Class("Other Class 1");
         int thisClassCardinality = 1;
         int otherClassCardinality = -1;
         boolean owner = true;
 
-        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Association;
+        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Realization;
         Class otherClass2 = new Class("Other Class 2");
         int thisClassCardinality2 = 1;
         int otherClassCardinality2 = -1;
@@ -201,13 +201,13 @@ public class ClassTests {
         this.newClass.getAttributes().addAttribute("color");
         this.newClass.getAttributes().addAttribute("skin");
 
-        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Realization;
         Class otherClass = new Class("Other Class 1");
         int thisClassCardinality = 1;
         int otherClassCardinality = -1;
         boolean owner = true;
 
-        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Association;
+        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Realization;
         Class otherClass2 = new Class("Other Class 2");
         int thisClassCardinality2 = 1;
         int otherClassCardinality2 = -1;

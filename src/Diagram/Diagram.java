@@ -12,6 +12,7 @@ public class Diagram {
    
    private String title;
    private List<Class> classList = new ArrayList<Class>();
+   private List<Relationship> relationshipList = new ArrayList<Relationship>();
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -183,17 +184,9 @@ public class Diagram {
       }
       classList.remove(classList.get(i));
       
-      for(Class item : classList){
-         Relationship c1Relationship = deletedClass.getRelationship(item);
-         Relationship c2Relationship = item.getRelationship(deletedClass);
-
-         if(c1Relationship != null)
-         {
-            deletedClass.deleteRelationship(c1Relationship);
-         }
-         if(c2Relationship != null)
-         {
-            item.deleteRelationship(c2Relationship);
+      for(Relationship item : relationshipList){
+         if(item.getClass1() == deletedClass || item.getClass2() == deletedClass) {
+            this.deleteRelationship(item);
          }
       }
    }
@@ -253,6 +246,21 @@ public class Diagram {
       } else {
             choice = -99;
          }
+
+      System.out.println("What is the name of the first class?");
+      String ownerString = this.scanner.nextLine();
+      Class c1 = findSingleClass(ownerString);
+      if (c1 == null) {
+         System.out.println("Class does not exist");
+         return;
+      }
+      System.out.println("What is the name of the second class?");
+      String otherString = this.scanner.nextLine();
+      Class c2 = findSingleClass(otherString);
+      if (c2 == null) {
+         System.out.println("Class does not exist");
+         return;
+      }
 
       if (choice == 1) {
          this.addRelationship();
@@ -314,20 +322,7 @@ public class Diagram {
     * and builds relationships between the classes, then adds it to either of their relationship lists
     */
    public void addRelationship() {
-      System.out.println("What is the name of the owner class?");
-      String ownerString = this.scanner.nextLine();
-      Class c1 = findSingleClass(ownerString);
-      if (c1 == null) {
-         System.out.println("Class does not exist");
-         return;
-      }
-      System.out.println("What is the name of the other class?");
-      String otherString = this.scanner.nextLine();
-      Class c2 = findSingleClass(otherString);
-      if (c2 == null) {
-         System.out.println("Class does not exist");
-         return;
-      }
+
 
       Relationship.RelationshipType relationshipType = null;
       int c1Cardinality = -2;
@@ -343,7 +338,7 @@ public class Diagram {
             System.out.println("Please enter 1 through 4 as your choice");
          }
          else if(choice == 1){
-            relationshipType = Relationship.RelationshipType.Association;
+            relationshipType = Relationship.RelationshipType.Realization;
          }
          else if(choice == 2) {
             relationshipType = Relationship.RelationshipType.Aggregation;
@@ -352,7 +347,7 @@ public class Diagram {
             relationshipType = Relationship.RelationshipType.Composition;
          }
          else{
-            relationshipType = Relationship.RelationshipType.Generalization;
+            relationshipType = Relationship.RelationshipType.Inheritance;
          }
 
       }
@@ -375,7 +370,7 @@ public class Diagram {
 
       choice = 0;
       while(choice != 1 && choice != 2){
-         System.out.println("Which class is the owner?\n" +
+         System.out.println("Which class is the owner of the relationship?\n" +
                  "1. "+c1.getClassName()+"\n2. "+c2.getClassName()+"\n");
          choice = Integer.parseInt(this.scanner.nextLine());
 
@@ -390,23 +385,23 @@ public class Diagram {
          }
       }
 
-      c1.addRelationship(relationshipType, c2, c1Cardinality, c2Cardinality, owner);
-      c2.addRelationship(relationshipType, c1, c2Cardinality, c1Cardinality, !owner);
+      Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
+      relationshipList.add(relationship);
    }
    
 
       /*
-    * Finds out both classes beloning to the relationship and deletes the relationship from both of the classes corresponding lists
+    * Finds out both classes belonging to the relationship and deletes the relationship from both of the classes corresponding lists
     */
    public void deleteRelationship(){
-      System.out.println("What is the name of the owner class?");
+      System.out.println("What is the name of the first class?");
       String ownerString = this.scanner.nextLine();
       Class c1 = findSingleClass(ownerString);
       if (c1 == null) {
          System.out.println("Class does not exist");
          return;
       }
-      System.out.println("Whats is the name of the other class?");
+      System.out.println("Whats is the name of the second class?");
       String otherString = this.scanner.nextLine();
       Class c2 = findSingleClass(otherString);
       if (c2 == null) {
@@ -414,17 +409,16 @@ public class Diagram {
          return;
       }
 
-      Relationship c1Relationship = c1.getRelationship(c2);
-      Relationship c2Relationship = c2.getRelationship(c1);
+      Relationship relationship = null;
+      for(int i = 0; i <= relationshipList.size(); i++) {
+         if((relationshipList.get(i).getClass1() == c1 && relationshipList.get(i).getClass2() == c2)
+                 || (relationshipList.get(i).getClass1() == c2 && relationshipList.get(i).getClass2() == c1)) {
+            relationship = relationshipList.get(i);
+            break;
+         }
+      }
 
-      if(c1Relationship != null)
-      {
-         c1.deleteRelationship(c1Relationship);
-      }
-      if(c2Relationship != null)
-      {
-         c2.deleteRelationship(c2Relationship);
-      }
+      relationshipList.remove(relationship);
       
    }
 
