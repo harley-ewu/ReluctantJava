@@ -2,6 +2,7 @@ package SaveLoadSystem;
 
 import Diagram.Diagram;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -31,28 +32,17 @@ public class SaveLoadSystem {
 
     public static void saveCustomCLI(String path, String fileName, Diagram diagram){
 
-        if(path == null || path.isEmpty()){
-            throw new IllegalArgumentException("The file path cannot be null or empty.");
-        }
+        nullCheckPathAndFilename(path, fileName);
 
-        if(fileName == null || fileName.isEmpty()){
-            throw new IllegalArgumentException("The file name cannot be null or empty.");
-        }
-
-        File fileToBeSaved = new File(path + fileName + ".json");
+        Path filePath = Paths.get(path).resolve(fileName + ".json");
+        File fileToBeSaved = new File(filePath.toString());
 
         ConvertDiagramToJsonAndWriteToFile(diagram, fileToBeSaved);
     }
 
     public static Diagram loadDiagramCLI(String path, String fileName){
 
-        if(path == null || path.isEmpty()){
-            throw new IllegalArgumentException("The file path cannot be null or empty.");
-        }
-
-        if(fileName == null || fileName.isEmpty()){
-            throw new IllegalArgumentException("The file name cannot be null or empty.");
-        }
+        nullCheckPathAndFilename(path, fileName);
 
         File fileToBeLoaded = new File(path + fileName + ".json");
         Diagram diagram = null;
@@ -61,7 +51,6 @@ public class SaveLoadSystem {
             try{
                 FileReader fileReader = new FileReader(fileToBeLoaded);
                 Gson gson = new Gson();
-                //String jsonText = fileReader.toString();
                 diagram = gson.fromJson(fileReader, Diagram.class);
                 fileReader.close();
                 return diagram;
@@ -81,12 +70,22 @@ public class SaveLoadSystem {
     private static void ConvertDiagramToJsonAndWriteToFile(Diagram diagram, File fileToBeSaved) {
         try{
             FileWriter fileWriter = new FileWriter(fileToBeSaved);
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String jsonText = gson.toJson(diagram);
             fileWriter.write(jsonText);
             fileWriter.close();
         } catch (IOException e) {
             System.err.println("There was an error writing to the file");
+        }
+    }
+
+    private static void nullCheckPathAndFilename(String path, String fileName){
+        if(path == null || path.isEmpty()){
+            throw new IllegalArgumentException("The file path cannot be null or empty.");
+        }
+
+        if(fileName == null || fileName.isEmpty()){
+            throw new IllegalArgumentException("The file name cannot be null or empty.");
         }
     }
 }
