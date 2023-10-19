@@ -68,18 +68,24 @@ public class Diagram {
                System.out.println("Please enter a valid option, 1-8");
             }
             }while(choice < 1 && choice > 8);
+            String className = "";
             switch (choice) {
                //Add Class - name needed
                case 1:
-                  this.addClass();
+                  className = this.addClassPrompt();
+                  this.addClass(className);
+                  this.classMenu(this.classList.get(className));
                   break;
                //Delete Class - name needed
                case 2:
-                  this.deleteClass();
+                  Class deletedClass = this.deleteClassPrompt();
+                  this.deleteClass(deletedClass);
                   break;
                //Rename Class - current and new name needed
                case 3:
-                  this.renameClass();
+                  Class old = renameClassPromptOriginalName();
+                  String newName = renameClassPromptNewName(old);
+                  this.renameClass(old, newName);
                   break;
                //Edit Class - name needed
                case 4:
@@ -143,22 +149,26 @@ public class Diagram {
    /*
    Adds a class to the classList
    */
-   public void addClass(){
+   public void addClass(final String className){
+      
+      Class c = this.classList.get(className);
+      if (c == null) {
+         this.classList.put(className, new Class(className));
+      }
+      else {
+         System.out.println("Class already exists.");
+      }
+   }
+
+   public String addClassPrompt() {
       System.out.println("Enter a class name to add: ");
       String className = this.scanner.nextLine();
       while (className.isEmpty()) {
          System.out.println("Please enter a name between 1 and 50 characters inclusive");
          className = this.scanner.nextLine();
       }
-      Class c = this.classList.get(className);
-      if (c == null) {
-         Class classNew = new Class(className);
-         this.classList.put(className, new Class(className));
-         this.classMenu(classNew);
-      }
-      else {
-         System.out.println("Class already exists.");
-      }
+
+      return className;
    }
    
    /*
@@ -168,20 +178,11 @@ public class Diagram {
    - If relationship list contains relationship.otherClassName == deletedNameName
    - call current class that the loop is on, .deleterelationship(deletedClass)
    */
-   public void deleteClass(){
-      System.out.println("Enter a class name to delete: ");
-      String className = this.scanner.nextLine();
-      while (className.isEmpty()) {
-         System.out.println("Please enter a name between 1 and 50 characters inclusive");
-         className = this.scanner.nextLine();
-      }
-      Class deletedClass = findSingleClass(className);
-      if (deletedClass == null) {
-         System.out.println("Class does not exist.");
+   public void deleteClass(final Class deletedClass){
+      if (deletedClass.getClassName().isEmpty()) {
          return;
       }
-
-      classList.remove(className);
+      classList.remove(deletedClass.getClassName());
       
       for(Class item : classList.values()){
          Relationship c1Relationship = deletedClass.getRelationship(item);
@@ -198,29 +199,74 @@ public class Diagram {
       }
    }
    
+   public Class deleteClassPrompt() {
+      System.out.println("Enter a class name to delete: ");
+      String className = this.scanner.nextLine();
+      while (className.isEmpty()) {
+         System.out.println("Please enter a name between 1 and 50 characters inclusive");
+         className = this.scanner.nextLine();
+      }
+      Class deletedClass = findSingleClass(className);
+      if (deletedClass == null) {
+         System.out.println("Class does not exist.");
+         return null;
+      }
+
+      return deletedClass;
+   }
+
+
    /*
    Renames a class in the classList
    */
-   public void renameClass() {
-      String oldClassName, newClassName;
+   public void renameClass(final Class old, final String newName) {
+      //need to delete from hashmap while retaining temp class object and then readd with new name
+      //also need to change the name of the actual class object
+      if(old != null && !(newName.isEmpty())){
+         Class temp = this.classList.get(old.getClassName());
+         this.classList.remove(temp.getClassName());
+         temp.setClassName(newName);
+         this.classList.put(newName, temp);
+      }
+      else{
+         System.out.println("Bad Parameters");
+      }
+      
+      
+   }
+
+   /*
+    * Separated the prompt of the original class name into its own method so I could do proper testing
+    */
+   public Class renameClassPromptOriginalName() {
+      String oldClassName;
       System.out.println("Enter the original name of the class.");
       oldClassName = this.scanner.nextLine();
-      if(findSingleClass(oldClassName) != null){
-         System.out.println("Class exists. Enter new name for the class.");
+      Class c = findSingleClass(oldClassName);
+      if(c != null){
+         System.out.println("Class exists.");
+         return c;
+      }
+      else {
+         System.out.println("Class does not exist.");
+         return null;
+      }
+   }
+
+   /*
+    * Separated prompting of new class name to separate method so I could test
+    */
+   public String renameClassPromptNewName(final Class old) {
+      String newClassName = "";
+      if(old != null) {
+         System.out.println("Enter a new name for the class.");
          newClassName = this.scanner.nextLine();
          while (newClassName.isEmpty()) {
             System.out.println("Please enter a name between 1 and 50 characters inclusive");
             newClassName = this.scanner.nextLine();
          }
-         Class c = findSingleClass(oldClassName);
-         if (c != null){
-            c.setClassName(newClassName);
-         }
       }
-      else {
-         System.out.println("Class does not exist.");
-      }
-      
+      return newClassName;
    }
    
 
@@ -441,7 +487,6 @@ public class Diagram {
          diagramString += c.toString();
       }
       
-
       return "Diagram: " + diagramString;
    }
    
