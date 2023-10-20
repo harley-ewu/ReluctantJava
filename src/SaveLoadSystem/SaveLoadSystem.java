@@ -47,9 +47,7 @@ public class SaveLoadSystem {
         Path filePath = Paths.get(path).resolve(fileName + ".json");
         File fileToBeLoaded = new File(filePath.toString());
 
-        Diagram diagram = loadSavedJsonTextAndConvertToDiagramObject(fileToBeLoaded);
-
-        return diagram;
+        return loadSavedJsonTextAndConvertToDiagramObject(fileToBeLoaded);
     }
 
     private static void ConvertDiagramToJsonAndWriteToFile(Diagram diagram, File fileToBeSaved) {
