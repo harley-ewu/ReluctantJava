@@ -44,13 +44,14 @@ public class SaveLoadSystem {
 
         nullCheckPathAndFilename(path, fileName);
 
-        File fileToBeLoaded = new File(path + fileName + ".json");
+        Path filePath = Paths.get(path).resolve(fileName + ".json");
+        File fileToBeLoaded = new File(filePath.toString());
         Diagram diagram = null;
 
         if(fileToBeLoaded.exists()){
             try{
                 FileReader fileReader = new FileReader(fileToBeLoaded);
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 diagram = gson.fromJson(fileReader, Diagram.class);
                 fileReader.close();
                 return diagram;

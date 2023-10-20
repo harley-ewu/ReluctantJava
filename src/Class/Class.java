@@ -3,6 +3,7 @@ package Class;
 import Attributes.Attribute;
 import Diagram.Diagram;
 import Relationships.Relationship;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +11,12 @@ import java.util.Scanner;
 
 public class Class {
 
+    @Expose
     private String className;
+    @Expose
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
+    @Expose
     private List<Relationship> relationships = new ArrayList<>();
 
     public Class(final String className) {
