@@ -46,24 +46,8 @@ public class SaveLoadSystem {
 
         Path filePath = Paths.get(path).resolve(fileName + ".json");
         File fileToBeLoaded = new File(filePath.toString());
-        Diagram diagram = null;
 
-        if(fileToBeLoaded.exists()){
-            try{
-                FileReader fileReader = new FileReader(fileToBeLoaded);
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                diagram = gson.fromJson(fileReader, Diagram.class);
-                fileReader.close();
-                return diagram;
-            } catch (FileNotFoundException e) {
-                System.err.println("There was an error trying to find the file.");
-            } catch (IOException e) {
-                System.err.println("There was an error opening or closing the file.");
-            }
-        }
-
-        System.out.println("The file could not be found or does not exist.");
-        System.out.println("Try checking the file path and file name for typos.");
+        Diagram diagram = loadSavedJsonTextAndConvertToDiagramObject(fileToBeLoaded);
 
         return diagram;
     }
@@ -78,6 +62,27 @@ public class SaveLoadSystem {
         } catch (IOException e) {
             System.err.println("There was an error writing to the file");
         }
+    }
+
+    private static Diagram loadSavedJsonTextAndConvertToDiagramObject(File fileToBeLoaded){
+
+        Diagram diagram;
+
+        if(fileToBeLoaded.exists()){
+            try{
+                FileReader fileReader = new FileReader(fileToBeLoaded);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                diagram = gson.fromJson(fileReader, Diagram.class);
+                fileReader.close();
+                return diagram;
+            } catch (FileNotFoundException e) {
+                System.err.println("There was an error trying to find the file.");
+                System.err.println("Try checking the file path and file name for typos.");
+            } catch (IOException e) {
+                System.err.println("There was an error opening or closing the file.");
+            }
+        }
+        return null;
     }
 
     private static void nullCheckPathAndFilename(String path, String fileName){
