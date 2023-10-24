@@ -3,15 +3,15 @@ package Diagram;
 import Class.Class;
 import Relationships.Relationship;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Scanner;
 
 //Class name subject to change for what we name the project
 public class Diagram {
    
    private String title;
-   private List<Class> classList = new ArrayList<Class>();
+   //private List<Class> classList = new ArrayList<Class>();
+   private HashMap<String, Class> classList;
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -21,7 +21,7 @@ public class Diagram {
       }
       //if diagram comes in as null/empty, should we initialize an empty arraylist?
       this.title = title;
-    	this.classList = new ArrayList<>();
+    	this.classList = new HashMap<>();
 
    }
    
@@ -40,7 +40,7 @@ public class Diagram {
    /*
     * Getter for classList
     * */
-   public List<Class> getClassList(){
+   public HashMap<String, Class> getClassList(){
 	   return this.classList;
    }
 
@@ -48,7 +48,7 @@ public class Diagram {
    * Setter for classList
    * */
 
-   public void setClassList(List<Class> classList){
+   public void setClassList(HashMap<String, Class> classList){
       this.classList = classList;
    }
    /*
@@ -68,18 +68,24 @@ public class Diagram {
                System.out.println("Please enter a valid option, 1-8");
             }
             }while(choice < 1 && choice > 8);
+            String className = "";
             switch (choice) {
                //Add Class - name needed
                case 1:
-                  this.addClass();
+                  className = this.addClassPrompt();
+                  this.addClass(className);
+                  this.classMenu(this.classList.get(className));
                   break;
                //Delete Class - name needed
                case 2:
-                  this.deleteClass();
+                  Class deletedClass = this.deleteClassPrompt();
+                  this.deleteClass(deletedClass);
                   break;
                //Rename Class - current and new name needed
                case 3:
-                  this.renameClass();
+                  Class old = renameClassPromptOriginalName();
+                  String newName = renameClassPromptNewName(old);
+                  this.renameClass(old, newName);
                   break;
                //Edit Class - name needed
                case 4:
@@ -143,20 +149,26 @@ public class Diagram {
    /*
    Adds a class to the classList
    */
-   public void addClass(){
+   public void addClass(final String className){
+      
+      Class c = this.classList.get(className);
+      if (c == null) {
+         this.classList.put(className, new Class(className));
+      }
+      else {
+         System.out.println("Class already exists.");
+      }
+   }
+
+   public String addClassPrompt() {
       System.out.println("Enter a class name to add: ");
       String className = this.scanner.nextLine();
-      
-      for(int i = 0; i < this.classList.size(); i++) {
-         if (className == this.classList.get(i).getClassName()){
-            System.out.println("Class name already exists.");
-            return;
-         }
+      while (className.isEmpty()) {
+         System.out.println("Please enter a name between 1 and 50 characters inclusive");
+         className = this.scanner.nextLine();
       }
 
-      Class c = new Class(className);
-      this.classList.add(c);
-      this.classMenu(c);
+      return className;
    }
    
    /*
@@ -166,24 +178,13 @@ public class Diagram {
    - If relationship list contains relationship.otherClassName == deletedNameName
    - call current class that the loop is on, .deleterelationship(deletedClass)
    */
-   public void deleteClass(){
-      System.out.println("Enter a class name to delete: ");
-      String className = this.scanner.nextLine();
-      Class deletedClass = findSingleClass(className);
-      if (deletedClass == null) {
-         System.out.println("Class does not exist.");
+   public void deleteClass(final Class deletedClass){
+      if (deletedClass.getClassName().isEmpty()) {
          return;
       }
-
-      int i = 0;
-      for (i = 0; i < classList.size(); i++){
-         if(classList.get(i) == deletedClass) {
-            break;
-         }
-      }
-      classList.remove(classList.get(i));
+      classList.remove(deletedClass.getClassName());
       
-      for(Class item : classList){
+      for(Class item : classList.values()){
          Relationship c1Relationship = deletedClass.getRelationship(item);
          Relationship c2Relationship = item.getRelationship(deletedClass);
 
@@ -198,29 +199,74 @@ public class Diagram {
       }
    }
    
+   public Class deleteClassPrompt() {
+      System.out.println("Enter a class name to delete: ");
+      String className = this.scanner.nextLine();
+      while (className.isEmpty()) {
+         System.out.println("Please enter a name between 1 and 50 characters inclusive");
+         className = this.scanner.nextLine();
+      }
+      Class deletedClass = findSingleClass(className);
+      if (deletedClass == null) {
+         System.out.println("Class does not exist.");
+         return null;
+      }
+
+      return deletedClass;
+   }
+
+
    /*
    Renames a class in the classList
    */
-   public void renameClass() {
-      String oldClassName, newClassName;
+   public void renameClass(final Class old, final String newName) {
+      //need to delete from hashmap while retaining temp class object and then readd with new name
+      //also need to change the name of the actual class object
+      if(old != null && !(newName.isEmpty())){
+         Class temp = this.classList.get(old.getClassName());
+         this.classList.remove(temp.getClassName());
+         temp.setClassName(newName);
+         this.classList.put(newName, temp);
+      }
+      else{
+         System.out.println("Bad Parameters");
+      }
+      
+      
+   }
+
+   /*
+    * Separated the prompt of the original class name into its own method so I could do proper testing
+    */
+   public Class renameClassPromptOriginalName() {
+      String oldClassName;
       System.out.println("Enter the original name of the class.");
       oldClassName = this.scanner.nextLine();
-      if(findSingleClass(oldClassName) != null){
-         System.out.println("Class exists. Enter new name for the class.");
-         newClassName = this.scanner.nextLine();
-         while(newClassName.isEmpty()){
-            System.out.println("Please enter a non-blank class name.");
-            newClassName = this.scanner.nextLine();
-         }
-         Class c = findSingleClass(oldClassName);
-         if (c != null){
-            c.setClassName(newClassName);
-         }
+      Class c = findSingleClass(oldClassName);
+      if(c != null){
+         System.out.println("Class exists.");
+         return c;
       }
       else {
          System.out.println("Class does not exist.");
+         return null;
       }
-      
+   }
+
+   /*
+    * Separated prompting of new class name to separate method so I could test
+    */
+   public String renameClassPromptNewName(final Class old) {
+      String newClassName = "";
+      if(old != null) {
+         System.out.println("Enter a new name for the class.");
+         newClassName = this.scanner.nextLine();
+         while (newClassName.isEmpty()) {
+            System.out.println("Please enter a name between 1 and 50 characters inclusive");
+            newClassName = this.scanner.nextLine();
+         }
+      }
+      return newClassName;
    }
    
 
@@ -230,14 +276,15 @@ public class Diagram {
    public void editClass(){
       System.out.println("Enter name of class to edit: ");
       String className = this.scanner.nextLine();
+      while (className.isEmpty()) {
+         System.out.println("Please enter a name between 1 and 50 characters inclusive");
+         className = this.scanner.nextLine();
+      }
       if(findSingleClass(className) == null){
          System.out.println("Class does not exist.");
+         return;
       }
-      for (int i = 0; i < this.classList.size(); i++){
-         if(this.classList.get(i).getClassName().equals(className)) {
-            this.classList.get(i).subMenu();
-         }
-      }
+      this.classList.get(className).subMenu();
    }
 
    /*
@@ -275,10 +322,8 @@ public class Diagram {
       }
       else {
          System.out.println("Classes: ");
-         for(int i = 0; i < this.classList.size(); i++){
-            System.out.println(this.classList.get(i).toString());
+         System.out.println(this.classList.values());
          }
-      }
       
    } 
    
@@ -290,12 +335,8 @@ public class Diagram {
          System.out.println("Invalid class name.");
          return null;
       }
-      for (int i = 0; i < this.classList.size(); i++) {
-         if (this.classList.get(i).getClassName().equals(className)) {
-            return this.classList.get(i);
-         }
-      }
-      return null;
+      Class c = this.classList.get(className);
+      return c;
    }
    
    /*
@@ -307,6 +348,9 @@ public class Diagram {
       Class c = findSingleClass(className);
       if(c != null) {
          System.out.println(c.toString());
+      }
+      else {
+         System.out.println("Bug");
       }
    }
    /*
@@ -435,15 +479,14 @@ public class Diagram {
    */
    public String toString(){
       if (this.classList == null) {
-         return "Diagram does not exist.";
+         return this.title + " is empty.";
       }
       String diagramString = "";
       diagramString += this.title + "\n\n";
-      
-      for(int i = 0; i < this.classList.size(); i++){
-         diagramString += this.classList.get(i).toString();
+      for (Class c : this.classList.values()){
+         diagramString += c.toString();
       }
-
+      
       return "Diagram: " + diagramString;
    }
    
