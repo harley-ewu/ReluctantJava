@@ -1,4 +1,7 @@
 import org.junit.jupiter.api.Test;
+import CLI.CommandLineInterface;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,24 +11,33 @@ class CommandLineInterfaceTest {
     @Test
     void testIsValidUserInputForValidInputs() throws Exception {
         Method method = CLI.CommandLineInterface.class.getDeclaredMethod("isValidUserInput", int.class);
+        Field maxChoicesField = CommandLineInterface.class.getDeclaredField("MAX_CHOICES");
+
+        maxChoicesField.setAccessible(true);
         method.setAccessible(true);
 
-        assertTrue((Boolean) method.invoke(null, 1));
-        assertTrue((Boolean) method.invoke(null, 2));
-        assertTrue((Boolean) method.invoke(null, 3));
-        assertTrue((Boolean) method.invoke(null, 4));
-        assertTrue((Boolean) method.invoke(null, 5));
+        int maxChoices = (int) maxChoicesField.get(CommandLineInterface.class);
+
+        for(int i = 1; i < (int) maxChoicesField.get(CommandLineInterface.class); i++){
+            assertTrue((Boolean) method.invoke(null, i));
+        }
     }
 
     @Test
     void testIsValidUserInputForInvalidInputs() throws Exception {
         Method method = CLI.CommandLineInterface.class.getDeclaredMethod("isValidUserInput", int.class);
+        Field maxChoicesField = CommandLineInterface.class.getDeclaredField("MAX_CHOICES");
+
+        maxChoicesField.setAccessible(true);
         method.setAccessible(true);
 
-        // Testing invalid inputs
+        int maxChoices = (int) maxChoicesField.get(CommandLineInterface.class);
+
+        for(int i = maxChoices + 1; i < 100; i++){
+            assertFalse((Boolean) method.invoke(null, (int) (Math.random() * 100) + maxChoices + 1));
+        }
+
         assertFalse((Boolean) method.invoke(null, 0));
-        assertFalse((Boolean) method.invoke(null, 6));
         assertFalse((Boolean) method.invoke(null, -1));
-        assertFalse((Boolean) method.invoke(null, 100));
     }
 }

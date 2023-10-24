@@ -1,6 +1,6 @@
+import Class.Class;
 import Attributes.Attribute;
 import SaveLoadSystem.SaveLoadSystem;
-import Class.Class;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SaveLoadSystemTest {
 
@@ -68,9 +69,8 @@ public class SaveLoadSystemTest {
 
         //Initialize the test class, the ArrayList to store the test class,
         //the test attribute, the save/load class, and get the path to the default directory.
-        Attribute attribute = new Attribute("testAttribute");
-        Class testClass = new Class("test", attribute);
-        ArrayList<Class> list = new ArrayList<>();
+        Class testClass = new Class("test");
+        List<Class> list = new ArrayList<>();
         SaveLoadSystem saveLoad = new SaveLoadSystem();
         String defaultPath = System.getProperty("user.home");
 

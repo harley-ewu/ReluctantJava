@@ -1,33 +1,40 @@
+/*
 package SaveLoadSystem;
+
+import Class.Class;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 
-import Class.Class;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.List;
 
+*/
 /**
  * Description: This class will contain code regarding the save/load system
  * Use Case: Used to save or load a project.
- */
+ *//*
+
 public class SaveLoadSystem {
 
     public SaveLoadSystem(){}
 
-    /**
+    */
+/**
      * Description: Saves the project to the home directory of the user.
      * Use case: Call if user wants to save to the default directory.
      * @param filename: the name of the file to be saved
      * @param classList: the list of classes that need to be saved
-     */
-    public void saveDefault(String filename, ArrayList<Class> classList){
+     *//*
+
+    public static void saveDefault(String filename, List<Class> classList){
 
         if(filename == null || filename.isEmpty()) {
             throw new IllegalArgumentException("The filename cannot be null or empty.");
@@ -47,14 +54,16 @@ public class SaveLoadSystem {
         writeToFile(filePath, jsonArray);
     }
 
-    /**
+    */
+/**
      * Description: Saves the project to a specified file path.
      * Use case: Call if user wants to save project to specific directory.
      * @param path: the file path that the file will be saved to
      * @param filename: the name of the file to be saved
      * @param classList: the list of classes to be saved
-     */
-    public void saveCustom(String path, String filename, ArrayList<Class> classList) {
+     *//*
+
+    public static void saveCustom(String path, String filename, List<Class> classList) {
 
         if(path == null) {
             throw new IllegalArgumentException("The file path is null.");
@@ -79,42 +88,44 @@ public class SaveLoadSystem {
 
     }
 
-    /**
+    */
+/**
      * Description: Loads the project file from a specific file path.
      * Use case: Call if user wants to load a project.
      * @param path: the path to the file that the user wishes to load
-     * @return : An ArrayList containing the classes saved in the project file.
-     */
-    public ArrayList<Class> load(String path){
+     * @return : A List containing the classes saved in the project file.
+     *//*
+
+    public static List<Class> load(String path){
 
         if(path == null || path.isEmpty()){
             throw new IllegalArgumentException("The file path cannot be null or empty.");
         }
 
-        ArrayList<Class> classList = new ArrayList<>();
+        List<Class> classList = new ArrayList<>();
         Path filepath = Paths.get(path);
 
         String jsonText = convertJsonTextToString(filepath);
 
         JsonArray jsonArray = convertStringToJsonArray(jsonText);
 
-        loadUmlClassesIntoArrayList(jsonArray, classList);
+        loadUmlClassesIntoList(jsonArray, classList);
 
         return classList;
     }
 
-    private Path getDefaultPath(String filename){
+    private static Path getDefaultPath(String filename){
         String home = System.getProperty("user.home");
         return Paths.get(home).resolve(filename + ".json");
     }
 
-    private void fillJsonArray(ArrayList<Class> classList, JsonArray array){
+    private static void fillJsonArray(List<Class> classList, JsonArray array){
         for (Class classes : classList) {
             array.add(classes.toJsonObject());
         }
     }
 
-    private void writeToFile(Path filePath, JsonArray array) {
+    private static void writeToFile(Path filePath, JsonArray array) {
         String jsonText = Jsoner.serialize(array);
 
         try {
@@ -124,7 +135,7 @@ public class SaveLoadSystem {
         }
     }
 
-    private String convertJsonTextToString(Path filepath){
+    private static String convertJsonTextToString(Path filepath){
         String text;
 
         try{
@@ -136,7 +147,7 @@ public class SaveLoadSystem {
         return text;
     }
 
-    private JsonArray convertStringToJsonArray(String jsonText){
+    private static JsonArray convertStringToJsonArray(String jsonText){
         JsonArray array;
 
         try{
@@ -148,7 +159,7 @@ public class SaveLoadSystem {
         return array;
     }
 
-    private void loadUmlClassesIntoArrayList(JsonArray jsonArray, ArrayList<Class> classList){
+    private static void loadUmlClassesIntoList(JsonArray jsonArray, List<Class> classList){
         for(Object object : jsonArray){
             JsonObject jsonObject = (JsonObject) object;
             Class umlClass = Class.fromJsonObject(jsonObject);
@@ -158,3 +169,4 @@ public class SaveLoadSystem {
 
 
 }
+*/
