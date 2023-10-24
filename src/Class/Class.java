@@ -1,9 +1,7 @@
 package Class;
 
 import Attributes.Attribute;
-import Diagram.Diagram;
 import Relationships.Relationship;
-//import com.github.cliftonlabs.json_simple.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -241,6 +239,18 @@ public class Class {
         }
 
     }
+
+    public String help() {
+        String help = "How to use this menu:\n" +
+                "1. Add attribute -- prompts user to enter a name for a new attribute\n" +
+                "2. Delete attribute -- prompts user to enter a name of an (existing) attribute to delete\n" +
+                "3. Rename attriubte -- prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute\n" +
+                "4. Display relationships -- displays all relationships assigned to the class\n" +
+                "5. Display all contents -- displays the contents of the class including: name, attributes, and relationships\n" +
+                "6. Return to Diagram Menu -- returns the user to the diagram menu holding the class\n";
+
+        return help;
+    }
     
     /**
      * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
@@ -254,7 +264,7 @@ public class Class {
             do {
                 System.out.println("\nEdit menu for the " + this.getClassName() + " class\n");
                 System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Rename Attribute" +
-                        "\n4.Display attributes\n5.Display relationships\n6.Display all contents\n7.Return to Diagram Menu");
+                        "\n4.Display attributes\n5.Display relationships\n6.Display all contents\n7.Return to Diagram Menu\n8.Help");
                 String op = scanner.nextLine();
                 if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
                     choice = Integer.parseInt(op);
@@ -263,7 +273,7 @@ public class Class {
                     System.out.println("Please enter a valid option, 1-7");
                 }
 
-            } while (choice < 1 || choice > 7);
+            } while (choice < 1 || choice > 8);
 
             switch (choice) {
 
@@ -288,6 +298,8 @@ public class Class {
                 case 7: //return to diagram menu
                     on = false;
                     break;
+                case 8: //help
+                    System.out.println(this.help());
                 default:
                     break;
             }
