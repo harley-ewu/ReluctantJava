@@ -13,7 +13,7 @@ public class Class {
     private String className;
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
-    private List<Relationship> relationships = new ArrayList<>();
+    //private List<Relationship> relationships = new ArrayList<>();
 
     public Class(final String className) {
         if (className == null) {
@@ -71,10 +71,11 @@ public class Class {
         return this.attributes;
     }
 
+    /*
     public ArrayList getRelationships(){
         return new ArrayList<>(this.relationships);
     }
-
+    */
     /**
      * description: used to set a name for the class or rename a class
      * @param newClassName
@@ -109,6 +110,7 @@ public class Class {
      * @param otherClassCardinality
      * @param owner
      */
+    /*
     public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality,
                                 final int otherClassCardinality, final boolean owner) {
         Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
@@ -122,13 +124,6 @@ public class Class {
         }
         relationships.add(newRelationship);
     }
-
-    /**
-     * description: delete relationship will take in a relationship object and search the relationship array list to see if the relationship exists
-     * if not, the user will be notified and nothing will be deleted
-     * @param relationship
-     */
-
     public void deleteRelationship(final Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
@@ -140,13 +135,6 @@ public class Class {
             System.out.println("This relationship is not assigned to this class.");
         }
     }
-
-    /**
-     * description: getRelationship will search the relationship list for a desired related class, if found it will return the class to the user
-     * @param otherClass
-     * @return
-     */
-
     public Relationship getRelationship(final Class otherClass){
         Relationship relationship = null;
         for(int i = 0; i < relationships.size(); i++){
@@ -162,7 +150,7 @@ public class Class {
     public void setRelationships(ArrayList<Relationship> relationship){
         this.relationships = relationship;
     }
-
+    */
     /**
      * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
      */

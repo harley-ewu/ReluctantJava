@@ -3,6 +3,7 @@ package Diagram;
 import Class.Class;
 import Relationships.Relationship;
 
+import javax.management.relation.Relation;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class Diagram {
    private String title;
    //private List<Class> classList = new ArrayList<Class>();
    private HashMap<String, Class> classList;
+   private HashMap<String, Relationship> relationshipList;
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -51,6 +53,12 @@ public class Diagram {
    public void setClassList(HashMap<String, Class> classList){
       this.classList = classList;
    }
+
+   //Getter for RelationshipList
+   public HashMap<String, Relationship> getRelationshipList() { return this.relationshipList; }
+   //Setter for RelationshipList
+   public void setRelationshipList(HashMap<String, Relationship> relationshipList) { this.relationshipList = relationshipList; }
+
    /*
    Menu of choices once inside an existing diagram, or when creating a new diagram
    */
@@ -185,13 +193,7 @@ public class Diagram {
       classList.remove(deletedClass.getClassName());
       
       for(Class item : classList.values()){
-         Relationship c1Relationship = deletedClass.getRelationship(item);
-         Relationship c2Relationship = item.getRelationship(deletedClass);
-
-         if(c1Relationship != null)
-         {
-            deletedClass.deleteRelationship(c1Relationship);
-         }
+         this.deleteRelationship(deletedClass, item);
       }
    }
    
@@ -313,10 +315,10 @@ public class Diagram {
       }
 
       if (choice == 1) {
-         this.addRelationship();
+         this.addRelationship(c1, c2);
       }
       else if(choice == 2) {
-         this.deleteRelationship();
+         this.deleteRelationship(c1, c2);
       }
       else {
          System.out.println("Invalid option");
@@ -368,7 +370,7 @@ public class Diagram {
     * Prompts user for both class names, then prompts for all relevant relationship information 
     * and builds relationships between the classes, then adds it to either of their relationship lists
     */
-   public void addRelationship() {
+   public void addRelationship(Class c1, Class c2) {
 
 
       Relationship.RelationshipType relationshipType = null;
@@ -433,39 +435,21 @@ public class Diagram {
       }
 
       Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
-      relationshipList.add(relationship);
+      String relationshipName = c1.getClassName() + c2.getClassName();
+      relationshipList.put(relationshipName, relationship);
    }
    
 
       /*
     * Finds out both classes belonging to the relationship and deletes the relationship from both of the classes corresponding lists
     */
-   public void deleteRelationship(){
-      System.out.println("What is the name of the first class?");
-      String ownerString = this.scanner.nextLine();
-      Class c1 = findSingleClass(ownerString);
-      if (c1 == null) {
-         System.out.println("Class does not exist");
-         return;
-      }
-      System.out.println("Whats is the name of the second class?");
-      String otherString = this.scanner.nextLine();
-      Class c2 = findSingleClass(otherString);
-      if (c2 == null) {
-         System.out.println("Class does not exist");
-         return;
-      }
+   public void deleteRelationship(final Class c1, final Class c2){
 
-      Relationship relationship = null;
-      for(int i = 0; i <= relationshipList.size(); i++) {
-         if((relationshipList.get(i).getClass1() == c1 && relationshipList.get(i).getClass2() == c2)
-                 || (relationshipList.get(i).getClass1() == c2 && relationshipList.get(i).getClass2() == c1)) {
-            relationship = relationshipList.get(i);
-            break;
-         }
-      }
+      String relationshipName = c1.getClassName()+c2.getClassName();
+      String relationshipName2 = c2.getClassName()+c1.getClassName();
 
-      relationshipList.remove(relationship);
+      relationshipList.remove(relationshipName);
+      relationshipList.remove(relationshipName2);
       
    }
 
