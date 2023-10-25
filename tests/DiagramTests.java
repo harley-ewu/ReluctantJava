@@ -23,7 +23,7 @@ public class DiagramTests {
 	@Test 
 	void nullClassList() {
 		Diagram diagram = new Diagram("");
-		assertEquals(new ArrayList<>(), diagram.getClassList());
+		assertEquals(new HashMap<String, Class>(), diagram.getClassList());
 	}
 	
 	@Test void testAddClass() {
@@ -35,7 +35,7 @@ public class DiagramTests {
 		
 		UMLDiagram.addClass(c.getClassName());
 		
-		assertEquals(c.getClass(), classList.get(0).getClass());
+		assertEquals(c, classList.get(c.getClassName()).getClass());
 		
 	}
 }

@@ -21,17 +21,17 @@ public class Relationship {
    private boolean owner; //meaning the "contains" side in Aggregation or Composition, or the class that others are Inheriting from in Generalization.
    
    
-   public Relationship(final RelationshipType relationshipType, final Class class1, final Class class2, final int thisClassCardinality,
-                       final int otherClassCardinality, final boolean owner) throws IllegalArgumentException {
-      if(relationshipType == null || class1 == null || class2 == null || thisClassCardinality < -1 || otherClassCardinality < -1) {
+   public Relationship(final RelationshipType relationshipType, final Class class1, final Class class2, final int class1Cardinality,
+                       final int class2Cardinality, final boolean owner) throws IllegalArgumentException {
+      if(relationshipType == null || class1 == null || class2 == null || class1Cardinality < -1 || class2Cardinality < -1) {
          throw new IllegalArgumentException("Invalid Arguments");
       }
 
       this.relationshipType = relationshipType;
       this.class1 = class1;
       this.class2 = class2;
-      this.class1Cardinality = thisClassCardinality;
-      this.class2Cardinality = otherClassCardinality;
+      this.class1Cardinality = class1Cardinality;
+      this.class2Cardinality = class2Cardinality;
       this.owner = owner;
    }
    
@@ -94,25 +94,25 @@ public class Relationship {
       if(this.class1Cardinality == -1 && this.class2Cardinality == -1) {
          str = this.class1.getClassName() + " has a " + this.relationshipType + " relationship with " + this.class2.getClassName() + "\n"
                  + "Owner: " + this.owner + "\n"
-                 + "This Class Cardinality: *\n"
+                 + this.class1.getClassName() +" Class Cardinality: *\n"
                  + this.class2.getClassName() + " Class Cardinality: *\n";
       }
       else if(this.class1Cardinality == -1){
          str = this.class1.getClassName() + " has a " + this.relationshipType + " relationship with " + this.class2.getClassName() + "\n"
                  + "Owner: " + this.owner + "\n"
-                 + "This Class Cardinality: *\n"
+                 + this.class1.getClassName() +" Class Cardinality: *\n"
                  + this.class2.getClassName() + " Class Cardinality: " + this.class2Cardinality + "\n";
       }
       else if(this.class2Cardinality == -1){
          str = this.class1.getClassName() + " has a " + this.relationshipType + " relationship with " + this.class2.getClassName() + "\n"
                  + "Owner: " + this.owner + "\n"
-                 + "This Class Cardinality: " + this.class1Cardinality + "\n"
+                 + this.class1.getClassName() +" Class Cardinality: " + this.class1Cardinality + "\n"
                  + this.class2.getClassName() + " Class Cardinality: *\n";
       }
       else {
          str = this.class1.getClassName() + " has a " + this.relationshipType + " relationship with " + this.class2.getClassName() + "\n"
                  + "Owner: " + this.owner + "\n"
-                 + "This Class Cardinality: " + this.class1Cardinality + "\n"
+                 + this.class1.getClassName() +" Class Cardinality: " + this.class1Cardinality + "\n"
                  + this.class2.getClassName() + " Class Cardinality: " + this.class2Cardinality + "\n";
       }
 
