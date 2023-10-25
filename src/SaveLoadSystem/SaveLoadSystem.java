@@ -53,7 +53,9 @@ public class SaveLoadSystem {
     private static void ConvertDiagramToJsonAndWriteToFile(Diagram diagram, File fileToBeSaved) {
         try{
             FileWriter fileWriter = new FileWriter(fileToBeSaved);
-            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            Gson gson = new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .create();
             String jsonText = gson.toJson(diagram);
             fileWriter.write(jsonText);
             fileWriter.close();
@@ -69,7 +71,9 @@ public class SaveLoadSystem {
         if(fileToBeLoaded.exists()){
             try{
                 FileReader fileReader = new FileReader(fileToBeLoaded);
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                Gson gson = new GsonBuilder()
+                        .excludeFieldsWithoutExposeAnnotation()
+                        .create();
                 diagram = gson.fromJson(fileReader, Diagram.class);
                 fileReader.close();
                 return diagram;
