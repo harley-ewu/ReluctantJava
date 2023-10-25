@@ -59,7 +59,7 @@ public class Diagram {
       while (cont < 0) {
          do {
             System.out.println("UML Diagram Editor Menu");
-            System.out.println("Enter a number:\n\n1 - Add Class\n2 - Delete Class\n3 - Rename Class\n4 - Edit Class\n5 - Edit Relationships\n6 - View Class\n7 - View Diagram\n8 - Exit");
+            System.out.println("Enter a number:\n\n1 - Add Class\n2 - Delete Class\n3 - Rename Class\n4 - Edit Class\n5 - Edit Relationships\n6 - View Class\n7 - View Diagram\n8 - Help \n9 - Exit");
             String op = scanner.nextLine();
             if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
                choice = Integer.parseInt(op);
@@ -67,7 +67,7 @@ public class Diagram {
                choice = -99;
                System.out.println("Please enter a valid option, 1-8");
             }
-            }while(choice < 1 && choice > 8);
+            }while(choice < 1 && choice > 9);
             String className = "";
             switch (choice) {
                //Add Class - name needed
@@ -104,6 +104,9 @@ public class Diagram {
                   System.out.println(this);
                   break;
                case 8:
+                  this.diagramMenuHelp();
+                  break;
+               case 9:
                   cont = 1;
                default:
                   break;
@@ -111,6 +114,29 @@ public class Diagram {
             }
       }
       
+   }
+   public void diagramMenuHelp() {
+         System.out.println("""
+                 DIAGRAM MENU COMMANDS:
+ 
+                 Option 1 - Add Class: Adds a class to the current diagram.
+                 
+                 Option 2 - Delete Class: Option to delete class if it exists.
+                 
+                 Option 3 - Rename Class: Gives the option to change the name of an existing class.
+                 
+                 Option 4 - Edit Class: Displays another menu with attribute and relationship options.
+                 
+                 Option 5 - Edit Relationships: Once two classes are specified, if a relationship is shared, it can be edited.
+                 
+                 Option 6 - View Class: Lists specified class and all its attributes and relationships.
+
+                 Option 7 - View Diagram: Prints out current diagram with all its contents.
+
+                 Option 8 - Help: Lists descriptions of available commands.
+
+                 Option 9 - Exit: Exit the program.
+                 """);
    }
    /*
     * sub menu for when class is first added, user is immediately prompted to add attributes/relationships
@@ -120,7 +146,7 @@ public class Diagram {
       while (cont < 0) {
          do {
             System.out.println("Class Editor");
-            System.out.println("Enter a number: \n\n1 - Add Attribute\n2 - Add Relationship\n3 - Back to Diagram Menu");
+            System.out.println("Enter a number: \n\n1 - Add Attribute\n2 - Add Relationship\n3 - Help\n4 - Back to Diagram Menu");
             String op = scanner.nextLine();
             if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
                choice = Integer.parseInt(op);
@@ -139,11 +165,28 @@ public class Diagram {
                this.addRelationship();
                break;
             case 3:
+               this.classMenuHelp();
+               break;
+            case 4:
                cont = 1;
             default:
                break;
          }
       }
+   }
+
+   public void classMenuHelp(){
+         System.out.println("""
+                 NEW CLASS MENU COMMANDS:
+ 
+                 Option 1 - Add Attribute: Add an attribute to the current class.
+                 
+                 Option 2 - Add Relationship: Add a relationship to current class with another existing class.
+                 
+                 Option 3 - Help: Lists a description of all available commands.
+                 
+                 Option 4 - Back to Diagram Menu: Returns back to the current diagram's edit menu.
+                 """);
    }
    
    /*
