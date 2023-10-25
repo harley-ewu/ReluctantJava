@@ -3,7 +3,7 @@ package Class;
 import Attributes.Attribute;
 import Diagram.Diagram;
 import Relationships.Relationship;
-import com.github.cliftonlabs.json_simple.JsonObject;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,12 @@ import java.util.Scanner;
 
 public class Class {
 
+    @Expose
     private String className;
+    @Expose
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
+    @Expose
     private List<Relationship> relationships = new ArrayList<>();
 
     public Class(final String className) {
@@ -22,35 +25,6 @@ public class Class {
         }
         this.attributes = new Attribute();
         this.className = className;
-    }
-
-    /**
-     * Description: Converts a Class object into a JsonObject for saving.
-     * @return : returns a JsonObject of the Class object.
-     */
-
-    public JsonObject toJsonObject(){
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.put("name", className);
-        jsonObject.put("attributes", attributes.toJsonObject());
-        jsonObject.put("relationships", relationships);
-        return jsonObject;
-    }
-
-
-    /**
-     * Description: Converts a JsonObject from the load file back into a Class object.
-     * @param jsonObject : the JsonObject read from the load file.
-     * @return : returns a Class object from the information in the JsonObject.
-     */
-    public static Class fromJsonObject(JsonObject jsonObject){
-        String className = (String) jsonObject.get("name");
-        Attribute attributes = Attribute.fromJsonObject((JsonObject) jsonObject.get("attributes"));
-        ArrayList<Relationship> relationships = (ArrayList<Relationship>) jsonObject.get("relationships");
-        Class newClass = new Class(className);
-        newClass.setAttributes(attributes);
-        newClass.setRelationships(relationships);
-        return newClass;
     }
 
     /**

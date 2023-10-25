@@ -2,6 +2,7 @@ package CLI;
 
 import Diagram.Diagram;
 import SaveLoadSystem.SaveLoadSystem;
+//import SaveLoadSystem.SaveLoadSystem;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -144,7 +145,7 @@ public class CommandLineInterface {
     }
 
     private static void saveToDefaultPath(Diagram diagram) {
-        SaveLoadSystem.saveDefault(diagram.getTitle(), diagram.getClassList());
+        SaveLoadSystem.saveDefaultCLI(diagram.getTitle(), diagram);
         System.out.println("Saved to the default path.");
     }
 
@@ -158,7 +159,7 @@ public class CommandLineInterface {
 
             try {
                 Path filePath = Paths.get(customPath);
-                SaveLoadSystem.saveCustom(filePath.toString(), diagram.getTitle(), diagram.getClassList());
+                SaveLoadSystem.saveCustomCLI(filePath.toString(), diagram.getTitle(), diagram);
                 System.out.println("Saved to custom path: " + filePath);
                 saveSuccessful = true;
             } catch (InvalidPathException e) {
@@ -222,22 +223,28 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Enter the path to the file you want to load:");
-
+        System.out.print("--> ");
         String filePath = scan.nextLine();
 
+        System.out.println("Enter the name of the file you want to load:");
+        System.out.print("--> ");
+        String fileName = scan.nextLine();
+
+        Diagram diagram = SaveLoadSystem.loadDiagramCLI(filePath, fileName);
+        /*
         try {
-            var loadedClasses = SaveLoadSystem.load(filePath);
+            //var loadedClasses = SaveLoadSystem.load(filePath);
             System.out.println("Diagram loaded successfully.");
             Diagram diagram = new Diagram("");
-            diagram.setClassList(loadedClasses);
+            //diagram.setClassList(loadedClasses);
             return new Diagram("");
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid file path. Please enter a valid path.");
         } catch (Exception e) {
             System.out.println("An error occurred while loading the diagram.");
-        }
+        }*/
 
-        return null;
+        return diagram;
     }
 
     /*

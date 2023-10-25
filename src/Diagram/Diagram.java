@@ -2,6 +2,7 @@ package Diagram;
 
 import Class.Class;
 import Relationships.Relationship;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +10,10 @@ import java.util.Scanner;
 
 //Class name subject to change for what we name the project
 public class Diagram {
-   
+
+   @Expose
    private String title;
+   @Expose
    private List<Class> classList = new ArrayList<Class>();
    private Scanner scanner = new Scanner(System.in);
    
@@ -208,6 +211,10 @@ public class Diagram {
       if(findSingleClass(oldClassName) != null){
          System.out.println("Class exists. Enter new name for the class.");
          newClassName = this.scanner.nextLine();
+         while(newClassName.isEmpty()){
+            System.out.println("Please enter a non-blank class name.");
+            newClassName = this.scanner.nextLine();
+         }
          Class c = findSingleClass(oldClassName);
          if (c != null){
             c.setClassName(newClassName);

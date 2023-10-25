@@ -7,8 +7,8 @@ and install.
 3. Open a terminal.
 4. Navigate to the cloned repo in your terminal.
 5. Navigate into the src folder.
-6. Run the command "javac SaveLoadSystem\*.java Class\*.java CLI\*.java Diagram\*.java Relationships\*.java Class\*.java" to compile the program.
-7. While still in the src folder, run the command "java CLI/CommandLineInterface.java".
+6. Run the command `javac -cp .;pathToRepo\ReluctantJava\lib\gson-2.10.1.jar Class/*.java CLI/*.java Diagram/*.java Relationships/*.java Attributes/*.java` to compile the program.
+7. While still in the src folder, run the command `java -cp .;pathToRepo\ReluctantJava\lib\gson-2.10.1.jar CLI/CommandLineInterface.java`.
 8. Follow the prompts from there!
 
 ### Current team roles:
