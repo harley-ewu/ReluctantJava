@@ -29,11 +29,11 @@ public class GraphicalUserInterface extends javafx.application.Application{
         URL cssPath = getClass().getResource("MenuStyles.css");
 
         if(mainView == null){
-            throw new FileNotFoundException("Could not find MainView.fxml");
+            throw new FileNotFoundException("Could not find MainMenu.fxml");
         }
 
         if(cssPath == null){
-            throw new FileNotFoundException("Could not find styles.css");
+            throw new FileNotFoundException("Could not find MenuStyles.css");
         }
 
         String cssStyles = cssPath.toString();
