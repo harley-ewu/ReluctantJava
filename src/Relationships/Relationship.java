@@ -1,4 +1,3 @@
-//Nick Parkman 10/12/2023 @10:30am
 package Relationships;
 
 import Class.Class;

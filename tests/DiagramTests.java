@@ -29,11 +29,11 @@ public class DiagramTests {
 	@Test void testAddClass() {
 		Diagram UMLDiagram = new Diagram("");
 		UMLDiagram.setTitle("test");
-		List<Class> classList = UMLDiagram.getClassList();
+		HashMap<String, Class> classList = UMLDiagram.getClassList();
 		
 		Class c = new Class("testClass");
 		
-		UMLDiagram.addClass();
+		UMLDiagram.addClass(c.getClassName());
 		
 		assertEquals(c.getClass(), classList.get(0).getClass());
 		

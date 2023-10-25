@@ -137,6 +137,7 @@ public class ClassTests {
 
     }
 */
+    /*
     @Test
     public void testRelationshipListEmpty() {
         Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Realization;
@@ -182,7 +183,7 @@ public class ClassTests {
         assertEquals(testText, this.newClass.displayRelationships());
 
     }
-
+*/
     @Test
     public void  testDisplayAttributes() {
         this.newClass.getAttributes().addAttribute("color");
@@ -195,7 +196,7 @@ public class ClassTests {
         assertEquals(output, this.newClass.displayAttributes());
 
     }
-
+/*
     @Test
     public void testToString() {
         this.newClass.getAttributes().addAttribute("color");
@@ -238,4 +239,6 @@ public class ClassTests {
         assertEquals(output, this.newClass.toString());
 
     }
+
+ */
 }

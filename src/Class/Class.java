@@ -212,23 +212,6 @@ public class Class {
         this.attributes.renameAttribute(attribute, newName);
 
     }
-
-    /**
-     * description: returns a string of all relationships attached to the class
-     */
-    public String displayRelationships() {
-        if (this.relationships.isEmpty()) {
-            return "There are no relationships assigned to this class.";
-        } else {
-            StringBuilder relationships = new StringBuilder();
-
-            for (Relationship relationship: this.relationships) {
-                relationships.append(relationship.toString()).append("\n");
-            }
-            return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
-        }
-
-    }
     
     /**
      * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
@@ -268,7 +251,7 @@ public class Class {
                     System.out.println(this.displayAttributes());
                     break;
                 case 5: //display relationships
-                    System.out.println(this.displayRelationships());
+                    //System.out.println(this.displayRelationships());
                     break;
                 case 6: //display all contents
                     System.out.println(this);
@@ -288,16 +271,10 @@ public class Class {
      */
     @Override
     public String toString() {
-        StringBuilder relationships = new StringBuilder();
-
-        for (Relationship relationship: this.relationships) {
-            relationships.append(relationship.toString()).append("\n");
-        }
 
         return "Class Name: " + this.getClassName() + "\n"
                 +"---------------------\n"
-                + "Attributes: \n" + this.attributes.toString() +
-                "\n\n" + "Relationships: \n\n" + relationships;
+                + "Attributes: \n" + this.attributes.toString();
     }
 
 }

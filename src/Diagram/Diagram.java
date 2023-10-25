@@ -23,7 +23,7 @@ public class Diagram {
       }
       //if diagram comes in as null/empty, should we initialize an empty arraylist?
       this.title = title;
-    	this.classList = new HashMap<>();
+      this.classList = new HashMap<>();
 
    }
    
@@ -43,7 +43,7 @@ public class Diagram {
     * Getter for classList
     * */
    public HashMap<String, Class> getClassList(){
-	   return this.classList;
+      return this.classList;
    }
 
    /*
@@ -144,7 +144,25 @@ public class Diagram {
                break;
             //Add relationship
             case 2:
-               this.addRelationship();
+               System.out.println("Which class do you want to make a relationship with?");
+               System.out.print("Class: ");
+               String input = scanner.nextLine();
+               Class c2 = null;
+               do {
+                  for(Class item : classList.values()){
+                     if(input.equals(item.getClassName())) {
+                        c2 = item;
+                     }
+                  }
+
+                  if(c2 == null) {
+                     System.out.println("class does not exist, please enter a valid class");
+                     System.out.print("Class: ");
+                     input = scanner.nextLine();
+                  }
+               }while(c2 == null);
+
+               this.addRelationship(currentClass, c2);
                break;
             case 3:
                cont = 1;
@@ -453,7 +471,28 @@ public class Diagram {
       
    }
 
+   public void ListAllRelationships(){
+      System.out.println("Relationship List: ");
+      int i = 1;
+      for (Relationship relationship : relationshipList.values()) {
+         System.out.print(i +": ");
+         relationship.toString();
+         i++;
+      }
+   }
 
+   public void ListOneClassRelationships(final Class c1) {
+      for(Class item : classList.values()){
+         if(item.equals(c1)) continue;
+
+         if(relationshipList.get(c1.getClassName() + item.getClassName()) != null){
+            relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+         }
+         else if(relationshipList.get(c1.getClassName() + item.getClassName()) != null){
+            relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+         }
+      }
+   }
    
    /*
    Printing out entire diagram
