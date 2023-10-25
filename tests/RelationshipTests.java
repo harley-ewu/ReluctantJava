@@ -12,34 +12,72 @@ public class RelationshipTests {
     void toStringTest() throws IllegalArgumentException{
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
-        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Association, testClass, 1, 2, false);
+        Class testClass2 = new Class("testClass2");
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, 1, 2, false);
         String testResult = """
-                Class has a Association relationship with testClass
+                testClass has a Realization relationship with testClass2
                 Owner: false
-                This Class Cardinality: 1
-                testClass Class Cardinality: 2
+                testClass Class Cardinality: 1
+                testClass2 Class Cardinality: 2
                 """;
 
         assertEquals(testResult, testRelationship.toString());
 
         assertThrows(IllegalArgumentException.class, () ->
-        {Relationship testRelationship2 = new Relationship(null, testClass, 1, 2, false);});
+        {Relationship testRelationship2 = new Relationship(null, testClass, testClass2, 1, 2, false);});
 
         assertThrows(IllegalArgumentException.class, () ->
-        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Association, null, 1, 2, false);});
+        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, null, null, 1, 2, false);});
 
         assertThrows(IllegalArgumentException.class, () ->
-        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Association, testClass, -2, 2, false);});
+        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, -2, 2, false);});
 
         assertThrows(IllegalArgumentException.class, () ->
-        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Association, testClass, 2, -2, false);});
+        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, 2, -2, false);});
+    }
+
+    @Test
+    void toStringSpecialCardinalityTest() {
+        Diagram testDiagram = new Diagram("testDiagram");
+        Class testClass = new Class("testClass");
+        Class testClass2 = new Class("testClass2");
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, -1, -1, false);
+        String testResult = """
+                testClass has a Realization relationship with testClass2
+                Owner: false
+                testClass Class Cardinality: *
+                testClass2 Class Cardinality: *
+                """;
+
+        assertEquals(testResult, testRelationship.toString());
+
+        Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, 1, -1, false);
+        String testResult2 = """
+                testClass has a Realization relationship with testClass2
+                Owner: false
+                testClass Class Cardinality: 1
+                testClass2 Class Cardinality: *
+                """;
+
+        assertEquals(testResult2, testRelationship2.toString());
+
+        Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, -1, 1, false);
+        String testResult3 = """
+                testClass has a Realization relationship with testClass2
+                Owner: false
+                testClass Class Cardinality: *
+                testClass2 Class Cardinality: 1
+                """;
+
+        assertEquals(testResult3, testRelationship3.toString());
     }
 
     @Test
     void relationshipTypeGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
-        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
+        Class testClass2 = new Class("testClass2");
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 2, false);
 
         assertEquals(Relationship.RelationshipType.Aggregation, testRelationship.getRelationshipType());
         testRelationship.setRelationshipType(Relationship.RelationshipType.Composition);
@@ -49,48 +87,62 @@ public class RelationshipTests {
     }
 
     @Test
-    void otherClassNameGetterTest() {
+    void classGetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
-        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
+        Class testClass2 = new Class("testClass2");
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 2, false);
 
-        assertEquals(testClass, testRelationship.getOtherClassName());
+        assertEquals(testClass, testRelationship.getClass1());
     }
 
     @Test
-    void thisClassCardinalityGetterSetterTest() {
+    void class2GetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
-        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
+        Class testClass2 = new Class("testClass2");
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 2, false);
 
-        assertEquals(1, testRelationship.getThisClassCardinality());
-        testRelationship.setThisClassCardinality(2);
-        assertEquals(2, testRelationship.getThisClassCardinality());
-
-        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setThisClassCardinality(-2);});
+        assertEquals(testClass2, testRelationship.getClass2());
     }
 
     @Test
-    void otherClassCardinalityGetterSetterTest() {
+    void class1CardinalityGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
-        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
+        Class testClass2 = new Class("testClass2");
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 2, false);
 
-        assertEquals(2, testRelationship.getOtherClassCardinality());
-        testRelationship.setOtherClassCardinality(3);
-        assertEquals(3, testRelationship.getOtherClassCardinality());
+        assertEquals(1, testRelationship.getClass1Cardinality());
+        testRelationship.setClass1Cardinality(2);
+        assertEquals(2, testRelationship.getClass1Cardinality());
+
+        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setClass1Cardinality(-2);});
+    }
+
+    @Test
+    void class2CardinalityGetterSetterTest() {
+        Diagram testDiagram = new Diagram("testDiagram");
+        Class testClass = new Class("testClass");
+        Class testClass2 = new Class("testClass2");
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 2, false);
+
+        assertEquals(2, testRelationship.getClass2Cardinality());
+        testRelationship.setClass2Cardinality(3);
+        assertEquals(3, testRelationship.getClass2Cardinality());
     }
 
     @Test
     void ownerGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
-        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, 1, 2, false);
+        Class testClass2 = new Class("testClass2");
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 2, false);
 
         assertEquals(false, testRelationship.getIsOwner());
         testRelationship.setIsOwner(true);
         assertEquals(true, testRelationship.getIsOwner());
 
-        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setOtherClassCardinality(-2);});
+        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setClass2Cardinality(-2);});
     }
 }
