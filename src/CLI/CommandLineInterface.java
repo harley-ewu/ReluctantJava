@@ -1,6 +1,7 @@
 package CLI;
 
 import Diagram.Diagram;
+import GUI.GraphicalUserInterface;
 //import SaveLoadSystem.SaveLoadSystem;
 
 import java.nio.file.InvalidPathException;
@@ -15,7 +16,7 @@ import java.util.Scanner;
 * */
 public class CommandLineInterface {
 
-    private static final int MAX_CHOICES = 7;
+    private static final int MAX_CHOICES = 8;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
@@ -41,7 +42,8 @@ public class CommandLineInterface {
                 //case 4 -> saveDiagram(currentDiagram);
                 case 5 -> currentDiagram = loadDiagram();
                 case 6 -> help();
-                case 7 -> shouldTerminate = exit(currentDiagram);
+                case 7 -> new Thread(() -> GraphicalUserInterface.startGUI(new String[0])).start();
+                case 8 -> shouldTerminate = exit(currentDiagram);
                 default -> System.out.println("There is a bug in getUserChoice");
             }
         }
@@ -60,15 +62,16 @@ public class CommandLineInterface {
         System.out.println("""
                 
                 
-                Enter a number:
-                
                 1 - New Diagram
                 2 - View Existing Diagram
                 3 - Edit Existing Diagram
                 4 - Save Current Diagram
                 5 - Load Diagram
                 6 - Help
-                7 - Exit
+                7 - Open GUI
+                8 - Exit
+                
+                Enter a number:
                 """);
 
         while (true) {
@@ -253,9 +256,11 @@ public class CommandLineInterface {
                 
                 Option 5 - Load Diagram: Loads an existing diagram from a file
                 
-                Option 5 - Help: Lists a description of all available commands
+                Option 6 - Help: Lists a description of all available commands
                 
-                Option 6 - Exit: Exit the program
+                Option 7 - Start GUI: Opens the graphical user interface associated with this program
+                
+                Option 8 - Exit: Exit the program
                 """);
     }
 
