@@ -471,6 +471,7 @@ public class Diagram {
       
    }
 
+   //prints to screen all relationships in relationshipList
    public void ListAllRelationships(){
       System.out.println("Relationship List: ");
       int i = 1;
