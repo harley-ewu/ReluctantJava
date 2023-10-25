@@ -3,7 +3,6 @@ package CLI;
 import Diagram.Diagram;
 import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
-//import SaveLoadSystem.SaveLoadSystem;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -17,7 +16,7 @@ import java.util.Scanner;
 * */
 public class CommandLineInterface {
 
-    private static final int MAX_CHOICES = 7;
+    private static final int MAX_CHOICES = 8;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
