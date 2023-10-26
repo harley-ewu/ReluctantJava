@@ -14,6 +14,7 @@ public class Diagram {
    @Expose
    private String title;
    //private List<Class> classList = new ArrayList<Class>();
+   @Expose
    private HashMap<String, Class> classList;
    private HashMap<String, Relationship> relationshipList;
    private Scanner scanner = new Scanner(System.in);
