@@ -65,7 +65,7 @@ public class Diagram {
    /*
    Menu of choices once inside an existing diagram, or when creating a new diagram
    */
-   public void menu(){
+   /*public void menu(){
       int cont = -99, choice = -99;
       while (cont < 0) {
          do {
@@ -122,15 +122,15 @@ public class Diagram {
             }
       }
       
-   }
+   }*/
    /*
     * sub menu for when class is first added, user is immediately prompted to add attributes/relationships
     */
-   public void classMenu(final Class currentClass) {
+   /*public void classMenu(final Class currentClass) {
       int cont = -99, choice = -99;
       while (cont < 0) {
          do {
-            System.out.println("Class Editor");
+            System.out.println("New Class Editor");
             System.out.println("Enter a number: \n\n1 - Add Attribute\n2 - Add Relationship\n3 - Back to Diagram Menu");
             String op = scanner.nextLine();
             if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
@@ -173,7 +173,7 @@ public class Diagram {
                break;
          }
       }
-   }
+   }*/
    
    /*
    Adds a class to the classList
