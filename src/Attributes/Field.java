@@ -4,7 +4,7 @@ public class Field extends Attribute{
     private String primitive;
     public Field(String name, String primitive) {
         super(name, primitive);
-        this.primitive = primitive;
+        this.primitive = primitive.replaceAll("[\\[\\]]", "");
     }
 
     @Override

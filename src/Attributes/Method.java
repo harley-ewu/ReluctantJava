@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Method extends Attribute{
-    ArrayList<String> parameter = new ArrayList<>();
+    ArrayList<String> parameter;
 
-    public Method(String name, List<String> parameters) {
+    public Method(String name, ArrayList<String> parameters) {
         super(name, parameters);
+        this.parameter = parameters;
+    }
+
+    @Override
+    public String toString() {
+        return (super.toString() + "(" + parameter.toString().replaceAll("[\\[\\]]", "") + ")");
     }
 }

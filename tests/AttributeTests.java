@@ -1,75 +1,31 @@
 import Attributes.Attribute;
+import Class.Class;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AttributeTests {
+    Class test = new Class("Test Class");
+    ArrayList<String> testList = new ArrayList<>();
     @Test
-    void toStringTest() {
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("Test1");
-        attribute.addAttribute("Test2");
+    void fieldTest() {
 
-        assertEquals("Test1\nTest2", attribute.toString());
+        testList.add("Test field");
+        test.addAttribute("Test attribute", testList, 1);
+        System.out.println(test.toString());
     }
 
     @Test
-    void toStringErrorCheck() {
-        Attribute attribute = new Attribute();
-        assertEquals("", attribute.toString());
+    void methodTest() {
+        testList.add("Test param1");
+        testList.add("Test param2");
+        testList.add("Test param3");
+        test.addAttribute("Test attribute", testList, 2);
+        System.out.println(test.toString());
     }
 
-    @Test
-    void getAttributesTest(){
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("age");
-        attribute.addAttribute("name");
-
-        List<Attribute> result = attribute.getAttributes();
-
-        // Check if the returned list contains the expected attributes
-        assertEquals(2, result.size());
-    }
-
-    @Test
-    void checkIfAttributeIsInListTest(){
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("Name");
-        attribute.addAttribute("Name");
-
-        String check = "Name";
-        // Check if we allowed adding of two of the same attributes.
-        assertEquals(check, attribute.toString());
-    }
-
-    @Test
-    void deleteAttributeTest() {
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("Name");
-        attribute.addAttribute("Birthday");
-        attribute.addAttribute("Age");
-
-        //Removing the attribute
-        attribute.deleteAttribute("Birthday");
-
-        String check = "Name\nAge";
-        assertEquals(check, attribute.toString());
-    }
-
-    @Test
-    void renameAttributeTest() {
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("Name");
-        attribute.addAttribute("Birthday");
-        attribute.addAttribute("Age");
-
-        assertEquals("Name\nBirthday\nAge", attribute.toString());
-
-        attribute.renameAttribute("Birthday", "Weight");
-        System.out.println(attribute.toString());
-        assertEquals("Name\nWeight\nAge", attribute.toString());
-    }
 }

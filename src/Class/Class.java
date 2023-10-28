@@ -143,13 +143,13 @@ public class Class {
     /**
      * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
      */
-    public void addAttribute(String name, List<String> parameters, int input) {
+    public void addAttribute(String name, ArrayList<String> parameters, int input) {
         Attribute attribute = new Attribute();
         // Depending on the input taken from the user, construct either a field or method attribute.
         if (input == 1) {
-            attribute.addAttribute(name, parameters, Attribute.Type.FIELD.toString());
+            attribute = (Attribute) attribute.addAttribute(name, parameters, Attribute.Type.FIELD.toString());
         } else if (input == 2) {
-            //attribute.addAttribute(name, parameters,  Attribute.Type.METHOD.toString());
+            attribute = (Attribute) attribute.addAttribute(name, parameters,  Attribute.Type.METHOD.toString());
         } else {
             throw new IllegalArgumentException("Invalid input. Please enter 1 for field or 2 for method.");
         }
