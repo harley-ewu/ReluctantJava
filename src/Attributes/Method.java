@@ -13,6 +13,6 @@ public class Method extends Attribute{
 
     @Override
     public String toString() {
-        return (super.toString() + "(" + parameter.toString().replaceAll("[\\[\\]]", "") + ")");
+        return (super.toString() + "(" + parameter.toString() + ")" + "\n");
     }
 }

@@ -9,6 +9,6 @@ public class Field extends Attribute{
 
     @Override
     public String toString() {
-        return super.toString() + ": " + primitive;
+        return (super.toString() + ": " + primitive + "\n");
     }
 }

@@ -26,13 +26,15 @@ public class Attribute {
     }
 
     public Object addAttribute(final String name, ArrayList<String> parameters, final String type) {
-        // Null check.
         Objects.requireNonNull(name, "Name can't be null.");
-
-        if(type.equals("FIELD")){
-            return new Field(name, String.valueOf(parameters));
-        }else {
-            return new Method(name, parameters);
+        if(!name.isEmpty() || !parameters.isEmpty() || !type.isEmpty()) {
+            if(type.equals("FIELD")){
+                return new Field(name, String.valueOf(parameters));
+            }else {
+                return new Method(name, parameters);
+            }
+        } else {
+            return null;
         }
     }
 
@@ -68,11 +70,6 @@ public class Attribute {
             }
         }*/
         System.out.println("Attribute was not contained in the list.");
-    }
-
-    public List<Attribute> getAttributes() {
-        //return new ArrayList<>(this.attributes);
-        return null;
     }
 
     @Override

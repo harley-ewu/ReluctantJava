@@ -5,17 +5,12 @@ import Attributes.Field;
 import Relationships.Relationship;
 import com.google.gson.annotations.Expose;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Class {
 
     @Expose
     private String className;
-    //@Expose
-    //private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
     @Expose
     private List<Relationship> relationships = new ArrayList<>();
@@ -153,7 +148,9 @@ public class Class {
         } else {
             throw new IllegalArgumentException("Invalid input. Please enter 1 for field or 2 for method.");
         }
-        attributes.add(attribute.toString());
+        if (attribute != null) {
+            attributes.add(attribute.toString());
+        }
 
     }
 
@@ -285,14 +282,19 @@ public class Class {
     @Override
     public String toString() {
         StringBuilder relationships = new StringBuilder();
+        StringBuilder attributeString = new StringBuilder();
 
         for (Relationship relationship: this.relationships) {
             relationships.append(relationship.toString()).append("\n");
         }
 
+        for (String attribute : attributes) {
+            attributeString.append(attribute.replaceAll("[\\[\\]]", ""));
+        }
+
         return "Class Name: " + this.getClassName() + "\n"
                 +"---------------------\n"
-                + "Attributes: \n" + this.attributes.toString() +
+                + "Attributes: \n" + attributeString +
                 "\n\n" + "Relationships: \n\n" + relationships;
     }
 
