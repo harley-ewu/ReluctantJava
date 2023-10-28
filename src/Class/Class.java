@@ -1,10 +1,12 @@
 package Class;
 
 import Attributes.Attribute;
+import Attributes.Field;
 import Relationships.Relationship;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,17 +14,19 @@ public class Class {
 
     @Expose
     private String className;
-    @Expose
-    private Attribute attributes;
+    //@Expose
+    //private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
     @Expose
     private List<Relationship> relationships = new ArrayList<>();
+
+    ArrayList<String> attributes = new ArrayList<>();
+
 
     public Class(final String className) {
         if (className == null) {
             throw new NullPointerException("Class name is null.");
         }
-        this.attributes = new Attribute();
         this.className = className;
     }
 
@@ -41,7 +45,7 @@ public class Class {
      * @return
      */
 
-    public Attribute getAttributes() {
+    public ArrayList<String> getAttributes() {
         return this.attributes;
     }
 
@@ -67,7 +71,7 @@ public class Class {
      * @param attribute
      */
     public void setAttributes(final Attribute attribute) {
-        this.attributes = attribute;
+
     }
 //----------------------------------------------------------------------------------------
     //note: add and delete methods for attributes are handled in the attributes class
@@ -139,33 +143,25 @@ public class Class {
     /**
      * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
      */
-    public void addAttribute() {
-        String newAttribute;
-        System.out.print("\nPlease enter a name for the attribute: ");
-        newAttribute = this.scanner.nextLine();
-
-        if (newAttribute.isEmpty()) {
-            System.out.println("\nNothing was typed, please enter a name for the attribute.");
-
-        }else {
-            this.attributes.addAttribute(newAttribute); //will eventually contain messages for the user
+    public void addAttribute(String name, List<String> parameters, int input) {
+        Attribute attribute = new Attribute();
+        // Depending on the input taken from the user, construct either a field or method attribute.
+        if (input == 1) {
+            attribute.addAttribute(name, parameters, Attribute.Type.FIELD.toString());
+        } else if (input == 2) {
+            //attribute.addAttribute(name, parameters,  Attribute.Type.METHOD.toString());
+        } else {
+            throw new IllegalArgumentException("Invalid input. Please enter 1 for field or 2 for method.");
         }
+        attributes.add(attribute.toString());
+
     }
 
     /**
      * description: deleteAttribute is a menu option method, prompting the user to enter an attribute to delete
      */
     public void deleteAttribute() {
-        String attribute;
-        System.out.print("\nPlease enter an attribute to remove: ");
-        attribute = this.scanner.nextLine();
 
-        if (attribute.isEmpty()) {
-            System.out.println("\nNothing was typed, please enter a name for the attribute that you want to remove.");
-        } else {
-            this.attributes.deleteAttribute(attribute); //this will eventually include messages for the user
-
-        }
     }
 
     /**
@@ -173,11 +169,12 @@ public class Class {
      * @return
      */
     public String displayAttributes() {
-        if (this.attributes.getAttributes().isEmpty()) {
+        /*if (this.attributes.getAttributes().isEmpty()) {
             return "There are no attributes in this class";
         } else {
             return "Attributes in the " + this.getClassName() + " class:\n" + this.attributes.toString();
-        }
+        }*/
+        return null;
 
     }
 
@@ -187,14 +184,14 @@ public class Class {
      */
 
     public void renameAttribute() {
-        String attribute;
+        /*String attribute;
         String newName;
         System.out.println("Please enter an attribute to rename: ");
         attribute = this.scanner.nextLine();
         System.out.println("Please enter a new name for the attribute: ");
         newName = this.scanner.nextLine();
 
-        this.attributes.renameAttribute(attribute, newName);
+        this.attributes.renameAttribute(attribute, newName);*/
 
     }
 
@@ -253,7 +250,7 @@ public class Class {
             switch (choice) {
 
                 case 1: //add attribute
-                    this.addAttribute();
+                    //this.addAttribute();
                     break;
                 case 2: //delete attribute
                     this.deleteAttribute();
