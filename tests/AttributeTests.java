@@ -15,14 +15,21 @@ public class AttributeTests {
     ArrayList<String> testList3 = new ArrayList<>();
     @Test
     void fieldTest() {
-
         testList.add("Test field");
         test.addAttribute("Test attribute", testList, 1);
-        System.out.println(test.toString());
+        String expected = "Class Name: Test Class\n" +
+                "---------------------\n" +
+                "Attributes: \n" +
+                "Test attribute: Test field\n" +
+                "\n" +
+                "\n" +
+                "Relationships: \n" +
+                "\n";
+        assertEquals(expected, test.toString());
     }
 
     @Test
-    void methodTest() {
+    void sortingArrayListTest() {
         testList.add("Test param1");
         testList.add("Test param2");
         testList.add("Test param3");
@@ -30,10 +37,20 @@ public class AttributeTests {
         testList3.add("Test param1");
         testList3.add("Test param2");
         testList3.add("Test param3");
-        test.addAttribute("Test attribute", testList, 2);
+        test.addAttribute("testMethod", testList, 2);
         test.addAttribute("Testfield", testList2, 1);
-        test.addAttribute("Test attribute", testList3, 2);
-        System.out.println(test.toString());
+        test.addAttribute("anotherMethod", testList3, 2);
+        String expected= "Class Name: Test Class\n" +
+                "---------------------\n" +
+                "Attributes: \n" +
+                "testMethod(Test param1, Test param2, Test param3)\n" +
+                "anotherMethod(Test param1, Test param2, Test param3)\n" +
+                "Testfield: Boolean\n" +
+                "\n" +
+                "\n" +
+                "Relationships: \n\n";
+        System.out.println(test);
+        assertEquals(expected, test.toString());
     }
 
 }

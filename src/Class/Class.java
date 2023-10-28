@@ -62,16 +62,6 @@ public class Class {
     }
 
     /**
-     * description: this method will set the attributes variable to a new attribute object
-     * @param attribute
-     */
-    public void setAttributes(final Attribute attribute) {
-
-    }
-//----------------------------------------------------------------------------------------
-    //note: add and delete methods for attributes are handled in the attributes class
-
-    /**
      * description: addRelationship will create a new relationship between two classes and add it to the relationships array list
      * addRelationship will search the array list and check to see if a relationship between two classes exists, if not, the user will be notified
      * and the attribute will not be added
@@ -139,6 +129,9 @@ public class Class {
      * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
      */
     public void addAttribute(String name, ArrayList<String> parameters, int input) {
+        if (name.isEmpty() || parameters.isEmpty() || input > 2 || input < 1) {
+            return;
+        }
         Attribute attribute = new Attribute();
         // Depending on the input taken from the user, construct either a field or method attribute.
         if (input == 1) {
@@ -190,6 +183,22 @@ public class Class {
 
         this.attributes.renameAttribute(attribute, newName);*/
 
+    }
+
+    /**
+     * description: This method sorts the array list by either field or method.
+     *
+     */
+    private void sortArrayList(ArrayList<String> unsortedList) {
+        Comparator<String> arrayListComparator = new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                char lastChar1 = s1.charAt(s1.length() - 3);
+                char lastChar2 = s2.charAt(s2.length() - 3);
+                return Character.compare(lastChar1, lastChar2);
+            }
+        };
+        Collections.sort(unsortedList, arrayListComparator);
     }
 
     /**
@@ -275,6 +284,8 @@ public class Class {
         }
     }
 
+
+
     /**
      * description: toString will display all contents of the class object including: name, attributes, and relationships
      * @return
@@ -283,6 +294,7 @@ public class Class {
     public String toString() {
         StringBuilder relationships = new StringBuilder();
         StringBuilder attributeString = new StringBuilder();
+        sortArrayList(attributes);
 
         for (Relationship relationship: this.relationships) {
             relationships.append(relationship.toString()).append("\n");
