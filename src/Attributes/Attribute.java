@@ -25,16 +25,15 @@ public class Attribute {
         this.name = name;
     }
 
-    public Object addAttribute(final String name, List<String> parameters, final String type) {
+    public Object addAttribute(final String name, ArrayList<String> parameters, final String type) {
         // Null check.
         Objects.requireNonNull(name, "Name can't be null.");
 
         if(type.equals("FIELD")){
             return new Field(name, String.valueOf(parameters));
         }else {
-            Method method = new Method(name, parameters);
+            return new Method(name, parameters);
         }
-        return null;
     }
 
     public void deleteAttribute(final String name) {
