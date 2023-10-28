@@ -2,16 +2,21 @@ package Diagram;
 
 import Class.Class;
 import Relationships.Relationship;
+import com.google.gson.annotations.Expose;
 
 import java.util.HashMap;
 import java.util.Scanner;
 
 //Class name subject to change for what we name the project
 public class Diagram {
-   
+
+   @Expose
    private String title;
+
    //private List<Class> classList = new ArrayList<Class>();
+   @Expose
    private HashMap<String, Class> classList;
+
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
