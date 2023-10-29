@@ -20,10 +20,8 @@ public class Attribute {
     /**
      * Description: Constructor used to create Attribute objects from a load file.
      * @param name: the name of the attribute.
+     *
      */
-    public Attribute(final String name, final List<String> parameters){
-        this.name = name;
-    }
 
     public Object addAttribute(final String name, ArrayList<String> parameters, final String type) {
         Objects.requireNonNull(name, "Name can't be null.");
@@ -31,7 +29,11 @@ public class Attribute {
             if(type.equals("FIELD")){
                 return new Field(name, String.valueOf(parameters));
             }else {
-                return new Method(name, parameters);
+                Method method = new Method(name, type);
+                if (parameters.size() > 0) {
+                    method.getParameter().addAll(parameters);
+                }
+                return method;
             }
         } else {
             return null;

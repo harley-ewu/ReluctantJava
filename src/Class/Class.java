@@ -4,8 +4,11 @@ import Attributes.Attribute;
 import Attributes.Field;
 import Relationships.Relationship;
 import com.google.gson.annotations.Expose;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Class {
 
@@ -15,7 +18,7 @@ public class Class {
     @Expose
     private List<Relationship> relationships = new ArrayList<>();
 
-    ArrayList<String> attributes = new ArrayList<>();
+    ArrayList<Attribute> attributes = new ArrayList<>();
 
 
     public Class(final String className) {
@@ -40,7 +43,7 @@ public class Class {
      * @return
      */
 
-    public ArrayList<String> getAttributes() {
+    public ArrayList<Attribute> getAttributes() {
         return this.attributes;
     }
 
@@ -129,7 +132,7 @@ public class Class {
      * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
      */
     public void addAttribute(String name, ArrayList<String> parameters, int input) {
-        if (name.isEmpty() || parameters.isEmpty() || input > 2 || input < 1) {
+        if (name.isEmpty() || parameters == null || input > 2 || input < 1) {
             return;
         }
         Attribute attribute = new Attribute();
@@ -142,7 +145,7 @@ public class Class {
             throw new IllegalArgumentException("Invalid input. Please enter 1 for field or 2 for method.");
         }
         if (attribute != null) {
-            attributes.add(attribute.toString());
+            attributes.add(attribute);
         }
 
     }
@@ -150,7 +153,16 @@ public class Class {
     /**
      * description: deleteAttribute is a menu option method, prompting the user to enter an attribute to delete
      */
-    public void deleteAttribute() {
+    public void deleteAttribute(int input) {
+        if (input < 1 || input > this.attributes.size()+1) {
+            return;
+        }
+
+        for (int i = 0; i < this.attributes.size()+1; i++) {
+            if (input == (i+1)) {
+                Attribute temp = this.attributes.remove(i);
+            }
+        }
 
     }
 
@@ -158,21 +170,27 @@ public class Class {
      * description: returns a string of all attributes currently within the class
      * @return
      */
-    public String displayAttributes() {
-        /*if (this.attributes.getAttributes().isEmpty()) {
-            return "There are no attributes in this class";
-        } else {
-            return "Attributes in the " + this.getClassName() + " class:\n" + this.attributes.toString();
-        }*/
-        return null;
+    public StringBuilder displayAttributes() {
+        sortArrayList(this.attributes);
+        StringBuilder display = new StringBuilder();
+
+        display.append("Available Fields and Methods: \n");
+
+        int i = 0;
+
+        for (Attribute attribute : this.attributes) {
+            display.append((i+1)+". "+ attribute.toString().replaceAll("[\\[\\]]", ""));
+            i++;
+        }
+
+        return display;
 
     }
 
     /**
-     * description: menu option prompting the user to rename an attribute. If the attribute exists in the list,
-     * the attribute will be successfully named, if not, the user will be prompted so.
+     * description: method that handles renaming an attribute
      */
-
+    //TODO: code menu option for renaming an attribute **this is no longer a menu option method**
     public void renameAttribute() {
         /*String attribute;
         String newName;
@@ -189,12 +207,12 @@ public class Class {
      * description: This method sorts the array list by either field or method.
      *
      */
-    private void sortArrayList(ArrayList<String> unsortedList) {
-        Comparator<String> arrayListComparator = new Comparator<String>() {
+    public void sortArrayList(ArrayList<Attribute> unsortedList) {
+        Comparator<Attribute> arrayListComparator = new Comparator<Attribute>() {
             @Override
-            public int compare(String s1, String s2) {
-                char lastChar1 = s1.charAt(s1.length() - 3);
-                char lastChar2 = s2.charAt(s2.length() - 3);
+            public int compare(Attribute s1, Attribute s2) {
+                char lastChar1 = s1.toString().charAt(s1.toString().length() - 3);
+                char lastChar2 = s2.toString().charAt(s2.toString().length() - 3);
                 return Character.compare(lastChar1, lastChar2);
             }
         };
@@ -259,7 +277,7 @@ public class Class {
                     //this.addAttribute();
                     break;
                 case 2: //delete attribute
-                    this.deleteAttribute();
+                    //this.deleteAttribute();
                     break;
                 case 3: //rename attribute
                     this.renameAttribute();
@@ -294,14 +312,14 @@ public class Class {
     public String toString() {
         StringBuilder relationships = new StringBuilder();
         StringBuilder attributeString = new StringBuilder();
-        sortArrayList(attributes);
+        sortArrayList(this.attributes);
 
         for (Relationship relationship: this.relationships) {
             relationships.append(relationship.toString()).append("\n");
         }
 
-        for (String attribute : attributes) {
-            attributeString.append(attribute.replaceAll("[\\[\\]]", ""));
+        for (Attribute attribute : this.attributes) {
+            attributeString.append(attribute.toString().replaceAll("[\\[\\]]", ""));
         }
 
         return "Class Name: " + this.getClassName() + "\n"
@@ -309,5 +327,7 @@ public class Class {
                 + "Attributes: \n" + attributeString +
                 "\n\n" + "Relationships: \n\n" + relationships;
     }
+
+
 
 }
