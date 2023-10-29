@@ -7,10 +7,10 @@ import CLI.CommandLineInterface;
 
 public class MenuController {
 
-    public static void diagramMenuControl(boolean shouldEnd, final Diagram diagram){
+    public static void diagramMenuControl(boolean shouldTerminate, final Diagram diagram){
 
             String className = "";
-            while(!shouldEnd) {
+            while(!shouldTerminate) {
                 int choice = CommandLineInterface.diagramMenuChoice();
                 switch (choice) {
                 //Add Class - name needed
@@ -47,7 +47,7 @@ public class MenuController {
                     System.out.println(diagram);
                     break;
                 case 8:
-                    shouldEnd = true;
+                    shouldTerminate = true;
                 default:
                     break;
                
