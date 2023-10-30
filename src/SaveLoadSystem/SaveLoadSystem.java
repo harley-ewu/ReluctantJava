@@ -17,6 +17,12 @@ public class SaveLoadSystem {
 
     public SaveLoadSystem(){}
 
+    /**
+     * Description: Saves a project to the default file directory which is the users home directory.
+     * Use case: Call this method when the user wants to save to the default file path.
+     * @param fileName: The name of the project to be saved.
+     * @param diagram: The diagram object of the project.
+     */
     public static void saveDefaultCLI(String fileName, Diagram diagram){
 
         if(fileName == null || fileName.isEmpty()){
@@ -30,6 +36,13 @@ public class SaveLoadSystem {
         ConvertDiagramToJsonAndWriteToFile(diagram, fileToBeSaved);
     }
 
+    /**
+     * Description: Saves a project to a file path specified by the user.
+     * Use case: Call if the user wants to save the project to a specified file path.
+     * @param path: The folder or directory that the user wishes to save to.
+     * @param fileName: The name of the project to be saved.
+     * @param diagram: The diagram object of the project.
+     */
     public static void saveCustomCLI(String path, String fileName, Diagram diagram){
 
         nullCheckPathAndFilename(path, fileName);
@@ -40,6 +53,13 @@ public class SaveLoadSystem {
         ConvertDiagramToJsonAndWriteToFile(diagram, fileToBeSaved);
     }
 
+    /**
+     * Description: Loads a project from a specified file path.
+     * Use case: Call if the user wants to load an existing project.
+     * @param path: The file path to the existing project.
+     * @param fileName: The name of the existing project.
+     * @return - Returns a Diagram object of an existing project on the disk.
+     */
     public static Diagram loadDiagramCLI(String path, String fileName){
 
         nullCheckPathAndFilename(path, fileName);
@@ -50,6 +70,12 @@ public class SaveLoadSystem {
         return loadSavedJsonTextAndConvertToDiagramObject(fileToBeLoaded);
     }
 
+    /**
+     * Description: Converts a diagram object into JSON and then saves it to a file.
+     * Use case: DO NOT USE! THIS IS A HELPER METHOD.
+     * @param diagram: The Diagram object to be converted to JSON.
+     * @param fileToBeSaved: The File object that will be saved.
+     */
     private static void ConvertDiagramToJsonAndWriteToFile(Diagram diagram, File fileToBeSaved) {
         try{
             FileWriter fileWriter = new FileWriter(fileToBeSaved);
@@ -64,6 +90,12 @@ public class SaveLoadSystem {
         }
     }
 
+    /**
+     * Description: Loads a JSON file of a project and converts it back into a Diagram object.
+     * Use case: DO NOT USE! THIS IS A HELPER METHOD.
+     * @param fileToBeLoaded: The File object where the existing project is stored.
+     * @return - Returns a Diagram object of an existing project on the disk.
+     */
     private static Diagram loadSavedJsonTextAndConvertToDiagramObject(File fileToBeLoaded){
 
         Diagram diagram;
@@ -87,6 +119,12 @@ public class SaveLoadSystem {
         return null;
     }
 
+    /**
+     * Description: Used to simplify the parameter checking inside the saveCustomCLI and loadDiagramCLI methods.
+     * Use case: DO NOT USE! THIS IS A HELPER METHOD.
+     * @param path: The file path where the project will be saved to / loaded from.
+     * @param fileName: The name of the project.
+     */
     private static void nullCheckPathAndFilename(String path, String fileName){
         if(path == null || path.isEmpty()){
             throw new IllegalArgumentException("The file path cannot be null or empty.");
