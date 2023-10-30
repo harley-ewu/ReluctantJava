@@ -4,15 +4,15 @@ import Diagram.Diagram;
 
 public class SaveLoadController {
 
-    public void SaveGUIHandled(){
+    public void saveGUIHandled(){
 
     }
 
-    public void SaveAsGUIHandled(){
+    public void saveAsGUIHandled(){
 
     }
 
-    public Diagram LoadGUIHandled(){
+    public Diagram loadGUIHandled(){
         return null;
     }
 }
