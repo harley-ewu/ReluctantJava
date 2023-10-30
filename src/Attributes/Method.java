@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Method extends Attribute{
-    ArrayList<String> parameter;
+    ArrayList<String> parameter = new ArrayList<>();
 
-    public Method(String name, ArrayList<String> parameters) {
-        super(name, parameters);
-        this.parameter = parameters;
+    public Method(String name, String primitive) {
+        super(name, primitive);
+        this.parameter = parameter;
+    }
+
+    public ArrayList<String> getParameter() {
+        return this.parameter;
     }
 
     @Override
