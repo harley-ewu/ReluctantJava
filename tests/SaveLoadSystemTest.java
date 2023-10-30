@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -47,18 +48,18 @@ public class SaveLoadSystemTest {
         Diagram testSaveDiagram = new Diagram("TestDiagram");
         Class testClassOne = new Class("TestClassOne");
         Class testClassTwo = new Class("TestClassTwo");
-        List<Class> classList = new ArrayList<Class>();
+        HashMap<String, Class> classList = new HashMap<>();
 
-        classList.add(testClassOne);
-        classList.add(testClassTwo);
+        classList.put(testClassOne.getClassName(), testClassOne);
+        classList.put(testClassTwo.getClassName(), testClassTwo);
         testSaveDiagram.setClassList(classList);
 
         SaveLoadSystem.saveDefaultCLI("IntegrationTestOfSaveAndLoad", testSaveDiagram);
 
         Diagram testLoadDiagram = SaveLoadSystem.loadDiagramCLI(Paths.get(System.getProperty("user.home")).toString(), "IntegrationTestOfSaveAndLoad");
 
-        Assertions.assertEquals(testLoadDiagram.getClassList().get(0).getClassName(), testSaveDiagram.getClassList().get(0).getClassName());
-        Assertions.assertEquals(testLoadDiagram.getClassList().get(1).getClassName(), testSaveDiagram.getClassList().get(1).getClassName());
+        Assertions.assertEquals(testLoadDiagram.getClassList().get(testClassOne.getClassName()).getClassName(), testSaveDiagram.getClassList().get(testClassOne.getClassName()).getClassName());
+        Assertions.assertEquals(testLoadDiagram.getClassList().get(testClassTwo.getClassName()).getClassName(), testSaveDiagram.getClassList().get(testClassTwo.getClassName()).getClassName());
 
     }
 }
