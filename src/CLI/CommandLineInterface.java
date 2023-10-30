@@ -1,6 +1,8 @@
 package CLI;
 
 import Diagram.Diagram;
+import Controller.MenuController;
+import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
 
 import java.nio.file.InvalidPathException;
@@ -15,7 +17,7 @@ import java.util.Scanner;
 * */
 public class CommandLineInterface {
 
-    private static final int MAX_CHOICES = 7;
+    private static final int MAX_CHOICES = 8;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
@@ -41,7 +43,8 @@ public class CommandLineInterface {
                 case 4 -> saveDiagram(currentDiagram);
                 case 5 -> currentDiagram = loadDiagram();
                 case 6 -> help();
-                case 7 -> shouldTerminate = exit(currentDiagram);
+                case 7 -> new Thread(() -> GraphicalUserInterface.startGUI(new String[0])).start();
+                case 8 -> shouldTerminate = exit(currentDiagram);
                 default -> System.out.println("There is a bug in getUserChoice");
             }
         }
@@ -58,17 +61,18 @@ public class CommandLineInterface {
         int userInput = -1;
 
         System.out.println("""
+                                
+                                
+                 1 - New Diagram
+                 2 - View Existing Diagram
+                 3 - Edit Existing Diagram
+                 4 - Save Current Diagram
+                 5 - Load Diagram
+                 6 - Help
+                 7 - Open GUI
+                 8 - Exit
                 
-                
-                Enter a number:
-                
-                1 - New Diagram
-                2 - View Existing Diagram
-                3 - Edit Existing Diagram
-                4 - Save Current Diagram
-                5 - Load Diagram
-                6 - Help
-                7 - Exit
+                 Enter a number:
                 """);
 
         while (true) {
@@ -144,7 +148,7 @@ public class CommandLineInterface {
     }
 
     private static void saveToDefaultPath(Diagram diagram) {
-        SaveLoadSystem.saveDefault(diagram.getTitle(), diagram.getClassList());
+        SaveLoadSystem.saveDefaultCLI(diagram.getTitle(), diagram);
         System.out.println("Saved to the default path.");
     }
 
@@ -158,7 +162,7 @@ public class CommandLineInterface {
 
             try {
                 Path filePath = Paths.get(customPath);
-                SaveLoadSystem.saveCustom(filePath.toString(), diagram.getTitle(), diagram.getClassList());
+                SaveLoadSystem.saveCustomCLI(filePath.toString(), diagram.getTitle(), diagram);
                 System.out.println("Saved to custom path: " + filePath);
                 saveSuccessful = true;
             } catch (InvalidPathException e) {
@@ -212,8 +216,8 @@ public class CommandLineInterface {
             System.out.println("There is no diagram currently loaded");
             return;
         }
-
-        currentDiagram.menu();
+        MenuController.diagramMenuControl(false, currentDiagram);
+        //currentDiagram.menu();
     }
     private static void saveDiagram(Diagram currentDiagram){
         savePrompt(currentDiagram);
@@ -222,22 +226,27 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Enter the path to the file you want to load:");
-
+        System.out.print("--> ");
         String filePath = scan.nextLine();
 
+        System.out.println("Enter the name of the file you want to load:");
+        System.out.print("--> ");
+        String fileName = scan.nextLine();
+
+        /*
         try {
-            var loadedClasses = SaveLoadSystem.load(filePath);
+            //var loadedClasses = SaveLoadSystem.load(filePath);
             System.out.println("Diagram loaded successfully.");
             Diagram diagram = new Diagram("");
-            diagram.setClassList(loadedClasses);
+            //diagram.setClassList(loadedClasses);
             return new Diagram("");
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid file path. Please enter a valid path.");
         } catch (Exception e) {
             System.out.println("An error occurred while loading the diagram.");
-        }
+        }*/
 
-        return null;
+        return SaveLoadSystem.loadDiagramCLI(filePath, fileName);
     }
 
     /*
@@ -246,21 +255,23 @@ public class CommandLineInterface {
     * */
     private static void help(){
         System.out.println("""
-                MAIN MENU COMMANDS:
+                 MAIN MENU COMMANDS:
 
-                Option 1 - New Diagram: Create a new UML Diagram
+                 Option 1 - New Diagram: Create a new UML Diagram
                 
-                Option 2 - View Existing Diagram: View the currently loaded diagram
+                 Option 2 - View Existing Diagram: View the currently loaded diagram
                 
-                Option 3 - Edit Diagram: Edit the currently loaded diagram
+                 Option 3 - Edit Diagram: Edit the currently loaded diagram
                 
-                Option 4 - Save Diagram: Saves the currently loaded diagram
+                 Option 4 - Save Diagram: Saves the currently loaded diagram
                 
-                Option 5 - Load Diagram: Loads an existing diagram from a file
+                 Option 5 - Load Diagram: Loads an existing diagram from a file
                 
-                Option 5 - Help: Lists a description of all available commands
+                 Option 6 - Help: Lists a description of all available commands
                 
-                Option 6 - Exit: Exit the program
+                 Option 7 - Start GUI: Opens the graphical user interface associated with this program
+                
+                 Option 8 - Exit: Exit the program
                 """);
     }
 
@@ -274,5 +285,65 @@ public class CommandLineInterface {
     private static boolean exit(Diagram currentDiagram) {
         savePrompt(currentDiagram);
         return true;
+    }
+
+    public static int diagramMenuChoice() {
+        int userInput = -99;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("UML Diagram Editor Menu");
+        System.out.println("""
+            
+                                1 - Add Class
+                                2 - Delete Class
+                                3 - Rename Class
+                                4 - Edit Class
+                                5 - Edit Relationships
+                                6 - View Class
+                                7 - View Diagram
+                                8 - Exit
+                                
+                                Enter a number:""");
+
+        while (true) {
+            try {
+                userInput = Integer.parseInt(scan.nextLine());
+                if (isValidUserInput(userInput)) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return userInput;
+
+    }
+
+    public static int newClassMenuChoice(){
+        int userInput = -99;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("New Class Editor");
+        System.out.println("""
+            
+                                1 - Add Attribute
+                                2 - Add Relationship
+                                3 - Back to Diagram Menu
+                                
+                                Enter a number:""");
+        
+        while (true) {
+            try {
+                userInput = Integer.parseInt(scan.nextLine());
+                if (isValidUserInput(userInput)) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return userInput;
     }
 }

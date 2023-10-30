@@ -1,9 +1,8 @@
 package Class;
 
 import Attributes.Attribute;
-import Diagram.Diagram;
 import Relationships.Relationship;
-import com.github.cliftonlabs.json_simple.JsonObject;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +10,12 @@ import java.util.Scanner;
 
 public class Class {
 
+    @Expose
     private String className;
+    @Expose
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
-    private List<Relationship> relationships = new ArrayList<>();
+    //private List<Relationship> relationships = new ArrayList<>();
 
     public Class(final String className) {
         if (className == null) {
@@ -22,35 +23,6 @@ public class Class {
         }
         this.attributes = new Attribute();
         this.className = className;
-    }
-
-    /**
-     * Description: Converts a Class object into a JsonObject for saving.
-     * @return : returns a JsonObject of the Class object.
-     */
-
-    public JsonObject toJsonObject(){
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.put("name", className);
-        jsonObject.put("attributes", attributes.toJsonObject());
-        jsonObject.put("relationships", relationships);
-        return jsonObject;
-    }
-
-
-    /**
-     * Description: Converts a JsonObject from the load file back into a Class object.
-     * @param jsonObject : the JsonObject read from the load file.
-     * @return : returns a Class object from the information in the JsonObject.
-     */
-    public static Class fromJsonObject(JsonObject jsonObject){
-        String className = (String) jsonObject.get("name");
-        Attribute attributes = Attribute.fromJsonObject((JsonObject) jsonObject.get("attributes"));
-        ArrayList<Relationship> relationships = (ArrayList<Relationship>) jsonObject.get("relationships");
-        Class newClass = new Class(className);
-        newClass.setAttributes(attributes);
-        newClass.setRelationships(relationships);
-        return newClass;
     }
 
     /**
@@ -72,10 +44,11 @@ public class Class {
         return this.attributes;
     }
 
+    /*
     public ArrayList getRelationships(){
         return new ArrayList<>(this.relationships);
     }
-
+    */
     /**
      * description: used to set a name for the class or rename a class
      * @param newClassName
@@ -104,11 +77,13 @@ public class Class {
      * addRelationship will search the array list and check to see if a relationship between two classes exists, if not, the user will be notified
      * and the attribute will not be added
      * @param relationshipType
-     * @param otherClassName
+     * @param class1
+     * @param class2
      * @param thisClassCardinality
      * @param otherClassCardinality
      * @param owner
      */
+    /*
     public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality,
                                 final int otherClassCardinality, final boolean owner) {
         Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
@@ -122,13 +97,6 @@ public class Class {
         }
         relationships.add(newRelationship);
     }
-
-    /**
-     * description: delete relationship will take in a relationship object and search the relationship array list to see if the relationship exists
-     * if not, the user will be notified and nothing will be deleted
-     * @param relationship
-     */
-
     public void deleteRelationship(final Relationship relationship) {
         if (relationships.isEmpty()) {
             System.out.println("There are no relationships assigned to this class.");
@@ -140,17 +108,10 @@ public class Class {
             System.out.println("This relationship is not assigned to this class.");
         }
     }
-
-    /**
-     * description: getRelationship will search the relationship list for a desired related class, if found it will return the class to the user
-     * @param otherClass
-     * @return
-     */
-
     public Relationship getRelationship(final Class otherClass){
         Relationship relationship = null;
         for(int i = 0; i < relationships.size(); i++){
-            if(relationships.get(i).getOtherClassName() == otherClass){
+            if(relationships.get(i).getClass2() == otherClass){
                 relationship = relationships.get(i);
                 break;
             }
@@ -162,7 +123,7 @@ public class Class {
     public void setRelationships(ArrayList<Relationship> relationship){
         this.relationships = relationship;
     }
-
+    */
     /**
      * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
      */
@@ -241,6 +202,18 @@ public class Class {
         }
 
     }
+
+    public String help() {
+        String help = "How to use this menu:\n" +
+                "1. Add attribute -- prompts user to enter a name for a new attribute\n" +
+                "2. Delete attribute -- prompts user to enter a name of an (existing) attribute to delete\n" +
+                "3. Rename attriubte -- prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute\n" +
+                "4. Display relationships -- displays all relationships assigned to the class\n" +
+                "5. Display all contents -- displays the contents of the class including: name, attributes, and relationships\n" +
+                "6. Return to Diagram Menu -- returns the user to the diagram menu holding the class\n";
+
+        return help;
+    }
     
     /**
      * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
@@ -254,7 +227,7 @@ public class Class {
             do {
                 System.out.println("\nEdit menu for the " + this.getClassName() + " class\n");
                 System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Rename Attribute" +
-                        "\n4.Display attributes\n5.Display relationships\n6.Display all contents\n7.Return to Diagram Menu");
+                        "\n4.Display attributes\n5.Display relationships\n6.Display all contents\n7.Return to Diagram Menu\n8.Help");
                 String op = scanner.nextLine();
                 if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
                     choice = Integer.parseInt(op);
@@ -263,7 +236,7 @@ public class Class {
                     System.out.println("Please enter a valid option, 1-7");
                 }
 
-            } while (choice < 1 || choice > 7);
+            } while (choice < 1 || choice > 8);
 
             switch (choice) {
 
@@ -280,7 +253,7 @@ public class Class {
                     System.out.println(this.displayAttributes());
                     break;
                 case 5: //display relationships
-                    System.out.println(this.displayRelationships());
+                    //System.out.println(this.displayRelationships());
                     break;
                 case 6: //display all contents
                     System.out.println(this);
@@ -288,6 +261,8 @@ public class Class {
                 case 7: //return to diagram menu
                     on = false;
                     break;
+                case 8: //help
+                    System.out.println(this.help());
                 default:
                     break;
             }
@@ -300,16 +275,10 @@ public class Class {
      */
     @Override
     public String toString() {
-        StringBuilder relationships = new StringBuilder();
-
-        for (Relationship relationship: this.relationships) {
-            relationships.append(relationship.toString()).append("\n");
-        }
 
         return "Class Name: " + this.getClassName() + "\n"
                 +"---------------------\n"
-                + "Attributes: \n" + this.attributes.toString() +
-                "\n\n" + "Relationships: \n\n" + relationships;
+                + "Attributes: \n" + this.attributes.toString();
     }
 
 }
