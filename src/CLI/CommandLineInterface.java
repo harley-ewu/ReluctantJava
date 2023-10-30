@@ -1,8 +1,8 @@
 package CLI;
 
 import Diagram.Diagram;
+import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
-//import SaveLoadSystem.SaveLoadSystem;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -16,7 +16,7 @@ import java.util.Scanner;
 * */
 public class CommandLineInterface {
 
-    private static final int MAX_CHOICES = 7;
+    private static final int MAX_CHOICES = 8;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
@@ -42,7 +42,8 @@ public class CommandLineInterface {
                 case 4 -> saveDiagram(currentDiagram);
                 case 5 -> currentDiagram = loadDiagram();
                 case 6 -> help();
-                case 7 -> shouldTerminate = exit(currentDiagram);
+                case 7 -> new Thread(() -> GraphicalUserInterface.startGUI(new String[0])).start();
+                case 8 -> shouldTerminate = exit(currentDiagram);
                 default -> System.out.println("There is a bug in getUserChoice");
             }
         }
@@ -59,17 +60,18 @@ public class CommandLineInterface {
         int userInput = -1;
 
         System.out.println("""
+                                
+                                
+                 1 - New Diagram
+                 2 - View Existing Diagram
+                 3 - Edit Existing Diagram
+                 4 - Save Current Diagram
+                 5 - Load Diagram
+                 6 - Help
+                 7 - Open GUI
+                 8 - Exit
                 
-                
-                Enter a number:
-                
-                1 - New Diagram
-                2 - View Existing Diagram
-                3 - Edit Existing Diagram
-                4 - Save Current Diagram
-                5 - Load Diagram
-                6 - Help
-                7 - Exit
+                 Enter a number:
                 """);
 
         while (true) {
@@ -225,7 +227,6 @@ public class CommandLineInterface {
         System.out.print("--> ");
         String fileName = scan.nextLine();
 
-        Diagram diagram = SaveLoadSystem.loadDiagramCLI(filePath, fileName);
         /*
         try {
             //var loadedClasses = SaveLoadSystem.load(filePath);
@@ -239,7 +240,7 @@ public class CommandLineInterface {
             System.out.println("An error occurred while loading the diagram.");
         }*/
 
-        return diagram;
+        return SaveLoadSystem.loadDiagramCLI(filePath, fileName);
     }
 
     /*
@@ -248,21 +249,23 @@ public class CommandLineInterface {
     * */
     private static void help(){
         System.out.println("""
-                MAIN MENU COMMANDS:
+                 MAIN MENU COMMANDS:
 
-                Option 1 - New Diagram: Create a new UML Diagram
+                 Option 1 - New Diagram: Create a new UML Diagram
                 
-                Option 2 - View Existing Diagram: View the currently loaded diagram
+                 Option 2 - View Existing Diagram: View the currently loaded diagram
                 
-                Option 3 - Edit Diagram: Edit the currently loaded diagram
+                 Option 3 - Edit Diagram: Edit the currently loaded diagram
                 
-                Option 4 - Save Diagram: Saves the currently loaded diagram
+                 Option 4 - Save Diagram: Saves the currently loaded diagram
                 
-                Option 5 - Load Diagram: Loads an existing diagram from a file
+                 Option 5 - Load Diagram: Loads an existing diagram from a file
                 
-                Option 5 - Help: Lists a description of all available commands
+                 Option 6 - Help: Lists a description of all available commands
                 
-                Option 6 - Exit: Exit the program
+                 Option 7 - Start GUI: Opens the graphical user interface associated with this program
+                
+                 Option 8 - Exit: Exit the program
                 """);
     }
 
