@@ -34,7 +34,7 @@ public class Attribute {
             }else {
                 Method method = new Method(name, type);
                 if (!parameters.isEmpty()) {
-                    method.getParameter().addAll(parameters);
+                    method.setParameters(parameters);
                 }
                 return method;
             }

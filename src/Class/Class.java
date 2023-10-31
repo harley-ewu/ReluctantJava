@@ -3,17 +3,13 @@ package Class;
 import Attributes.Attribute;
 import Relationships.Relationship;
 import com.google.gson.annotations.Expose;
-import org.junit.jupiter.api.Test;
-
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Class {
 
     @Expose
     private String className;
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     @Expose
     private List<Relationship> relationships = new ArrayList<>();
 

@@ -4,18 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Method extends Attribute{
-    ArrayList<String> parameter = new ArrayList<>();
+    ArrayList<String> parameters = new ArrayList<>();
 
     public Method(String name, String primitive) {
         super(name, primitive);
     }
 
-    public ArrayList<String> getParameter() {
-        return this.parameter;
+    /**
+     * this method will replace the current parameter arraylist with a new one
+     * (any existing parameter will be cleared from the list)
+     * @param parameter - a new array list of params
+     */
+
+    public void setParameters(ArrayList<String> parameter) {
+        this.parameters.clear();
+        this.parameters.addAll(parameter);
     }
+
+    public void addParameter(String parameter) {
+        this.parameters.add(parameter);
+    }
+
+    public void removeParameter(int input) {
+        if (input < 1 || input > this.parameters.size()+1) {
+            return;
+        }
+        this.parameters.remove(input-1);
+    }
+
 
     @Override
     public String toString() {
-        return (super.toString() + "(" + parameter.toString() + ")" + "\n");
+        return (super.toString() + "(" + parameters.toString() + ")" + "\n");
     }
 }
