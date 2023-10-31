@@ -30,9 +30,9 @@
     -fx-border-color: white;
     -fx-border-radius: 5px;
     -fx-padding: 5;
-    -fx-font-size: 14px;  // Increase font size for better visibility
+    -fx-font-size: 14px;
 }
 .windowControlButton:hover {
-    -fx-background-color: rgba(0, 0, 0, 0.7);  // A subtle black color on hover
+    -fx-background-color: rgba(0, 0, 0, 0.7);
 }
 
