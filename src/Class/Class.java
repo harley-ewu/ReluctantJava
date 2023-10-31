@@ -191,16 +191,14 @@ public class Class {
      * description: method that handles renaming an attribute
      */
     //TODO: code menu option for renaming an attribute **this is no longer a menu option method**
-    public void renameAttribute() {
-        /*String attribute;
-        String newName;
-        System.out.println("Please enter an attribute to rename: ");
-        attribute = this.scanner.nextLine();
-        System.out.println("Please enter a new name for the attribute: ");
-        newName = this.scanner.nextLine();
-
-        this.attributes.renameAttribute(attribute, newName);*/
-
+    public void renameAttribute(int input, String newName, ArrayList<String> parameters, String type) {
+        for (int i = 0; i < this.attributes.size()+1; i++) {
+            if (input == (i+1)) {
+                Attribute newAttribute = new Attribute();
+                newAttribute = newAttribute.addAttribute(newName, parameters, type);
+                this.attributes.set(i, newAttribute);
+            }
+        }
     }
 
     /**

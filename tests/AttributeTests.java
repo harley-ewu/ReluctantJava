@@ -69,10 +69,10 @@ public class AttributeTests {
     void deleteAttribute() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
-                "2. anotherMethod(param1)\n";
+                "2. field: Boolean\n";
         test.addAttribute("testMethod", testList, 2);
         testList2.add("Boolean");
-        test.addAttribute("field", testList2, 2);
+        test.addAttribute("field", testList2, 1);
         testList.add("param1");
         test.addAttribute("anotherMethod", testList, 2);
         System.out.println(test.displayAttributes());
@@ -80,5 +80,26 @@ public class AttributeTests {
         test.deleteAttribute(2);
         System.out.println(test.displayAttributes());
         assertEquals(expected, test.displayAttributes());
+    }
+
+    @Test
+    void renameAttribute() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. field: Boolean\n" +
+                "3. differentField: String\n";
+        test.addAttribute("testMethod", testList, 2);
+
+        testList2.add("Boolean");
+        test.addAttribute("field", testList2, 1);
+
+        testList.add("param1");
+        test.addAttribute("anotherMethod", testList, 2);
+
+        System.out.println(test.displayAttributes());
+        testList3.add("String");
+
+        test.renameAttribute(2, "differentField", testList3, "FIELD");
+        System.out.println(test.displayAttributes());
     }
 }

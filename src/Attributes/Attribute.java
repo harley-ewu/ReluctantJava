@@ -23,7 +23,7 @@ public class Attribute {
      *
      */
 
-    public Object addAttribute(final String name, ArrayList<String> parameters, final String type) {
+    public Attribute addAttribute(final String name, ArrayList<String> parameters, final String type) {
         Objects.requireNonNull(name, "Name can't be null.");
         if(!name.isEmpty() || !parameters.isEmpty() || !type.isEmpty()) {
             if(type.equals("FIELD")){
