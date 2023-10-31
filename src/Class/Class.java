@@ -1,7 +1,6 @@
 package Class;
 
 import Attributes.Attribute;
-import Attributes.Field;
 import Relationships.Relationship;
 import com.google.gson.annotations.Expose;
 import org.junit.jupiter.api.Test;
@@ -53,7 +52,7 @@ public class Class {
 
     /**
      * description: used to set a name for the class or rename a class
-     * @param newClassName
+     * @param newClassName - the name of the new class a user wants to rename a class to
      */
     //setters
     public void setClassName(final String newClassName) {
@@ -108,7 +107,7 @@ public class Class {
 
     /**
      * description: getRelationship will search the relationship list for a desired related class, if found it will return the class to the user
-     * @param otherClass
+     * @param otherClass the other class the addressed class is related to
      * @return
      */
 
@@ -129,9 +128,12 @@ public class Class {
     }
 
     /**
-     * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
+     * description: createAttribute is a menu option method, prompting the user to enter a name for an attribute
+     * @param name - the name of the class
+     * @param parameters - a list of parameters for a method (will be a single
+     * @param input - the number the user inputted in the menu
      */
-    public void addAttribute(String name, ArrayList<String> parameters, int input) {
+    public void createAttribute(String name, ArrayList<String> parameters, int input) {
         if (name.isEmpty() || parameters == null || input > 2 || input < 1) {
             return;
         }
@@ -158,12 +160,7 @@ public class Class {
             return;
         }
 
-        for (int i = 0; i < this.attributes.size()+1; i++) {
-            if (input == (i+1)) {
-                Attribute temp = this.attributes.remove(i);
-            }
-        }
-
+        this.attributes.remove(input-1);
     }
 
     /**
@@ -278,7 +275,7 @@ public class Class {
                     //this.deleteAttribute();
                     break;
                 case 3: //rename attribute
-                    this.renameAttribute();
+                    //this.renameAttribute();
                     break;
                 case 4: //display attributes
                     System.out.println(this.displayAttributes());
