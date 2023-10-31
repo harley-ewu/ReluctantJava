@@ -8,7 +8,6 @@ public class Method extends Attribute{
 
     public Method(String name, String primitive) {
         super(name, primitive);
-        this.parameter = parameter;
     }
 
     public ArrayList<String> getParameter() {
