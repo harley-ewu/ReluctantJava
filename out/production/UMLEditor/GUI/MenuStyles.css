@@ -1,0 +1,38 @@
+.menuButton {
+    -fx-background-color: purple;
+    -fx-text-fill: white;
+}
+
+.menuButton:hover {
+    -fx-background-color: white;
+    -fx-text-fill: purple;
+}
+
+.menu-bar {
+    -fx-background-color: purple;
+}
+
+.menu {
+    -fx-text-fill: white;
+}
+
+.menu .label {
+    -fx-text-fill: white;
+}
+
+.menu-item .label {
+    -fx-text-fill: black;
+}
+
+.windowControlButton {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-radius: 5px;
+    -fx-padding: 5;
+    -fx-font-size: 14px;  // Increase font size for better visibility
+}
+.windowControlButton:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.7);  // A subtle black color on hover
+}
+

@@ -11,4 +11,13 @@
             fx:controller="GUI.MainMenuController"
             prefHeight="400.0" prefWidth="600.0">
 
+    <fx:include source="MenuBar.fxml"/>
+
+    <VBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <Button styleClass="menuButton" text="Create New Diagram" onAction="#createDiagramGUI"/>
+        <Button styleClass="menuButton" text="View Current Diagram" onAction="#createDiagramGUI"/>
+        <Button styleClass="menuButton" text="Edit Current Diagram" onAction="#createDiagramGUI"/>
+        <Button styleClass="menuButton" text="Exit" onAction="#createDiagramGUI"/>
+    </VBox>
+
 </AnchorPane>
