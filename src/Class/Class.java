@@ -170,7 +170,7 @@ public class Class {
      * description: returns a string of all attributes currently within the class
      * @return
      */
-    public StringBuilder displayAttributes() {
+    public String displayAttributes() {
         sortArrayList(this.attributes);
         StringBuilder display = new StringBuilder();
 
@@ -183,7 +183,7 @@ public class Class {
             i++;
         }
 
-        return display;
+        return display.toString();
 
     }
 

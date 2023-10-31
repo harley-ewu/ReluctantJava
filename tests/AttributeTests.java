@@ -53,4 +53,32 @@ public class AttributeTests {
         assertEquals(expected, test.toString());
     }
 
+    @Test
+    void displayAttributes() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. field: Boolean\n";
+
+        test.addAttribute("testMethod", testList, 2);
+        testList2.add("Boolean");
+        test.addAttribute("field", testList2, 1);
+        assertEquals(expected, test.displayAttributes());
+    }
+
+    @Test
+    void deleteAttribute() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. anotherMethod(param1)\n";
+        test.addAttribute("testMethod", testList, 2);
+        testList2.add("Boolean");
+        test.addAttribute("field", testList2, 2);
+        testList.add("param1");
+        test.addAttribute("anotherMethod", testList, 2);
+        System.out.println(test.displayAttributes());
+
+        test.deleteAttribute(2);
+        System.out.println(test.displayAttributes());
+        assertEquals(expected, test.displayAttributes());
+    }
 }
