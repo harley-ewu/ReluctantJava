@@ -380,4 +380,8 @@ public class CommandLineInterface {
                  Option 9 - Exit: Exit the program
                 """);
     }
+
+    public static void setCurrentDiagram(Diagram diagram){
+        currentDiagram = diagram;
+    }
 }
