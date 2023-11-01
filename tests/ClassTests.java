@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -62,6 +63,27 @@ public class ClassTests {
         assertEquals("New Class Name", this.newClass.getClassName());
     }
 
+    @Test
+    void testDisplayAttributes2() {
+        Class test = new Class("Test Class");
+        ArrayList<String> testList = new ArrayList<>();
+        ArrayList<String> testList2 = new ArrayList<>();
+        ArrayList<String> testList3 = new ArrayList<>();
+
+        testList2.add("Boolean");
+        test.createAttribute("testMethod", testList, 2);
+        test.createAttribute("testField1", testList2, 1);
+        test.createAttribute("testMethod2", testList, 2);
+
+        test.sortArrayList(test.getAttributes());
+
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. testMethod2()\n"+
+                "3. testField1: Boolean\n";
+        assertEquals(expected, test.displayAttributes());
+    }
+
     /*
     @Test
     public void testAddAttributeMethod() {
@@ -107,8 +129,8 @@ public class ClassTests {
     */
     @Test
     public void  testDisplayAttributes() {
-        this.newClass.getAttributes().addAttribute("color");
-        this.newClass.getAttributes().addAttribute("skin");
+        //this.newClass.getAttributes().addAttribute("color");
+        //this.newClass.getAttributes().addAttribute("skin");
 
         String output = "Attributes in the Test Class class:\n" +
                 "color\n" +
@@ -120,8 +142,8 @@ public class ClassTests {
 /*
     @Test
     public void testToString() {
-        this.newClass.getAttributes().addAttribute("color");
-        this.newClass.getAttributes().addAttribute("skin");
+        //this.newClass.getAttributes().addAttribute("color");
+       // this.newClass.getAttributes().addAttribute("skin");
 
         Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Realization;
         Class otherClass = new Class("Other Class 1");
@@ -163,3 +185,4 @@ public class ClassTests {
 
  */
 }
+
