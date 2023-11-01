@@ -325,7 +325,7 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
         System.out.println("New Class Editor");
         System.out.println("""
-            
+                                
                                 1 - Add Attribute
                                 2 - Add Relationship
                                 3 - Back to Diagram Menu
@@ -338,12 +338,48 @@ public class CommandLineInterface {
                 if (isValidUserInput(userInput)) {
                     break;
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
+                    System.out.println("Invalid input. Please enter a number between 1 and 3");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
             }
         }
         return userInput;
+    }
+
+    public static int editClassMenuChoice() {
+        int choice = -99;
+        int userInput;
+        Scanner scan = new Scanner(System.in);
+            //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
+        System.out.println("\nExisting Class Editor");
+        System.out.println("""
+                              1.Add attribute
+                              2.Delete attribute
+                              3.Rename Attribute
+                              4.Display attributes
+                              5.Display relationships
+                              6.Display all contents
+                              7.Return to Diagram Menu
+                              8.Help
+                             
+                             Enter a number:""");
+
+        while (true) {
+
+            try {
+                userInput = Integer.parseInt(scan.nextLine());
+                if (isValidUserInput(userInput)) {
+                    break;
+                } else {
+                    System.out.println("Please enter a valid option, 1-" + MAX_CHOICES);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+
+        }
+
+        return choice;
     }
 }
