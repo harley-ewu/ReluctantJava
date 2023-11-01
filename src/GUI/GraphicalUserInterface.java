@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -42,6 +43,7 @@ public class GraphicalUserInterface extends javafx.application.Application{
         Scene scene = new Scene(root, 300, 250);
         scene.getStylesheets().add(cssStyles);
 
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("UML Editor");
         primaryStage.setScene(scene);
         primaryStage.show();
