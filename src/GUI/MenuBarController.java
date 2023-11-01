@@ -28,7 +28,7 @@ public class MenuBarController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning: No Project");
             alert.setContentText("There is currently no project loaded or in progress.\n" +
-                    "Please either start or load a project.");
+                    "Please either start or load a project before saving.");
             alert.isResizable();
             alert.showAndWait();
             return;
@@ -43,15 +43,44 @@ public class MenuBarController {
 
         try{
             File file = fc.showSaveDialog(stage);
-            SaveLoadSystem.saveAsProjectGUI(diagram, file);
+            diagram.setSaveLocation(file.toString());
+            SaveLoadSystem.saveProjectGUI(diagram, file);
         }catch(Exception e){
             System.err.println("There was an error trying to save the project.");
         }
     }
 
     @FXML
-    public void handleSave() {
-        // Handle save action
+    public void handleSave(ActionEvent event) {
+        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+
+        if(diagram == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning: No Project");
+            alert.setContentText("There is currently no project loaded or in progress.\n" +
+                    "Please either start or load a project before saving.");
+            alert.isResizable();
+            alert.showAndWait();
+            return;
+        }
+
+        if(diagram.getSaveLocation() == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning: Project not saved yet");
+            alert.setContentText("The has not been saved to a location yet.\n" +
+                    "Please use \"Save As...\" first before using \"Save\".");
+            alert.isResizable();
+            alert.showAndWait();
+            return;
+        }
+
+        try{
+            File file = new File(diagram.getSaveLocation());
+            SaveLoadSystem.saveProjectGUI(diagram, file);
+        }catch(Exception e){
+            System.err.println("There was an error saving the file.");
+        }
+
     }
 
     @FXML
