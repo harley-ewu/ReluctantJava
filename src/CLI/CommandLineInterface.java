@@ -1,6 +1,7 @@
 package CLI;
 
 import Diagram.Diagram;
+import Controller.MenuController;
 import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
 
@@ -122,6 +123,11 @@ public class CommandLineInterface {
     }
 
     private static void savePrompt(Diagram diagram) {
+
+        if(diagram == null){
+            System.out.println("There is no diagram loaded");
+            return;
+        }
         char userChoice;
         Scanner scan = new Scanner(System.in);
 
@@ -210,8 +216,8 @@ public class CommandLineInterface {
             System.out.println("There is no diagram currently loaded");
             return;
         }
-
-        currentDiagram.menu();
+        MenuController.diagramMenuControl(false, currentDiagram);
+        //currentDiagram.menu();
     }
     private static void saveDiagram(Diagram currentDiagram){
         savePrompt(currentDiagram);
@@ -279,5 +285,65 @@ public class CommandLineInterface {
     private static boolean exit(Diagram currentDiagram) {
         savePrompt(currentDiagram);
         return true;
+    }
+
+    public static int diagramMenuChoice() {
+        int userInput = -99;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("UML Diagram Editor Menu");
+        System.out.println("""
+            
+                                1 - Add Class
+                                2 - Delete Class
+                                3 - Rename Class
+                                4 - Edit Class
+                                5 - Edit Relationships
+                                6 - View Class
+                                7 - View Diagram
+                                8 - Exit
+                                
+                                Enter a number:""");
+
+        while (true) {
+            try {
+                userInput = Integer.parseInt(scan.nextLine());
+                if (isValidUserInput(userInput)) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return userInput;
+
+    }
+
+    public static int newClassMenuChoice(){
+        int userInput = -99;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("New Class Editor");
+        System.out.println("""
+            
+                                1 - Add Attribute
+                                2 - Add Relationship
+                                3 - Back to Diagram Menu
+                                
+                                Enter a number:""");
+        
+        while (true) {
+            try {
+                userInput = Integer.parseInt(scan.nextLine());
+                if (isValidUserInput(userInput)) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return userInput;
     }
 }
