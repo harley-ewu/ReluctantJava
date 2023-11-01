@@ -39,7 +39,7 @@ public class DiagramTests {
 		
 		UMLDiagram.addClass(c.getClassName());
 		
-		assertEquals(c, classList.get(c.getClassName()).getClass());
+		assertEquals(c.getClassName(), UMLDiagram.getClassList().get(c.getClassName()).getClassName());
 		
 	}
 
@@ -65,4 +65,42 @@ public class DiagramTests {
 		assertEquals(testRelationship, UMLDiagram.getRelationshipList().get(testRelationshipKey));
 
 	}
+
+	@Test
+	void deleteRelationshipTest() throws Exception {
+		Diagram UMLDiagram = new Diagram("");
+
+		Class testClass = new Class("testClass");
+		UMLDiagram.addClass(testClass.getClassName());
+		Class testClass2 = new Class("testClass2");
+		UMLDiagram.addClass(testClass2.getClassName());
+
+		Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, true);
+		String testRelationshipKey = testClass.getClassName() + testClass2.getClassName();
+		UMLDiagram.addRelationship(testRelationship);
+
+		assertEquals(testRelationship, UMLDiagram.getRelationshipList().get(testRelationshipKey));
+
+		UMLDiagram.deleteRelationship(testClass, testClass2);
+
+		assertEquals(null, UMLDiagram.getRelationshipList().get(testRelationshipKey));
+	}
+
+	@Test
+	void findSingleRelationshipTest() throws Exception {
+		Diagram UMLDiagram = new Diagram("");
+
+		Class testClass = new Class("testClass");
+		UMLDiagram.addClass(testClass.getClassName());
+		Class testClass2 = new Class("testClass2");
+		UMLDiagram.addClass(testClass2.getClassName());
+
+		Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, true);
+		String testRelationshipKey = testClass.getClassName() + testClass2.getClassName();
+		UMLDiagram.addRelationship(testRelationship);
+
+		assertEquals(testRelationship, UMLDiagram.findSingleRelationship(testClass, testClass2));
+		assertEquals(testRelationship, UMLDiagram.findSingleRelationship(testClass2, testClass));
+	}
+	
 }
