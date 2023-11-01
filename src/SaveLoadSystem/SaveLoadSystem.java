@@ -77,12 +77,8 @@ public class SaveLoadSystem {
      * @param diagram - The diagram object to be saved.
      * @param file - The file path to where the project will be saved.
      */
-    public static void saveAsProjectGUI(Diagram diagram, File file){
+    public static void saveProjectGUI(Diagram diagram, File file){
         ConvertDiagramToJsonAndWriteToFile(diagram, file);
-    }
-
-    public static void saveProjectGUI(){
-
     }
 
     public static Diagram loadProjectGUI(File file){

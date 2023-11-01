@@ -12,6 +12,8 @@ import java.util.Scanner;
 public class Diagram {
 
    @Expose
+   private String saveLocation = null;
+   @Expose
    private String title;
    //private List<Class> classList = new ArrayList<Class>();
    @Expose
@@ -513,5 +515,11 @@ public class Diagram {
       return "Diagram: " + diagramString;
    }
    
+   public void setSaveLocation(String saveLocation){
+      this.saveLocation = saveLocation;
+   }
 
+   public String getSaveLocation(){
+      return this.saveLocation;
+   }
 }
