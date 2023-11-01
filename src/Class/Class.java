@@ -13,9 +13,6 @@ public class Class {
     @Expose
     private List<Relationship> relationships = new ArrayList<>();
     @Expose
-    private Attribute attributes;
-    private Scanner scanner = new Scanner(System.in);
-    private List<Relationship> relationships = new ArrayList<>();
     private ArrayList<Attribute> attributes = new ArrayList<>();
 
 
@@ -310,7 +307,6 @@ public class Class {
                 +"---------------------\n"
                 + "Attributes: \n" + attributeString +
                 "\n\n" + "Relationships: \n\n" + relationships;
-                + "Attributes: \n" + this.attributes.toString();
     }
 
 
