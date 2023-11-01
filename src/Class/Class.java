@@ -1,11 +1,8 @@
 package Class;
 
 import Attributes.Attribute;
-import Relationships.Relationship;
 import com.google.gson.annotations.Expose;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Class {
@@ -82,47 +79,7 @@ public class Class {
      * @param otherClassCardinality
      * @param owner
      */
-    /*
-    public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality,
-                                final int otherClassCardinality, final boolean owner) {
-        Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
 
-        if (this.relationships == null) {
-            throw new NullPointerException("Relationships list is null.");
-        }
-        else if (this.relationships.contains(newRelationship)) {
-                System.out.println("There is already a relationship between these two classes.");
-                return;
-        }
-        relationships.add(newRelationship);
-    }
-    public void deleteRelationship(final Relationship relationship) {
-        if (relationships.isEmpty()) {
-            System.out.println("There are no relationships assigned to this class.");
-        }
-        //checks if given relationship is null and if it is contained within the relationship list
-        else if (relationship != null && relationships.contains(relationship)) {
-            relationships.remove(relationship);
-        } else {
-            System.out.println("This relationship is not assigned to this class.");
-        }
-    }
-    public Relationship getRelationship(final Class otherClass){
-        Relationship relationship = null;
-        for(int i = 0; i < relationships.size(); i++){
-            if(relationships.get(i).getClass2() == otherClass){
-                relationship = relationships.get(i);
-                break;
-            }
-        }
-
-        return relationship;
-    }
-
-    public void setRelationships(ArrayList<Relationship> relationship){
-        this.relationships = relationship;
-    }
-    */
     /**
      * description: addAttribute is a menu option method, prompting the user to enter a name for an attribute
      */
@@ -182,23 +139,6 @@ public class Class {
         newName = this.scanner.nextLine();
 
         this.attributes.renameAttribute(attribute, newName);
-
-    }
-
-    /**
-     * description: returns a string of all relationships attached to the class
-     */
-    public String displayRelationships() {
-        if (this.relationships.isEmpty()) {
-            return "There are no relationships assigned to this class.";
-        } else {
-            StringBuilder relationships = new StringBuilder();
-
-            for (Relationship relationship: this.relationships) {
-                relationships.append(relationship.toString()).append("\n");
-            }
-            return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
-        }
 
     }
 

@@ -4,7 +4,6 @@ import Class.Class;
 import Relationships.Relationship;
 import com.google.gson.annotations.Expose;
 
-import javax.management.relation.Relation;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -17,6 +16,7 @@ public class Diagram {
    //private List<Class> classList = new ArrayList<Class>();
    @Expose
    private HashMap<String, Class> classList;
+   @Expose
    private HashMap<String, Relationship> relationshipList;
    private Scanner scanner = new Scanner(System.in);
    
@@ -28,7 +28,7 @@ public class Diagram {
       //if diagram comes in as null/empty, should we initialize an empty arraylist?
       this.title = title;
       this.classList = new HashMap<>();
-
+      this.relationshipList = new HashMap<>();
    }
    
    /*
@@ -457,7 +457,11 @@ public class Diagram {
       }
 
       Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
-      String relationshipName = c1.getClassName() + c2.getClassName();
+      addRelationship(relationship);
+   }
+
+   public void addRelationship(final Relationship relationship) {
+      String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
       relationshipList.put(relationshipName, relationship);
    }
    
@@ -475,6 +479,23 @@ public class Diagram {
       
    }
 
+   public Relationship findSingleRelationship(final Class c1, final Class c2) {
+      String relationshipName = c1.getClassName()+c2.getClassName();
+      Relationship relationship = relationshipList.get(relationshipName);
+      if(relationship == null)
+      {
+         relationshipName = c2.getClassName()+c1.getClassName();
+         relationship = relationshipList.get(relationshipName);
+      }
+
+      if (relationship == null)
+      {
+         System.out.println("No relationship exists between these two classes");
+      }
+
+      return relationship;
+   }
+
    //prints to screen all relationships in relationshipList
    public void ListAllRelationships(){
       System.out.println("Relationship List: ");
@@ -486,6 +507,7 @@ public class Diagram {
       }
    }
 
+   //prints to screen all relationships for one class
    public void ListOneClassRelationships(final Class c1) {
       for(Class item : classList.values()){
          if(item.equals(c1)) continue;

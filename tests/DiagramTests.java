@@ -1,11 +1,11 @@
+import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
 import org.junit.jupiter.api.Test;
-import Class.Class;
 
-import java.io.InputStream;
-import java.util.*;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DiagramTests {
 	
@@ -48,25 +48,9 @@ public class DiagramTests {
 		Diagram diagram = new Diagram("");
 		assertEquals(new HashMap<String, Relationship>(), diagram.getRelationshipList());
 	}
-	/*
+
 	@Test
-	void addRelationshipTest() {
-		Diagram UMLDiagram = new Diagram("");
-		UMLDiagram.setTitle("test");
-		HashMap<String, Class> classList = UMLDiagram.getClassList();
-
-		Class testClass = new Class("testClass");
-		UMLDiagram.addClass(testClass.getClassName());
-		Class testClass2 = new Class("testClass2");
-		UMLDiagram.addClass(testClass2.getClassName());
-
-		Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, false);
-		UMLDiagram.addRelationship(testClass, testClass2);
-
-	}
-	*/
-	@Test
-	void addRelationshipUnitTest() throws Exception {
+	void addRelationshipTest() throws Exception {
 		Diagram UMLDiagram = new Diagram("");
 
 		Class testClass = new Class("testClass");
@@ -75,14 +59,10 @@ public class DiagramTests {
 		UMLDiagram.addClass(testClass2.getClassName());
 
 		Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, true);
+		String testRelationshipKey = testClass.getClassName() + testClass2.getClassName();
+		UMLDiagram.addRelationship(testRelationship);
 
-		String string = "2";
-		InputStream stringStream = new java.io.ByteArrayInputStream(string.getBytes());
-		string = "1";
-		stringStream = new java.io.ByteArrayInputStream(string.getBytes());
-		stringStream = new java.io.ByteArrayInputStream(string.getBytes());
-		stringStream = new java.io.ByteArrayInputStream(string.getBytes());
+		assertEquals(testRelationship, UMLDiagram.getRelationshipList().get(testRelationshipKey));
 
-		
 	}
 }

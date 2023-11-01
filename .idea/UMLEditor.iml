@@ -38,7 +38,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="google.code.gson" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -49,5 +48,7 @@
         <jarDirectory url="file://$USER_HOME$/Downloads/openjfx-21.0.1_windows-x64_bin-sdk/javafx-sdk-21.0.1/lib" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="lib" level="application" />
+    <orderEntry type="library" name="JavaFX" level="application" />
   </component>
 </module>
