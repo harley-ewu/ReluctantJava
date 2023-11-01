@@ -1,7 +1,6 @@
 package Class;
 
 import Attributes.Attribute;
-import Relationships.Relationship;
 import com.google.gson.annotations.Expose;
 import java.util.*;
 
@@ -9,10 +8,7 @@ public class Class {
 
     @Expose
     private String className;
-    private final Scanner scanner = new Scanner(System.in);
-    @Expose
-    private List<Relationship> relationships = new ArrayList<>();
-    @Expose
+
     private ArrayList<Attribute> attributes = new ArrayList<>();
     public Class(final String className) {
         if (className == null) {
@@ -58,59 +54,6 @@ public class Class {
         this.className = newClassName;
     }
 
-    /**
-     * description: addRelationship will create a new relationship between two classes and add it to the relationships array list
-     * addRelationship will search the array list and check to see if a relationship between two classes exists, if not, the user will be notified
-     * and the attribute will not be added
-     * @param relationshipType
-     * @param class1
-     * @param class2
-     * @param thisClassCardinality
-     * @param otherClassCardinality
-     * @param owner
-     */
-    /*
-    public void addRelationship(final Relationship.RelationshipType relationshipType, final Class otherClassName, final int thisClassCardinality,
-                                final int otherClassCardinality, final boolean owner) {
-        Relationship newRelationship = new Relationship(relationshipType, otherClassName, thisClassCardinality, otherClassCardinality, owner);
-
-        if (this.relationships == null) {
-            throw new NullPointerException("Relationships list is null.");
-        }
-        else if (this.relationships.contains(newRelationship)) {
-                System.out.println("There is already a relationship between these two classes.");
-                return;
-        }
-        relationships.add(newRelationship);
-    }
-    public void deleteRelationship(final Relationship relationship) {
-        if (relationships.isEmpty()) {
-            System.out.println("There are no relationships assigned to this class.");
-        }
-        //checks if given relationship is null and if it is contained within the relationship list
-        else if (relationship != null && relationships.contains(relationship)) {
-            relationships.remove(relationship);
-        } else {
-            System.out.println("This relationship is not assigned to this class.");
-        }
-    }
-
-    public Relationship getRelationship(final Class otherClass){
-        Relationship relationship = null;
-        for(int i = 0; i < relationships.size(); i++){
-            if(relationships.get(i).getClass2() == otherClass){
-                relationship = relationships.get(i);
-                break;
-            }
-        }
-
-        return relationship;
-    }
-
-    public void setRelationships(ArrayList<Relationship> relationship){
-        this.relationships = relationship;
-    }
-    */
     /**
      * description: createAttribute is a menu option method, prompting the user to enter a name for an attribute
      * @param name - the name of the class
@@ -198,23 +141,6 @@ public class Class {
         Collections.sort(unsortedList, arrayListComparator);
     }
 
-    /**
-     * description: returns a string of all relationships attached to the class
-     */
-    public String displayRelationships() {
-        if (this.relationships.isEmpty()) {
-            return "There are no relationships assigned to this class.";
-        } else {
-            StringBuilder relationships = new StringBuilder();
-
-            for (Relationship relationship: this.relationships) {
-                relationships.append(relationship.toString()).append("\n");
-            }
-            return "Relationships in the " + this.getClassName() + " class: \n" + relationships;
-        }
-
-    }
-
     public String help() {
         String help = "How to use this menu:\n" +
                 "1. Add attribute -- prompts user to enter a name for a new attribute\n" +
@@ -231,6 +157,7 @@ public class Class {
      * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
      * the user can use this menu to edit attributes and relationships (wip)
      */
+    /*
     public void subMenu() {
         boolean on = true;
         //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
@@ -280,7 +207,7 @@ public class Class {
             }
         }
     }
-
+*/
 
 
     /**
@@ -293,18 +220,13 @@ public class Class {
         StringBuilder attributeString = new StringBuilder();
         sortArrayList(this.attributes);
 
-        for (Relationship relationship: this.relationships) {
-            relationships.append(relationship.toString()).append("\n");
-        }
-
         for (Attribute attribute : this.attributes) {
             attributeString.append(attribute.toString().replaceAll("[\\[\\]]", ""));
         }
 
         return "Class Name: " + this.getClassName() + "\n"
                 +"---------------------\n"
-                + "Attributes: \n" + attributeString +
-                "\n\n" + "Relationships: \n\n" + relationships;
+                + "Attributes: \n" + attributeString;
     }
 
 
