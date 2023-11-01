@@ -71,9 +71,9 @@ public class ClassTests {
         ArrayList<String> testList3 = new ArrayList<>();
 
         testList2.add("Boolean");
-        test.addAttribute("testMethod", testList, 2);
-        test.addAttribute("testField1", testList2, 1);
-        test.addAttribute("testMethod2", testList, 2);
+        test.createAttribute("testMethod", testList, 2);
+        test.createAttribute("testField1", testList2, 1);
+        test.createAttribute("testMethod2", testList, 2);
 
         test.sortArrayList(test.getAttributes());
 

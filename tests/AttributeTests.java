@@ -16,7 +16,7 @@ public class AttributeTests {
     @Test
     void fieldTest() {
         testList.add("Test field");
-        test.addAttribute("Test attribute", testList, 1);
+        test.createAttribute("Test attribute", testList, 1);
         String expected = "Class Name: Test Class\n" +
                 "---------------------\n" +
                 "Attributes: \n" +
@@ -37,9 +37,9 @@ public class AttributeTests {
         testList3.add("Test param1");
         testList3.add("Test param2");
         testList3.add("Test param3");
-        test.addAttribute("testMethod", testList, 2);
-        test.addAttribute("Testfield", testList2, 1);
-        test.addAttribute("anotherMethod", testList3, 2);
+        test.createAttribute("testMethod", testList, 2);
+        test.createAttribute("Testfield", testList2, 1);
+        test.createAttribute("anotherMethod", testList3, 2);
         String expected= "Class Name: Test Class\n" +
                 "---------------------\n" +
                 "Attributes: \n" +
@@ -59,9 +59,9 @@ public class AttributeTests {
                 "1. testMethod()\n" +
                 "2. field: Boolean\n";
 
-        test.addAttribute("testMethod", testList, 2);
+        test.createAttribute("testMethod", testList, 2);
         testList2.add("Boolean");
-        test.addAttribute("field", testList2, 1);
+        test.createAttribute("field", testList2, 1);
         assertEquals(expected, test.displayAttributes());
     }
 
@@ -70,11 +70,11 @@ public class AttributeTests {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
                 "2. field: Boolean\n";
-        test.addAttribute("testMethod", testList, 2);
+        test.createAttribute("testMethod", testList, 2);
         testList2.add("Boolean");
-        test.addAttribute("field", testList2, 1);
+        test.createAttribute("field", testList2, 1);
         testList.add("param1");
-        test.addAttribute("anotherMethod", testList, 2);
+        test.createAttribute("anotherMethod", testList, 2);
         System.out.println(test.displayAttributes());
 
         test.deleteAttribute(2);
@@ -88,18 +88,18 @@ public class AttributeTests {
                 "1. testMethod()\n" +
                 "2. field: Boolean\n" +
                 "3. differentField: String\n";
-        test.addAttribute("testMethod", testList, 2);
+        test.createAttribute("testMethod", testList, 2);
 
         testList2.add("Boolean");
-        test.addAttribute("field", testList2, 1);
+        test.createAttribute("field", testList2, 1);
 
         testList.add("param1");
-        test.addAttribute("anotherMethod", testList, 2);
+        test.createAttribute("anotherMethod", testList, 2);
 
         System.out.println(test.displayAttributes());
         testList3.add("String");
 
-        test.renameAttribute(2, "differentField", testList3, "FIELD");
+        test.renameAttribute(2, "differentField", testList3, Attribute.Type.FIELD);
         System.out.println(test.displayAttributes());
     }
 }

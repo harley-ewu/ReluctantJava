@@ -30,7 +30,7 @@ public class Attribute {
             if(type == Type.FIELD){
                 return new Field(name, String.valueOf(parameters));
             }else {
-                Method method = new Method(name, parameters);
+                Method method = new Method(name);
                 if (!parameters.isEmpty()) {
                     method.setParameters(parameters);
                 }
