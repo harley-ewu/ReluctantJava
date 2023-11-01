@@ -496,27 +496,36 @@ public class Diagram {
    }
 
    //prints to screen all relationships in relationshipList
-   public void ListAllRelationships(){
-      System.out.println("Relationship List: ");
+   public String listAllRelationships(){
+      String str = "Relationship List: \n";
       int i = 1;
       for (Relationship relationship : relationshipList.values()) {
-         System.out.print(i +": ");
-         relationship.toString();
+         str += i +": ";
+         str += relationship.toString();
          i++;
       }
+
+      return str;
    }
 
    //prints to screen all relationships for one class
-   public void ListOneClassRelationships(final Class c1) {
+   public String listOneClassRelationships(final Class c1) {
+      String str = "Relationships: \n";
+      int i = 1;
+
       for(Class item : classList.values()){
          if(item.equals(c1)) continue;
          if(relationshipList.get(c1.getClassName() + item.getClassName()) != null){
-            relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+            str += i + ": " + relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+            i++;
          }
-         else if(relationshipList.get(c1.getClassName() + item.getClassName()) != null){
-            relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+         else if(relationshipList.get(item.getClassName() + c1.getClassName()) != null){
+            str += i + ": " + relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+            i++;
          }
       }
+
+      return str;
    }
    
    /*
