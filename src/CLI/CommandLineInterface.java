@@ -18,6 +18,7 @@ import java.util.Scanner;
 public class CommandLineInterface {
 
     private static final int MAX_CHOICES = 8;
+    private static Diagram currentDiagram;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
@@ -31,7 +32,7 @@ public class CommandLineInterface {
 
     private static void startCLI(boolean shouldTerminate){
 
-        Diagram currentDiagram = null;
+        currentDiagram = null;
 
         while (!shouldTerminate) {
             int userChoice = getUserChoice();
@@ -345,5 +346,9 @@ public class CommandLineInterface {
             }
         }
         return userInput;
+    }
+
+    public static Diagram getCurrentDiagram(){
+        return currentDiagram;
     }
 }
