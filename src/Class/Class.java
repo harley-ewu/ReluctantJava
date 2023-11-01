@@ -14,8 +14,6 @@ public class Class {
     private List<Relationship> relationships = new ArrayList<>();
     @Expose
     private ArrayList<Attribute> attributes = new ArrayList<>();
-
-
     public Class(final String className) {
         if (className == null) {
             throw new NullPointerException("Class name is null.");
