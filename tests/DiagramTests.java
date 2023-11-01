@@ -82,7 +82,5 @@ public class DiagramTests {
 		stringStream = new java.io.ByteArrayInputStream(string.getBytes());
 		stringStream = new java.io.ByteArrayInputStream(string.getBytes());
 		stringStream = new java.io.ByteArrayInputStream(string.getBytes());
-
-		
 	}
 }

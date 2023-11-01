@@ -3,13 +3,14 @@ package Attributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.jar.Attributes;
 
 public class Attribute {
-    // List of attributes for the class.
-    private List<Attribute> attributes = new ArrayList<>();
     // Attribute name and variable type.
     private String name;
+    public enum Type {
+        FIELD,
+        METHOD
+    }
 
     public Attribute() {}
     public Attribute(final String name) {
@@ -19,91 +20,30 @@ public class Attribute {
     /**
      * Description: Constructor used to create Attribute objects from a load file.
      * @param name: the name of the attribute.
-     * @param attributes: the list of attributes.
+     * @param parameters: a list of parameters passed to the method class
+     * @param type: the type of attribute the user wants
      */
-    public Attribute(final String name, final List<Attribute> attributes){
-        this.name = name;
-        this.attributes = attributes;
-    }
-
-    public void addAttribute(final String name) {
-        // Null check.
+    //TODO: get name, get type, set name, set type
+    public Attribute addAttribute(final String name, ArrayList<String> parameters, final Type type) {
         Objects.requireNonNull(name, "Name can't be null.");
-
-        //Initializing a variable to check if the attribute is already in the list.
-        boolean found = false;
-
-        //Checking if the attribute is already contained within the list.
-        for (Attribute attribute : attributes) {
-            // Checking if the name of the attribute to be deleted matches with the attribute that was found.
-            if (attribute.name.equals(name)) {
-                // Removing the attribute and leaving the loop.
-                found = true;
-                break;
+        if(!name.isEmpty()){
+            if(type == Type.FIELD){
+                return new Field(name, String.valueOf(parameters));
+            }else {
+                Method method = new Method(name);
+                if (!parameters.isEmpty()) {
+                    method.setParameters(parameters);
+                }
+                return method;
             }
-        }
-
-        //Adding if it is already not in the list.
-        if (!found) {
-            // Initializing a new attribute and adding it to the list.
-            Attribute newAttribute = new Attribute(name);
-            attributes.add(newAttribute);
-            System.out.println("Successfully added attribute " + name);
         } else {
-            System.out.println("Attribute is already in the list!");
+            return null;
         }
-    }
-
-    public void deleteAttribute(final String name) {
-        // Null check.
-        Objects.requireNonNull(name, "Name can't be null.");
-
-        // Loop to look for the missing attribute.
-        for (int i = 0; i < attributes.size(); i++) {
-            Attribute attribute = attributes.get(i);
-            if (attribute.name.equals(name)) {
-                attributes.remove(i);
-                System.out.println("Successfully deleted attribute " + name);
-                return;
-            }
-        }
-
-        System.out.println("Attribute was not found. No changes have occurred.");
-    }
-
-    public void renameAttribute(final String name, final String newName) {
-        Objects.requireNonNull(name, "Name can't be null.");
-        Objects.requireNonNull(newName, "New name can't be null.");
-
-        //Checking if the attribute is already contained within the list.
-        for (int i = 0; i < attributes.size(); i++) {
-            Attribute attribute = attributes.get(i);
-            if (attribute.name.equals(name)) {
-                Attribute newAttribute = new Attribute(newName);
-                attributes.set(i, newAttribute);
-                System.out.println("Successfully changed " + name + " to " + newName);
-                return;
-            }
-        }
-        System.out.println("Attribute was not contained in the list.");
-    }
-
-    public List<Attribute> getAttributes() {
-        return new ArrayList<>(this.attributes);
     }
 
     @Override
     public String toString(){
-        StringBuilder builtString = new StringBuilder();
-        // Loop to append all the attributes to a built string.
-        for (Attribute attribute :attributes) {
-            builtString.append(attribute.name).append("\n");
-        }
-        // Removing the new line character/list is empty error check.
-        if(!builtString.isEmpty()) {
-            builtString.setLength(builtString.length() - 1);
-        }
-        return builtString.toString();
+        return name;
     }
 
 }
