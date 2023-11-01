@@ -6,6 +6,7 @@ import SaveLoadSystem.SaveLoadSystem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -20,12 +21,18 @@ public class MenuBarController {
     public void handleSaveAs(ActionEvent event) {
         String homeFolder = System.getProperty("user.home");
         FileChooser fc = new FileChooser();
-        //Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = CommandLineInterface.getCurrentDiagram();
         Window stage = hbMenuBar.getScene().getWindow();
 
-        Diagram diagram = new Diagram("TestGUIDiagram");
-        diagram.addClass("TestClassOne");
-        diagram.addClass("TestClassTwo");
+        if(diagram == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning: No Project");
+            alert.setContentText("There is currently no project loaded or in progress.\n" +
+                    "Please either start or load a project.");
+            alert.isResizable();
+            alert.showAndWait();
+            return;
+        }
 
         fc.setInitialDirectory(new File(homeFolder));
         fc.setTitle("Save project as...");
