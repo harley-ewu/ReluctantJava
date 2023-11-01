@@ -1,9 +1,10 @@
 package Controller;
 
-import java.util.*;
-import Diagram.Diagram;
-import Class.Class;
 import CLI.CommandLineInterface;
+import Class.Class;
+import Diagram.Diagram;
+
+import java.util.Scanner;
 
 public class MenuController {
 
@@ -62,7 +63,7 @@ public class MenuController {
             switch(choice) {
                 //Add attribute
                 case 1:
-                   currentClass.addAttribute();
+                   //currentClass.addAttribute();
                    break;
                 //Add relationship
                 case 2:

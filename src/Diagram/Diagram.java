@@ -303,7 +303,7 @@ public class Diagram {
          System.out.println("Class does not exist.");
          return;
       }
-      this.classList.get(className).subMenu();
+      //this.classList.get(className).subMenu();
    }
 
    /*
