@@ -6,8 +6,9 @@ import java.util.List;
 public class Method extends Attribute{
     ArrayList<String> parameters = new ArrayList<>();
 
-    public Method(String name, String primitive) {
-        super(name, primitive);
+    public Method(String name, ArrayList<String> parameters) {
+        super(name);
+        this.parameters = parameters;
     }
 
     /**

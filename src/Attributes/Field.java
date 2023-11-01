@@ -1,10 +1,10 @@
 package Attributes;
 
 public class Field extends Attribute{
-    String primitive;
+    private String primitive;
     public Field(String name, String primitive) {
-        super(name, primitive);
-        primitive = primitive.replaceAll("[\\[\\]]", "");
+        super(name);
+        this.primitive = primitive;
     }
 
     @Override

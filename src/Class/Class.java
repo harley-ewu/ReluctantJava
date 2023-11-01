@@ -13,7 +13,7 @@ public class Class {
     @Expose
     private List<Relationship> relationships = new ArrayList<>();
 
-    ArrayList<Attribute> attributes = new ArrayList<>();
+    private ArrayList<Attribute> attributes = new ArrayList<>();
 
 
     public Class(final String className) {
@@ -136,9 +136,9 @@ public class Class {
         Attribute attribute = new Attribute();
         // Depending on the input taken from the user, construct either a field or method attribute.
         if (input == 1) {
-            attribute = (Attribute) attribute.addAttribute(name, parameters, Attribute.Type.FIELD.toString());
+            attribute = (Attribute) attribute.addAttribute(name, parameters, Attribute.Type.FIELD);
         } else if (input == 2) {
-            attribute = (Attribute) attribute.addAttribute(name, parameters,  Attribute.Type.METHOD.toString());
+            attribute = (Attribute) attribute.addAttribute(name, parameters,  Attribute.Type.METHOD);
         } else {
             throw new IllegalArgumentException("Invalid input. Please enter 1 for field or 2 for method.");
         }
@@ -184,7 +184,7 @@ public class Class {
      * description: method that handles renaming an attribute
      */
     //TODO: code menu option for renaming an attribute **this is no longer a menu option method**
-    public void renameAttribute(int input, String newName, ArrayList<String> parameters, String type) {
+    public void renameAttribute(int input, String newName, ArrayList<String> parameters, Attribute.Type type) {
         for (int i = 0; i < this.attributes.size()+1; i++) {
             if (input == (i+1)) {
                 Attribute newAttribute = new Attribute();

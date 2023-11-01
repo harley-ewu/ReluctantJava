@@ -7,16 +7,14 @@ import java.util.Objects;
 public class Attribute {
     // Attribute name and variable type.
     private String name;
-    private String primitive;
     public enum Type {
         FIELD,
         METHOD
     }
 
     public Attribute() {}
-    public Attribute(final String name, final String primitive) {
+    public Attribute(final String name) {
         this.name = name;
-        this.primitive = primitive;
     }
 
     /**
@@ -26,13 +24,13 @@ public class Attribute {
      * @param type: the type of attribute the user wants
      */
     //TODO: get name, get type, set name, set type
-    public Attribute addAttribute(final String name, ArrayList<String> parameters, final String type) {
+    public Attribute addAttribute(final String name, ArrayList<String> parameters, final Type type) {
         Objects.requireNonNull(name, "Name can't be null.");
-        if(!name.isEmpty() && !type.isEmpty()){
-            if(type.equals("FIELD")){
+        if(!name.isEmpty()){
+            if(type == Type.FIELD){
                 return new Field(name, String.valueOf(parameters));
             }else {
-                Method method = new Method(name, type);
+                Method method = new Method(name, parameters);
                 if (!parameters.isEmpty()) {
                     method.setParameters(parameters);
                 }
