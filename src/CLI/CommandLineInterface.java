@@ -351,4 +351,8 @@ public class CommandLineInterface {
     public static Diagram getCurrentDiagram(){
         return currentDiagram;
     }
+
+    public static void setCurrentDiagram(Diagram diagram){
+        currentDiagram = diagram;
+    }
 }

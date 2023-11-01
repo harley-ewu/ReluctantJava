@@ -48,8 +48,25 @@ public class MenuBarController {
     }
 
     @FXML
-    public void handleLoad() {
-        // Handle load action
+    public void handleLoad(ActionEvent event) {
+        String homeFolder = System.getProperty("user.home");
+        FileChooser fc = new FileChooser();
+        Diagram diagram = null;
+        Window stage = hbMenuBar.getScene().getWindow();
+
+        fc.setInitialDirectory(new File(homeFolder));
+        fc.setTitle("Load project...");
+        fc.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JSON file", "*.json")
+        );
+
+        try{
+            File file = fc.showOpenDialog(stage);
+            diagram = SaveLoadSystem.loadProjectGUI(file);
+            CommandLineInterface.setCurrentDiagram(diagram);
+        }catch(Exception e){
+            System.err.println("There was an error trying to load the project.");
+        }
     }
 
     @FXML

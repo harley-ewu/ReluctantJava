@@ -85,8 +85,8 @@ public class SaveLoadSystem {
 
     }
 
-    public static Diagram loadProjectGUI(){
-        return null;
+    public static Diagram loadProjectGUI(File file){
+        return loadSavedJsonTextAndConvertToDiagramObject(file);
     }
 
     /**
