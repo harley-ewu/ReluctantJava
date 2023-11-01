@@ -95,4 +95,39 @@ public class MenuController {
              }
         }
     }
+
+    public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass) {
+        Scanner scanner = new Scanner(System.in);
+        while (!shouldTerminate) {
+            int choice = CommandLineInterface.newClassMenuChoice();
+            switch (choice) {
+
+                case 1: //add attribute
+                    currentClass.addAttribute();
+                    break;
+                case 2: //delete attribute
+                    currentClass.deleteAttribute();
+                    break;
+                case 3: //rename attribute
+                    currentClass.renameAttribute();
+                    break;
+                case 4: //display attributes
+                    System.out.println(currentClass.displayAttributes());
+                    break;
+                case 5: //display relationships
+                    //System.out.println(this.displayRelationships());
+                    break;
+                case 6: //display all contents
+                    System.out.println(currentClass);
+                    break;
+                case 7: //return to diagram menu
+                    shouldTerminate = false;
+                    break;
+                case 8: //help
+                    System.out.println(currentClass.help());
+                default:
+                    break;
+            }
+        }
+    }
 }
