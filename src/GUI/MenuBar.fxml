@@ -7,12 +7,14 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="GUI.MenuBarController"
       alignment="CENTER_LEFT"
+      fx:id="hbMenuBar"
       spacing="5">
 
     <MenuBar HBox.hgrow="ALWAYS">
         <Menu styleClass="menu" text="File">
+            <MenuItem text="Save as..." onAction="#handleSaveAs"/>
             <MenuItem text="Save" onAction="#handleSave"/>
-            <MenuItem text="Load" onAction="#handleLoad"/>
+            <MenuItem text="Load..." onAction="#handleLoad"/>
         </Menu>
         <Menu styleClass="menu" text="View">
             <MenuItem text="View Item 1" />

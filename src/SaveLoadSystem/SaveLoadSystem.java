@@ -71,6 +71,25 @@ public class SaveLoadSystem {
     }
 
     /**
+     * Description: This method is called inside the MenuBarController
+     * in order to save a project starting from the users home directory.
+     * It saves the project once the user has selected a directory.
+     * @param diagram - The diagram object to be saved.
+     * @param file - The file path to where the project will be saved.
+     */
+    public static void saveAsProjectGUI(Diagram diagram, File file){
+        ConvertDiagramToJsonAndWriteToFile(diagram, file);
+    }
+
+    public static void saveProjectGUI(){
+
+    }
+
+    public static Diagram loadProjectGUI(){
+        return null;
+    }
+
+    /**
      * Description: Converts a diagram object into JSON and then saves it to a file.
      * Use case: DO NOT USE! THIS IS A HELPER METHOD.
      * @param diagram: The Diagram object to be converted to JSON.
