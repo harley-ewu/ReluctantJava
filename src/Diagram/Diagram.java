@@ -474,6 +474,7 @@ public class Diagram {
       
    }
 
+   //prints to screen all relationships in relationshipList
    public void ListAllRelationships(){
       System.out.println("Relationship List: ");
       int i = 1;
@@ -487,7 +488,6 @@ public class Diagram {
    public void ListOneClassRelationships(final Class c1) {
       for(Class item : classList.values()){
          if(item.equals(c1)) continue;
-
          if(relationshipList.get(c1.getClassName() + item.getClassName()) != null){
             relationshipList.get(c1.getClassName() + item.getClassName()).toString();
          }

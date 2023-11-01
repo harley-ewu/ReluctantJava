@@ -15,10 +15,9 @@ public class Class {
     @Expose
     private Attribute attributes;
     private Scanner scanner = new Scanner(System.in);
+
     private List<Relationship> relationships = new ArrayList<>();
     private ArrayList<Attribute> attributes = new ArrayList<>();
-
-
     public Class(final String className) {
         if (className == null) {
             throw new NullPointerException("Class name is null.");
