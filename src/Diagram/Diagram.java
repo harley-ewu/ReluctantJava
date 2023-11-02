@@ -2,6 +2,7 @@ package Diagram;
 
 import Class.Class;
 import Relationships.Relationship;
+import MenuPrompts.MenuPrompts;
 import com.google.gson.annotations.Expose;
 
 import java.util.HashMap;
@@ -189,7 +190,7 @@ public class Diagram {
       }
    }
 
-   public String addClassPrompt() {
+   /*public String addClassPrompt() {
       System.out.println("Enter a class name to add: ");
       String className = this.scanner.nextLine();
       while (className.isEmpty()) {
@@ -198,7 +199,7 @@ public class Diagram {
       }
 
       return className;
-   }
+   }*/
    
    /*
    Deletes a class from the classList and also severs existing relationships
@@ -218,7 +219,7 @@ public class Diagram {
       }
    }
    
-   public Class deleteClassPrompt() {
+   /*public Class deleteClassPrompt() {
       System.out.println("Enter a class name to delete: ");
       String className = this.scanner.nextLine();
       while (className.isEmpty()) {
@@ -232,7 +233,7 @@ public class Diagram {
       }
 
       return deletedClass;
-   }
+   }*/
 
 
    /*
@@ -257,7 +258,7 @@ public class Diagram {
    /*
     * Separated the prompt of the original class name into its own method so I could do proper testing
     */
-   public Class renameClassPromptOriginalName() {
+   /*public Class renameClassPromptOriginalName() {
       String oldClassName;
       System.out.println("Enter the original name of the class.");
       oldClassName = this.scanner.nextLine();
@@ -270,12 +271,12 @@ public class Diagram {
          System.out.println("Class does not exist.");
          return null;
       }
-   }
+   }*/
 
    /*
     * Separated prompting of new class name to separate method so I could test
     */
-   public String renameClassPromptNewName(final Class old) {
+   /*public String renameClassPromptNewName(final Class old) {
       String newClassName = "";
       if(old != null) {
          System.out.println("Enter a new name for the class.");
@@ -286,7 +287,7 @@ public class Diagram {
          }
       }
       return newClassName;
-   }
+   }*/
    
 
    /*
@@ -295,7 +296,7 @@ public class Diagram {
    public void editClass(){
       System.out.println("Enter name of class to edit: ");
       String className = this.scanner.nextLine();
-      while (className.isEmpty()) {
+      while (className.isEmpty() || className.length() > 50) {
          System.out.println("Please enter a name between 1 and 50 characters inclusive");
          className = this.scanner.nextLine();
       }
@@ -335,6 +336,7 @@ public class Diagram {
          return;
       }
 
+      //needs to be moved to the MenuController
       if (choice == 1) {
          this.addRelationship(c1, c2);
       }
@@ -376,15 +378,14 @@ public class Diagram {
    /*
    Prints out all information about a given class
    */
-   public void printSingleClass() {
-      System.out.println("Enter name of class to view: ");
-      String className = this.scanner.nextLine();
-      Class c = findSingleClass(className);
-      if(c != null) {
-         System.out.println(c.toString());
+   public void printSingleClass(final Class c) {
+      if (c == null){
+         System.out.println("Class does not exist.");
       }
       else {
-         System.out.println("Bug");
+         System.out.println(c.toString() + "\n"
+         +"---------------------\n"
+         + this.listOneClassRelationships(c));
       }
    }
    /*
@@ -399,7 +400,7 @@ public class Diagram {
       int c2Cardinality = -2;
       Boolean owner = false;
 
-      int choice;
+      /*int choice;
       while(relationshipType == null) {
          System.out.println("What Type of Relationship?\n" +
                  "1. Association \n2. Aggregation \n3.Composition \n4.Generalization");
@@ -453,7 +454,11 @@ public class Diagram {
          else {
             owner = false;
          }
-      }
+      }*/
+      relationshipType = MenuPrompts.relationshipTypePrompt();
+      c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
+      c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
+      owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
 
       Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
       addRelationship(relationship);
@@ -461,7 +466,7 @@ public class Diagram {
 
    public void addRelationship(final Relationship relationship) {
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
-      relationshipList.put(relationshipName, relationship);
+      this.relationshipList.put(relationshipName, relationship);
    }
    
 
@@ -473,18 +478,18 @@ public class Diagram {
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
-      relationshipList.remove(relationshipName);
-      relationshipList.remove(relationshipName2);
+      this.relationshipList.remove(relationshipName);
+      this.relationshipList.remove(relationshipName2);
       
    }
 
    public Relationship findSingleRelationship(final Class c1, final Class c2) {
       String relationshipName = c1.getClassName()+c2.getClassName();
-      Relationship relationship = relationshipList.get(relationshipName);
+      Relationship relationship = this.relationshipList.get(relationshipName);
       if(relationship == null)
       {
          relationshipName = c2.getClassName()+c1.getClassName();
-         relationship = relationshipList.get(relationshipName);
+         relationship = this.relationshipList.get(relationshipName);
       }
 
       if (relationship == null)
@@ -500,7 +505,7 @@ public class Diagram {
       String str = "Relationship List: \n";
       int i = 1;
       for (Relationship relationship : relationshipList.values()) {
-         str += i +": ";
+         str += String.valueOf(i) +": ";
          str += relationship.toString();
          i++;
       }
@@ -513,14 +518,14 @@ public class Diagram {
       String str = "Relationships: \n";
       int i = 1;
 
-      for(Class item : classList.values()){
+      for(Class item : this.classList.values()){
          if(item.equals(c1)) continue;
-         if(relationshipList.get(c1.getClassName() + item.getClassName()) != null){
-            str += i + ": " + relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+         if(this.relationshipList.get(c1.getClassName() + item.getClassName()) != null){
+            str += String.valueOf(i) + ": " + this.relationshipList.get(c1.getClassName() + item.getClassName()).toString();
             i++;
          }
-         else if(relationshipList.get(item.getClassName() + c1.getClassName()) != null){
-            str += i + ": " + relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+         else if(this.relationshipList.get(item.getClassName() + c1.getClassName()) != null){
+            str += i + ": " + this.relationshipList.get(c1.getClassName() + item.getClassName()).toString();
             i++;
          }
       }
@@ -541,7 +546,7 @@ public class Diagram {
          diagramString += c.toString();
       }
       
-      return "Diagram: " + diagramString;
+      return "Diagram: " + diagramString + "\n" + this.listAllRelationships();
    }
    
 

@@ -3,6 +3,9 @@ package Controller;
 import CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
+import Class.Class;
+import CLI.CommandLineInterface;
+import MenuPrompts.MenuPrompts;
 
 import java.util.Scanner;
 
@@ -16,19 +19,19 @@ public class MenuController {
                 switch (choice) {
                 //Add Class - name needed
                 case 1:
-                    className = diagram.addClassPrompt();
+                    className = MenuPrompts.addClassPrompt();
                     diagram.addClass(className);
                     newClassMenuControl(false, diagram.getClassList().get(className), diagram);
                     break;
                 //Delete Class - name needed
                 case 2:
-                    Class deletedClass = diagram.deleteClassPrompt();
+                    Class deletedClass = MenuPrompts.deleteClassPrompt(diagram);
                     diagram.deleteClass(deletedClass);
                     break;
                 //Rename Class - current and new name needed
                 case 3:
-                    Class old = diagram.renameClassPromptOriginalName();
-                    String newName = diagram.renameClassPromptNewName(old);
+                    Class old = MenuPrompts.renameClassPromptOriginalName(diagram);
+                    String newName = MenuPrompts.renameClassPromptNewName(diagram, old);
                     diagram.renameClass(old, newName);
                     break;
                 //Edit Class - name needed
@@ -41,7 +44,8 @@ public class MenuController {
                     break;
                 //View class - name needed
                 case 6:
-                    diagram.printSingleClass();
+                    Class c = MenuPrompts.printSingleClassPrompt(diagram);
+                    diagram.printSingleClass(c);
                     break;
                 //View Diagram
                 case 7:
