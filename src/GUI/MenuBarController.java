@@ -17,10 +17,11 @@ import java.io.File;
 public class MenuBarController {
     @FXML
     HBox hbMenuBar;
+
     @FXML
     public void handleSaveAs(ActionEvent event) {
         String homeFolder = System.getProperty("user.home");
-        FileChooser fc = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         Diagram diagram = CommandLineInterface.getCurrentDiagram();
         Window stage = hbMenuBar.getScene().getWindow();
 
@@ -34,15 +35,15 @@ public class MenuBarController {
             return;
         }
 
-        fc.setInitialDirectory(new File(homeFolder));
-        fc.setTitle("Save project as...");
-        fc.setInitialFileName(diagram.getTitle());
-        fc.getExtensionFilters().addAll(
+        fileChooser.setInitialDirectory(new File(homeFolder));
+        fileChooser.setTitle("Save project as...");
+        fileChooser.setInitialFileName(diagram.getTitle());
+        fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JSON file", "*.json")
         );
 
         try{
-            File file = fc.showSaveDialog(stage);
+            File file = fileChooser.showSaveDialog(stage);
             diagram.setSaveLocation(file.toString());
             SaveLoadSystem.saveProjectGUI(diagram, file);
         }catch(Exception e){
@@ -86,18 +87,18 @@ public class MenuBarController {
     @FXML
     public void handleLoad(ActionEvent event) {
         String homeFolder = System.getProperty("user.home");
-        FileChooser fc = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         Diagram diagram = null;
         Window stage = hbMenuBar.getScene().getWindow();
 
-        fc.setInitialDirectory(new File(homeFolder));
-        fc.setTitle("Load project...");
-        fc.getExtensionFilters().addAll(
+        fileChooser.setInitialDirectory(new File(homeFolder));
+        fileChooser.setTitle("Load project...");
+        fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JSON file", "*.json")
         );
 
         try{
-            File file = fc.showOpenDialog(stage);
+            File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
             CommandLineInterface.setCurrentDiagram(diagram);
         }catch(Exception e){
