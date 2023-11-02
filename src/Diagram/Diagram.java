@@ -520,7 +520,7 @@ public class Diagram {
             i++;
          }
          else if(this.relationshipList.get(item.getClassName() + c1.getClassName()) != null){
-            str += i + ": " + this.relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+            str += String.valueOf(i) + ": " + this.relationshipList.get(item.getClassName() + c1.getClassName()).toString();
             i++;
          }
       }
