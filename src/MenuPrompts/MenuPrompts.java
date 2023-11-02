@@ -294,7 +294,7 @@ public class MenuPrompts {
     }
 
     public static Class promptClass2Relationship(final Diagram diagram) {
-        System.out.println("What is the name of the second class?");
+        System.out.println("What is the name of the class to form the relationship?");
         System.out.print("-> ");
         String otherString = scanner.nextLine();
         Class c2 = diagram.findSingleClass(otherString);
@@ -377,8 +377,21 @@ public class MenuPrompts {
 
     }
 
-    public static int deleteAttributePrompts() {
-        return 0;
+    public static int deleteAttributePrompts(final Class currentClass) {
+        int choice = -99;
+        do {
+            System.out.println("Delete an attribute:");
+            //need to add message if no attributes exist
+            System.out.println(currentClass.displayAttributes());
+            System.out.print("\nchoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+
+        } while (choice < 1 || choice > currentClass.getAttributes().size()+1);
+        return choice;
     }
    
 }
