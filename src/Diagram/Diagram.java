@@ -294,14 +294,8 @@ public class Diagram {
     * Checks to see if class exists then calls subMenu method from Class class
     */
    public void editClass(){
-      System.out.println("Enter name of class to edit: ");
-      String className = this.scanner.nextLine();
-      while (className.isEmpty() || className.length() > 50) {
-         System.out.println("Please enter a name between 1 and 50 characters inclusive");
-         className = this.scanner.nextLine();
-      }
-      if(findSingleClass(className) == null){
-         System.out.println("Class does not exist.");
+      String className = MenuPrompts.editClassPrompt(this);
+      if(className.isEmpty()) {
          return;
       }
       //this.classList.get(className).subMenu();

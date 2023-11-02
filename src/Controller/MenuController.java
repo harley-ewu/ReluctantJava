@@ -11,6 +11,12 @@ import java.util.Scanner;
 
 public class MenuController {
 
+    /**
+    * Menu Control for Diagram
+    * 
+    * @param shouldTerminate - true if user presses terminate false otherwise
+    * @param diagram - Diagram to get menu control for ( used for newClassMenuControl
+    */
     public static void diagramMenuControl(boolean shouldTerminate, final Diagram diagram){
 
             String className = "";
@@ -60,6 +66,13 @@ public class MenuController {
             }
     }
 
+    /**
+    * Displays the menu for adding attributes and relationships to a diagram. This method returns when the user presses enter in the menu or terminates
+    * 
+    * @param shouldTerminate - true if the method should terminate prematurely
+    * @param currentClass - the class to add or remove attributes to
+    * @param diagram - the diagram to add or remove relationships to
+    */
     public static void newClassMenuControl(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while(!shouldTerminate) {
