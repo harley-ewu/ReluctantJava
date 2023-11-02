@@ -1,12 +1,22 @@
 package Controller;
 
-import java.util.*;
+import CLI.CommandLineInterface;
+import Class.Class;
 import Diagram.Diagram;
 import Class.Class;
 import CLI.CommandLineInterface;
+import MenuPrompts.MenuPrompts;
+
+import java.util.Scanner;
 
 public class MenuController {
 
+    /**
+    * Menu Control for Diagram
+    * 
+    * @param shouldTerminate - true if user presses terminate false otherwise
+    * @param diagram - Diagram to get menu control for ( used for newClassMenuControl
+    */
     public static void diagramMenuControl(boolean shouldTerminate, final Diagram diagram){
 
             String className = "";
@@ -15,19 +25,19 @@ public class MenuController {
                 switch (choice) {
                 //Add Class - name needed
                 case 1:
-                    className = diagram.addClassPrompt();
+                    className = MenuPrompts.addClassPrompt();
                     diagram.addClass(className);
                     newClassMenuControl(false, diagram.getClassList().get(className), diagram);
                     break;
                 //Delete Class - name needed
                 case 2:
-                    Class deletedClass = diagram.deleteClassPrompt();
+                    Class deletedClass = MenuPrompts.deleteClassPrompt(diagram);
                     diagram.deleteClass(deletedClass);
                     break;
                 //Rename Class - current and new name needed
                 case 3:
-                    Class old = diagram.renameClassPromptOriginalName();
-                    String newName = diagram.renameClassPromptNewName(old);
+                    Class old = MenuPrompts.renameClassPromptOriginalName(diagram);
+                    String newName = MenuPrompts.renameClassPromptNewName(diagram, old);
                     diagram.renameClass(old, newName);
                     break;
                 //Edit Class - name needed
@@ -36,17 +46,21 @@ public class MenuController {
                     break;
                 //edit relationships
                 case 5:
-                    diagram.editRelationships();
+                    editRelationshipsControl(false, diagram);
                     break;
                 //View class - name needed
                 case 6:
-                    diagram.printSingleClass();
+                    Class c = MenuPrompts.printSingleClassPrompt(diagram);
+                    diagram.printSingleClass(c);
                     break;
                 //View Diagram
                 case 7:
                     System.out.println(diagram);
                     break;
                 case 8:
+                    CommandLineInterface.diagramHelp();
+                    break;
+                case 9:
                     shouldTerminate = true;
                 default:
                     break;
@@ -55,6 +69,13 @@ public class MenuController {
             }
     }
 
+    /**
+    * Displays the menu for adding attributes and relationships to a diagram. This method returns when the user presses enter in the menu or terminates
+    * 
+    * @param shouldTerminate - true if the method should terminate prematurely
+    * @param currentClass - the class to add or remove attributes to
+    * @param diagram - the diagram to add or remove relationships to
+    */
     public static void newClassMenuControl(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while(!shouldTerminate) {
@@ -62,13 +83,13 @@ public class MenuController {
             switch(choice) {
                 //Add attribute
                 case 1:
-                   currentClass.addAttribute();
+                   //currentClass.addAttribute();
                    break;
                 //Add relationship
                 case 2:
                     //Will need to move to the CLI (view) class
                    System.out.println("Which class do you want to make a relationship with?");
-                   System.out.print("Class: ");
+                   System.out.print("-> ");
                    String input = scanner.nextLine();
                    Class c2 = null;
                    do {
@@ -81,7 +102,7 @@ public class MenuController {
                       if(c2 == null) {
                         //Will need to move to the CLI (view) class
                          System.out.println("class does not exist, please enter a valid class");
-                         System.out.print("Class: ");
+                         System.out.print("-> ");
                          input = scanner.nextLine();
                       }
                    }while(c2 == null);
@@ -93,6 +114,45 @@ public class MenuController {
                 default:
                    break;
              }
+        }
+    }
+
+    /**
+    * Allows the user to edit relationships in the diagram.
+    * 
+    * @param shouldTerminate - true if the method should terminate prematurely
+    * @param diagram - Diagram to edit relationships in
+    */
+    public static void editRelationshipsControl(boolean shouldTerminate, final Diagram diagram){
+        Scanner scanner = new Scanner(System.in);
+        while(!shouldTerminate){
+            int choice = MenuPrompts.editRelationshipsMenuChoice();
+            Class c1 = null;
+            Class c2 = null;
+            if (choice != 3){
+                c1 = MenuPrompts.promptClass1Relationship(diagram);
+                if(c1 == null) {
+                    System.out.println("Cannot make a relationship with class that does not exist.");
+                    return;
+                }
+                c2 = MenuPrompts.promptClass2Relationship(diagram);
+                if(c2 == null) {
+                    System.out.println("Cannot make a relationship with class that does not exist.");
+                    return;
+                }
+            }
+            switch(choice) {
+                case 1:
+                    diagram.addRelationship(c1, c2);
+                    break;
+                case 2:
+                    diagram.deleteRelationship(c1, c2);
+                    break;
+                case 3: 
+                    shouldTerminate = true;
+                default:
+                    break;
+            }
         }
     }
 }

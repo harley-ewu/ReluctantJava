@@ -2,9 +2,9 @@ package Diagram;
 
 import Class.Class;
 import Relationships.Relationship;
+import MenuPrompts.MenuPrompts;
 import com.google.gson.annotations.Expose;
 
-import javax.management.relation.Relation;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -18,6 +18,7 @@ public class Diagram {
    //private List<Class> classList = new ArrayList<Class>();
    @Expose
    private HashMap<String, Class> classList;
+   @Expose
    private HashMap<String, Relationship> relationshipList;
    private Scanner scanner = new Scanner(System.in);
    
@@ -29,7 +30,7 @@ public class Diagram {
       //if diagram comes in as null/empty, should we initialize an empty arraylist?
       this.title = title;
       this.classList = new HashMap<>();
-
+      this.relationshipList = new HashMap<>();
    }
    
    /*
@@ -191,7 +192,7 @@ public class Diagram {
       }
    }
 
-   public String addClassPrompt() {
+   /*public String addClassPrompt() {
       System.out.println("Enter a class name to add: ");
       String className = this.scanner.nextLine();
       while (className.isEmpty()) {
@@ -200,7 +201,7 @@ public class Diagram {
       }
 
       return className;
-   }
+   }*/
    
    /*
    Deletes a class from the classList and also severs existing relationships
@@ -220,7 +221,7 @@ public class Diagram {
       }
    }
    
-   public Class deleteClassPrompt() {
+   /*public Class deleteClassPrompt() {
       System.out.println("Enter a class name to delete: ");
       String className = this.scanner.nextLine();
       while (className.isEmpty()) {
@@ -234,7 +235,7 @@ public class Diagram {
       }
 
       return deletedClass;
-   }
+   }*/
 
 
    /*
@@ -259,7 +260,7 @@ public class Diagram {
    /*
     * Separated the prompt of the original class name into its own method so I could do proper testing
     */
-   public Class renameClassPromptOriginalName() {
+   /*public Class renameClassPromptOriginalName() {
       String oldClassName;
       System.out.println("Enter the original name of the class.");
       oldClassName = this.scanner.nextLine();
@@ -272,12 +273,12 @@ public class Diagram {
          System.out.println("Class does not exist.");
          return null;
       }
-   }
+   }*/
 
    /*
     * Separated prompting of new class name to separate method so I could test
     */
-   public String renameClassPromptNewName(final Class old) {
+   /*public String renameClassPromptNewName(final Class old) {
       String newClassName = "";
       if(old != null) {
          System.out.println("Enter a new name for the class.");
@@ -288,31 +289,25 @@ public class Diagram {
          }
       }
       return newClassName;
-   }
+   }*/
    
 
    /*
     * Checks to see if class exists then calls subMenu method from Class class
     */
    public void editClass(){
-      System.out.println("Enter name of class to edit: ");
-      String className = this.scanner.nextLine();
-      while (className.isEmpty()) {
-         System.out.println("Please enter a name between 1 and 50 characters inclusive");
-         className = this.scanner.nextLine();
-      }
-      if(findSingleClass(className) == null){
-         System.out.println("Class does not exist.");
+      String className = MenuPrompts.editClassPrompt(this);
+      if(className.isEmpty()) {
          return;
       }
-      this.classList.get(className).subMenu();
+      //this.classList.get(className).subMenu();
    }
 
    /*
     * Submenu to edit relationships (add/delete) calls those methods in this method
     */
 
-   public void editRelationships(){
+   /*public void editRelationships(){
       int choice = -99;
       System.out.println("Enter a number:\n1.Add Relationship.\n2.Delete Relationship");
       String op = scanner.nextLine();
@@ -336,7 +331,9 @@ public class Diagram {
          System.out.println("Class does not exist");
          return;
       }
+      
 
+      //needs to be moved to the MenuController
       if (choice == 1) {
          this.addRelationship(c1, c2);
       }
@@ -346,7 +343,7 @@ public class Diagram {
       else {
          System.out.println("Invalid option");
       }
-   }
+   }*/
 
 
    /*
@@ -378,15 +375,14 @@ public class Diagram {
    /*
    Prints out all information about a given class
    */
-   public void printSingleClass() {
-      System.out.println("Enter name of class to view: ");
-      String className = this.scanner.nextLine();
-      Class c = findSingleClass(className);
-      if(c != null) {
-         System.out.println(c.toString());
+   public void printSingleClass(final Class c) {
+      if (c == null){
+         System.out.println("Class does not exist.");
       }
       else {
-         System.out.println("Bug");
+         System.out.println(c.toString() + "\n"
+         +"---------------------\n"
+         + this.listOneClassRelationships(c));
       }
    }
    /*
@@ -401,7 +397,7 @@ public class Diagram {
       int c2Cardinality = -2;
       Boolean owner = false;
 
-      int choice;
+      /*int choice;
       while(relationshipType == null) {
          System.out.println("What Type of Relationship?\n" +
                  "1. Association \n2. Aggregation \n3.Composition \n4.Generalization");
@@ -455,11 +451,19 @@ public class Diagram {
          else {
             owner = false;
          }
-      }
+      }*/
+      relationshipType = MenuPrompts.relationshipTypePrompt();
+      c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
+      c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
+      owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
 
       Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
-      String relationshipName = c1.getClassName() + c2.getClassName();
-      relationshipList.put(relationshipName, relationship);
+      addRelationship(relationship);
+   }
+
+   public void addRelationship(final Relationship relationship) {
+      String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
+      this.relationshipList.put(relationshipName, relationship);
    }
    
 
@@ -471,32 +475,59 @@ public class Diagram {
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
-      relationshipList.remove(relationshipName);
-      relationshipList.remove(relationshipName2);
+      this.relationshipList.remove(relationshipName);
+      this.relationshipList.remove(relationshipName2);
       
    }
 
-   public void ListAllRelationships(){
-      System.out.println("Relationship List: ");
-      int i = 1;
-      for (Relationship relationship : relationshipList.values()) {
-         System.out.print(i +": ");
-         relationship.toString();
-         i++;
+   public Relationship findSingleRelationship(final Class c1, final Class c2) {
+      String relationshipName = c1.getClassName()+c2.getClassName();
+      Relationship relationship = this.relationshipList.get(relationshipName);
+      if(relationship == null)
+      {
+         relationshipName = c2.getClassName()+c1.getClassName();
+         relationship = this.relationshipList.get(relationshipName);
       }
+
+      if (relationship == null)
+      {
+         System.out.println("No relationship exists between these two classes");
+      }
+
+      return relationship;
    }
 
-   public void ListOneClassRelationships(final Class c1) {
-      for(Class item : classList.values()){
-         if(item.equals(c1)) continue;
+   //prints to screen all relationships in relationshipList
+   public String listAllRelationships(){
+      String str = "Relationship List: \n";
+      int i = 1;
+      for (Relationship relationship : relationshipList.values()) {
+         str += String.valueOf(i) +": ";
+         str += relationship.toString();
+         i++;
+      }
 
-         if(relationshipList.get(c1.getClassName() + item.getClassName()) != null){
-            relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+      return str;
+   }
+
+   //prints to screen all relationships for one class
+   public String listOneClassRelationships(final Class c1) {
+      String str = "Relationships: \n";
+      int i = 1;
+
+      for(Class item : this.classList.values()){
+         if(item.equals(c1)) continue;
+         if(this.relationshipList.get(c1.getClassName() + item.getClassName()) != null){
+            str += String.valueOf(i) + ": " + this.relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+            i++;
          }
-         else if(relationshipList.get(c1.getClassName() + item.getClassName()) != null){
-            relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+         else if(this.relationshipList.get(item.getClassName() + c1.getClassName()) != null){
+            str += String.valueOf(i) + ": " + this.relationshipList.get(item.getClassName() + c1.getClassName()).toString();
+            i++;
          }
       }
+
+      return str;
    }
    
    /*
@@ -512,7 +543,7 @@ public class Diagram {
          diagramString += c.toString();
       }
       
-      return "Diagram: " + diagramString;
+      return "Diagram: " + diagramString + "\n" + this.listAllRelationships();
    }
    
    public void setSaveLocation(String saveLocation){

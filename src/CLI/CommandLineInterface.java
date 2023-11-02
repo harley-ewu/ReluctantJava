@@ -18,7 +18,6 @@ import java.util.Scanner;
 public class CommandLineInterface {
 
     private static final int MAX_CHOICES = 8;
-    private static Diagram currentDiagram;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
@@ -32,7 +31,7 @@ public class CommandLineInterface {
 
     private static void startCLI(boolean shouldTerminate){
 
-        currentDiagram = null;
+        Diagram currentDiagram = null;
 
         while (!shouldTerminate) {
             int userChoice = getUserChoice();
@@ -75,7 +74,7 @@ public class CommandLineInterface {
                 
                  Enter a number:
                 """);
-
+        System.out.print("-> ");
         while (true) {
             try {
                 userInput = Integer.parseInt(scan.nextLine());
@@ -83,9 +82,11 @@ public class CommandLineInterface {
                     break;
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
+                    System.out.print("-> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
+                System.out.print("-> ");
             }
         }
 
@@ -102,6 +103,7 @@ public class CommandLineInterface {
         while(true) {
             try {
                 System.out.println("Enter a title for the new diagram");
+                System.out.print("-> ");
                 userChoice = scan.nextLine();
 
                 if(userChoice.length() < 1 || userChoice.length() > 50) {
@@ -111,6 +113,7 @@ public class CommandLineInterface {
             }
             catch(IllegalArgumentException e){
                 System.out.println("Please enter a title between 1 and 50 characters inclusive");
+                System.out.print("-> ");
             }
         }
         return userChoice;
@@ -137,7 +140,7 @@ public class CommandLineInterface {
                     2 - Save to Custom Path
                     Any other key - Do Not Save
                     """);
-
+        System.out.print("-> ");
 
         userChoice = scan.next().charAt(0);
 
@@ -175,7 +178,7 @@ public class CommandLineInterface {
                 2 - Save to Default Path
                 Any other key - Do Not Save
                 """);
-
+                System.out.print("-> ");
                 userChoice = scan.next().charAt(0);
                 scan.nextLine();
 
@@ -301,20 +304,24 @@ public class CommandLineInterface {
                                 5 - Edit Relationships
                                 6 - View Class
                                 7 - View Diagram
-                                8 - Exit
+                                8 - Help
+                                9 - Exit
                                 
                                 Enter a number:""");
+        System.out.print("-> ");
 
         while (true) {
             try {
                 userInput = Integer.parseInt(scan.nextLine());
-                if (isValidUserInput(userInput)) {
+                if (userInput >= 1 && userInput <= 9) {
                     break;
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
+                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES+1);
+                    System.out.print("-> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
+                System.out.print("-> ");
             }
         }
         return userInput;
@@ -332,27 +339,45 @@ public class CommandLineInterface {
                                 3 - Back to Diagram Menu
                                 
                                 Enter a number:""");
-        
+        System.out.print("-> ");
         while (true) {
             try {
                 userInput = Integer.parseInt(scan.nextLine());
                 if (isValidUserInput(userInput)) {
                     break;
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
+                    System.out.println("Invalid input. Please enter a number between 1 and 3");
+                    System.out.print("-> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
+                System.out.print("-> ");
             }
         }
         return userInput;
     }
 
-    public static Diagram getCurrentDiagram(){
-        return currentDiagram;
-    }
+    public static void diagramHelp(){
+        System.out.println("""
+                 DIAGRAM MENU COMMANDS:
 
-    public static void setCurrentDiagram(Diagram diagram){
-        currentDiagram = diagram;
+                 Option 1 - Add Class: Create and add a class to the diagram
+                
+                 Option 2 - Delete Class: Delete existing class from the diagram
+                
+                 Option 3 - Rename Class: Rename existing class in the diagram
+                
+                 Option 4 - Edit Class: Opens up sub-menu with class editing options
+                
+                 Option 5 - Edit Relationships: Opens up sub-menu with relationship add/deleet options
+                
+                 Option 6 - View Class: Lists all attributes and relationships of existing class
+                
+                 Option 7 - View Diagram: Lists all classes and their properties in current diagram
+                
+                 Option 8 - Help: See how each option functions
+
+                 Option 9 - Exit: Exit the program
+                """);
     }
 }

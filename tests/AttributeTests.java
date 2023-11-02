@@ -1,75 +1,105 @@
 import Attributes.Attribute;
+import Class.Class;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AttributeTests {
+    Class test = new Class("Test Class");
+    ArrayList<String> testList = new ArrayList<>();
+    ArrayList<String> testList2 = new ArrayList<>();
+    ArrayList<String> testList3 = new ArrayList<>();
     @Test
-    void toStringTest() {
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("Test1");
-        attribute.addAttribute("Test2");
-
-        assertEquals("Test1\nTest2", attribute.toString());
+    void fieldTest() {
+        testList.add("Test field");
+        test.createAttribute("Test attribute", testList, 1);
+        String expected = "Class Name: Test Class\n" +
+                "---------------------\n" +
+                "Attributes: \n" +
+                "Test attribute: Test field\n" +
+                "\n" +
+                "\n" +
+                "Relationships: \n" +
+                "\n";
+        assertEquals(expected, test.toString());
     }
 
     @Test
-    void toStringErrorCheck() {
-        Attribute attribute = new Attribute();
-        assertEquals("", attribute.toString());
+    void sortingArrayListTest() {
+        testList.add("Test param1");
+        testList.add("Test param2");
+        testList.add("Test param3");
+        testList2.add("Boolean");
+        testList3.add("Test param1");
+        testList3.add("Test param2");
+        testList3.add("Test param3");
+        test.createAttribute("testMethod", testList, 2);
+        test.createAttribute("Testfield", testList2, 1);
+        test.createAttribute("anotherMethod", testList3, 2);
+        String expected= "Class Name: Test Class\n" +
+                "---------------------\n" +
+                "Attributes: \n" +
+                "testMethod(Test param1, Test param2, Test param3)\n" +
+                "anotherMethod(Test param1, Test param2, Test param3)\n" +
+                "Testfield: Boolean\n" +
+                "\n" +
+                "\n" +
+                "Relationships: \n\n";
+        System.out.println(test);
+        assertEquals(expected, test.toString());
     }
 
     @Test
-    void getAttributesTest(){
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("age");
-        attribute.addAttribute("name");
+    void displayAttributes() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. field: Boolean\n";
 
-        List<Attribute> result = attribute.getAttributes();
-
-        // Check if the returned list contains the expected attributes
-        assertEquals(2, result.size());
+        test.createAttribute("testMethod", testList, 2);
+        testList2.add("Boolean");
+        test.createAttribute("field", testList2, 1);
+        assertEquals(expected, test.displayAttributes());
     }
 
     @Test
-    void checkIfAttributeIsInListTest(){
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("Name");
-        attribute.addAttribute("Name");
+    void deleteAttribute() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. field: Boolean\n";
+        test.createAttribute("testMethod", testList, 2);
+        testList2.add("Boolean");
+        test.createAttribute("field", testList2, 1);
+        testList.add("param1");
+        test.createAttribute("anotherMethod", testList, 2);
+        System.out.println(test.displayAttributes());
 
-        String check = "Name";
-        // Check if we allowed adding of two of the same attributes.
-        assertEquals(check, attribute.toString());
+        test.deleteAttribute(2);
+        System.out.println(test.displayAttributes());
+        assertEquals(expected, test.displayAttributes());
     }
 
     @Test
-    void deleteAttributeTest() {
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("Name");
-        attribute.addAttribute("Birthday");
-        attribute.addAttribute("Age");
+    void renameAttribute() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. field: Boolean\n" +
+                "3. differentField: String\n";
+        test.createAttribute("testMethod", testList, 2);
 
-        //Removing the attribute
-        attribute.deleteAttribute("Birthday");
+        testList2.add("Boolean");
+        test.createAttribute("field", testList2, 1);
 
-        String check = "Name\nAge";
-        assertEquals(check, attribute.toString());
-    }
+        testList.add("param1");
+        test.createAttribute("anotherMethod", testList, 2);
 
-    @Test
-    void renameAttributeTest() {
-        Attribute attribute = new Attribute();
-        attribute.addAttribute("Name");
-        attribute.addAttribute("Birthday");
-        attribute.addAttribute("Age");
+        System.out.println(test.displayAttributes());
+        testList3.add("String");
 
-        assertEquals("Name\nBirthday\nAge", attribute.toString());
-
-        attribute.renameAttribute("Birthday", "Weight");
-        System.out.println(attribute.toString());
-        assertEquals("Name\nWeight\nAge", attribute.toString());
+        test.renameAttribute(2, "differentField", testList3, Attribute.Type.FIELD);
+        System.out.println(test.displayAttributes());
     }
 }
