@@ -235,7 +235,7 @@ public class MenuPrompts {
     * 
     * @return class name or " " if class doesn't exist in the diagram or if user cancels the
     */
-    public static String editClassPrompt(final Diagram diagram) {
+    public static Class editClassPrompt(final Diagram diagram) {
         System.out.println("Enter name of class to edit: ");
         System.out.print("-> ");
         String className = scanner.nextLine();
@@ -244,11 +244,12 @@ public class MenuPrompts {
             System.out.print("-> ");
             className = scanner.nextLine();
         }
-        if(diagram.findSingleClass(className) == null){
+        Class c1 = diagram.findSingleClass(className);
+        if(c1 == null){
             System.out.println("Class does not exist.");
-            return "";
+            return null;
         }
-        return className;
+        return c1;
     }
 
     public static int editRelationshipsMenuChoice() {
@@ -302,6 +303,82 @@ public class MenuPrompts {
             return null;
         }
         return c2;
+    }
+
+    public static int promptAttributeType() {
+        int userInput = -99;
+
+        System.out.println("What type of attribute would you like to add?:\n" +
+                "1 - Field\n" +
+                "2 - Method\n");
+        System.out.println("Enter a number:");
+        System.out.print("-> ");
+        while (true) {
+            try {
+                userInput = Integer.parseInt(scanner.nextLine());
+                if (userInput >= 1 && userInput <= 2) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number between 1 and 2");
+                    System.out.print("-> ");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+                System.out.print("-> ");
+            }
+        }
+        return userInput;
+    }
+
+    public static String promptParameterType(){
+        String parameterType = "";
+        while (parameterType.isEmpty() || parameterType == null){
+            System.out.println("Please enter a vaild parameter type:");
+            System.out.println("(Ex: String, int, double, float)");
+            System.out.print("-> ");
+            parameterType = scanner.nextLine();
+        }
+        return parameterType;
+    }
+
+    public static String promptParameterName(){
+        String name = "";
+        while(name.isEmpty() || name == null){
+            System.out.println("Please enter a valid name for the attribute:");
+            System.out.print("-> ");
+            name = scanner.nextLine();
+        }
+        return name;
+    }
+
+    public static int addParameterPrompt() {
+        int userInput = -99;
+        System.out.println("" +
+                "1 - Enter a parameter name\n" +
+                "2 - Finished\n");
+        System.out.println("Enter a number:");
+        System.out.print("-> ");
+        while (true) {
+            try {
+                userInput = Integer.parseInt(scanner.nextLine());
+                if (userInput >= 1 && userInput <= 2) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number between 1 and 2");
+                    System.out.print("-> ");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+                System.out.print("-> ");
+            }
+        }
+
+        return userInput;
+
+    }
+
+    public static int deleteAttributePrompts() {
+        return 0;
     }
    
 }

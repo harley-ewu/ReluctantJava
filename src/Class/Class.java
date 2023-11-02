@@ -33,7 +33,8 @@ public class Class {
      */
 
     public ArrayList<Attribute> getAttributes() {
-        return new ArrayList<Attribute>() = this.attributes;
+        //return new ArrayList<Attribute>() = this.attributes;
+        return this.attributes;
     }
 
     /*
@@ -164,7 +165,7 @@ public class Class {
         Collections.sort(unsortedList, arrayListComparator);
     }
 
-    public String help() {
+    /*public String help() {
         String help = "How to use this menu:\n" +
                 "1. Add attribute -- prompts user to enter a name for a new attribute\n" +
                 "2. Delete attribute -- prompts user to enter a name of an (existing) attribute to delete\n" +
@@ -174,7 +175,7 @@ public class Class {
                 "6. Return to Diagram Menu -- returns the user to the diagram menu holding the class\n";
 
         return help;
-    }
+    }*/
     
 
     /**

@@ -293,13 +293,13 @@ public class Diagram {
    /*
     * Checks to see if class exists then calls subMenu method from Class class
     */
-   public void editClass(){
-      String className = MenuPrompts.editClassPrompt(this);
+   /*public void editClass(){
+      String className = MenuController.
       if(className.isEmpty()) {
          return;
       }
       //this.classList.get(className).subMenu();
-   }
+   }*/
 
    /*
     * Submenu to edit relationships (add/delete) calls those methods in this method
