@@ -33,7 +33,7 @@ public class Class {
      */
 
     public ArrayList<Attribute> getAttributes() {
-        return this.attributes;
+        return new ArrayList<Attribute>() = this.attributes;
     }
 
     /*

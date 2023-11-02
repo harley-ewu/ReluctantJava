@@ -333,7 +333,7 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
         System.out.println("New Class Editor");
         System.out.println("""
-            
+                                
                                 1 - Add Attribute
                                 2 - Add Relationship
                                 3 - Back to Diagram Menu
@@ -357,27 +357,39 @@ public class CommandLineInterface {
         return userInput;
     }
 
-    public static void diagramHelp(){
+    public static int editClassMenuChoice() {
+        int choice = -99;
+        int userInput;
+        Scanner scan = new Scanner(System.in);
+            //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
+        System.out.println("\nExisting Class Editor");
         System.out.println("""
-                 DIAGRAM MENU COMMANDS:
+                              1.Add attribute
+                              2.Delete attribute
+                              3.Rename Attribute
+                              4.Display attributes
+                              5.Display relationships
+                              6.Display all contents
+                              7.Return to Diagram Menu
+                              8.Help
+                             
+                             Enter a number:""");
 
-                 Option 1 - Add Class: Create and add a class to the diagram
-                
-                 Option 2 - Delete Class: Delete existing class from the diagram
-                
-                 Option 3 - Rename Class: Rename existing class in the diagram
-                
-                 Option 4 - Edit Class: Opens up sub-menu with class editing options
-                
-                 Option 5 - Edit Relationships: Opens up sub-menu with relationship add/deleet options
-                
-                 Option 6 - View Class: Lists all attributes and relationships of existing class
-                
-                 Option 7 - View Diagram: Lists all classes and their properties in current diagram
-                
-                 Option 8 - Help: See how each option functions
+        while (true) {
 
-                 Option 9 - Exit: Exit the program
-                """);
+            try {
+                userInput = Integer.parseInt(scan.nextLine());
+                if (isValidUserInput(userInput)) {
+                    break;
+                } else {
+                    System.out.println("Please enter a valid option, 1-" + MAX_CHOICES);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+
+        }
+
+        return choice;
     }
 }
