@@ -120,8 +120,19 @@ public class AttributeTests {
         System.out.println(test.displayAttributes());
         testList3.add("Boolean");
 
+        // Testing to confirm they were not allowed to change.
         test.renameAttribute(2, "field", testList3, Attribute.Type.FIELD);
         assertEquals(expected, test.displayAttributes());
 
+    }
+
+    @Test
+    void changeParameters() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod(String)\n";
+        test.createAttribute("testMethod", testList, 2);
+        testList2.add("String");
+        test.renameAttributeParameters(testList2, 1);
+        assertEquals(expected, test.displayAttributes());
     }
 }

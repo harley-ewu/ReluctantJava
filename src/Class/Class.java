@@ -195,11 +195,13 @@ public class Class {
     }
 
     public void renameAttributeParameters(ArrayList<String> newParameters, int index) {
-        Attribute oldAttribute = this.attributes.get(index+1);
-        Attribute newAttribute = new Attribute(oldAttribute.getName());
-        newAttribute = newAttribute.addAttribute(oldAttribute.getName(), newParameters, Attribute.Type.METHOD);
-        if (!duplicateAttributeCheck(newAttribute)) {
-            this.attributes.set(index, newAttribute);
+        if (index <= this.attributes.size() && index >= 1) {
+            Attribute oldAttribute = this.attributes.get(index - 1);
+            Attribute newAttribute = new Attribute(oldAttribute.getName());
+            newAttribute = newAttribute.addAttribute(oldAttribute.getName(), newParameters, Attribute.Type.METHOD);
+            if (!duplicateAttributeCheck(newAttribute)) {
+                this.attributes.set(index - 1, newAttribute);
+            }
         }
     }
 
