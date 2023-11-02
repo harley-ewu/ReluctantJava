@@ -230,5 +230,53 @@ public class MenuPrompts {
         }
         return className;
     }
+
+    public static int editRelationshipsMenuChoice() {
+        int userInput = -99;
+        System.out.println("Relationship Editor");
+        System.out.println("""
+            
+                                1 - Add Relationship
+                                2 - Delete Relationship
+                                3 - Back to Diagram Menu
+                                
+                                Enter a number:""");
+        
+        while (true) {
+            try {
+                userInput = Integer.parseInt(scanner.nextLine());
+                if (userInput >= 1 && userInput <= 3) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number between 1 and 3");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return userInput;
+    }
+
+    public static Class promptClass1Relationship(final Diagram diagram) {
+        System.out.println("What is the name of the first class?");
+        String ownerString = scanner.nextLine();
+        Class c1 = diagram.findSingleClass(ownerString);
+        if (c1 == null) {
+            System.out.println("Class does not exist");
+            return null;
+        }
+        return c1;
+    }
+
+    public static Class promptClass2Relationship(final Diagram diagram) {
+        System.out.println("What is the name of the second class?");
+        String otherString = scanner.nextLine();
+        Class c2 = diagram.findSingleClass(otherString);
+        if (c2 == null) {
+            System.out.println("Class does not exist");
+            return null;
+        }
+        return c2;
+    }
    
 }

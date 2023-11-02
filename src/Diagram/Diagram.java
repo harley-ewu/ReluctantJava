@@ -305,7 +305,7 @@ public class Diagram {
     * Submenu to edit relationships (add/delete) calls those methods in this method
     */
 
-   public void editRelationships(){
+   /*public void editRelationships(){
       int choice = -99;
       System.out.println("Enter a number:\n1.Add Relationship.\n2.Delete Relationship");
       String op = scanner.nextLine();
@@ -329,6 +329,7 @@ public class Diagram {
          System.out.println("Class does not exist");
          return;
       }
+      
 
       //needs to be moved to the MenuController
       if (choice == 1) {
@@ -340,7 +341,7 @@ public class Diagram {
       else {
          System.out.println("Invalid option");
       }
-   }
+   }*/
 
 
    /*

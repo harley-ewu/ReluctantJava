@@ -46,7 +46,7 @@ public class MenuController {
                     break;
                 //edit relationships
                 case 5:
-                    diagram.editRelationships();
+                    editRelationshipsControl(false, diagram);
                     break;
                 //View class - name needed
                 case 6:
@@ -111,6 +111,38 @@ public class MenuController {
                 default:
                    break;
              }
+        }
+    }
+
+    public static void editRelationshipsControl(boolean shouldTerminate, final Diagram diagram){
+        Scanner scanner = new Scanner(System.in);
+        while(!shouldTerminate){
+            int choice = MenuPrompts.editRelationshipsMenuChoice();
+            Class c1 = null;
+            Class c2 = null;
+            if (choice != 3){
+                c1 = MenuPrompts.promptClass1Relationship(diagram);
+                if(c1 == null) {
+                    System.out.println("Cannot make a relationship with class that does not exist.");
+                    return;
+                }
+                c2 = MenuPrompts.promptClass2Relationship(diagram);
+                if(c2 == null) {
+                    System.out.println("Cannot make a relationship with class that does not exist.");
+                    return;
+                }
+            }
+            switch(choice) {
+                case 1:
+                    diagram.addRelationship(c1, c2);
+                    break;
+                case 2:
+                    diagram.deleteRelationship(c1, c2);
+                case 3: 
+                    shouldTerminate = true;
+                default:
+                    break;
+            }
         }
     }
 }
