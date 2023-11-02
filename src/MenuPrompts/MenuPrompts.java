@@ -4,6 +4,7 @@ import Diagram.Diagram;
 import Relationships.Relationship;
 import Class.Class;
 
+//THIS IS A VIEW
 
 public class MenuPrompts {
     //private static Diagram diagram;
@@ -17,9 +18,11 @@ public class MenuPrompts {
     */
     public static String addClassPrompt() {
         System.out.println("Enter a class name to add: ");
+        System.out.print("-> ");
         String className = scanner.nextLine();
         while (className.isEmpty()) {
            System.out.println("Please enter a name between 1 and 50 characters inclusive");
+           System.out.print("-> ");
            className = scanner.nextLine();
         }
         return className;
@@ -34,9 +37,11 @@ public class MenuPrompts {
      */
      public static Class deleteClassPrompt(final Diagram diagram) {
         System.out.println("Enter a class name to delete: ");
+        System.out.print("-> ");
         String className = scanner.nextLine();
         while (className.isEmpty()) {
             System.out.println("Please enter a name between 1 and 50 characters inclusive");
+            System.out.print("-> ");
             className = scanner.nextLine();
         }
         Class deletedClass = diagram.findSingleClass(className);
@@ -57,6 +62,7 @@ public class MenuPrompts {
    public static Class renameClassPromptOriginalName(final Diagram diagram) {
         String oldClassName;
         System.out.println("Enter the original name of the class.");
+        System.out.print("-> ");
         oldClassName = scanner.nextLine();
         Class c = diagram.findSingleClass(oldClassName);
         if(c != null){
@@ -81,9 +87,11 @@ public class MenuPrompts {
         String newClassName = "";
         if(old != null) {
             System.out.println("Enter a new name for the class.");
+            System.out.print("-> ");
             newClassName = scanner.nextLine();
         while (newClassName.isEmpty()) {
             System.out.println("Please enter a name between 1 and 50 characters inclusive");
+            System.out.print("-> ");
             newClassName = scanner.nextLine();
         }
         }
@@ -100,6 +108,7 @@ public class MenuPrompts {
     */
     public static Class printSingleClassPrompt(final Diagram diagram){
         System.out.println("Enter name of class to view: ");
+        System.out.print("-> ");
         String className = scanner.nextLine();
         Class c = diagram.findSingleClass(className);
         if(c != null) {
@@ -122,9 +131,12 @@ public class MenuPrompts {
         while(relationshipType == null) {
             System.out.println("What Type of Relationship?\n" +
                     "1. Association \n2. Aggregation \n3.Composition \n4.Generalization");
+            System.out.println("Enter a number:");
+            System.out.print("-> ");
             choice = Integer.parseInt(scanner.nextLine());
             if(choice < 1 || choice > 4){
                System.out.println("Please enter 1 through 4 as your choice");
+               System.out.print("-> ");
             }
             else if(choice == 1){
                relationshipType = Relationship.RelationshipType.Realization;
@@ -153,9 +165,11 @@ public class MenuPrompts {
     public static int class1CardinalityPrompt(final Class c1){
         int c1Cardinality = -2;
         System.out.println("What is "+c1.getClassName()+"'s Class Cardinality? (Enter -1 for * Cardinality)");
+        System.out.print("-> ");
         c1Cardinality = Integer.parseInt(scanner.nextLine());
         while(c1Cardinality < -1){
             System.out.println("Please enter a valid cardinality");
+            System.out.print("-> ");
             c1Cardinality = Integer.parseInt(scanner.nextLine());
         }
         return c1Cardinality;
@@ -171,9 +185,11 @@ public class MenuPrompts {
     public static int class2CardinalityPrompt(final Class c2){
         int c2Cardinality = -2;
         System.out.println("What is "+c2.getClassName()+"'s Class Cardinality? (Enter -1 for * Cardinality)");
+        System.out.print("-> ");
         c2Cardinality = Integer.parseInt(scanner.nextLine());
         while(c2Cardinality < -1){
             System.out.println("Please enter a valid cardinality");
+            System.out.print("-> ");
             c2Cardinality = Integer.parseInt(scanner.nextLine());
         }
         return c2Cardinality;
@@ -193,10 +209,12 @@ public class MenuPrompts {
         while(choice != 1 && choice != 2){
             System.out.println("Which class is the owner of the relationship?\n" +
                     "1. "+c1.getClassName()+"\n2. "+c2.getClassName()+"\n");
+            System.out.print("-> ");
             choice = Integer.parseInt(scanner.nextLine());
 
             if(choice != 1 && choice != 2){
                 System.out.println("Please enter 1 or 2 as your choice");
+                System.out.print("-> ");
             }
             else if(choice == 1){
                 //class 1 is owner
@@ -219,9 +237,11 @@ public class MenuPrompts {
     */
     public static String editClassPrompt(final Diagram diagram) {
         System.out.println("Enter name of class to edit: ");
+        System.out.print("-> ");
         String className = scanner.nextLine();
         while (className.isEmpty() || className.length() > 50) {
             System.out.println("Please enter a name between 1 and 50 characters inclusive");
+            System.out.print("-> ");
             className = scanner.nextLine();
         }
         if(diagram.findSingleClass(className) == null){
@@ -241,6 +261,7 @@ public class MenuPrompts {
                                 3 - Back to Diagram Menu
                                 
                                 Enter a number:""");
+        System.out.print("-> ");
         
         while (true) {
             try {
@@ -249,9 +270,11 @@ public class MenuPrompts {
                     break;
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and 3");
+                    System.out.print("-> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
+                System.out.print("-> ");
             }
         }
         return userInput;
@@ -259,6 +282,7 @@ public class MenuPrompts {
 
     public static Class promptClass1Relationship(final Diagram diagram) {
         System.out.println("What is the name of the first class?");
+        System.out.print("-> ");
         String ownerString = scanner.nextLine();
         Class c1 = diagram.findSingleClass(ownerString);
         if (c1 == null) {
@@ -270,6 +294,7 @@ public class MenuPrompts {
 
     public static Class promptClass2Relationship(final Diagram diagram) {
         System.out.println("What is the name of the second class?");
+        System.out.print("-> ");
         String otherString = scanner.nextLine();
         Class c2 = diagram.findSingleClass(otherString);
         if (c2 == null) {

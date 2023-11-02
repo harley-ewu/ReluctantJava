@@ -58,6 +58,9 @@ public class MenuController {
                     System.out.println(diagram);
                     break;
                 case 8:
+                    CommandLineInterface.diagramHelp();
+                    break;
+                case 9:
                     shouldTerminate = true;
                 default:
                     break;
@@ -86,7 +89,7 @@ public class MenuController {
                 case 2:
                     //Will need to move to the CLI (view) class
                    System.out.println("Which class do you want to make a relationship with?");
-                   System.out.print("Class: ");
+                   System.out.print("-> ");
                    String input = scanner.nextLine();
                    Class c2 = null;
                    do {
@@ -99,7 +102,7 @@ public class MenuController {
                       if(c2 == null) {
                         //Will need to move to the CLI (view) class
                          System.out.println("class does not exist, please enter a valid class");
-                         System.out.print("Class: ");
+                         System.out.print("-> ");
                          input = scanner.nextLine();
                       }
                    }while(c2 == null);
@@ -114,6 +117,12 @@ public class MenuController {
         }
     }
 
+    /**
+    * Allows the user to edit relationships in the diagram.
+    * 
+    * @param shouldTerminate - true if the method should terminate prematurely
+    * @param diagram - Diagram to edit relationships in
+    */
     public static void editRelationshipsControl(boolean shouldTerminate, final Diagram diagram){
         Scanner scanner = new Scanner(System.in);
         while(!shouldTerminate){
@@ -138,6 +147,7 @@ public class MenuController {
                     break;
                 case 2:
                     diagram.deleteRelationship(c1, c2);
+                    break;
                 case 3: 
                     shouldTerminate = true;
                 default:
