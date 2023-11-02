@@ -102,4 +102,26 @@ public class AttributeTests {
         test.renameAttribute(2, "differentField", testList3, Attribute.Type.FIELD);
         System.out.println(test.displayAttributes());
     }
+
+    @Test
+    void renameSameNameAttribute() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. field: Boolean\n" +
+                "3. differentField: String\n" ;
+        test.createAttribute("testMethod", testList, 2);
+
+        testList2.add("Boolean");
+        test.createAttribute("field", testList2, 1);
+
+        testList.add("String");
+        test.createAttribute("differentField", testList, 1);
+
+        System.out.println(test.displayAttributes());
+        testList3.add("Boolean");
+
+        test.renameAttribute(2, "field", testList3, Attribute.Type.FIELD);
+        assertEquals(expected, test.displayAttributes());
+
+    }
 }

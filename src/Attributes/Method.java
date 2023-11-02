@@ -40,6 +40,6 @@ public class Method extends Attribute{
 
     @Override
     public String toString() {
-        return (super.toString() + "(" + parameters.toString() + ")" + "\n");
+        return (super.toString() + "(" + parameters.toString().replaceAll("[\\[\\]]", "") + ")" + "\n");
     }
 }
