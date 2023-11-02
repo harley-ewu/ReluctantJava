@@ -7,7 +7,7 @@ import Class.Class;
 import CLI.CommandLineInterface;
 import MenuPrompts.MenuPrompts;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class MenuController {
 
@@ -22,6 +22,7 @@ public class MenuController {
             String className = "";
             while(!shouldTerminate) {
                 int choice = CommandLineInterface.diagramMenuChoice();
+                Class currentClass = null;
                 switch (choice) {
                 //Add Class - name needed
                 case 1:
@@ -42,7 +43,10 @@ public class MenuController {
                     break;
                 //Edit Class - name needed
                 case 4:
-                    diagram.editClass();
+                    while(currentClass == null){
+                        currentClass = MenuPrompts.editClassPrompt(diagram);
+                    }
+                    editClassSubMenu(false, currentClass);
                     break;
                 //edit relationships
                 case 5:
@@ -62,6 +66,7 @@ public class MenuController {
                     break;
                 case 9:
                     shouldTerminate = true;
+                    break;
                 default:
                     break;
                
@@ -83,7 +88,7 @@ public class MenuController {
             switch(choice) {
                 //Add attribute
                 case 1:
-                   currentClass.createAttribute();
+                   addAttribute(currentClass, scanner);
                    break;
                 //Add relationship
                 case 2:
@@ -111,6 +116,10 @@ public class MenuController {
                    break;
                 case 3:
                    shouldTerminate = true;
+                   break;
+                case 4:
+                   CommandLineInterface.newClassMenuHelp();
+                   break;
                 default:
                    break;
              }
@@ -120,7 +129,7 @@ public class MenuController {
     public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass) {
         Scanner scanner = new Scanner(System.in);
         while (!shouldTerminate) {
-            int choice = CommandLineInterface.newClassMenuChoice();
+            int choice = CommandLineInterface.editClassMenuChoice();
             switch (choice) {
 
                 case 1: //add attribute
@@ -131,7 +140,7 @@ public class MenuController {
                     deleteAttribute(currentClass, scanner);
                     break;
                 case 3: //rename attribute
-                    currentClass.renameAttribute();
+                    renameAttribute(currentClass, scanner);
                     break;
                 case 4: //display attributes
                     System.out.println(currentClass.displayAttributes());
@@ -143,10 +152,11 @@ public class MenuController {
                     System.out.println(currentClass);
                     break;
                 case 7: //return to diagram menu
-                    shouldTerminate = false;
+                    shouldTerminate = true;
                     break;
                 case 8: //help
-                    System.out.println(currentClass.help());
+                    CommandLineInterface.editClassMenuHelp();
+                    break;
                 default:
                     break;
             }
@@ -154,50 +164,53 @@ public class MenuController {
     }
 
     public static void addAttribute(Class currentClass, Scanner scanner) {
-        int choice = -99;
-        String name = "";
+        int choice = MenuPrompts.promptAttributeType();
+        String name = MenuPrompts.promptParameterName();
         ArrayList<String> parameters = new ArrayList<>();
 
-        do {
+        /*do {
         System.out.println("Please choose one of the following options:\n" +
                 "1. Field\n" +
                 "2. Method\n");
         System.out.print("\nenter: ");
         choice = Integer.parseInt(scanner.nextLine());
-        }while (choice != 1 || choice != 2);
+        }while (choice != 1 && choice != 2);*/
 
-        do {
+        /*do {
             System.out.print("\nPlease enter a name:");
             name = scanner.nextLine();
 
-        }while (name == null || name.isEmpty());
+        }while (name == null || name.isEmpty());*/
 
         if (choice == 1) {
             do {
-                System.out.println("Please enter a type: ");
-                String type = scanner.nextLine();
-                if (type != null || !type.isEmpty()) {
+                String type = MenuPrompts.promptParameterType();
+                parameters.add(type);
+                //error checking done in prompt method
+                /*if (type != null || !type.isEmpty()) {
                     parameters.add(type);
-                }
+                }*/
 
             }while(parameters == null && parameters.isEmpty());
 
         } else {
             int option = -99;
             do {
-                System.out.print("\nEnter an option 1 or 2:\n" +
+                option = MenuPrompts.addParameterPrompt();
+                /*System.out.print("\nEnter an option 1 or 2:\n" +
                         "1. Enter a parameter name\n" +
                         "2. Finished\n" +
                         "\nEnter -> ");
-                option = Integer.parseInt(scanner.nextLine());
+                option = Integer.parseInt(scanner.nextLine());*/
 
                 if (option == 1) {
-                    String parameterName = "";
-                    System.out.print("\nEnter parameter name: ");
+                    String parameterName = MenuPrompts.promptParameterName();
+                    parameters.add(parameterName);
+                    /*System.out.print("\nEnter parameter name: ");
                     parameterName = scanner.nextLine();
                     if (parameterName != null && !parameterName.isEmpty()) {
                         parameters.add(parameterName);
-                    }
+                    }*/
                 }
 
             }while (option != 2);
@@ -211,8 +224,9 @@ public class MenuController {
         int choice = -99;
         do {
             System.out.println("Delete an attribute:");
-            currentClass.displayAttributes();
-            System.out.print("\nchoose between 1 and " + (currentClass.getAttributes().size()+1) + " -> ");
+            //need to add message if no attributes exist
+            System.out.println(currentClass.displayAttributes());
+            System.out.print("\nchoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
