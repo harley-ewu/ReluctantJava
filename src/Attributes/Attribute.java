@@ -56,9 +56,6 @@ public class Attribute {
         this.type = type;
     }
 
-    public void setType() {
-
-    };
 
     @Override
     public String toString(){

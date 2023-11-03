@@ -9,7 +9,7 @@ public class Method extends Attribute{
 
     public Method(String name) {
         super(name);
-        this.type = Type.METHOD;
+        this.setType();
     }
 
     public Method(String name, ArrayList<String> parameters) {
