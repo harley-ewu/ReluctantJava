@@ -54,4 +54,13 @@ public class Method extends Attribute{
     public String toString() {
         return (super.toString() + "(" + parameters.toString().replaceAll("[\\[\\]]", "") + ")");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Method method = (Method) o;
+        return parameters.equals(method.parameters);
+    }
 }

@@ -101,6 +101,7 @@ public class AttributeTests {
 
         test.renameAttribute(2, "differentField", testList3, Attribute.Type.FIELD);
         System.out.println(test.displayAttributes());
+        assertEquals(expected, test.displayAttributes());
     }
 
     @Test

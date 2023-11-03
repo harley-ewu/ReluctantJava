@@ -113,8 +113,8 @@ public class Class {
 
     public boolean duplicateAttributeCheck(Attribute newAttribute) {
         boolean found = false;
-        for (Attribute attribute : this.attributes) {
-            if (newAttribute.equals(attribute)) {
+        for (int i = 0; i < this.attributes.size(); i++) {
+            if (newAttribute.equals(this.attributes.get(i))) {
                 found = true;
                 break;
             }
@@ -127,13 +127,11 @@ public class Class {
      */
     //TODO: code menu option for renaming an attribute **this is no longer a menu option method**
     public void renameAttribute(int input, String newName, ArrayList<String> parameters, Attribute.Type type) {
-        for (int i = 0; i < this.attributes.size()+1; i++) {
-            if (input == (i+1)) {
-                Attribute newAttribute = new Attribute();
-                newAttribute = newAttribute.addAttribute(newName, parameters, type);
-                if(!duplicateAttributeCheck(newAttribute)) {
-                    this.attributes.set(i, newAttribute);
-                }
+        if(input <= this.attributes.size() && input >= 1 ) {
+            Attribute newAttribute = new Attribute();
+            newAttribute = newAttribute.addAttribute(newName, parameters, type);
+            if (!duplicateAttributeCheck(newAttribute)) {
+                this.attributes.set(input - 1, newAttribute);
             }
         }
     }
