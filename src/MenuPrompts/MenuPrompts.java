@@ -308,7 +308,7 @@ public class MenuPrompts {
     public static int promptAttributeType() {
         int userInput = -99;
 
-        System.out.println("What type of attribute would you like to add?:\n" +
+        System.out.println("What type of attribute would you like to modify?:\n" +
                 "1 - Field\n" +
                 "2 - Method\n");
         System.out.println("Enter a number:");
@@ -383,7 +383,7 @@ public class MenuPrompts {
             System.out.println("Delete an attribute:");
             //need to add message if no attributes exist
             System.out.println(currentClass.displayAttributes());
-            System.out.print("\nchoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
+            System.out.print("\nChoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
@@ -392,6 +392,30 @@ public class MenuPrompts {
 
         } while (choice < 1 || choice > currentClass.getAttributes().size()+1);
         return choice;
+    }
+
+    public static int renameAttributePrompt(final Class currentClass) {
+        int choice = -99;
+        do {
+            System.out.println("Rename an attribute: ");
+            System.out.println(currentClass.displayAttributes());
+            System.out.print("\nChoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+        }while (choice < 1 || choice > currentClass.getAttributes().size()+1);
+        return choice;
+    }
+
+    public static String renameAttributeNewName(){
+        String newName = "";
+        while (newName.isEmpty() || newName == null){
+            System.out.println("Please enter a new valid name for the attribute");
+            newName = scanner.nextLine();
+        }
+        return newName;
     }
    
 }

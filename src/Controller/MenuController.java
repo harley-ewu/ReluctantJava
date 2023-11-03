@@ -6,8 +6,11 @@ import Diagram.Diagram;
 import Class.Class;
 import CLI.CommandLineInterface;
 import MenuPrompts.MenuPrompts;
+import Relationships.Relationship.RelationshipType;
 
 import java.util.*;
+
+import Attributes.Attribute;
 
 public class MenuController {
 
@@ -49,7 +52,7 @@ public class MenuController {
                     while(currentClass == null){
                         currentClass = MenuPrompts.editClassPrompt(diagram);
                     }
-                    editClassSubMenu(false, currentClass);
+                    editClassSubMenu(false, currentClass, diagram);
                     break;
                 //edit relationships
                 case 5:
@@ -130,7 +133,7 @@ public class MenuController {
         }
     }
 
-    public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass) {
+    public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while (!shouldTerminate) {
             int choice = CommandLineInterface.editClassMenuChoice();
@@ -138,7 +141,6 @@ public class MenuController {
 
                 case 1: //add attribute
                     addAttribute(currentClass, scanner);
-
                     break;
                 case 2: //delete attribute
                     deleteAttribute(currentClass, scanner);
@@ -150,7 +152,7 @@ public class MenuController {
                     System.out.println(currentClass.displayAttributes());
                     break;
                 case 5: //display relationships
-                    //System.out.println(this.displayRelationships());
+                    System.out.println(diagram.listAllRelationships());
                     break;
                 case 6: //display all contents
                     System.out.println(currentClass);
@@ -172,28 +174,10 @@ public class MenuController {
         String name = MenuPrompts.promptParameterName();
         ArrayList<String> parameters = new ArrayList<>();
 
-        /*do {
-        System.out.println("Please choose one of the following options:\n" +
-                "1. Field\n" +
-                "2. Method\n");
-        System.out.print("\nenter: ");
-        choice = Integer.parseInt(scanner.nextLine());
-        }while (choice != 1 && choice != 2);*/
-
-        /*do {
-            System.out.print("\nPlease enter a name:");
-            name = scanner.nextLine();
-
-        }while (name == null || name.isEmpty());*/
-
         if (choice == 1) {
             do {
                 String type = MenuPrompts.promptParameterType();
                 parameters.add(type);
-                //error checking done in prompt method
-                /*if (type != null || !type.isEmpty()) {
-                    parameters.add(type);
-                }*/
 
             }while(parameters == null && parameters.isEmpty());
 
@@ -201,20 +185,10 @@ public class MenuController {
             int option = -99;
             do {
                 option = MenuPrompts.addParameterPrompt();
-                /*System.out.print("\nEnter an option 1 or 2:\n" +
-                        "1. Enter a parameter name\n" +
-                        "2. Finished\n" +
-                        "\nEnter -> ");
-                option = Integer.parseInt(scanner.nextLine());*/
 
                 if (option == 1) {
                     String parameterName = MenuPrompts.promptParameterName();
                     parameters.add(parameterName);
-                    /*System.out.print("\nEnter parameter name: ");
-                    parameterName = scanner.nextLine();
-                    if (parameterName != null && !parameterName.isEmpty()) {
-                        parameters.add(parameterName);
-                    }*/
                 }
 
             }while (option != 2);
@@ -244,24 +218,29 @@ public class MenuController {
     }
 
     public static void renameAttribute(Class currentClass, Scanner scanner) {
-        int input = 0;
-        String newName = "";
+        int input = MenuPrompts.renameAttributePrompt(currentClass);
+        String newName = MenuPrompts.renameAttributeNewName();
         ArrayList<String> parameters = new ArrayList<>();
 
-        do{
-            currentClass.displayAttributes();
-            System.out.print("\nPlease choose an attribute to rename:\n->");
-        }while(input > currentClass.getAttributes().size() + 1 || input < 1);
+        int type = -99;
+            do {
+                type = MenuPrompts.promptAttributeType();
+                
+                if (type == 1) {
+                    currentClass.renameAttribute(input, newName, parameters, Attribute.Type.FIELD);
+                    break;
+                }
+                int option = -99;
+                do {
+                    option = MenuPrompts.addParameterPrompt();
+                    if (option == 1) {
+                        String parameterName = MenuPrompts.promptParameterName();
+                        parameters.add(parameterName);
+                    }
+                    currentClass.renameAttribute(input, newName, parameters, Attribute.Type.METHOD);
+                }while (option != 2);
 
-        do{
-            System.out.println("Please enter a new name:");
-            newName = scanner.nextLine();
-        }while(newName == null || newName.isEmpty());
-
-        int choice = 0;
-        do{
-            System.out.println("Please choose an option:\n1.Add a parameter\n2.Continue");
-        }while(choice != 2);
+            }while (type != 2);
     }
 
     /**
