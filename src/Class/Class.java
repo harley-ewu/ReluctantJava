@@ -115,7 +115,7 @@ public class Class {
      * description: createAttribute is a menu option method, prompting the user to enter a name for an attribute
      * @param name - the name of the class
      * @param parameters - a list of parameters for a method (will be a single
-     * @param input - the number the user inputted in the menu
+     * @param input - the number the user inputted in the menu indicating type.
      */
     public void createAttribute(String name, ArrayList<String> parameters, int input) {
         if (name.isEmpty() || parameters == null || input > 2 || input < 1) {
@@ -180,10 +180,13 @@ public class Class {
 
     /**
      * description: method that handles renaming an attribute
+     * @param input - The index of the attribute in the list to be changed.
+     * @param newName - The new name to for the attribute.
+     * @param parameters - List of new parameters.
+     * @param type - Indicates whether the attribute is a field or method.
      */
-    //TODO: code menu option for renaming an attribute **this is no longer a menu option method**
     public void renameAttribute(int input, String newName, ArrayList<String> parameters, Attribute.Type type) {
-        if(input <= this.attributes.size() && input >= 1 ) {
+        if(input <= this.attributes.size() && input >= 1  && !newName.isEmpty()) {
             Attribute newAttribute = new Attribute();
             newAttribute = newAttribute.addAttribute(newName, parameters, type);
             if (!duplicateAttributeCheck(newAttribute)) {
@@ -192,6 +195,11 @@ public class Class {
         }
     }
 
+    /**
+     * description: method that handles renaming an attribute
+     * @param newParameters - List of new parameters.
+     * @param index - Index of attribute to be changed.
+     */
     public void renameAttributeParameters(ArrayList<String> newParameters, int index) {
         if (index <= this.attributes.size() && index >= 1) {
             Attribute oldAttribute = this.attributes.get(index - 1);
@@ -205,7 +213,7 @@ public class Class {
 
     /**
      * description: This method sorts the array list by either field or method.
-     *
+     * @param unsortedList - The list to be sorted.
      */
     public void sortArrayList(ArrayList<Attribute> unsortedList) {
         Comparator<Attribute> arrayListComparator = new Comparator<Attribute>() {
