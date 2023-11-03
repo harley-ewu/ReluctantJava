@@ -33,7 +33,7 @@ public class Class {
      */
 
     public ArrayList<Attribute> getAttributes() {
-        return new ArrayList<>(this.attributes);
+        return this.attributes;
     }
 
     /*
@@ -103,7 +103,7 @@ public class Class {
         int i = 0;
 
         for (Attribute attribute : this.attributes) {
-            display.append((i+1)+". "+ attribute.toString().replaceAll("[\\[\\]]", ""));
+            display.append((i+1)+". "+ attribute.toString().replaceAll("[\\[\\]]", "")+"\n");
             i++;
         }
 
@@ -176,62 +176,6 @@ public class Class {
         return help;
     }
     
-    /**
-     * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
-     * the user can use this menu to edit attributes and relationships (wip)
-     */
-    /*
-    public void subMenu() {
-        boolean on = true;
-        //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
-        while (on) {
-            int choice = -99;
-            do {
-                System.out.println("\nEdit menu for the " + this.getClassName() + " class\n");
-                System.out.println("\n1.Add attribute\n2.Delete attribute\n3.Rename Attribute" +
-                        "\n4.Display attributes\n5.Display relationships\n6.Display all contents\n7.Return to Diagram Menu\n8.Help");
-                String op = scanner.nextLine();
-                if (!op.isEmpty() && Character.isDigit(op.charAt(0)) && op.length() == 1) {
-                    choice = Integer.parseInt(op);
-                } else {
-                    choice = -99;
-                    System.out.println("Please enter a valid option, 1-7");
-                }
-
-            } while (choice < 1 || choice > 8);
-
-            switch (choice) {
-
-                case 1: //add attribute
-                    //this.addAttribute();
-                    break;
-                case 2: //delete attribute
-                    //this.deleteAttribute();
-                    break;
-                case 3: //rename attribute
-                    //this.renameAttribute();
-                    break;
-                case 4: //display attributes
-                    System.out.println(this.displayAttributes());
-                    break;
-                case 5: //display relationships
-                    //System.out.println(this.displayRelationships());
-                    break;
-                case 6: //display all contents
-                    System.out.println(this);
-                    break;
-                case 7: //return to diagram menu
-                    on = false;
-                    break;
-                case 8: //help
-                    System.out.println(this.help());
-                default:
-                    break;
-            }
-        }
-    }
-*/
-
 
     /**
      * description: toString will display all contents of the class object including: name, attributes, and relationships
@@ -244,7 +188,7 @@ public class Class {
         sortArrayList(this.attributes);
 
         for (Attribute attribute : this.attributes) {
-            attributeString.append(attribute.toString().replaceAll("[\\[\\]]", ""));
+            attributeString.append(attribute.toString().replaceAll("[\\[\\]]", "") +"\n");
         }
 
         return "Class Name: " + this.getClassName() + "\n"
