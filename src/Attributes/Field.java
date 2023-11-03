@@ -9,6 +9,6 @@ public class Field extends Attribute{
 
     @Override
     public String toString() {
-        return (super.toString() + ": " + this.primitive + "\n");
+        return (super.toString() + ": " + this.primitive.replaceAll("[\\[\\]]", "") + "\n");
     }
 }
