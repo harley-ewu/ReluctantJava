@@ -47,7 +47,7 @@ public class Method extends Attribute{
 
 
     public void setType() {
-        this.type = Type.FIELD;
+        this.type = Type.METHOD;
     }
 
     @Override
