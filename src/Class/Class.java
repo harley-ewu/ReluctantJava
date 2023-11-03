@@ -164,7 +164,7 @@ public class Class {
         Collections.sort(unsortedList, arrayListComparator);
     }
 
-    public String help() {
+    /*public String help() {
         String help = "How to use this menu:\n" +
                 "1. Add attribute -- prompts user to enter a name for a new attribute\n" +
                 "2. Delete attribute -- prompts user to enter a name of an (existing) attribute to delete\n" +
@@ -174,7 +174,7 @@ public class Class {
                 "6. Return to Diagram Menu -- returns the user to the diagram menu holding the class\n";
 
         return help;
-    }
+    }*/
     
     /**
      * description: subMenu is a built-in sub menu to a class object, this can be accessed in the diagram menu by selecting the "edit class" option
