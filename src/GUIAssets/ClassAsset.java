@@ -73,7 +73,12 @@ public class ClassAsset {
         double deltaX = event.getSceneX() - this.xOffset;
         double deltaY = event.getSceneY() - this.yOffset;
 
-        Pane pane = (Pane) event.getSource();
+        Pane pane = new Pane();
+
+        if (event.getSource() instanceof Pane) {
+            pane = (Pane) event.getSource();
+        }
+
         pane.setTranslateX(pane.getTranslateX() + deltaX);
         pane.setTranslateY(pane.getTranslateY() + deltaY);
 
@@ -81,14 +86,15 @@ public class ClassAsset {
         this.yOffset = event.getSceneY();
     }
 
-    private String displayContents(ArrayList<String> contents) {
+    private StringBuilder displayContents(ArrayList<String> contents) {
         if (contents == null) {
             return null;
         }
-        String contentList = "";
+        StringBuilder contentList = new StringBuilder();
+
 
         for (String content : contents) {
-            contentList += content.toString() + "\n";
+            contentList.append(content + "\n");
         }
 
         return contentList;
