@@ -33,8 +33,7 @@ public class Class {
      */
 
     public ArrayList<Attribute> getAttributes() {
-        //return new ArrayList<Attribute>() = this.attributes;
-        return this.attributes;
+        return new ArrayList<>(this.attributes);
     }
 
     /*
@@ -74,7 +73,7 @@ public class Class {
         } else {
             throw new IllegalArgumentException("Invalid input. Please enter 1 for field or 2 for method.");
         }
-        if (attribute != null) {
+        if (attribute != null && !duplicateAttributeCheck(attribute)) {
             attributes.add(attribute);
         }
 
@@ -109,7 +108,17 @@ public class Class {
         }
 
         return display.toString();
+    }
 
+    public boolean duplicateAttributeCheck(Attribute newAttribute) {
+        boolean found = false;
+        for (Attribute attribute : this.attributes) {
+            if (newAttribute.equals(attribute)) {
+                found = true;
+                break;
+            }
+        }
+        return found;
     }
 
     /**
@@ -121,7 +130,20 @@ public class Class {
             if (input == (i+1)) {
                 Attribute newAttribute = new Attribute();
                 newAttribute = newAttribute.addAttribute(newName, parameters, type);
-                this.attributes.set(i, newAttribute);
+                if(!duplicateAttributeCheck(newAttribute)) {
+                    this.attributes.set(i, newAttribute);
+                }
+            }
+        }
+    }
+
+    public void renameAttributeParameters(ArrayList<String> newParameters, int index) {
+        if (index <= this.attributes.size() && index >= 1) {
+            Attribute oldAttribute = this.attributes.get(index - 1);
+            Attribute newAttribute = new Attribute(oldAttribute.getName());
+            newAttribute = newAttribute.addAttribute(oldAttribute.getName(), newParameters, Attribute.Type.METHOD);
+            if (!duplicateAttributeCheck(newAttribute)) {
+                this.attributes.set(index - 1, newAttribute);
             }
         }
     }
