@@ -74,7 +74,7 @@ public class CommandLineInterface {
                 
                  Enter a number:
                 """);
-        System.out.print("-> ");
+        System.out.print("--> ");
         while (true) {
             try {
                 userInput = Integer.parseInt(scan.nextLine());
@@ -82,11 +82,11 @@ public class CommandLineInterface {
                     break;
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
-                    System.out.print("-> ");
+                    System.out.print("--> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
         }
 
@@ -103,7 +103,7 @@ public class CommandLineInterface {
         while(true) {
             try {
                 System.out.println("Enter a title for the new diagram");
-                System.out.print("-> ");
+                System.out.print("--> ");
                 userChoice = scan.nextLine();
 
                 if(userChoice.length() < 1 || userChoice.length() > 50) {
@@ -113,7 +113,7 @@ public class CommandLineInterface {
             }
             catch(IllegalArgumentException e){
                 System.out.println("Please enter a title between 1 and 50 characters inclusive");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
         }
         return userChoice;
@@ -140,7 +140,7 @@ public class CommandLineInterface {
                     2 - Save to Custom Path
                     Any other key - Do Not Save
                     """);
-        System.out.print("-> ");
+        System.out.print("--> ");
 
         userChoice = scan.next().charAt(0);
 
@@ -178,7 +178,7 @@ public class CommandLineInterface {
                 2 - Save to Default Path
                 Any other key - Do Not Save
                 """);
-                System.out.print("-> ");
+                System.out.print("--> ");
                 userChoice = scan.next().charAt(0);
                 scan.nextLine();
 
@@ -308,7 +308,7 @@ public class CommandLineInterface {
                                 9 - Exit
                                 
                                 Enter a number:""");
-        System.out.print("-> ");
+        System.out.print("--> ");
 
         while (true) {
             try {
@@ -317,11 +317,11 @@ public class CommandLineInterface {
                     break;
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES+1);
-                    System.out.print("-> ");
+                    System.out.print("--> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
         }
         return userInput;
@@ -364,7 +364,7 @@ public class CommandLineInterface {
                                 4 - Help
                                 
                                 Enter a number:""");
-        System.out.print("-> ");
+        System.out.print("--> ");
         while (true) {
             try {
                 userInput = Integer.parseInt(scan.nextLine());
@@ -372,11 +372,11 @@ public class CommandLineInterface {
                     break;
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and 3");
-                    System.out.print("-> ");
+                    System.out.print("--> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
         }
         return userInput;
@@ -412,7 +412,7 @@ public class CommandLineInterface {
                               8 - Help
                              
                              Enter a number:""");
-        System.out.print("-> ");
+        System.out.print("--> ");
 
         while (true) {
 
@@ -422,11 +422,11 @@ public class CommandLineInterface {
                     break;
                 } else {
                     System.out.println("Please enter a valid option, 1-" + MAX_CHOICES);
-                    System.out.print("-> ");
+                    System.out.print("--> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
 
         }
