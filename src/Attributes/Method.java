@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Method extends Attribute{
-    ArrayList<String> parameters = new ArrayList<>();
+    private ArrayList<String> parameters = new ArrayList<>();
+    private Type type;
 
     public Method(String name) {
         super(name);
+        this.setType();
     }
 
     public Method(String name, ArrayList<String> parameters) {
         super(name);
         this.parameters = parameters;
+        this.type = Type.METHOD;
     }
 
     /**
@@ -37,9 +40,27 @@ public class Method extends Attribute{
         this.parameters.remove(input-1);
     }
 
+    @Override
+    public Type getType() {
+        return this.type;
+    }
+
+
+    public void setType() {
+        this.type = Type.METHOD;
+    }
 
     @Override
     public String toString() {
-        return (super.toString() + "(" + parameters.toString().replaceAll("[\\[\\]]", "") + ")" + "\n");
+        return (super.toString() + "(" + parameters.toString().replaceAll("[\\[\\]]", "") + ")");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Method method = (Method) o;
+        return parameters.equals(method.parameters);
     }
 }

@@ -101,6 +101,7 @@ public class AttributeTests {
 
         test.renameAttribute(2, "differentField", testList3, Attribute.Type.FIELD);
         System.out.println(test.displayAttributes());
+        assertEquals(expected, test.displayAttributes());
     }
 
     @Test
@@ -124,6 +125,20 @@ public class AttributeTests {
         test.renameAttribute(2, "field", testList3, Attribute.Type.FIELD);
         assertEquals(expected, test.displayAttributes());
 
+    }
+
+    @Test
+    void renameToEmptyName() {
+        String expected = "Available Fields and Methods: \n" +
+                "1. testMethod()\n" +
+                "2. field: Boolean\n";
+
+        test.createAttribute("testMethod", testList, 2);
+        testList2.add("Boolean");
+        test.createAttribute("field", testList2, 1);
+        test.renameAttribute(2, "", testList, Attribute.Type.FIELD);
+
+        assertEquals(expected, test.displayAttributes());
     }
 
     @Test
