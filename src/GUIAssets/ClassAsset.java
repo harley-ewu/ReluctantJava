@@ -1,16 +1,11 @@
 package GUIAssets;
 import Attributes.Attribute;
-import Attributes.Field;
 import Class.Class;
+import GUI.DiagramProjectController;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -22,44 +17,31 @@ public class ClassAsset {
     private double xOffset = 0;
     private double yOffset = 0;
 
+    private double xCoordinate = 0;
+    private double yCoordinate = 0;
+
+    private ArrayList<String> fields;
+    private ArrayList<String> methods;
+    private Pane classContainer;
+
+
     public Pane createClassAsset(Class currentClass) {
-        Pane classContainer = new Pane();
-        classContainer.setStyle("-fx-background-color: lightblue;" +
+        int textSize = 12;
+        String fontType = "Verdana";
+
+        this.classContainer = new Pane();
+        this.classContainer.setStyle("-fx-background-color: lightblue;" +
                 "-fx-background-radius: 10;" +
                 "-fx-border-color: black;" +
                 "-fx-border-width: 1;" +
                 "-fx-border-radius: 10");
 
-        Insets margins = new Insets(5, 2,2, 5);
-        VBox textContainer = new VBox();
-        Text className = new Text();
-        Text fieldsNames = new Text();
-        Text methodsNames = new Text();
+        Insets margins = new Insets(5, 5,5, 5);
+        VBox textContainer = this.setupTextContainer(fontType, textSize, currentClass, margins);
 
-        ArrayList<String> fields = this.returnFieldNames(currentClass);
-        ArrayList<String> methods = this.returnMethodNames(currentClass);
-
-        //setting text for each category
-        className.setText("Class: " + currentClass.getClassName());
-        VBox.setMargin(className, margins);
-        fieldsNames.setText("Fields:\n" +
-                this.displayContents(fields));
-        VBox.setMargin(fieldsNames, margins);
-        methodsNames.setText("Methods:\n" +
-                this.displayContents(methods));
-        VBox.setMargin(methodsNames, margins);
-
-        Button editButton = new Button("edit");
-        VBox.setMargin(editButton, margins);
-
-        textContainer.getChildren().add(className);
-        textContainer.getChildren().add(fieldsNames);
-        textContainer.getChildren().add(methodsNames);
-        textContainer.getChildren().add(editButton);
-        classContainer.getChildren().add(textContainer);
-
-        classContainer.setOnMousePressed(this::onMousePressed);
-        classContainer.setOnMouseDragged(this::onMouseDragged);
+        this.classContainer.getChildren().add(textContainer);
+        this.classContainer.setOnMousePressed(this::onMousePressed);
+        this.classContainer.setOnMouseDragged(this::onMouseDragged);
 
         return classContainer;
     }
@@ -86,12 +68,16 @@ public class ClassAsset {
         this.yOffset = event.getSceneY();
     }
 
+    /**
+     * searches an existing array list and puts contents in a stringbuilder
+     * @param contents
+     * @return
+     */
     private StringBuilder displayContents(ArrayList<String> contents) {
         if (contents == null) {
             return null;
         }
         StringBuilder contentList = new StringBuilder();
-
 
         for (String content : contents) {
             contentList.append(content + "\n");
@@ -99,6 +85,12 @@ public class ClassAsset {
 
         return contentList;
     }
+
+    /**
+     * description: searches an attribute arraylist for fields and stores them in an arraylist of type string
+     * @param currentClass
+     * @return
+     */
 
     private ArrayList<String> returnFieldNames(Class currentClass) {
         if (currentClass == null) {
@@ -116,6 +108,11 @@ public class ClassAsset {
         return fieldNameList;
     }
 
+    /**
+     * description: searches an arraylist of type attribute for methods and puts them in a String arraylist
+     * @param currentClass
+     * @return
+     */
     private ArrayList<String> returnMethodNames(Class currentClass) {
         if (currentClass == null) {
             return null;
@@ -131,4 +128,83 @@ public class ClassAsset {
 
         return methodNamesList;
     }
+
+    /**
+     * descriptions: setup method for the edit and delete buttons
+     * @param fontType
+     * @param textSize
+     * @param margins
+     * @return
+     */
+
+    public HBox setUpButtons(String fontType, int textSize, Insets margins ) {
+        HBox buttonContainer = new HBox();
+        buttonContainer.setSpacing(120.0);
+
+        Button editButton = new Button("Edit");
+        editButton.setFont(Font.font(fontType, textSize));
+        editButton.setOnAction(e -> DiagramProjectController.editClass());
+
+        Button deleteButton = new Button("Delete");
+        deleteButton.setFont(Font.font(fontType, textSize));
+        deleteButton.setOnAction(e -> DiagramProjectController.deleteClass());
+
+        buttonContainer.getChildren().add(editButton);
+        buttonContainer.getChildren().add(deleteButton);
+
+        VBox.setMargin(buttonContainer, margins);
+        return buttonContainer;
+
+    }
+
+    /**
+     * description: setup for the contents of the class
+     * @param fontType
+     * @param textSize
+     * @param currentClass
+     * @param margins
+     * @return
+     */
+
+    public VBox setupTextContainer(String fontType, int textSize, Class currentClass, Insets margins) {
+        VBox textContainer = new VBox();
+        Text className = new Text();
+
+        className.setFont(Font.font(fontType, textSize));
+        Text fieldsNames = new Text();
+
+        fieldsNames.setFont(Font.font(fontType, textSize));
+
+        Text methodsNames = new Text();
+        methodsNames.setFont(Font.font(fontType, textSize));
+
+        ArrayList<String> fields = this.returnFieldNames(currentClass);
+        ArrayList<String> methods = this.returnMethodNames(currentClass);
+
+        //setting text for each category
+        className.setText("Class: " + currentClass.getClassName());
+        VBox.setMargin(className, margins);
+
+        fieldsNames.setText("Fields:\n" + this.displayContents(fields));
+        VBox.setMargin(fieldsNames, margins);
+
+        methodsNames.setText("Methods:\n" + this.displayContents(methods));
+        VBox.setMargin(methodsNames, margins);
+
+        HBox buttonContainer = this.setUpButtons(fontType, textSize, margins);
+        textContainer.getChildren().addAll(className, fieldsNames, methodsNames, buttonContainer);
+
+        return textContainer;
+    }
+
+    public double getCurrentX() {
+        return this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinX();
+    }
+
+    public double getCurrentY() {
+        return this.yCoordinate = this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinY();
+    }
+
+
+
 }

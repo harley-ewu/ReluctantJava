@@ -12,6 +12,8 @@ import java.util.Scanner;
 public class Diagram {
 
    @Expose
+   private String saveLocation = null;
+   @Expose
    private String title;
    //private List<Class> classList = new ArrayList<Class>();
    @Expose
@@ -451,7 +453,13 @@ public class Diagram {
          }
       }*/
       relationshipType = MenuPrompts.relationshipTypePrompt();
+      if(relationshipType == null){
+         return;
+      }
       c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
+      if(c1Cardinality < -1) {
+         return;
+      }
       c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
       owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
 
@@ -532,8 +540,8 @@ public class Diagram {
    Printing out entire diagram
    */
    public String toString(){
-      if (this.classList == null) {
-         return this.title + " is empty.";
+      if (this.classList.isEmpty()) {
+         return "\nDiagram " + this.title + " is empty.\n";
       }
       String diagramString = "";
       diagramString += this.title + "\n\n";
@@ -541,8 +549,14 @@ public class Diagram {
          diagramString += c.toString();
       }
       
-      return "Diagram: " + diagramString + "\n" + this.listAllRelationships();
+      return "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
    }
    
+   public void setSaveLocation(String saveLocation){
+      this.saveLocation = saveLocation;
+   }
 
+   public String getSaveLocation(){
+      return this.saveLocation;
+   }
 }

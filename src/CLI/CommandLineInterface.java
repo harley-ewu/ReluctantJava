@@ -4,6 +4,7 @@ import Diagram.Diagram;
 import Controller.MenuController;
 import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
+import Class.Class;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -18,6 +19,8 @@ import java.util.Scanner;
 public class CommandLineInterface {
 
     private static final int MAX_CHOICES = 8;
+
+    private static Diagram currentDiagram;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
@@ -31,7 +34,7 @@ public class CommandLineInterface {
 
     private static void startCLI(boolean shouldTerminate){
 
-        Diagram currentDiagram = null;
+        currentDiagram = null;
 
         while (!shouldTerminate) {
             int userChoice = getUserChoice();
@@ -396,11 +399,11 @@ public class CommandLineInterface {
                 """);
     }
 
-    public static int editClassMenuChoice() {
+    public static int editClassMenuChoice(final Class currentClass) {
         int userInput = -99;
         Scanner scan = new Scanner(System.in);
             //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
-        System.out.println("\nExisting Class Editor");
+        System.out.println("\n" + currentClass.getClassName() + " Class Editor");
         System.out.println("""
                               1 - Add attribute
                               2 - Delete attribute
@@ -450,5 +453,13 @@ public class CommandLineInterface {
 
             Option 6 - Return to Diagram Menu: returns the user to the diagram menu holding the class
                 """);
+    }
+
+    public static void setCurrentDiagram(Diagram diagram){
+        currentDiagram = diagram;
+    }
+
+    public static Diagram getCurrentDiagram(){
+        return currentDiagram;
     }
 }
