@@ -1,9 +1,17 @@
 package GUI;
 
+import javafx.scene.control.Button;
+
 public class MainMenuController {
 
-    public void createDiagramGUI(){
-        System.out.println("Diagram created");
+    public void createDiagramGUI() throws Exception{
+        if(GraphicalUserInterface.getCurrentDiagram() != null) {
+            GraphicalUserInterface.showSavePrompt();
+        }
+        else{
+            GraphicalUserInterface.openPopup();
+            System.out.println("Diagram created");
+        }     
     }
 
     public void viewDiagramGUI(){
