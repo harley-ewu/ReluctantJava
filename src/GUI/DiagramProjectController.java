@@ -1,5 +1,8 @@
 package GUI;
 
+
+
+
 public class DiagramProjectController {
 
     protected static void openFile() {
@@ -30,7 +33,5 @@ public class DiagramProjectController {
         System.out.println("editing class...");
     }
 
-    public static void deleteClass() {
-        System.out.println("deleting class...");
-    }
+
 }

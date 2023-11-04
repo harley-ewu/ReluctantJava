@@ -1,14 +1,9 @@
 package GUI;
 import Attributes.Attribute;
 import Diagram.Diagram;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import GUIAssets.*;
@@ -19,7 +14,9 @@ public class GUIDiagramProject extends javafx.application.Application {
     private final double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-    private Diagram diagram = new Diagram("Test Project");
+    private Diagram diagram = new Diagram("Test Project"); // this should be set in the create diagram menu option
+    private ArrayList<Pane> panes = new ArrayList<>();
+    private ArrayList<ClassAsset> classAssets = new ArrayList<>();
 
     public static void startGUI(String args) {
         try{
@@ -145,8 +142,9 @@ public class GUIDiagramProject extends javafx.application.Application {
      * description: temp method to test out functionality of assets ; to be removed
      */
     private void testAssets() {
-        ClassAsset classAsset = new ClassAsset();
+
         Class testClass = new Class("test class");
+        Class testClass2 = new Class("test class 2");
 
         ArrayList<String> field1List = new ArrayList<>();
         ArrayList<String> field2List = new ArrayList<>();
@@ -172,17 +170,40 @@ public class GUIDiagramProject extends javafx.application.Application {
         testClass.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
         testClass.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
 
-        Pane newClass = classAsset.createClassAsset(testClass);
-        newClass.setLayoutX(100);
-        newClass.setLayoutY(100);
-        Pane newClass2 = classAsset.createClassAsset(testClass);
-        newClass2.setLayoutX(400);
-        newClass2.setLayoutY(300);
-        RelationshipAsset newRelationship = new RelationshipAsset();
-        //test relationship
-        Line newLine = newRelationship.createLine(newClass, newClass2);
-        newLine.setDisable(true);
-        this.contentPane.getChildren().addAll(newClass,newClass2,newLine);
+        testClass2.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
+        testClass2.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
+        testClass2.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
+        testClass2.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
+        testClass2.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
+
+        ArrayList<Class> testClassArrayList = new ArrayList<>();
+
+        testClassArrayList.add(testClass);
+        testClassArrayList.add(testClass2);
+
+        this.addClassAssets(testClassArrayList);
+        this.addClassPanes();
+
+
+
+
+    }
+
+    public void addClassAssets(final ArrayList<Class> classList) {
+        int i = 0;
+        for (Class currentClass : classList) {
+            ClassAsset temp = new ClassAsset(currentClass, i);
+            this.classAssets.add(temp);
+            i++;
+        }
+    }
+
+    public void addClassPanes() {
+        int i = 0;
+        for (ClassAsset classAsset : this.classAssets) {
+            Pane temp = classAsset.createClassAsset(this.panes);
+            this.panes.add(temp);
+        }
     }
 
 
