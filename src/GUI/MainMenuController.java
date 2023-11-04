@@ -14,12 +14,19 @@ public class MainMenuController {
         }     
     }
 
-    public void viewDiagramGUI(){
-        System.out.println("Viewing Diagram");
+    public void viewDiagramGUI() throws Exception{
+        if(GraphicalUserInterface.getCurrentDiagram() != null) {
+            GraphicalUserInterface.openDiagram(GraphicalUserInterface.getCurrentDiagram());
+            System.out.println("Editing/Viewing Diagram");
+        }else{
+            GraphicalUserInterface.noDiagramLoadedAlert();
+        }
+        
     }
 
-    public void editDiagramGUI(){
-        System.out.println("Editing Diagram");
+    public void helpMainGUI(){
+        GraphicalUserInterface.displayHelpPopup();
+        System.out.println("Help Menu");
     }
 
     public void exitUI(){
