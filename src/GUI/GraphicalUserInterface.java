@@ -2,6 +2,7 @@ package GUI;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -11,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -109,13 +111,11 @@ public class GraphicalUserInterface extends javafx.application.Application{
     }
 
     public static void openDiagram(final Diagram currentDiagram) throws Exception {
-        if(diagramStage == null) {
-            diagramStage = new Stage();
-            GUIDiagramProject diagramGui = new GUIDiagramProject();
-            diagramGui.setCurrentDiagram(currentDiagram);
-            diagramGui.start(diagramStage);
-            mainMenuStage.setResizable(false);
-        }
+        diagramStage = new Stage();
+        GUIDiagramProject diagramGui = new GUIDiagramProject();
+        diagramGui.setCurrentDiagram(currentDiagram);
+        diagramGui.start(diagramStage);
+        mainMenuStage.setResizable(false);
         
     }
     public static void closeDiagram() {
@@ -124,6 +124,14 @@ public class GraphicalUserInterface extends javafx.application.Application{
             diagramStage = null;
             mainMenuStage.setResizable(true);
         }
+    }
+
+    public static void noDiagramLoadedAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("View/Edit Diagram");
+        alert.setHeaderText(null);
+        alert.setContentText("No diagram is loaded.");
+        alert.showAndWait();
     }
 
     public static void showSavePrompt() {
@@ -185,5 +193,40 @@ public class GraphicalUserInterface extends javafx.application.Application{
             System.out.println("File path to save: " + filePath);
             // Add your code to save to the custom path
         }
+    }
+
+    public static void displayHelpPopup() {
+        Stage helpPopupStage = new Stage();
+        helpPopupStage.initModality(Modality.APPLICATION_MODAL);
+        helpPopupStage.setTitle("Help - Main Menu");
+        helpPopupStage.setMinWidth(250);
+
+        Label helpLabel = new Label("""
+                OPTIONS:
+                - Create New Diagram: If a diagram is not currently loaded, you will be prompted to name the new diagram and will be brought to your blank diagram
+                - View/Edit Current Diagram: If a diagram is currently loaded, you will be brought to the diagram view with edit options
+                - Help: Shows you how to use each command
+                - Exit: Prompts you to save your diagram if one is loaded, then exits the program
+
+                MENU BAR: 
+                - File: 
+                    - Save As: Using currently loaded diagram, saves the diagram as json file with name and location of your choice
+                    - Save: Saves the currently loaded diagram given you have already saved it to your computer
+                    - Load: Option to load previously saved json diagram file
+                - Minimize: Shrinks the window
+                - Maximize: Fits the window to the full screen
+                - 'X': Prompts you to save your diagram if one is loaded, then exits the program. 
+                """);
+
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> helpPopupStage.close());
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+        layout.getChildren().addAll(helpLabel, closeButton);
+
+        Scene helpScene = new Scene(layout);
+        helpPopupStage.setScene(helpScene);
+        helpPopupStage.showAndWait();
     }
 }
