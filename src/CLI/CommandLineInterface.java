@@ -4,6 +4,7 @@ import Diagram.Diagram;
 import Controller.MenuController;
 import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
+import Class.Class;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -398,11 +399,11 @@ public class CommandLineInterface {
                 """);
     }
 
-    public static int editClassMenuChoice() {
+    public static int editClassMenuChoice(final Class currentClass) {
         int userInput = -99;
         Scanner scan = new Scanner(System.in);
             //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
-        System.out.println("\nExisting Class Editor");
+        System.out.println("\n" + currentClass.getClassName() + " Class Editor");
         System.out.println("""
                               1 - Add attribute
                               2 - Delete attribute
