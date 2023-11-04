@@ -7,10 +7,12 @@ import java.util.Objects;
 public class Attribute {
     // Attribute name and variable type.
     private String name;
+    private Type type;
     public enum Type {
         FIELD,
         METHOD
     }
+
 
     public Attribute() {}
     public Attribute(final String name) {
@@ -26,6 +28,7 @@ public class Attribute {
     //TODO: get name, get type, set name, set type
     public Attribute addAttribute(final String name, ArrayList<String> parameters, final Type type) {
         Objects.requireNonNull(name, "Name can't be null.");
+
         if(!name.isEmpty()){
             if(type == Type.FIELD){
                 return new Field(name, String.valueOf(parameters));
@@ -45,9 +48,25 @@ public class Attribute {
         return this.name;
     }
 
+    public Type getType() {
+        return this.type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+
     @Override
     public String toString(){
         return name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Attribute attribute = (Attribute) o;
+        return Objects.equals(name, attribute.name);
+    }
 }
