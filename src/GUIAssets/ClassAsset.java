@@ -2,8 +2,12 @@ package GUIAssets;
 import Attributes.Attribute;
 import Class.Class;
 import GUI.DiagramProjectController;
+
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -13,6 +17,10 @@ import java.util.ArrayList;
 
 
 public class ClassAsset {
+    private Class currentClass;
+    private Pane classContainer;
+    private ArrayList<String> fields;
+    private ArrayList<String> methods;
 
     private double xOffset = 0;
     private double yOffset = 0;
@@ -20,30 +28,41 @@ public class ClassAsset {
     private double xCoordinate = 0;
     private double yCoordinate = 0;
 
-    private ArrayList<String> fields;
-    private ArrayList<String> methods;
-    private Pane classContainer;
 
+    private int pos;
 
-    public Pane createClassAsset(Class currentClass) {
+    public ClassAsset(Class currentClass, int pos) {
+        this.currentClass = currentClass;
+        this.pos = pos;
+    }
+
+    public Pane createClassAsset(ArrayList<Pane> paneArrayList) {
         int textSize = 12;
         String fontType = "Verdana";
 
         this.classContainer = new Pane();
-        this.classContainer.setStyle("-fx-background-color: lightblue;" +
+        classContainer.setStyle("-fx-background-color: lightblue;" +
                 "-fx-background-radius: 10;" +
                 "-fx-border-color: black;" +
                 "-fx-border-width: 1;" +
                 "-fx-border-radius: 10");
 
         Insets margins = new Insets(5, 5,5, 5);
-        VBox textContainer = this.setupTextContainer(fontType, textSize, currentClass, margins);
+        VBox textContainer = this.setupTextContainer(fontType, textSize, margins, paneArrayList);
 
         this.classContainer.getChildren().add(textContainer);
         this.classContainer.setOnMousePressed(this::onMousePressed);
         this.classContainer.setOnMouseDragged(this::onMouseDragged);
 
-        return classContainer;
+        return this.classContainer;
+    }
+
+    public int getPos() {
+        return this.pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
     }
 
     private void onMousePressed(MouseEvent event) {
@@ -137,7 +156,7 @@ public class ClassAsset {
      * @return
      */
 
-    public HBox setUpButtons(String fontType, int textSize, Insets margins ) {
+    public HBox setUpButtons(String fontType, int textSize, Insets margins, ArrayList<Pane> paneArrayList ) {
         HBox buttonContainer = new HBox();
         buttonContainer.setSpacing(120.0);
 
@@ -147,7 +166,7 @@ public class ClassAsset {
 
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font(fontType, textSize));
-        deleteButton.setOnAction(e -> DiagramProjectController.deleteClass());
+        deleteButton.setOnAction(e -> this.deleteClass(paneArrayList));
 
         buttonContainer.getChildren().add(editButton);
         buttonContainer.getChildren().add(deleteButton);
@@ -161,12 +180,11 @@ public class ClassAsset {
      * description: setup for the contents of the class
      * @param fontType
      * @param textSize
-     * @param currentClass
      * @param margins
      * @return
      */
 
-    public VBox setupTextContainer(String fontType, int textSize, Class currentClass, Insets margins) {
+    public VBox setupTextContainer(String fontType, int textSize, Insets margins, ArrayList<Pane> paneArrayList) {
         VBox textContainer = new VBox();
         Text className = new Text();
 
@@ -178,20 +196,20 @@ public class ClassAsset {
         Text methodsNames = new Text();
         methodsNames.setFont(Font.font(fontType, textSize));
 
-        ArrayList<String> fields = this.returnFieldNames(currentClass);
-        ArrayList<String> methods = this.returnMethodNames(currentClass);
+        this.fields = this.returnFieldNames(this.currentClass);
+        this.methods = this.returnMethodNames(this.currentClass);
 
         //setting text for each category
         className.setText("Class: " + currentClass.getClassName());
         VBox.setMargin(className, margins);
 
-        fieldsNames.setText("Fields:\n" + this.displayContents(fields));
+        fieldsNames.setText("Fields:\n" + this.displayContents(this.fields));
         VBox.setMargin(fieldsNames, margins);
 
-        methodsNames.setText("Methods:\n" + this.displayContents(methods));
+        methodsNames.setText("Methods:\n" + this.displayContents(this.methods));
         VBox.setMargin(methodsNames, margins);
 
-        HBox buttonContainer = this.setUpButtons(fontType, textSize, margins);
+        HBox buttonContainer = this.setUpButtons(fontType, textSize, margins, paneArrayList);
         textContainer.getChildren().addAll(className, fieldsNames, methodsNames, buttonContainer);
 
         return textContainer;
@@ -205,6 +223,16 @@ public class ClassAsset {
         return this.yCoordinate = this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinY();
     }
 
+    public void deleteClass(ArrayList<Pane> classAssetList) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setContentText("Are you sure you want to delete this class?");
+        ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+        if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+            System.out.println("class deleted");
+            classAssetList.remove(this.pos);
+        }
 
+    }
 
 }
