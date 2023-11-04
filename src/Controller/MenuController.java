@@ -49,9 +49,13 @@ public class MenuController {
                     break;
                 //Edit Class - name needed
                 case 4:
-                    while(currentClass == null){
-                        currentClass = MenuPrompts.editClassPrompt(diagram);
+                    currentClass = MenuPrompts.editClassPrompt(diagram);
+                    if(currentClass == null){
+                        break;
                     }
+                    /*while(currentClass == null){
+                        currentClass = MenuPrompts.editClassPrompt(diagram);
+                    }*/
                     editClassSubMenu(false, currentClass, diagram);
                     break;
                 //edit relationships
@@ -82,12 +86,22 @@ public class MenuController {
 
     public static void addClass(final Diagram diagram){
         String className = MenuPrompts.addClassPrompt();
+        if(className.isEmpty()) {
+            return;
+        }
         diagram.addClass(className);
         newClassMenuControl(false, diagram.getClassList().get(className), diagram);
     }
 
     public static void deleteClass(final Diagram diagram) {
+        if(diagram.getClassList().size() < 1){
+            System.out.println("There are no classes to delete");
+            return;
+        }
         Class deletedClass = MenuPrompts.deleteClassPrompt(diagram);
+        if(deletedClass == null){
+            return;
+        }
         diagram.deleteClass(deletedClass);
     }
 
@@ -108,6 +122,7 @@ public class MenuController {
         Scanner scanner = new Scanner(System.in);
         while(!shouldTerminate) {
             int choice = CommandLineInterface.newClassMenuChoice();
+            Class c2 = null;
             switch(choice) {
                 //Add attribute
                 case 1:
@@ -115,10 +130,14 @@ public class MenuController {
                    break;
                 //Add relationship
                 case 2:
-                   Class c2 = null;
-                   while(c2 == null){
-                        c2 = MenuPrompts.promptClass2Relationship(diagram);
-                   }
+                    if(diagram.getClassList().size() < 2){
+                        System.out.println("\nCannot form a relationship with only a single class existing.\n");
+                        break;
+                    }
+                    c2 = MenuPrompts.promptClass2Relationship(diagram);
+                    if(c2 == null) {
+                        break;
+                    }
                    diagram.addRelationship(currentClass, c2);
                    break;
                 case 3:
@@ -136,7 +155,7 @@ public class MenuController {
     public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while (!shouldTerminate) {
-            int choice = CommandLineInterface.editClassMenuChoice();
+            int choice = CommandLineInterface.editClassMenuChoice(currentClass);
             switch (choice) {
 
                 case 1: //add attribute
@@ -250,18 +269,30 @@ public class MenuController {
     * @param diagram - Diagram to edit relationships in
     */
     public static void editRelationshipsControl(boolean shouldTerminate, final Diagram diagram){
+        if(diagram.getClassList().size() < 2){
+            System.out.println("\nCannot form a relationship with only a single class existing.\n");
+            return;
+        }
         Scanner scanner = new Scanner(System.in);
         while(!shouldTerminate){
             int choice = MenuPrompts.editRelationshipsMenuChoice();
             Class c1 = null;
             Class c2 = null;
             if (choice != 3){
-                while(c1 == null){
+                c1 = MenuPrompts.promptClass1Relationship(diagram);
+                if (c1 == null) {
+                    break;
+                }
+                c2 = MenuPrompts.promptClass2Relationship(diagram);
+                if(c2 == null) {
+                    break;
+                }
+                /*while(c1 == null){
                     c1 = MenuPrompts.promptClass1Relationship(diagram);
                 }
                 while(c2 == null) {
                     c2 = MenuPrompts.promptClass2Relationship(diagram);
-                }
+                }*/
             }
             switch(choice) {
                 case 1:
