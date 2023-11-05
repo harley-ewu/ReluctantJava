@@ -1,37 +1,39 @@
 package CLI;
 
-import Diagram.Diagram;
+import Class.Class;
 import Controller.MenuController;
+import Diagram.Diagram;
 import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
 
 /*
-* Description: This class will contain code related to the CLI
-* Use case: Call the start method from main to start the CLI
-* */
+ * Description: This class will contain code related to the CLI
+ * Use case: Call the start method from main to start the CLI
+ * */
 public class CommandLineInterface {
 
     private static final int MAX_CHOICES = 8;
+
+    private static Diagram currentDiagram;
     public static void main(String[] args){
         boolean shouldTerminate = false;
         startCLI(shouldTerminate);
     }
 
     /*
-    * Description: This method will start the CLI
-    * Use Case: Call this from main
-    * */
+     * Description: This method will start the CLI
+     * Use Case: Call this from main
+     * */
 
 
     private static void startCLI(boolean shouldTerminate){
 
-        Diagram currentDiagram = null;
+        currentDiagram = null;
 
         while (!shouldTerminate) {
             int userChoice = getUserChoice();
@@ -51,10 +53,10 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: This method will handle collecting and validating CLI input
-    * Use Case: Call this to get a clean user input
-    * @return: Int representing the users choice
-    * */
+     * Description: This method will handle collecting and validating CLI input
+     * Use Case: Call this to get a clean user input
+     * @return: Int representing the users choice
+     * */
 
     private static int getUserChoice() {
         Scanner scan = new Scanner(System.in);
@@ -74,7 +76,7 @@ public class CommandLineInterface {
                 
                  Enter a number:
                 """);
-        System.out.print("-> ");
+        System.out.print("--> ");
         while (true) {
             try {
                 userInput = Integer.parseInt(scan.nextLine());
@@ -82,11 +84,11 @@ public class CommandLineInterface {
                     break;
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
-                    System.out.print("-> ");
+                    System.out.print("--> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
         }
 
@@ -94,16 +96,16 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: Gets a diagram title from the user
-    * Use case: Call in create diagram to get a title for the diagram constructor
-    * */
+     * Description: Gets a diagram title from the user
+     * Use case: Call in create diagram to get a title for the diagram constructor
+     * */
     private static String getDiagramName(){
         Scanner scan = new Scanner(System.in);
         String userChoice = "";
         while(true) {
             try {
                 System.out.println("Enter a title for the new diagram");
-                System.out.print("-> ");
+                System.out.print("--> ");
                 userChoice = scan.nextLine();
 
                 if(userChoice.length() < 1 || userChoice.length() > 50) {
@@ -113,15 +115,15 @@ public class CommandLineInterface {
             }
             catch(IllegalArgumentException e){
                 System.out.println("Please enter a title between 1 and 50 characters inclusive");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
         }
         return userChoice;
     }
     /*
-    * Description: Validates user input
-    * Use Case: Validate user choice input
-    * */
+     * Description: Validates user input
+     * Use Case: Validate user choice input
+     * */
     private static boolean isValidUserInput(int userInput) {
         return userInput >= 1 && userInput <= MAX_CHOICES;
     }
@@ -140,7 +142,7 @@ public class CommandLineInterface {
                     2 - Save to Custom Path
                     Any other key - Do Not Save
                     """);
-        System.out.print("-> ");
+        System.out.print("--> ");
 
         userChoice = scan.next().charAt(0);
 
@@ -178,7 +180,7 @@ public class CommandLineInterface {
                 2 - Save to Default Path
                 Any other key - Do Not Save
                 """);
-                System.out.print("-> ");
+                System.out.print("--> ");
                 userChoice = scan.next().charAt(0);
                 scan.nextLine();
 
@@ -257,9 +259,9 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: Prints description of each command to the console
-    * Use Case: Call under 'help' switch block
-    * */
+     * Description: Prints description of each command to the console
+     * Use Case: Call under 'help' switch block
+     * */
     private static void help(){
         System.out.println("""
                  MAIN MENU COMMANDS:
@@ -283,11 +285,11 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: This method will prompt the user to save, and then close the program
-    * Use Case: Call this under 'exit' switch block
-    * @param currentDiagram: The active diagram
-    * @returns: true (Assign value to menu flag)
-    * */
+     * Description: This method will prompt the user to save, and then close the program
+     * Use Case: Call this under 'exit' switch block
+     * @param currentDiagram: The active diagram
+     * @returns: true (Assign value to menu flag)
+     * */
 
     private static boolean exit(Diagram currentDiagram) {
         savePrompt(currentDiagram);
@@ -311,7 +313,7 @@ public class CommandLineInterface {
                                 9 - Exit
                                 
                                 Enter a number:""");
-        System.out.print("-> ");
+        System.out.print("--> ");
 
         while (true) {
             try {
@@ -325,7 +327,7 @@ public class CommandLineInterface {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
         }
         return userInput;
@@ -361,13 +363,14 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
         System.out.println("New Class Editor");
         System.out.println("""
-            
+                                
                                 1 - Add Attribute
                                 2 - Add Relationship
                                 3 - Back to Diagram Menu
+                                4 - Help
                                 
                                 Enter a number:""");
-        System.out.print("-> ");
+        System.out.print("--> ");
         while (true) {
             try {
                 userInput = Integer.parseInt(scan.nextLine());
@@ -375,40 +378,34 @@ public class CommandLineInterface {
                     break;
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and 3");
-                    System.out.print("-> ");
+                    System.out.print("--> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
-                System.out.print("-> ");
+                System.out.print("--> ");
             }
         }
         return userInput;
     }
 
-    public static void diagramHelp(){
+    public static void newClassMenuHelp(){
         System.out.println("""
-                 DIAGRAM MENU COMMANDS:
+            NEW CLASS MENU COMMANDS:
 
-                 Option 1 - Add Class: Create and add a class to the diagram
-                
-                 Option 2 - Delete Class: Delete existing class from the diagram
-                
-                 Option 3 - Rename Class: Rename existing class in the diagram
-                
-                 Option 4 - Edit Class: Opens up sub-menu with class editing options
-                
-                 Option 5 - Edit Relationships: Opens up sub-menu with relationship add/deleet options
-                
-                 Option 6 - View Class: Lists all attributes and relationships of existing class
-                
-                 Option 7 - View Diagram: Lists all classes and their properties in current diagram
-                
-                 Option 8 - Help: See how each option functions
+            Option 1 - Add Attribute: Opens up sub-menu for creating an attribute for the current class
+           
+            Option 2 - Add Relationship: Opens up a sub-menu for adding a relationship between two classes
+           
+            Option 3 - Back to Diagram Menu: Returns you to Edit Diagram Menu
+           
+            Option 4 - Help: See how each option functions
+                """);
+    }
 
     public static int editClassMenuChoice(final Class currentClass) {
         int userInput = -99;
         Scanner scan = new Scanner(System.in);
-            //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
+        //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
         System.out.println("\n" + currentClass.getClassName() + " Class Editor");
         System.out.println("""
                               1 - Add attribute
