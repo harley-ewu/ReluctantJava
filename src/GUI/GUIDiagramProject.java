@@ -21,9 +21,10 @@ public class GUIDiagramProject extends javafx.application.Application {
     private ArrayList<Pane> relationshipPanes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
     private ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
-    private ArrayList<Point2D> coordinates = new ArrayList<>();
+    private ArrayList<Point2D> classPanesCoordinates = new ArrayList<>();
+    private ArrayList<Point2D> relationshipPanesCoordinates = new ArrayList<>();
     private ArrayList<Class> classList = new ArrayList<>();
-    private ArrayList<Relationship> relationships = new ArrayList<>();
+    private ArrayList<Relationship> relationshipList = new ArrayList<>();
 
     public static void startGUI(String[] args){
         try{
@@ -266,7 +267,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     public void addClassPanes() {
         for (ClassAsset classAsset : this.classAssets) {
             Pane temp = classAsset.createClassAsset(this.classList,this.classPanes, this.classAssets,
-                    this.coordinates,this);
+                    this.classPanesCoordinates,this);
             this.classPanes.add(temp);
         }
     }
@@ -281,25 +282,53 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
     }
 
+    /**
+     * description: takes in a list of relationships and converts them to 'RelationshipAsset' objects
+     * the 'RelationshipAsset' objects are then stored into the relationshipAssets arraylist field
+     * @param relationshipList
+     */
     public void addRelationshipAsset(final ArrayList<Relationship> relationshipList) {
         int i = 0;
-        for(Relationship currentRelantionship: relationshipList) {
-            RelationshipAsset temp = new RelationshipAsset(currentRelantionship, i);
+        for(Relationship currentRelationship: relationshipList) {
+            RelationshipAsset temp = new RelationshipAsset(currentRelationship, i);
             this.relationshipAssets.add(temp);
             i++;
         }
     }
 
+    /**
+     * description: takes the relationshipAssets list, converts them to pane modules using the built-in
+     * createRelationshipAsset method and then stores them into the relationshipPanes arraylist
+     */
     public void addRelationshipPanes() {
         for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
-            Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipPanes);
+            Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipPanes, this.relationshipAssets,
+                    this.relationshipPanesCoordinates,this);
             this.relationshipPanes.add(temp);
         }
     }
 
+    /**
+     * description: populates the contentPane with the relationshipAssets list
+     */
     public void addRelationshipPanesToPaneWindow() {
         for (Pane relationshipAsset : this.relationshipPanes) {
             this.contentPane.getChildren().add(relationshipAsset);
+        }
+    }
+
+    /**
+     * description: method used to refresh the relationshipPanes list
+     * 1. clears the current elements in the relationshipPanes list
+     * 2. takes the elements from the updated relationshipAssets list and stores them in the newly cleared relationshipPanes list
+     */
+
+    public void refreshRelationshipPanes() {
+        this.relationshipPanes.clear();
+        for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
+            Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipPanes, this.relationshipAssets,
+                    this.relationshipPanesCoordinates,this);
+            this.relationshipPanes.add(temp);
         }
     }
 
@@ -313,20 +342,21 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classPanes.clear();
         for (ClassAsset classAsset : this.classAssets) {
             Pane temp = classAsset.createClassAsset(this.classList, this.classPanes,
-                    this.classAssets, this.coordinates,this);
+                    this.classAssets, this.classPanesCoordinates,this);
             this.classPanes.add(temp);
         }
     }
 
     /**
      * currently being used in ClassAsset's deleteClass method for the delete button
+     * and in RelationshipAsset's deleteRelationship method for the delete button
      *
      * description: clears the contents of the contentPane and repopulates
      * the contentPane (the project window) with the classPanes and their respective coordinates
-     * THIS CURRENTLY DOES NOT HANDLE THE DISPLAYING OF RELATIONSHIPS AND WILL NEED TO BE REWORKED
+     * and does the same for relationshipPanes and their respective coordinates
      *
      * HOW THIS CURRENTLY WORKS:
-     * - when deleting a class, the method goes through the remaining classes and stores their x and y position
+     * - when deleting a class or a relationship, the method goes through the remaining classes and stores their x and y position
      * as Point2D objects and then stores them into an array list of Point2D objects
      *
      * - this method then takes the update classPanes list and the coordinates arraylist and assigns
@@ -336,19 +366,29 @@ public class GUIDiagramProject extends javafx.application.Application {
      * - in execution, the index position of the coordinates should share the same index position as its respective
      * classPane
      *
+     * - it then does the same for all relationship
+     *
      * */
 
-    public void refreshClassPanesToPaneWindow() {
+    public void refreshPanesToPaneWindow() {
 
         this.contentPane.getChildren().clear();
 
         for (int i = 0; i < this.classPanes.size(); i++) {
-            this.classPanes.get(i).setLayoutX(this.coordinates.get(i).getX());
-            this.classPanes.get(i).setLayoutY(this.coordinates.get(i).getY());
+            this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
+            this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.classPanes.get(i));
         }
 
-        this.coordinates.clear();
+        this.classPanesCoordinates.clear();
+
+        for (int i = 0; i < this.relationshipPanes.size(); i++) {
+            this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
+            this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.relationshipPanes.get(i));
+        }
+
+        this.relationshipPanesCoordinates.clear();
 
     }
 }
