@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.*;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -63,11 +64,13 @@ public class SaveLoadSystem {
     public static Diagram loadDiagramCLI(String path, String fileName){
 
         nullCheckPathAndFilename(path, fileName);
-
-        Path filePath = Paths.get(path).resolve(fileName + ".json");
-        File fileToBeLoaded = new File(filePath.toString());
-
-        return loadSavedJsonTextAndConvertToDiagramObject(fileToBeLoaded);
+        try {
+            Path filePath = Paths.get(path).resolve(fileName + ".json");
+            File fileToBeLoaded = new File(filePath.toString());
+            return loadSavedJsonTextAndConvertToDiagramObject(fileToBeLoaded);
+        } catch (InvalidPathException e) {
+            return null;
+        }
     }
 
     /**
