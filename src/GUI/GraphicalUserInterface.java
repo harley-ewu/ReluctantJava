@@ -114,7 +114,7 @@ public class GraphicalUserInterface extends javafx.application.Application{
     public static void openDiagram(final Diagram currentDiagram) throws Exception {
         diagramStage = new Stage();
         GUIDiagramProject diagramGui = new GUIDiagramProject();
-        diagramGui.setCurrentDiagram(currentDiagram);
+        //diagramGui.setCurrentDiagram(currentDiagram);
         diagramGui.start(diagramStage);
         mainMenuStage.setResizable(false);
         

@@ -1,5 +1,6 @@
 package GUI;
 
+
 import CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
@@ -24,6 +25,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 public class DiagramProjectController {
 
@@ -368,7 +370,5 @@ public class DiagramProjectController {
         System.out.println("editing class...");
     }
 
-    public static void deleteClass() {
-        System.out.println("deleting class...");
-    }
+
 }
