@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import GUIAssets.*;
 import Class.Class;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 public class GUIDiagramProject extends javafx.application.Application {
 
     private final double scaleFactor = 1.1;
