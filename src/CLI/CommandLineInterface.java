@@ -1,7 +1,8 @@
 package CLI;
 
-import Diagram.Diagram;
+import Class.Class;
 import Controller.MenuController;
+import Diagram.Diagram;
 import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
 import Class.Class;
@@ -9,13 +10,12 @@ import Class.Class;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
 
 /*
-* Description: This class will contain code related to the CLI
-* Use case: Call the start method from main to start the CLI
-* */
+ * Description: This class will contain code related to the CLI
+ * Use case: Call the start method from main to start the CLI
+ * */
 public class CommandLineInterface {
 
     private static final int MAX_CHOICES = 8;
@@ -27,9 +27,9 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: This method will start the CLI
-    * Use Case: Call this from main
-    * */
+     * Description: This method will start the CLI
+     * Use Case: Call this from main
+     * */
 
 
     private static void startCLI(boolean shouldTerminate){
@@ -54,10 +54,10 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: This method will handle collecting and validating CLI input
-    * Use Case: Call this to get a clean user input
-    * @return: Int representing the users choice
-    * */
+     * Description: This method will handle collecting and validating CLI input
+     * Use Case: Call this to get a clean user input
+     * @return: Int representing the users choice
+     * */
 
     private static int getUserChoice() {
         Scanner scan = new Scanner(System.in);
@@ -97,9 +97,9 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: Gets a diagram title from the user
-    * Use case: Call in create diagram to get a title for the diagram constructor
-    * */
+     * Description: Gets a diagram title from the user
+     * Use case: Call in create diagram to get a title for the diagram constructor
+     * */
     private static String getDiagramName(){
         Scanner scan = new Scanner(System.in);
         String userChoice = "";
@@ -122,9 +122,9 @@ public class CommandLineInterface {
         return userChoice;
     }
     /*
-    * Description: Validates user input
-    * Use Case: Validate user choice input
-    * */
+     * Description: Validates user input
+     * Use Case: Validate user choice input
+     * */
     private static boolean isValidUserInput(int userInput) {
         return userInput >= 1 && userInput <= MAX_CHOICES;
     }
@@ -260,9 +260,9 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: Prints description of each command to the console
-    * Use Case: Call under 'help' switch block
-    * */
+     * Description: Prints description of each command to the console
+     * Use Case: Call under 'help' switch block
+     * */
     private static void help(){
         System.out.println("""
                  MAIN MENU COMMANDS:
@@ -286,11 +286,11 @@ public class CommandLineInterface {
     }
 
     /*
-    * Description: This method will prompt the user to save, and then close the program
-    * Use Case: Call this under 'exit' switch block
-    * @param currentDiagram: The active diagram
-    * @returns: true (Assign value to menu flag)
-    * */
+     * Description: This method will prompt the user to save, and then close the program
+     * Use Case: Call this under 'exit' switch block
+     * @param currentDiagram: The active diagram
+     * @returns: true (Assign value to menu flag)
+     * */
 
     private static boolean exit(Diagram currentDiagram) {
         savePrompt(currentDiagram);
@@ -406,7 +406,7 @@ public class CommandLineInterface {
     public static int editClassMenuChoice(final Class currentClass) {
         int userInput = -99;
         Scanner scan = new Scanner(System.in);
-            //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
+        //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
         System.out.println("\n" + currentClass.getClassName() + " Class Editor");
         System.out.println("""
                               1 - Add attribute

@@ -1,8 +1,11 @@
 package MenuPrompts;
-import java.util.*;
+
+import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
-import Class.Class;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 //THIS IS A VIEW
 

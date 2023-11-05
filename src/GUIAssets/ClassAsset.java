@@ -1,7 +1,6 @@
 package GUIAssets;
 import Attributes.Attribute;
 import Class.Class;
-import GUI.DiagramProjectController;
 
 import GUI.GUIDiagramProject;
 import javafx.collections.FXCollections;
@@ -273,7 +272,7 @@ public class ClassAsset {
 
             //refresh the class asset panes and the window
             guiDiagramProject.refreshClassPanes();
-            guiDiagramProject.refreshClassPanesToPaneWindow();
+            guiDiagramProject.refreshPanesToPaneWindow();
 
         }
 
