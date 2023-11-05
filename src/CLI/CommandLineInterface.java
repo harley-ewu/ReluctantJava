@@ -236,7 +236,7 @@ public class CommandLineInterface {
         System.out.print("--> ");
         String filePath = scan.nextLine();
 
-        System.out.println("Enter the name of the file you want to load (without .json extension:");
+        System.out.println("Enter the name of the file you want to load (without .json extension):");
         System.out.print("--> ");
         String fileName = scan.nextLine();
 
@@ -252,8 +252,11 @@ public class CommandLineInterface {
         } catch (Exception e) {
             System.out.println("An error occurred while loading the diagram.");
         }*/
-
-        return SaveLoadSystem.loadDiagramCLI(filePath, fileName);
+        Diagram loadedDiagram = SaveLoadSystem.loadDiagramCLI(filePath, fileName);
+        if (loadedDiagram == null) {
+            System.out.println("Diagram was not found!");
+        }
+        return loadedDiagram;
     }
 
     /*
