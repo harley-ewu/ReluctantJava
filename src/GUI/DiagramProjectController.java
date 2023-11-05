@@ -17,6 +17,7 @@ import javafx.scene.control.cell.ChoiceBoxListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -251,17 +252,39 @@ public class DiagramProjectController {
         });*/
 
         submitBtn.setOnAction(e -> {
-            System.out.println(radioBtns.getSelectedToggle().getUserData());
+            //System.out.println(radioBtns.getSelectedToggle().getUserData());
             Relationship.RelationshipType relationshipType = null;
-            Class classOne;
-            Class classTwo;
+            Class classOne = null;
+            Class classTwo = null;
             boolean ownerClass = false;
             int classOneCard = 0;
             int classTwoCard = 0;
             Relationship relationship;
 
-            if (firstClass.getValue().equals(secondClass.getValue())) {
-                //TODO: Add alert message for attempting to add relationship to same class.
+            if(firstClass.getValue() == null || secondClass.getValue() == null){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Must Select Classes Warning");
+                alert.setContentText("You must select two classes for the relationship.");
+                alert.setWidth(300);
+                alert.showAndWait();
+            }else if (firstClass.getValue().equals(secondClass.getValue())) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Cannot Select Same Class Warning");
+                alert.setContentText("You cannot add a relationship to the same class");
+                alert.setWidth(300);
+                alert.showAndWait();
+            }else if(radioBtns.getSelectedToggle() == null){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Relationship Type Warning");
+                alert.setContentText("You must select a relationship type.");
+                alert.setWidth(300);
+                alert.showAndWait();
+            }else if(ownerBtns.getSelectedToggle() == null){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Owning Class Warning");
+                alert.setContentText("You must choose an owner for the relationship.");
+                alert.setWidth(300);
+                alert.showAndWait();
             }else{
                 String type = (String) radioBtns.getSelectedToggle().getUserData();
                 switch (type) {
@@ -269,6 +292,7 @@ public class DiagramProjectController {
                     case "INHERITANCE" -> relationshipType = Relationship.RelationshipType.Inheritance;
                     case "AGGREGATION" -> relationshipType = Relationship.RelationshipType.Aggregation;
                     case "COMPOSITION" -> relationshipType = Relationship.RelationshipType.Composition;
+                    default -> relationshipType = null;
                 }
 
                 String owner = (String) ownerBtns.getSelectedToggle().getUserData();
@@ -281,18 +305,39 @@ public class DiagramProjectController {
                     classOneCard = Integer.parseInt(cardinalityOfClassOne.getText());
                     classTwoCard = Integer.parseInt(cardinalityOfClassTwo.getText());
                 }catch(NumberFormatException numberFormatException){
-                    //TODO: Add alert for non number entry
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Cardinality Warning");
+                    alert.setContentText("You can only enter a numbers for the cardinality and they cannot be empty.");
+                    alert.setWidth(300);
+                    alert.showAndWait();
+                    return;
                 }
 
-                classOne = diagram.getClassList().get(firstClass.getValue());
-                classTwo = diagram.getClassList().get(secondClass.getValue());
+                try{
+                    classOne = diagram.getClassList().get(firstClass.getValue());
+                    classTwo = diagram.getClassList().get(secondClass.getValue());
+                }catch(Exception didNotSelectClasses){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setContentText("The one or both of the classes selected do not exist in the project.");
+                    alert.setWidth(300);
+                    alert.showAndWait();
+                    return;
+                }
+
                 //ownerClass = diagram.getClassList().get(owner.getValue());
+                try{
+                    relationship = new Relationship(relationshipType,classOne, classTwo, classOneCard, classTwoCard, ownerClass);
+                    diagram.addRelationship(relationship);
+                    popupStage.close();
+                }catch(Exception errorMakingRelationship){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setContentText("There was an error creating the relationship.");
+                    alert.setWidth(300);
+                    alert.showAndWait();
+                }
 
-                relationship = new Relationship(relationshipType,classOne, classTwo, classOneCard, classTwoCard, ownerClass);
-
-                diagram.addRelationship(relationship);
-
-                popupStage.close();
             }
         });
 
@@ -312,7 +357,7 @@ public class DiagramProjectController {
         );
 
         Scene scene = new Scene(layout, 800, 250);
-
+        popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setScene(scene);
         popupStage.setTitle("Add Relationship");
         popupStage.show();
