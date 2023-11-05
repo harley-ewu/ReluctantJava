@@ -5,6 +5,7 @@ import Controller.MenuController;
 import Diagram.Diagram;
 import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
+import Class.Class;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;

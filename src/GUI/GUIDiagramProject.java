@@ -2,6 +2,7 @@ package GUI;
 import Attributes.Attribute;
 import Diagram.Diagram;
 import Relationships.Relationship;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -20,6 +21,9 @@ public class GUIDiagramProject extends javafx.application.Application {
     private ArrayList<Pane> relationshipPanes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
     private ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
+    private ArrayList<Point2D> coordinates = new ArrayList<>();
+    private ArrayList<Class> classList = new ArrayList<>();
+    private ArrayList<Relationship> relationships = new ArrayList<>();
 
     public static void startGUI(String[] args){
         try{
@@ -31,7 +35,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(final Stage stage) throws Exception {
         this.contentPane.setPrefSize(3840,2160);
         //hbox for zoom in and zoom out buttons
         HBox zoomButtons = this.setUpZoomButtons();
@@ -152,6 +156,8 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         Class testClass = new Class("test class");
         Class testClass2 = new Class("test class 2");
+        Class testClass3 = new Class("test class 3");
+        Class testClass4 = new Class("test class 4");
 
         ArrayList<String> field1List = new ArrayList<>();
         ArrayList<String> field2List = new ArrayList<>();
@@ -172,27 +178,76 @@ public class GUIDiagramProject extends javafx.application.Application {
         Attribute attribute = new Attribute();
 
         testClass.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
-        testClass.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
+        testClass.getAttributes().add(attribute.addAttribute("fieldf",field2List,Attribute.Type.FIELD));
         testClass.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
-        testClass.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
+        testClass.getAttributes().add(attribute.addAttribute("meterd2",params1,Attribute.Type.METHOD));
         testClass.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
 
-        testClass2.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
+        testClass2.getAttributes().add(attribute.addAttribute("freld1",field1List,Attribute.Type.FIELD));
         testClass2.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
-        testClass2.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
+        testClass2.getAttributes().add(attribute.addAttribute("mwhod1",params,Attribute.Type.METHOD));
         testClass2.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
         testClass2.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
 
-        ArrayList<Class> testClassArrayList = new ArrayList<>();
+        testClass3.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
+        testClass3.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
+        testClass3.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
+        testClass3.getAttributes().add(attribute.addAttribute("meted2",params1,Attribute.Type.METHOD));
+        testClass3.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
 
-        testClassArrayList.add(testClass);
-        testClassArrayList.add(testClass2);
+        testClass4.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
+        testClass4.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
+        testClass4.getAttributes().add(attribute.addAttribute("method4",params,Attribute.Type.METHOD));
+        testClass4.getAttributes().add(attribute.addAttribute("me2",params1,Attribute.Type.METHOD));
+        testClass4.getAttributes().add(attribute.addAttribute("metwod3",params2,Attribute.Type.METHOD));
 
-        this.addClassAssets(testClassArrayList);
+        //ArrayList<Class> testClassArrayList = new ArrayList<>();
+
+        this.classList.add(testClass);
+        this.classList.add(testClass2);
+        this.classList.add(testClass3);
+        this.classList.add(testClass4);
+
+        this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
+        System.out.println(this.classAssets.toString());
+
     }
+
+    /**
+     * 1. description: use this method to take contents from the diagram
+     * and store in the appropriate array lists (the classes should go to the classList,
+     * the relationships should go to the relationshipList)
+     *
+     * 2. then we will take the contents from the class and relationships list
+     * convert them to class and relationship assets
+     *
+     * 3. once converted, we will create panes from each asset list and store them in the panes arraylist
+     * (we need to separate the panes list so that classes and diagram have their own respective panes and they don't
+     * interfere with the methods that use them)
+     *
+     * 4. we will then take the newly created panes arraylist and populate the contentPane
+     *
+     */
+
+    public void initializeDiagramContents() {
+        //write your code here for populating class array list
+
+        this.addClassAssets(this.classList);
+        this.addClassPanes();
+        this.addClassPanesToPaneWindow();
+
+        //relationship  stuff should be handled here
+
+    }
+
+    /**
+     * description: takes in a list of classes and converts them to 'ClassAsset' objects
+     * the 'ClassAsset' objects are then stored into the classAssets arraylist field
+     * @param classList
+     */
 
     public void addClassAssets(final ArrayList<Class> classList) {
         int i = 0;
@@ -203,19 +258,28 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
     }
 
+    /**
+     * description: takes the classAssets list, converts them to pane modules using the built in
+     * createClassAsset method and then stores them into the classPanes arraylist
+     */
+
     public void addClassPanes() {
         for (ClassAsset classAsset : this.classAssets) {
-            Pane temp = classAsset.createClassAsset(this.classPanes);
+            Pane temp = classAsset.createClassAsset(this.classList,this.classPanes, this.classAssets,
+                    this.coordinates,this);
             this.classPanes.add(temp);
         }
     }
+
+    /**
+     * description: populates the contentPane with the classAssets list
+     */
 
     public void addClassPanesToPaneWindow() {
         for (Pane classAsset : this.classPanes) {
             this.contentPane.getChildren().add(classAsset);
         }
     }
-
 
     public void addRelationshipAsset(final ArrayList<Relationship> relationshipList) {
         int i = 0;
@@ -237,5 +301,54 @@ public class GUIDiagramProject extends javafx.application.Application {
         for (Pane relationshipAsset : this.relationshipPanes) {
             this.contentPane.getChildren().add(relationshipAsset);
         }
+    }
+
+    /**
+     * description: method used to refresh the classPanes list
+     * 1. clears the current elements in the classPanes list
+     * 2. takes the elements from the updated classAssets list and stores them in the newly cleared classPanes list
+     */
+
+    public void refreshClassPanes() {
+        this.classPanes.clear();
+        for (ClassAsset classAsset : this.classAssets) {
+            Pane temp = classAsset.createClassAsset(this.classList, this.classPanes,
+                    this.classAssets, this.coordinates,this);
+            this.classPanes.add(temp);
+        }
+    }
+
+    /**
+     * currently being used in ClassAsset's deleteClass method for the delete button
+     *
+     * description: clears the contents of the contentPane and repopulates
+     * the contentPane (the project window) with the classPanes and their respective coordinates
+     * THIS CURRENTLY DOES NOT HANDLE THE DISPLAYING OF RELATIONSHIPS AND WILL NEED TO BE REWORKED
+     *
+     * HOW THIS CURRENTLY WORKS:
+     * - when deleting a class, the method goes through the remaining classes and stores their x and y position
+     * as Point2D objects and then stores them into an array list of Point2D objects
+     *
+     * - this method then takes the update classPanes list and the coordinates arraylist and assigns
+     * the coordinates to the panes, so that when you delete a class asset, the remaining class assets
+     * hold their position (since we need to clear the contentPane during the removal process)
+     *
+     * - in execution, the index position of the coordinates should share the same index position as its respective
+     * classPane
+     *
+     * */
+
+    public void refreshClassPanesToPaneWindow() {
+
+        this.contentPane.getChildren().clear();
+
+        for (int i = 0; i < this.classPanes.size(); i++) {
+            this.classPanes.get(i).setLayoutX(this.coordinates.get(i).getX());
+            this.classPanes.get(i).setLayoutY(this.coordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.classPanes.get(i));
+        }
+
+        this.coordinates.clear();
+
     }
 }
