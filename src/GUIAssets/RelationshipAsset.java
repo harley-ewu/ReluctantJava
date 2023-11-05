@@ -121,7 +121,7 @@ public class RelationshipAsset {
     public void deleteRelationship(ArrayList<Pane> relationshipAssetPaneList) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
-        alert.setContentText("Are you sure you want to delete this class?");
+        alert.setContentText("Are you sure you want to delete this relationship?");
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
         if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
             System.out.println("relationship deleted");
