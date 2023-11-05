@@ -236,7 +236,7 @@ public class CommandLineInterface {
         System.out.print("--> ");
         String filePath = scan.nextLine();
 
-        System.out.println("Enter the name of the file you want to load:");
+        System.out.println("Enter the name of the file you want to load (without .json extension:");
         System.out.print("--> ");
         String fileName = scan.nextLine();
 
