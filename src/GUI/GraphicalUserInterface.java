@@ -1,5 +1,6 @@
 package GUI;
 
+import CLI.CommandLineInterface;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -88,6 +89,7 @@ public class GraphicalUserInterface extends javafx.application.Application{
                 diagram.setTitle(inputText);
                 System.out.println("Submitted text: " + inputText);
                 popupStage.close();
+                CommandLineInterface.setCurrentDiagram(diagram);
                 try {
 
                     openDiagram(diagram);

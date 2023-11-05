@@ -36,7 +36,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         //hbox for zoom in and zoom out buttons
         HBox zoomButtons = this.setUpZoomButtons();
         //menu bar creation
-        MenuBar menuBar = this.setUpMenuBar();
+        MenuBar menuBar = this.setUpMenuBar(stage);
         //setting up scene for stage
         ScrollPane scrollPane = new ScrollPane(this.contentPane);
         scrollPane.setPrefSize(1280,678);
@@ -94,11 +94,11 @@ public class GUIDiagramProject extends javafx.application.Application {
      * setup for the menu bar
      * @return
      */
-    private MenuBar setUpMenuBar() {
+    private MenuBar setUpMenuBar(Stage stage) {
         MenuBar menuBar = new MenuBar();
         menuBar.setPrefWidth(1280);
         //file menu creation
-        Menu fileMenu = setUpFileMenu();
+        Menu fileMenu = setUpFileMenu(stage);
         //class menu creation
         Menu classMenu = this.setUpClassMenu();
         //adding menus to menu bar
@@ -110,17 +110,17 @@ public class GUIDiagramProject extends javafx.application.Application {
      * setup for the file menu and its items
      * @return
      */
-    private Menu setUpFileMenu() {
+    private Menu setUpFileMenu(Stage stage) {
         Menu fileMenu = new Menu("File");
 
-        MenuItem openItem = new MenuItem("Open");
-        openItem.setOnAction(e -> DiagramProjectController.openFile());
+        MenuItem openItem = new MenuItem("Save as...");
+        openItem.setOnAction(e -> DiagramProjectController.saveAsFile(stage));
 
         MenuItem saveItem = new MenuItem("Save");
         saveItem.setOnAction(e -> DiagramProjectController.saveFile());
 
-        MenuItem loadItem = new MenuItem("Load");
-        loadItem.setOnAction(e -> DiagramProjectController.loadFile());
+        MenuItem loadItem = new MenuItem("Load...");
+        loadItem.setOnAction(e -> DiagramProjectController.loadFile(stage));
 
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(e -> DiagramProjectController.exit());
