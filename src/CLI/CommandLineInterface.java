@@ -347,7 +347,7 @@ public class CommandLineInterface {
            
             Option 4 - Edit Class: Opens up sub-menu with class editing options
            
-            Option 5 - Edit Relationships: Opens up sub-menu with relationship add/deleet options
+            Option 5 - Edit Relationships: Opens up sub-menu with relationship add/delete options
            
             Option 6 - View Class: Lists all attributes and relationships of existing class
            
@@ -449,7 +449,7 @@ public class CommandLineInterface {
 
             Option 2 - Delete attribute: Prompts user to enter a name of an (existing) attribute to delete
 
-            Option 3 - Rename attriubte: Prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute
+            Option 3 - Rename attribute: Prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute
 
             Option 4 - Display relationships: Displays all relationships assigned to the class
 
