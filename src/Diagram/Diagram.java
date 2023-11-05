@@ -390,7 +390,7 @@ public class Diagram {
     * and builds relationships between the classes, then adds it to either of their relationship lists
     */
    public void addRelationship(Class c1, Class c2) {
-
+      if (c1 == c2) return;
 
       Relationship.RelationshipType relationshipType = null;
       int c1Cardinality = -2;
