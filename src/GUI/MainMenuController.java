@@ -1,5 +1,6 @@
 package GUI;
 
+import CLI.CommandLineInterface;
 import javafx.scene.control.Button;
 
 public class MainMenuController {
@@ -15,8 +16,8 @@ public class MainMenuController {
     }
 
     public void viewDiagramGUI() throws Exception{
-        if(GraphicalUserInterface.getCurrentDiagram() != null) {
-            GraphicalUserInterface.openDiagram(GraphicalUserInterface.getCurrentDiagram());
+        if(CommandLineInterface.getCurrentDiagram() != null) {
+            GraphicalUserInterface.openDiagram(CommandLineInterface.getCurrentDiagram());
             System.out.println("Editing/Viewing Diagram");
         }else{
             GraphicalUserInterface.noDiagramLoadedAlert();
