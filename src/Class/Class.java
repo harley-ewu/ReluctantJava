@@ -33,8 +33,7 @@ public class Class {
      */
 
     public ArrayList<Attribute> getAttributes() {
-        //return new ArrayList<Attribute>() = this.attributes;
-        return this.attributes;
+        return new ArrayList<Attribute>(this.attributes);
     }
 
     /*
