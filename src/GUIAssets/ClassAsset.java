@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 
 public class ClassAsset {
+
     private Class currentClass;
     private Pane classContainer;
     private ArrayList<String> fields;
@@ -29,18 +30,27 @@ public class ClassAsset {
     private double xOffset = 0;
     private double yOffset = 0;
 
-    private double xCoordinate = 0;
-    private double yCoordinate = 0;
-
-
     private int pos;
 
-    public ClassAsset(Class currentClass, int pos) {
+    public ClassAsset(final Class currentClass, final int pos) {
         this.currentClass = currentClass;
         this.pos = pos;
     }
 
-    public Pane createClassAsset(ArrayList<Pane> paneArrayList, ArrayList<ClassAsset> classAssets, ArrayList<Point2D> coordinates, GUIDiagramProject guiDiagramProject) {
+    /**
+     * Creates and returns a graphical representation of a class asset within a GUI diagram project.
+     *
+     * @param classList          The list of classes in the project.
+     * @param paneArrayList      The list of panes associated with class assets.
+     * @param classAssets        The list of class assets.
+     * @param coordinates        A list of coordinates representing the positions of class assets.
+     * @param guiDiagramProject  The GUI diagram project that manages the graphical elements.
+     * @return                  A JavaFX Pane representing the class asset.
+     */
+
+
+    public Pane createClassAsset(final ArrayList<Class> classList, final ArrayList<Pane> paneArrayList, final ArrayList<ClassAsset> classAssets,
+                                 final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject) {
         int textSize = 12;
         String fontType = "Verdana";
 
@@ -52,7 +62,8 @@ public class ClassAsset {
                 "-fx-border-radius: 10");
 
         Insets margins = new Insets(5, 5,5, 5);
-        VBox textContainer = this.setupTextContainer(fontType, textSize, margins, paneArrayList, classAssets, coordinates, guiDiagramProject);
+        VBox textContainer = this.setupTextContainer(fontType, textSize, margins, classList, paneArrayList,
+                classAssets, coordinates, guiDiagramProject);
 
         this.classContainer.getChildren().add(textContainer);
         this.classContainer.setOnMousePressed(this::onMousePressed);
@@ -61,20 +72,13 @@ public class ClassAsset {
         return this.classContainer;
     }
 
-    public int getPos() {
-        return this.pos;
-    }
 
-    public void setPos(int pos) {
-        this.pos = pos;
-    }
-
-    private void onMousePressed(MouseEvent event) {
+    private void onMousePressed(final MouseEvent event) {
         this.xOffset = event.getSceneX();
         this.yOffset = event.getSceneY();
     }
 
-    private void onMouseDragged(MouseEvent event) {
+    private void onMouseDragged(final MouseEvent event) {
         double deltaX = event.getSceneX() - this.xOffset;
         double deltaY = event.getSceneY() - this.yOffset;
 
@@ -96,7 +100,7 @@ public class ClassAsset {
      * @param contents
      * @return
      */
-    private StringBuilder displayContents(ArrayList<String> contents) {
+    private StringBuilder displayContents(final ArrayList<String> contents) {
         if (contents == null) {
             return null;
         }
@@ -115,7 +119,7 @@ public class ClassAsset {
      * @return
      */
 
-    private ArrayList<String> returnFieldNames(Class currentClass) {
+    private ArrayList<String> returnFieldNames(final Class currentClass) {
         if (currentClass == null) {
             return null;
         }
@@ -136,7 +140,7 @@ public class ClassAsset {
      * @param currentClass
      * @return
      */
-    private ArrayList<String> returnMethodNames(Class currentClass) {
+    private ArrayList<String> returnMethodNames(final Class currentClass) {
         if (currentClass == null) {
             return null;
         }
@@ -160,8 +164,9 @@ public class ClassAsset {
      * @return
      */
 
-    public HBox setUpButtons(String fontType, int textSize, Insets margins, ArrayList<Pane> paneArrayList, ArrayList<ClassAsset> classAssets,
-                             ArrayList<Point2D> coordinates,GUIDiagramProject guiDiagramProject) {
+    public HBox setUpButtons(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
+                             final ArrayList<Pane> paneArrayList, final ArrayList<ClassAsset> classAssets,
+                             final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject){
         HBox buttonContainer = new HBox();
         buttonContainer.setSpacing(120.0);
 
@@ -171,7 +176,7 @@ public class ClassAsset {
 
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font(fontType, textSize));
-        deleteButton.setOnAction(e -> this.deleteClass(paneArrayList, classAssets, coordinates, guiDiagramProject));
+        deleteButton.setOnAction(e -> this.deleteClass(classList, paneArrayList, classAssets, coordinates, guiDiagramProject));
 
         buttonContainer.getChildren().add(editButton);
         buttonContainer.getChildren().add(deleteButton);
@@ -189,8 +194,9 @@ public class ClassAsset {
      * @return
      */
 
-    public VBox setupTextContainer(String fontType, int textSize, Insets margins, ArrayList<Pane> paneArrayList,
-                                   ArrayList<ClassAsset> classAssets, ArrayList<Point2D> coordinates, GUIDiagramProject guiDiagramProject) {
+    public VBox setupTextContainer(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
+                                   final ArrayList<Pane> paneArrayList, final ArrayList<ClassAsset> classAssets,
+                                   final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject){
         VBox textContainer = new VBox();
         Text className = new Text();
 
@@ -215,7 +221,7 @@ public class ClassAsset {
         methodsNames.setText("Methods:\n" + this.displayContents(this.methods));
         VBox.setMargin(methodsNames, margins);
 
-        HBox buttonContainer = this.setUpButtons(fontType, textSize, margins, paneArrayList,
+        HBox buttonContainer = this.setUpButtons(fontType, textSize, margins,classList, paneArrayList,
                 classAssets, coordinates, guiDiagramProject);
         textContainer.getChildren().addAll(className, fieldsNames, methodsNames, buttonContainer);
 
@@ -227,11 +233,21 @@ public class ClassAsset {
     }
 
     public double getCurrentY() {
-        return this.yCoordinate = this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinY();
+        return this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinX();
     }
 
-    public void deleteClass(ArrayList<Pane> classAssetPaneList, ArrayList<ClassAsset> classAssets,
-                            ArrayList<Point2D> coordinates, GUIDiagramProject guiDiagramProject) {
+    /**
+     * This method is used to delete a class and its associated assets from a GUI diagram project.
+     *
+     * @param classList            The list of classes in the project.
+     * @param classAssetPaneList   The list of panes associated with the class assets.
+     * @param classAssets          The list of class assets.
+     * @param coordinates          A list of coordinates representing the positions of class assets.
+     * @param guiDiagramProject    The GUI diagram project that manages the graphical elements.
+     */
+
+    public void deleteClass(final ArrayList<Class> classList, final ArrayList<Pane> classAssetPaneList, final ArrayList<ClassAsset> classAssets,
+                            final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
@@ -240,32 +256,49 @@ public class ClassAsset {
 
         if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
             System.out.println("class deleted");
+            //remove the class from the class list first
+            classList.remove(this.pos);
+            //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
-
+            //get the x/y positions from the remaining class asset panes
             for (int i = 0; i < classAssetPaneList.size(); i++) {
-                Point2D coords = new Point2D(classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX(),
-                        classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY());
+                double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX();
+                double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY();
+                Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
                 coordinates.add(coords);
             }
 
-            classAssets.remove(this.pos);
-            this.updateClassAssetListPos(classAssets);
+            //update the class asset list by taking the new class list and creating new class assets from them
+            this.updateClassAssetListPos(classList, classAssets); //to be removed
+
+            //refresh the class asset panes and the window
             guiDiagramProject.refreshClassPanes();
             guiDiagramProject.refreshClassPanesToPaneWindow();
 
-            System.out.println("class asset list size now: " + classAssetPaneList.size());
         }
 
     }
 
-    public void updateClassAssetListPos(ArrayList<ClassAsset> classAssets) {
-        for (int i = this.pos; i < classAssets.size(); i++) {
-            if (i != 0) {
-                classAssets.get(i).setPos(i - 1);
-            }
+    /**
+     * description: this will take the classList field and classAssets field from the
+     * GUIDiagramProject class, it will then clear the classAssets arrayList and repopulate it with
+     * new ClassAssets created from the classList
+     * @param classList
+     * @param classAssets
+     */
+
+    public void updateClassAssetListPos(final ArrayList<Class> classList, final ArrayList<ClassAsset> classAssets) {
+        classAssets.clear();
+        for (int i = 0; i < classList.size(); i++) {
+            ClassAsset newClassAsset = new ClassAsset(classList.get(i), i);
+            classAssets.add(newClassAsset);
         }
     }
 
+
+    /**
+     * description: this is the action event for the edit button
+     */
     public void editClass() {
 
         Stage popUpStage = new Stage();
