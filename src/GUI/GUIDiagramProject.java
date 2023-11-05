@@ -229,6 +229,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void initializeDiagramContents() {
         //write your code here for populating class array list
+
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
