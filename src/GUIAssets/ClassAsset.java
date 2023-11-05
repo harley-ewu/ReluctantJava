@@ -3,15 +3,19 @@ import Attributes.Attribute;
 import Class.Class;
 import GUI.DiagramProjectController;
 
+import GUI.GUIDiagramProject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.geometry.Point2D;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -36,7 +40,7 @@ public class ClassAsset {
         this.pos = pos;
     }
 
-    public Pane createClassAsset(ArrayList<Pane> paneArrayList) {
+    public Pane createClassAsset(ArrayList<Pane> paneArrayList, ArrayList<ClassAsset> classAssets, ArrayList<Point2D> coordinates, GUIDiagramProject guiDiagramProject) {
         int textSize = 12;
         String fontType = "Verdana";
 
@@ -48,7 +52,7 @@ public class ClassAsset {
                 "-fx-border-radius: 10");
 
         Insets margins = new Insets(5, 5,5, 5);
-        VBox textContainer = this.setupTextContainer(fontType, textSize, margins, paneArrayList);
+        VBox textContainer = this.setupTextContainer(fontType, textSize, margins, paneArrayList, classAssets, coordinates, guiDiagramProject);
 
         this.classContainer.getChildren().add(textContainer);
         this.classContainer.setOnMousePressed(this::onMousePressed);
@@ -156,17 +160,18 @@ public class ClassAsset {
      * @return
      */
 
-    public HBox setUpButtons(String fontType, int textSize, Insets margins, ArrayList<Pane> paneArrayList ) {
+    public HBox setUpButtons(String fontType, int textSize, Insets margins, ArrayList<Pane> paneArrayList, ArrayList<ClassAsset> classAssets,
+                             ArrayList<Point2D> coordinates,GUIDiagramProject guiDiagramProject) {
         HBox buttonContainer = new HBox();
         buttonContainer.setSpacing(120.0);
 
         Button editButton = new Button("Edit");
         editButton.setFont(Font.font(fontType, textSize));
-        editButton.setOnAction(e -> DiagramProjectController.editClass());
+        editButton.setOnAction(e -> this.editClass());
 
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font(fontType, textSize));
-        deleteButton.setOnAction(e -> this.deleteClass(paneArrayList));
+        deleteButton.setOnAction(e -> this.deleteClass(paneArrayList, classAssets, coordinates, guiDiagramProject));
 
         buttonContainer.getChildren().add(editButton);
         buttonContainer.getChildren().add(deleteButton);
@@ -184,7 +189,8 @@ public class ClassAsset {
      * @return
      */
 
-    public VBox setupTextContainer(String fontType, int textSize, Insets margins, ArrayList<Pane> paneArrayList) {
+    public VBox setupTextContainer(String fontType, int textSize, Insets margins, ArrayList<Pane> paneArrayList,
+                                   ArrayList<ClassAsset> classAssets, ArrayList<Point2D> coordinates, GUIDiagramProject guiDiagramProject) {
         VBox textContainer = new VBox();
         Text className = new Text();
 
@@ -209,7 +215,8 @@ public class ClassAsset {
         methodsNames.setText("Methods:\n" + this.displayContents(this.methods));
         VBox.setMargin(methodsNames, margins);
 
-        HBox buttonContainer = this.setUpButtons(fontType, textSize, margins, paneArrayList);
+        HBox buttonContainer = this.setUpButtons(fontType, textSize, margins, paneArrayList,
+                classAssets, coordinates, guiDiagramProject);
         textContainer.getChildren().addAll(className, fieldsNames, methodsNames, buttonContainer);
 
         return textContainer;
@@ -223,15 +230,83 @@ public class ClassAsset {
         return this.yCoordinate = this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinY();
     }
 
-    public void deleteClass(ArrayList<Pane> classAssetList) {
+    public void deleteClass(ArrayList<Pane> classAssetPaneList, ArrayList<ClassAsset> classAssets,
+                            ArrayList<Point2D> coordinates, GUIDiagramProject guiDiagramProject) {
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
         alert.setContentText("Are you sure you want to delete this class?");
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+
         if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
             System.out.println("class deleted");
-            classAssetList.remove(this.pos);
+            classAssetPaneList.remove(this.pos);
+
+            for (int i = 0; i < classAssetPaneList.size(); i++) {
+                Point2D coords = new Point2D(classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX(),
+                        classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY());
+                coordinates.add(coords);
+            }
+
+            classAssets.remove(this.pos);
+            this.updateClassAssetListPos(classAssets);
+            guiDiagramProject.refreshClassPanes();
+            guiDiagramProject.refreshClassPanesToPaneWindow();
+
+            System.out.println("class asset list size now: " + classAssetPaneList.size());
         }
+
+    }
+
+    public void updateClassAssetListPos(ArrayList<ClassAsset> classAssets) {
+        for (int i = this.pos; i < classAssets.size(); i++) {
+            if (i != 0) {
+                classAssets.get(i).setPos(i - 1);
+            }
+        }
+    }
+
+    public void editClass() {
+
+        Stage popUpStage = new Stage();
+        popUpStage.initModality(Modality.APPLICATION_MODAL);
+        popUpStage.setWidth(640);
+        popUpStage.setHeight(480);
+        popUpStage.setResizable(false);
+        Pane root = new Pane();
+        Scene scene = new Scene(root, 640, 480);
+
+        //setup drop down menu for fields
+        ComboBox<String> comboBoxFields = new ComboBox();
+        comboBoxFields.setLayoutX(scene.getWidth()/8);
+        comboBoxFields.setLayoutY(scene.getHeight()-400);
+        comboBoxFields.setValue("Fields");
+
+        ObservableList<String> observableFieldsList = FXCollections.observableArrayList();
+        for (String field : this.fields) {
+            observableFieldsList.add(field);
+        }
+
+        comboBoxFields.setItems(observableFieldsList);
+
+        //setup drop down menu for methods
+        ComboBox<String> comboBoxMethods = new ComboBox();
+        comboBoxMethods.setLayoutX(scene.getWidth()/8);
+        comboBoxMethods.setLayoutY(scene.getHeight()-250);
+        comboBoxMethods.setValue("Methods");
+
+        ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
+        for (String method : this.methods) {
+            observableMethodsList.add(method);
+        }
+
+        comboBoxMethods.setItems(observableMethodsList);
+
+        root.getChildren().addAll(comboBoxFields, comboBoxMethods);
+
+        popUpStage.setTitle("Class Editor");
+        popUpStage.setScene(scene);
+        popUpStage.show();
 
     }
 

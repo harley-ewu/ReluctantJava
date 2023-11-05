@@ -1,6 +1,7 @@
 package GUI;
 import Attributes.Attribute;
 import Diagram.Diagram;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -17,6 +18,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     private Diagram diagram = new Diagram("Test Project"); // this should be set in the create diagram menu option
     private ArrayList<Pane> panes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
+    private ArrayList<Point2D> coordinates = new ArrayList<>();
 
     public static void startGUI(String args) {
         try{
@@ -145,6 +147,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         Class testClass = new Class("test class");
         Class testClass2 = new Class("test class 2");
+        Class testClass3 = new Class("test class 3");
 
         ArrayList<String> field1List = new ArrayList<>();
         ArrayList<String> field2List = new ArrayList<>();
@@ -176,14 +179,23 @@ public class GUIDiagramProject extends javafx.application.Application {
         testClass2.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
         testClass2.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
 
+        testClass3.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
+        testClass3.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
+        testClass3.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
+        testClass3.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
+        testClass3.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
+
         ArrayList<Class> testClassArrayList = new ArrayList<>();
 
         testClassArrayList.add(testClass);
         testClassArrayList.add(testClass2);
+        testClassArrayList.add(testClass3);
 
         this.addClassAssets(testClassArrayList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
+
+        System.out.println(this.classAssets.toString());
 
     }
 
@@ -198,7 +210,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void addClassPanes() {
         for (ClassAsset classAsset : this.classAssets) {
-            Pane temp = classAsset.createClassAsset(this.panes);
+            Pane temp = classAsset.createClassAsset(this.panes, this.classAssets, this.coordinates,this);
             this.panes.add(temp);
         }
     }
@@ -208,5 +220,27 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.contentPane.getChildren().add(classAsset);
         }
     }
+
+    public void refreshClassPanes() {
+        this.panes.clear();
+        for (ClassAsset classAsset : this.classAssets) {
+            Pane temp = classAsset.createClassAsset(this.panes, this.classAssets, this.coordinates,this);
+            this.panes.add(temp);
+        }
+    }
+
+    public void refreshClassPanesToPaneWindow() {
+
+        this.contentPane.getChildren().clear();
+
+        for (int i = 0; i < this.panes.size(); i++) {
+            this.panes.get(i).setLayoutX(this.coordinates.get(i).getX());
+            this.panes.get(i).setLayoutY(this.coordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.panes.get(i));
+        }
+
+        System.out.println(this.classAssets.toString());
+    }
+
 
 }
