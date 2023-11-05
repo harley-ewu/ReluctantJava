@@ -322,7 +322,8 @@ public class CommandLineInterface {
                 if (userInput >= 1 && userInput <= 9) {
                     break;
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES+1);
+                    int choices = MAX_CHOICES + 1;
+                    System.out.println("Invalid input. Please enter a number between 1 and " + choices);
                     System.out.print("--> ");
                 }
             } catch (NumberFormatException e) {
