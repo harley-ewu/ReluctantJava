@@ -459,9 +459,9 @@ public class CommandLineInterface {
                 """);
     }
 
-/*    public static void setCurrentDiagram(Diagram diagram){
+    public static void setCurrentDiagram(Diagram diagram){
         currentDiagram = diagram;
-    }*/
+    }
 
     public static Diagram getCurrentDiagram(){
         return currentDiagram;

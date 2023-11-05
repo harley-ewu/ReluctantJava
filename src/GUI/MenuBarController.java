@@ -100,7 +100,7 @@ public class MenuBarController {
         try{
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
-            //CommandLineInterface.setCurrentDiagram(diagram);
+            CommandLineInterface.setCurrentDiagram(diagram);
             System.out.println("Successfully loaded project. \n");
         }catch(NullPointerException nullPointerException){
             System.out.println("Cancelled Load. \n");

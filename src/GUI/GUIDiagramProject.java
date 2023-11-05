@@ -173,28 +173,28 @@ public class GUIDiagramProject extends javafx.application.Application {
         Attribute attribute = new Attribute();
 
         testClass.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
-        testClass.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
+        testClass.getAttributes().add(attribute.addAttribute("fieldf",field2List,Attribute.Type.FIELD));
         testClass.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
-        testClass.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
+        testClass.getAttributes().add(attribute.addAttribute("meterd2",params1,Attribute.Type.METHOD));
         testClass.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
 
-        testClass2.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
+        testClass2.getAttributes().add(attribute.addAttribute("freld1",field1List,Attribute.Type.FIELD));
         testClass2.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
-        testClass2.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
+        testClass2.getAttributes().add(attribute.addAttribute("mwhod1",params,Attribute.Type.METHOD));
         testClass2.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
         testClass2.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
 
         testClass3.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
         testClass3.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
         testClass3.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
-        testClass3.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
+        testClass3.getAttributes().add(attribute.addAttribute("meted2",params1,Attribute.Type.METHOD));
         testClass3.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
 
         testClass4.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
         testClass4.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
-        testClass4.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
-        testClass4.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
-        testClass4.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
+        testClass4.getAttributes().add(attribute.addAttribute("method4",params,Attribute.Type.METHOD));
+        testClass4.getAttributes().add(attribute.addAttribute("me2",params1,Attribute.Type.METHOD));
+        testClass4.getAttributes().add(attribute.addAttribute("metwod3",params2,Attribute.Type.METHOD));
 
         //ArrayList<Class> testClassArrayList = new ArrayList<>();
 
