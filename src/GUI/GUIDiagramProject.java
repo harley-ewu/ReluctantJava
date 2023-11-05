@@ -1,6 +1,7 @@
 package GUI;
 import Attributes.Attribute;
 import Diagram.Diagram;
+import Relationships.Relationship;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -15,8 +16,10 @@ public class GUIDiagramProject extends javafx.application.Application {
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
     private Diagram diagram = new Diagram("Test Project"); // this should be set in the create diagram menu option
-    private ArrayList<Pane> panes = new ArrayList<>();
+    private ArrayList<Pane> classPanes = new ArrayList<>();
+    private ArrayList<Pane> relationshipPanes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
+    private ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
 
     public static void startGUI(String[] args){
         try{
@@ -202,15 +205,37 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void addClassPanes() {
         for (ClassAsset classAsset : this.classAssets) {
-            Pane temp = classAsset.createClassAsset(this.panes);
-            this.panes.add(temp);
+            Pane temp = classAsset.createClassAsset(this.classPanes);
+            this.classPanes.add(temp);
         }
     }
 
     public void addClassPanesToPaneWindow() {
-        for (Pane classAsset : this.panes) {
+        for (Pane classAsset : this.classPanes) {
             this.contentPane.getChildren().add(classAsset);
         }
     }
 
+
+    public void addRelationshipAsset(final ArrayList<Relationship> relationshipList) {
+        int i = 0;
+        for(Relationship currentRelantionship: relationshipList) {
+            RelationshipAsset temp = new RelationshipAsset(currentRelantionship, i);
+            this.relationshipAssets.add(temp);
+            i++;
+        }
+    }
+
+    public void addRelationshipPanes() {
+        for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
+            Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipPanes);
+            this.relationshipPanes.add(temp);
+        }
+    }
+
+    public void addRelationshipPanesToPaneWindow() {
+        for (Pane relationshipAsset : this.relationshipPanes) {
+            this.contentPane.getChildren().add(relationshipAsset);
+        }
+    }
 }
