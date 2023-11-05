@@ -21,6 +21,7 @@ public class DiagramMenuController {
     public void editClassGUI(){
         System.out.println("Editing class");
     }
+
     public void editRelationshipsGUI(){
         System.out.println("Editing relationships");
     }

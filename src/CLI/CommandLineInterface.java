@@ -233,7 +233,7 @@ public class CommandLineInterface {
         System.out.print("--> ");
         String filePath = scan.nextLine();
 
-        System.out.println("Enter the name of the file you want to load:");
+        System.out.println("Enter the name of the file you want to load (without .json extension):");
         System.out.print("--> ");
         String fileName = scan.nextLine();
 
@@ -249,8 +249,11 @@ public class CommandLineInterface {
         } catch (Exception e) {
             System.out.println("An error occurred while loading the diagram.");
         }*/
-
-        return SaveLoadSystem.loadDiagramCLI(filePath, fileName);
+        Diagram loadedDiagram = SaveLoadSystem.loadDiagramCLI(filePath, fileName);
+        if (loadedDiagram == null) {
+            System.out.println("Diagram was not found!");
+        }
+        return loadedDiagram;
     }
 
     /*
@@ -316,8 +319,9 @@ public class CommandLineInterface {
                 if (userInput >= 1 && userInput <= 9) {
                     break;
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES+1);
-                    System.out.print("-> ");
+                    int choices = MAX_CHOICES + 1;
+                    System.out.println("Invalid input. Please enter a number between 1 and " + choices);
+                    System.out.print("--> ");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
@@ -326,6 +330,30 @@ public class CommandLineInterface {
         }
         return userInput;
 
+    }
+
+    public static void diagramHelp(){
+        System.out.println("""
+            DIAGRAM MENU COMMANDS:
+
+            Option 1 - Add Class: Create and add a class to the diagram
+           
+            Option 2 - Delete Class: Delete existing class from the diagram
+           
+            Option 3 - Rename Class: Rename existing class in the diagram
+           
+            Option 4 - Edit Class: Opens up sub-menu with class editing options
+           
+            Option 5 - Edit Relationships: Opens up sub-menu with relationship add/delete options
+           
+            Option 6 - View Class: Lists all attributes and relationships of existing class
+           
+            Option 7 - View Diagram: Lists all classes and their properties in current diagram
+           
+            Option 8 - Exit: Exit the program
+           
+            Option 9 - Help: See how each option functions
+                """);
     }
 
     public static int newClassMenuChoice(){
@@ -377,7 +405,59 @@ public class CommandLineInterface {
                 
                  Option 8 - Help: See how each option functions
 
-                 Option 9 - Exit: Exit the program
+    public static int editClassMenuChoice(final Class currentClass) {
+        int userInput = -99;
+        Scanner scan = new Scanner(System.in);
+            //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
+        System.out.println("\n" + currentClass.getClassName() + " Class Editor");
+        System.out.println("""
+                              1 - Add attribute
+                              2 - Delete attribute
+                              3 - Rename Attribute
+                              4 - Display attributes
+                              5 - Display relationships
+                              6 - Display all contents
+                              7 - Return to Diagram Menu
+                              8 - Help
+                             
+                             Enter a number:""");
+        System.out.print("--> ");
+
+        while (true) {
+
+            try {
+                userInput = Integer.parseInt(scan.nextLine());
+                if (isValidUserInput(userInput)) {
+                    break;
+                } else {
+                    System.out.println("Please enter a valid option, 1-" + MAX_CHOICES);
+                    System.out.print("--> ");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+                System.out.print("--> ");
+            }
+
+        }
+
+        return userInput;
+    }
+
+    public static void editClassMenuHelp(){
+        System.out.println("""
+            CLASS MENU COMMANDS:
+
+            Option 1 - Add attribute: Prompts user to enter a name for a new attribute
+
+            Option 2 - Delete attribute: Prompts user to enter a name of an (existing) attribute to delete
+
+            Option 3 - Rename attribute: Prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute
+
+            Option 4 - Display relationships: Displays all relationships assigned to the class
+
+            Option 5 - Display all contents: displays the contents of the class including name, attributes, and relationships
+
+            Option 6 - Return to Diagram Menu: returns the user to the diagram menu holding the class
                 """);
     }
 

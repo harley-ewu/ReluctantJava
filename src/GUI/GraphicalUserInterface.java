@@ -88,22 +88,21 @@ public class GraphicalUserInterface extends javafx.application.Application{
                 diagram.setTitle(inputText);
                 System.out.println("Submitted text: " + inputText);
                 popupStage.close();
-            }
-            try {
-                
-                openDiagram(diagram);
-            } catch (Exception e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
+                try {
 
+                    openDiagram(diagram);
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
         });
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
         layout.getChildren().addAll(label, tf, errorLabel, submitBtn);
 
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout, 400, 200);
 
         popupStage.setScene(scene);
         popupStage.setTitle("Popup Window");
