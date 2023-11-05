@@ -3,6 +3,7 @@ import Attributes.Attribute;
 import Class.Class;
 import GUI.DiagramProjectController;
 
+import GUI.GUIDiagramProject;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -223,16 +224,27 @@ public class ClassAsset {
         return this.yCoordinate = this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinY();
     }
 
-    public void deleteClass(ArrayList<Pane> classAssetList) {
+    public void deleteClass(ArrayList<Pane> classAssetPaneList) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
         alert.setContentText("Are you sure you want to delete this class?");
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
         if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
             System.out.println("class deleted");
-            classAssetList.remove(this.pos);
+            classAssetPaneList.remove(this.pos);
+            //this.updateClassAssetListPos(classAssetsList);
+            System.out.println("class asset list size now: " + classAssetPaneList.size());
         }
 
+    }
+
+    public void updateClassAssetListPos(ArrayList<ClassAsset> classAssets, GUIDiagramProject guiDiagramProject) {
+
+        if (this.pos != 0) {
+            for (int i = this.pos; i < classAssets.size(); i++) {
+
+            }
+        }
     }
 
 }

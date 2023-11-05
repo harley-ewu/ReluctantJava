@@ -183,9 +183,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.addClassAssets(testClassArrayList);
         this.addClassPanes();
-
-
-
+        this.addClassPanesToPaneWindow();
 
     }
 
@@ -199,13 +197,16 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     public void addClassPanes() {
-        int i = 0;
         for (ClassAsset classAsset : this.classAssets) {
             Pane temp = classAsset.createClassAsset(this.panes);
             this.panes.add(temp);
         }
     }
 
-
+    public void addClassPanesToPaneWindow() {
+        for (Pane classAsset : this.panes) {
+            this.contentPane.getChildren().add(classAsset);
+        }
+    }
 
 }
