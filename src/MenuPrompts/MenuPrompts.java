@@ -397,7 +397,7 @@ public class MenuPrompts {
 
     public static String promptParameterName(){
         String name = "";
-        while(name.isEmpty() || name == null){
+        while(name == null || name.isEmpty()){
             System.out.println("Please enter a valid name for the attribute:");
             System.out.print("--> ");
             name = scanner.nextLine();
@@ -429,6 +429,18 @@ public class MenuPrompts {
 
         return userInput;
 
+    }
+
+    public static ArrayList<String> renameFieldParameterPrompt() {
+        ArrayList<String> newParam = new ArrayList<>();
+        String parameter = "";
+        while(parameter == null || parameter.isEmpty()){
+            System.out.println("Please enter a valid parameter type:\n(Ex: String, int, double, float)");
+            System.out.print("--> ");
+            parameter = scanner.nextLine();
+        }
+        newParam.add(0, parameter);
+        return newParam;
     }
 
     public static int deleteAttributePrompts(final Class currentClass) {
