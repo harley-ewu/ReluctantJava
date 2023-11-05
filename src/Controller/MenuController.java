@@ -246,6 +246,7 @@ public class MenuController {
                 type = MenuPrompts.promptAttributeType();
                 
                 if (type == 1) {
+                    parameters = MenuPrompts.renameFieldParameterPrompt();
                     currentClass.renameAttribute(input, newName, parameters, Attribute.Type.FIELD);
                     break;
                 }
