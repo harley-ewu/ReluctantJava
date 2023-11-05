@@ -19,9 +19,9 @@ public class GUIDiagramProject extends javafx.application.Application {
     private final double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-    private Diagram diagram = new Diagram("Test Project");
+    private Diagram diagram;
 
-    public static void startGUI(String args) {
+    public static void startGUI(String[] args){
         try{
             launch();
         }
@@ -45,10 +45,14 @@ public class GUIDiagramProject extends javafx.application.Application {
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
         //test classes
-        this.testAssets();
+        //this.testAssets();
         //set stage
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void setCurrentDiagram(final Diagram diagram) {
+        this.diagram = diagram;
     }
 
     /**
