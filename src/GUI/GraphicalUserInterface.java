@@ -28,7 +28,7 @@ public class GraphicalUserInterface extends javafx.application.Application{
     private static Stage mainMenuStage;
     private static Stage diagramStage;
     private static Diagram diagram;
-    private static TextField filePathField;
+    private static GUIDiagramProject diagramGui;
 
     /**
      * Description: Launches the graphical user interface display for the UML editor
@@ -113,7 +113,7 @@ public class GraphicalUserInterface extends javafx.application.Application{
 
     public static void openDiagram(final Diagram currentDiagram) throws Exception {
         diagramStage = new Stage();
-        GUIDiagramProject diagramGui = new GUIDiagramProject();
+        diagramGui = new GUIDiagramProject();
         //diagramGui.setCurrentDiagram(currentDiagram);
         diagramGui.start(diagramStage);
         mainMenuStage.setResizable(false);
@@ -141,58 +141,27 @@ public class GraphicalUserInterface extends javafx.application.Application{
         alert.setHeaderText("Do you want to save your work?");
         alert.setContentText("Choose an option:");
 
-        ButtonType saveDefaultButtonType = new ButtonType("Save to Default Path");
-        ButtonType saveCustomButtonType = new ButtonType("Save to Custom Path");
+        ButtonType saveButton = new ButtonType("Save");
         ButtonType cancelButtonType = new ButtonType("Cancel");
-        alert.getButtonTypes().setAll(saveDefaultButtonType, saveCustomButtonType, cancelButtonType);
+        alert.getButtonTypes().setAll(saveButton, cancelButtonType);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent()) {
-            if (result.get() == saveDefaultButtonType) {
-                // Save to the default path
-                saveToDefaultPath();
-            } else if (result.get() == saveCustomButtonType) {
-                // Save to a custom path
-                saveToCustomPath();
+            if (result.get() == saveButton) {
+                save();
+                closeDiagram();
             } else {
                 diagram = null;
+                closeDiagram();
             }
         }
     }
 
-    private static void saveToDefaultPath() {
-        System.out.println("Saving to the default path...");
-        // Add your code to save to the default path
-    }
-
-    private static void saveToCustomPath() {
-        Alert customPathAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        customPathAlert.setTitle("Save Work");
-        customPathAlert.setHeaderText("Please enter the file path:");
-        customPathAlert.setContentText("File Path:");
-
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(20, 150, 10, 10));
-
-        Label filePathLabel = new Label("File Path:");
-        filePathField = new TextField();
-
-        gridPane.add(filePathLabel, 0, 0);
-        gridPane.add(filePathField, 1, 0);
-
-        customPathAlert.getDialogPane().setContent(gridPane);
-
-        ButtonType saveButtonType = new ButtonType("Save");
-        ButtonType cancelButtonType = new ButtonType("Cancel");
-        customPathAlert.getButtonTypes().setAll(saveButtonType, cancelButtonType);
-
-        Optional<ButtonType> result = customPathAlert.showAndWait();
-        if (result.isPresent() && result.get() == saveButtonType) {
-            String filePath = filePathField.getText();
-            System.out.println("File path to save: " + filePath);
-            // Add your code to save to the custom path
+    private static void save() {
+        if(CommandLineInterface.getCurrentDiagram().getSaveLocation() == null){
+            DiagramProjectController.saveAsFile(mainMenuStage);
+        }else{
+            DiagramProjectController.saveFile();
         }
     }
 
@@ -229,5 +198,9 @@ public class GraphicalUserInterface extends javafx.application.Application{
         Scene helpScene = new Scene(layout);
         helpPopupStage.setScene(helpScene);
         helpPopupStage.showAndWait();
+    }
+
+    public static GUIDiagramProject getDiagramView(){
+        return diagramGui;
     }
 }

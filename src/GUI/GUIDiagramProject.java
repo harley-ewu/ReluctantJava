@@ -1,5 +1,6 @@
 package GUI;
 import Attributes.Attribute;
+import CLI.CommandLineInterface;
 import Diagram.Diagram;
 import Relationships.Relationship;
 import javafx.geometry.Point2D;
@@ -16,7 +17,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     private final double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-    private Diagram diagram = new Diagram("Test Project"); // this should be set in the create diagram menu option
+    private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
     private ArrayList<Pane> classPanes = new ArrayList<>();
     private ArrayList<Pane> relationshipPanes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
@@ -139,7 +140,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      * @return
      */
     private Menu setUpClassMenu() {
-        Menu classMenu = new Menu("Class");
+        Menu classMenu = new Menu("Add");
         MenuItem addClassItem = new MenuItem("Add Class");
         addClassItem.setOnAction(e -> DiagramProjectController.addClass());
 
@@ -391,4 +392,5 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.relationshipPanesCoordinates.clear();
 
     }
+
 }
