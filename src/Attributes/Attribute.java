@@ -56,6 +56,18 @@ public class Attribute {
         this.type = type;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrimitive(String primitive) {
+        this.name = primitive;
+    }
+
+    public String getPrimitive() {
+        return "";
+    }
+
 
     @Override
     public String toString(){

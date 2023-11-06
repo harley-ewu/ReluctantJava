@@ -25,6 +25,8 @@ public class ClassAsset {
 
     private Class currentClass;
     private Pane classContainer;
+    private ArrayList<Attribute> attributeList = new ArrayList<>();
+
     private ArrayList<String> fields;
     private ArrayList<String> methods;
 
@@ -36,6 +38,7 @@ public class ClassAsset {
     public ClassAsset(final Class currentClass, final int pos) {
         this.currentClass = currentClass;
         this.pos = pos;
+        this.initAttributeList(currentClass);
     }
 
     /**
@@ -114,6 +117,10 @@ public class ClassAsset {
         return contentList;
     }
 
+    private void initAttributeList(final Class currentClass) {
+        this.attributeList.addAll(currentClass.getAttributes());
+    }
+
     /**
      * description: searches an attribute arraylist for fields and stores them in an arraylist of type string
      * @param currentClass
@@ -173,7 +180,7 @@ public class ClassAsset {
 
         Button editButton = new Button("Edit");
         editButton.setFont(Font.font(fontType, textSize));
-        editButton.setOnAction(e -> this.editClass());
+        editButton.setOnAction(e -> this.editClass(classList, paneArrayList, classAssets, coordinates, guiDiagramProject));
 
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font(fontType, textSize));
@@ -229,13 +236,6 @@ public class ClassAsset {
         return textContainer;
     }
 
-    public double getCurrentX() {
-        return this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinX();
-    }
-
-    public double getCurrentY() {
-        return this.classContainer.localToScene(this.classContainer.getBoundsInLocal()).getMinX();
-    }
 
     /**
      * This method is used to delete a class and its associated assets from a GUI diagram project.
@@ -262,15 +262,10 @@ public class ClassAsset {
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
             //get the x/y positions from the remaining class asset panes
-            for (int i = 0; i < classAssetPaneList.size(); i++) {
-                double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX();
-                double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY();
-                Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
-                coordinates.add(coords);
-            }
+            this.updateCoordinates(classAssetPaneList, coordinates);
 
             //update the class asset list by taking the new class list and creating new class assets from them
-            this.updateClassAssetListPos(classList, classAssets); //to be removed
+            this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
             guiDiagramProject.refreshClassPanes();
             guiDiagramProject.refreshPanesToPaneWindow();
@@ -298,7 +293,7 @@ public class ClassAsset {
     /**
      * description: this is the action event for the edit button
      */
-    private void editClass() {
+    private void editClass(ArrayList<Class> classList, ArrayList<Pane> classAssetPaneList, ArrayList<ClassAsset> classAssets,ArrayList<Point2D> coordinates, GUIDiagramProject guiDiagramProject ) {
 
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
@@ -326,16 +321,33 @@ public class ClassAsset {
         //edit field button
         Button editFieldButton = new Button();
         editFieldButton.setText("Edit Field");
-        editFieldButton.setOnAction(e -> editField());
-
+        editFieldButton.setOnAction(e -> {
+            for (Attribute attribute : this.attributeList) {
+                String comboBoxName = comboBoxFields.getValue();
+                if (attribute.toString().equals(comboBoxName)) {
+                    this.editField(attribute);
+                    return;
+                }
+            }
+        });
 
         //add field button
         Button addFieldButton = new Button();
         addFieldButton.setText("Add Field");
+        addFieldButton.setOnAction(e -> this.addField());
 
         //delete field button
         Button deleteFieldButton = new Button();
         deleteFieldButton.setText("Delete Field");
+        deleteFieldButton.setOnAction(e -> {
+            for (Attribute attribute : this.attributeList) {
+                String comboBoxName = comboBoxFields.getValue();
+                if (attribute.toString().equals(comboBoxName)) {
+                    this.deleteField(attribute);
+                    return;
+                }
+            }
+        });
 
         fieldButtonContainer.getChildren().addAll(editFieldButton, addFieldButton, deleteFieldButton);
 
@@ -388,15 +400,26 @@ public class ClassAsset {
         methodsButtonContainer.getChildren().addAll(editMethodButton, addMethodButton, deleteMethodButton);
         methodsHBox.getChildren().addAll(methodsButtonContainer);
 
-        //Submit button
+        //Update button
         HBox submitButtonContainer = new HBox();
         submitButtonContainer.setSpacing(50);
         Button submitButton = new Button();
-        submitButton.setText("Submit");
+        submitButton.setText("Update Pane");
+        submitButton.setOnAction(e -> {
+
+            this.updateCoordinates(classAssetPaneList, coordinates);
+            //update the class asset list by taking the new class list and creating new class assets from them
+            //this.updateClassAssetListPos(classList, classAssets);
+            //refresh the class asset panes and the window
+            guiDiagramProject.refreshClassPanes();
+            guiDiagramProject.refreshPanesToPaneWindow();
+            popUpStage.close();
+        });
 
         //Cancel button
         Button cancelButton = new Button();
         cancelButton.setText("Cancel");
+        cancelButton.setOnAction(e -> popUpStage.close());
 
         submitButtonContainer.getChildren().addAll(submitButton, cancelButton);
         submitButtonContainer.setLayoutX(root.getWidth()/2-80);
@@ -422,7 +445,11 @@ public class ClassAsset {
 
     }
 
-    private void editField() {
+    private void editField(Attribute attribute) {
+        if (attribute == null) {
+            System.out.println("attribute is null");
+        }
+
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(426);
@@ -432,7 +459,13 @@ public class ClassAsset {
         root.setStyle("-fx-background-color: lightblue");
         Scene scene = new Scene(root, 426, 240);
 
-        //edit name text field
+        //current name and type labels
+        Text currentNames = new Text();
+        currentNames.setLayoutX(20);
+        currentNames.setLayoutY(20);
+        currentNames.setText("current name: " + attribute.getName() + "\t\t\t\t" + "current type: " + attribute.getPrimitive());
+
+
         HBox editNameContainer = new HBox();
         editNameContainer.setSpacing(20);
         Text editFieldLabel = new Text();
@@ -454,12 +487,163 @@ public class ClassAsset {
 
         editPrimitiveContainer.getChildren().addAll(editPrimitiveLabel, editPrimitiveField);
 
-        root.getChildren().addAll(editNameContainer, editPrimitiveContainer);
+        //container for submit and cancel button
+        HBox submitContainer = new HBox();
+        submitContainer.setLayoutX(scene.getWidth()/2-100);
+        submitContainer.setLayoutY(150);
+        submitContainer.setSpacing(20);
+        //submit button
+        Button submitButton = new Button();
+        submitButton.setText("Submit");
+
+        submitButton.setOnAction(e -> {
+            if (!editNameField.getText().isEmpty() || !editPrimitiveField.getText().isEmpty()) {
+                boolean isUnique = true;
+                for (Attribute currentAttribute : this.attributeList) {
+                    if (attribute.getName().equals(editNameField.getText())) {
+                        isUnique = false;
+                    }
+                }
+                //handle unique name
+                if (isUnique) {
+                    attribute.setName(editNameField.getText());
+                    attribute.setPrimitive(editPrimitiveField.getText());
+                    popUpStage.close();
+                } else {
+                    Alert notUnique = new Alert(Alert.AlertType.WARNING);
+                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.showAndWait();
+                }
+
+            } else {
+                Alert notUnique = new Alert(Alert.AlertType.WARNING);
+                notUnique.setContentText("No empty fields! (or hit cancel to exit)");
+                notUnique.showAndWait();
+            }
+
+            this.printAttributeList();
+
+        });
+        //cancel button
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+        cancelButton.setOnAction(e -> popUpStage.close());
+
+        submitContainer.getChildren().addAll(submitButton, cancelButton);
+
+        root.getChildren().addAll(currentNames,editNameContainer, editPrimitiveContainer, submitContainer);
         popUpStage.setTitle("Edit Field");
         popUpStage.setScene(scene);
         popUpStage.show();
 
     }
 
+    public void addField() {
 
+        Stage popUpStage = new Stage();
+        popUpStage.initModality(Modality.APPLICATION_MODAL);
+        popUpStage.setWidth(426);
+        popUpStage.setHeight(240);
+        popUpStage.setResizable(false);
+        Pane root = new Pane();
+        root.setStyle("-fx-background-color: lightblue");
+        Scene scene = new Scene(root, 426, 240);
+
+        //current name and type labels
+        Text currentNames = new Text();
+        currentNames.setLayoutX(20);
+        currentNames.setLayoutY(20);
+        currentNames.setText("Create a new Attribute");
+
+
+        HBox addNameContainer = new HBox();
+        addNameContainer.setSpacing(20);
+        Text addFieldLabel = new Text();
+        TextField addNameField = new TextField();
+        addFieldLabel.setText("Enter New Name:");
+        addNameContainer.setLayoutX(50);
+        addNameContainer.setLayoutY(scene.getHeight()/2-70);
+
+        addNameContainer.getChildren().addAll(addFieldLabel, addNameField);
+
+        //edit primitive type text field
+        HBox addPrimitiveContainer = new HBox();
+        addPrimitiveContainer.setSpacing(17);
+        Text addPrimitiveLabel = new Text();
+        TextField addPrimitiveField = new TextField();
+        addPrimitiveLabel.setText("Add A Type:");
+        addPrimitiveContainer.setLayoutX(60);
+        addPrimitiveContainer.setLayoutY(scene.getHeight()/2-20);
+
+        addPrimitiveContainer.getChildren().addAll(addPrimitiveLabel, addPrimitiveField);
+
+        //container for submit and cancel button
+        HBox submitContainer = new HBox();
+        submitContainer.setLayoutX(scene.getWidth()/2-100);
+        submitContainer.setLayoutY(150);
+        submitContainer.setSpacing(20);
+        //submit button
+        Button submitButton = new Button();
+        submitButton.setText("Submit");
+
+        Attribute newAttribute = new Attribute();
+
+        submitButton.setOnAction(e -> {
+            boolean isUnique = true;
+            for (Attribute currentAttribute : this.attributeList) {
+                if (currentAttribute.getName().equals(addNameField.getText())) {
+                    isUnique = false;
+                }
+            }
+            //handle unique name
+            if (isUnique) {
+                newAttribute.setName(addNameField.getText());
+                newAttribute.setPrimitive(addPrimitiveField.getText());
+                this.attributeList.add(newAttribute);
+                popUpStage.close();
+            } else {
+                Alert notUnique = new Alert(Alert.AlertType.WARNING);
+                notUnique.setContentText("Please enter a unique name!");
+                notUnique.showAndWait();
+            }
+
+            this.printAttributeList();
+        });
+        //cancel button
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+        cancelButton.setOnAction(e -> popUpStage.close());
+
+        submitContainer.getChildren().addAll(submitButton, cancelButton);
+
+        root.getChildren().addAll(currentNames,addNameContainer, addPrimitiveContainer, submitContainer);
+        popUpStage.setTitle("Add Field");
+        popUpStage.setScene(scene);
+        popUpStage.show();
+    }
+
+    public void deleteField(Attribute attribute) {
+        if (attribute == null) {
+            System.out.println("attribute or combo box is null");
+        }
+
+        this.attributeList.remove(attribute);
+
+        this.printAttributeList();
+    }
+
+    public void printAttributeList() {
+        for (Attribute attribute2 : this.attributeList) {
+            System.out.println(attribute2.toString());
+        }
+    }
+
+    public void updateCoordinates(ArrayList<Pane> classAssetPaneList, ArrayList<Point2D> coordinates) {
+        for (int i = 0; i < classAssetPaneList.size(); i++) {
+            double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX();
+            double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY();
+            Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
+            coordinates.add(coords);
+        }
+    }
 }
