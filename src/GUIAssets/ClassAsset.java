@@ -11,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -163,7 +165,7 @@ public class ClassAsset {
      * @return
      */
 
-    public HBox setUpButtons(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
+    private HBox setUpButtons(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
                              final ArrayList<Pane> paneArrayList, final ArrayList<ClassAsset> classAssets,
                              final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject){
         HBox buttonContainer = new HBox();
@@ -193,7 +195,7 @@ public class ClassAsset {
      * @return
      */
 
-    public VBox setupTextContainer(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
+    private VBox setupTextContainer(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
                                    final ArrayList<Pane> paneArrayList, final ArrayList<ClassAsset> classAssets,
                                    final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject){
         VBox textContainer = new VBox();
@@ -269,7 +271,6 @@ public class ClassAsset {
 
             //update the class asset list by taking the new class list and creating new class assets from them
             this.updateClassAssetListPos(classList, classAssets); //to be removed
-
             //refresh the class asset panes and the window
             guiDiagramProject.refreshClassPanes();
             guiDiagramProject.refreshPanesToPaneWindow();
@@ -294,11 +295,10 @@ public class ClassAsset {
         }
     }
 
-
     /**
      * description: this is the action event for the edit button
      */
-    public void editClass() {
+    private void editClass() {
 
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
@@ -309,10 +309,37 @@ public class ClassAsset {
         Scene scene = new Scene(root, 640, 480);
 
         //setup drop down menu for fields
+        HBox fieldsHBox = new HBox();
+        fieldsHBox.setSpacing(150);
+
         ComboBox<String> comboBoxFields = new ComboBox();
-        comboBoxFields.setLayoutX(scene.getWidth()/8);
-        comboBoxFields.setLayoutY(scene.getHeight()-400);
+
+        fieldsHBox.getChildren().add(comboBoxFields);
+        fieldsHBox.setLayoutX(scene.getWidth()/8);
+        fieldsHBox.setLayoutY(scene.getHeight()-400);
         comboBoxFields.setValue("Fields");
+        comboBoxFields.setPrefWidth(120);
+
+        VBox fieldButtonContainer = new VBox();
+        fieldButtonContainer.setSpacing(5);
+
+        //edit field button
+        Button editFieldButton = new Button();
+        editFieldButton.setText("Edit Field");
+        editFieldButton.setOnAction(e -> editField());
+
+
+        //add field button
+        Button addFieldButton = new Button();
+        addFieldButton.setText("Add Field");
+
+        //delete field button
+        Button deleteFieldButton = new Button();
+        deleteFieldButton.setText("Delete Field");
+
+        fieldButtonContainer.getChildren().addAll(editFieldButton, addFieldButton, deleteFieldButton);
+
+        fieldsHBox.getChildren().addAll(fieldButtonContainer);
 
         ObservableList<String> observableFieldsList = FXCollections.observableArrayList();
         for (String field : this.fields) {
@@ -322,24 +349,117 @@ public class ClassAsset {
         comboBoxFields.setItems(observableFieldsList);
 
         //setup drop down menu for methods
+        HBox methodsHBox = new HBox();
+        methodsHBox.setSpacing(150);
         ComboBox<String> comboBoxMethods = new ComboBox();
-        comboBoxMethods.setLayoutX(scene.getWidth()/8);
-        comboBoxMethods.setLayoutY(scene.getHeight()-250);
-        comboBoxMethods.setValue("Methods");
 
+        methodsHBox.getChildren().add(comboBoxMethods);
+        methodsHBox.setLayoutX(scene.getWidth()/8);
+        methodsHBox.setLayoutY(scene.getHeight()-270);
+        comboBoxMethods.setValue("Methods");
+        comboBoxMethods.setPrefWidth(120);
+
+        VBox methodsButtonContainer = new VBox();
+        methodsButtonContainer.setSpacing(5);
+        Text fields = new Text();
+        fields.setText("Fields");
+        fields.setFont(Font.font("Verdana", 24));
+        fields.setLayoutX(scene.getWidth()/6 - 28);
+        fields.setLayoutY(scene.getHeight()- 410);
+
+        Text methods = new Text();
+        methods.setText("Methods");
+        methods.setLayoutX(scene.getWidth()/6 - 28);
+        methods.setLayoutY(scene.getHeight()-280);
+        methods.setFont(Font.font("Verdana", 24));
+
+        //edit method button
+        Button editMethodButton = new Button();
+        editMethodButton.setText("Edit Method");
+
+        //add method button
+        Button addMethodButton = new Button();
+        addMethodButton.setText("Add Method");
+
+        //delete method button
+        Button deleteMethodButton = new Button();
+        deleteMethodButton.setText("Delete Method");
+
+        methodsButtonContainer.getChildren().addAll(editMethodButton, addMethodButton, deleteMethodButton);
+        methodsHBox.getChildren().addAll(methodsButtonContainer);
+
+        //Submit button
+        HBox submitButtonContainer = new HBox();
+        submitButtonContainer.setSpacing(50);
+        Button submitButton = new Button();
+        submitButton.setText("Submit");
+
+        //Cancel button
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+
+        submitButtonContainer.getChildren().addAll(submitButton, cancelButton);
+        submitButtonContainer.setLayoutX(root.getWidth()/2-80);
+        submitButtonContainer.setLayoutY(root.getHeight()-100);
         ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
+
         for (String method : this.methods) {
             observableMethodsList.add(method);
         }
 
         comboBoxMethods.setItems(observableMethodsList);
 
-        root.getChildren().addAll(comboBoxFields, comboBoxMethods);
+        Rectangle background = new Rectangle();
+        background.setStyle("-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;");
+        background.setWidth(scene.getWidth()-18);
+        background.setHeight(scene.getHeight()-110);
+
+        root.getChildren().addAll(background, fieldsHBox, methodsHBox, submitButtonContainer, fields, methods);
 
         popUpStage.setTitle("Class Editor");
         popUpStage.setScene(scene);
         popUpStage.show();
 
     }
+
+    private void editField() {
+        Stage popUpStage = new Stage();
+        popUpStage.initModality(Modality.APPLICATION_MODAL);
+        popUpStage.setWidth(426);
+        popUpStage.setHeight(240);
+        popUpStage.setResizable(false);
+        Pane root = new Pane();
+        root.setStyle("-fx-background-color: lightblue");
+        Scene scene = new Scene(root, 426, 240);
+
+        //edit name text field
+        HBox editNameContainer = new HBox();
+        editNameContainer.setSpacing(20);
+        Text editFieldLabel = new Text();
+        TextField editNameField = new TextField();
+        editFieldLabel.setText("Enter New Name:");
+        editNameContainer.setLayoutX(50);
+        editNameContainer.setLayoutY(scene.getHeight()/2-70);
+
+        editNameContainer.getChildren().addAll(editFieldLabel, editNameField);
+
+        //edit primitive type text field
+        HBox editPrimitiveContainer = new HBox();
+        editPrimitiveContainer.setSpacing(17);
+        Text editPrimitiveLabel = new Text();
+        TextField editPrimitiveField = new TextField();
+        editPrimitiveLabel.setText("Enter New Type:");
+        editPrimitiveContainer.setLayoutX(60);
+        editPrimitiveContainer.setLayoutY(scene.getHeight()/2-20);
+
+        editPrimitiveContainer.getChildren().addAll(editPrimitiveLabel, editPrimitiveField);
+
+        root.getChildren().addAll(editNameContainer, editPrimitiveContainer);
+        popUpStage.setTitle("Edit Field");
+        popUpStage.setScene(scene);
+        popUpStage.show();
+
+    }
+
 
 }
