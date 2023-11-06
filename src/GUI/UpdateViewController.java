@@ -14,6 +14,7 @@ public class UpdateViewController {
         view.getContentPane().getChildren().clear();
         view.getClassPanes().clear();
         view.getRelationshipPanes().clear();
+
         HashMap<String, Class> diagramClasses = CommandLineInterface.getCurrentDiagram().getClassList();
         view.getClassList().clear();
         view.getClassList().addAll(diagramClasses.values());
@@ -32,7 +33,7 @@ public class UpdateViewController {
     }
 
     public static void updateAddClass(GUIDiagramProject view, Class umlClass){
-        view.getContentPane().getChildren().clear();
+        view.getContentPane().getChildren().removeAll(view.getClassPanes());
         view.getClassPanes().clear();
         view.getClassList().add(umlClass);
         view.getClassAssets().clear();
@@ -46,7 +47,7 @@ public class UpdateViewController {
     }
 
     public static void updateAddRelationship(GUIDiagramProject view, Relationship relationship){
-        view.getContentPane().getChildren().clear();
+        view.getContentPane().getChildren().removeAll(view.getRelationshipPanes());
         view.getRelationshipPanes().clear();
         view.getRelationshipList().add(relationship);
         view.getRelationshipAssets().clear();
