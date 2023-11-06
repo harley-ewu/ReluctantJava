@@ -1,5 +1,6 @@
 package GUI;
 import Attributes.Attribute;
+import CLI.CommandLineInterface;
 import Diagram.Diagram;
 import Relationships.Relationship;
 import javafx.geometry.Point2D;
@@ -11,12 +12,14 @@ import javafx.stage.Stage;
 import GUIAssets.*;
 import Class.Class;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 public class GUIDiagramProject extends javafx.application.Application {
 
     private final double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-    private Diagram diagram = new Diagram("Test Project"); // this should be set in the create diagram menu option
+    private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
     private ArrayList<Pane> classPanes = new ArrayList<>();
     private ArrayList<Pane> relationshipPanes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
@@ -49,6 +52,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         Scene scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
+        initializeDiagramContents();
         //test classes
         //this.testAssets();
         //set stage
@@ -234,14 +238,15 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void initializeDiagramContents() {
-        //write your code here for populating class array list
+        HashMap<String, Class> diagramClasses = Diagram.getClassList();
+        this.classList.addAll(diagramClasses.values());
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
-        //relationship  stuff should be handled here
-
+        HashMap<String, Relationship> relationshipClasses = Diagram.getRelationshipList();
+        this.relationshipList.addAll(relationshipClasses.values());
     }
 
     /**
@@ -257,6 +262,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.classAssets.add(temp);
             i++;
         }
+
     }
 
     /**
