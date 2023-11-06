@@ -10,5 +10,5 @@ This currently is a UML diagram editor created by the Reluctant Java team for ou
 6. Open a terminal.
 7. Navigate to the cloned repo in your terminal.
 8. Navigate into the UMLEditor folder.
-9. Run the command `java -jar @UMLEditor.txt UMLEditor.jar`
+9. Run the command `java @UMLEditor.txt -jar UMLEditor.jar`
 11. Follow the prompts from there!
