@@ -5,6 +5,7 @@ import Relationships.Relationship;
 import MenuPrompts.MenuPrompts;
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -153,6 +154,11 @@ public class Diagram {
          + this.listOneClassRelationships(c));
       }
    }
+
+   public Class getSingleClass(String className) {
+      return classList.get(className);
+   }
+
    /*
     * Prompts user for both class names, then prompts for all relevant relationship information 
     * and builds relationships between the classes, then adds it to either of their relationship lists
@@ -214,6 +220,26 @@ public class Diagram {
       }
 
       return relationship;
+   }
+
+   public ArrayList<Relationship> getSingleClassRelationships(final Class c1) {
+      ArrayList<Relationship> classRelationships = new ArrayList<Relationship>();
+
+      System.out.println(this.getRelationshipList());
+
+      for(Class item : this.classList.values()){
+         if(item.equals(c1)) continue;
+
+         if(this.relationshipList.get(c1.getClassName() + item.getClassName()) != null){
+            classRelationships.add(this.relationshipList.get(c1.getClassName() + item.getClassName()));
+         }
+         else if(this.relationshipList.get(item.getClassName() + c1.getClassName()) != null){
+            classRelationships.add(this.relationshipList.get(item.getClassName() + c1.getClassName()));
+         }
+      }
+      System.out.println(classRelationships);
+
+      return classRelationships;
    }
 
    //prints to screen all relationships in relationshipList
