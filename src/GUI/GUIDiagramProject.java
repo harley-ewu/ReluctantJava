@@ -48,6 +48,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     @Override
     public void start(final Stage stage) throws Exception {
+        UpdateViewController.initView(this);
         this.contentPane.setPrefSize(3840,2160);
         //hbox for zoom in and zoom out buttons
         HBox zoomButtons = this.setUpZoomButtons();
@@ -60,7 +61,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         Scene scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
-        UpdateViewController.initView(this);
         //test classes
         //this.testAssets();
         //set stage
@@ -426,6 +426,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.relationshipPanesCoordinates.clear();
 
     }
+
 
 
 }

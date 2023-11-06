@@ -121,7 +121,10 @@ public class DiagramProjectController {
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
             CommandLineInterface.setCurrentDiagram(diagram);
-            UpdateViewController.initView(view);
+            if(view != null){
+                GraphicalUserInterface.closeDiagram();
+                GraphicalUserInterface.openDiagram(diagram);
+            }
             System.out.println("Successfully loaded project. \n");
         }catch(NullPointerException nullPointerException){
             System.out.println("Cancelled Load. \n");

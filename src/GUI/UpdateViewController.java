@@ -11,11 +11,16 @@ public class UpdateViewController {
     private UpdateViewController(){}
 
     public static void initView(GUIDiagramProject view){
-        view.getContentPane().getChildren().clear();
+        HashMap<String, Class> diagramClasses = CommandLineInterface.getCurrentDiagram().getClassList();
+        HashMap<String, Relationship> relationshipClasses = CommandLineInterface.getCurrentDiagram().getRelationshipList();
+
+        view.getContentPane().getChildren().removeAll(view.getClassPanes());
+        view.getContentPane().getChildren().removeAll(view.getRelationshipPanes());
+        //view.getContentPane().getChildren().clear();
         view.getClassPanes().clear();
         view.getRelationshipPanes().clear();
 
-        HashMap<String, Class> diagramClasses = CommandLineInterface.getCurrentDiagram().getClassList();
+
         view.getClassList().clear();
         view.getClassList().addAll(diagramClasses.values());
 
@@ -23,7 +28,7 @@ public class UpdateViewController {
         view.addClassPanes();
         view.addClassPanesToPaneWindow();
 
-        HashMap<String, Relationship> relationshipClasses = CommandLineInterface.getCurrentDiagram().getRelationshipList();
+
         view.getRelationshipList().clear();
         view.getRelationshipList().addAll(relationshipClasses.values());
 

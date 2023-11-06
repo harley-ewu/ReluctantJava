@@ -111,13 +111,13 @@ public class GraphicalUserInterface extends javafx.application.Application{
         popupStage.show();
     }
 
-    public static void openDiagram(final Diagram currentDiagram) throws Exception {
+    public static GUIDiagramProject openDiagram(final Diagram currentDiagram) throws Exception {
         diagramStage = new Stage();
         diagramGui = new GUIDiagramProject();
         //diagramGui.setCurrentDiagram(currentDiagram);
         diagramGui.start(diagramStage);
         mainMenuStage.setResizable(false);
-        
+        return diagramGui;
     }
     public static void closeDiagram() {
         if(diagramStage != null) {
