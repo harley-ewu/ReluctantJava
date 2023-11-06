@@ -52,7 +52,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         Scene scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
-        initializeDiagramContents();
+        UpdateViewController.initView(this);
         //test classes
         //this.testAssets();
         //set stage
@@ -221,6 +221,14 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     }
 
+    public ArrayList<Class> getClassList() {
+        return classList;
+    }
+
+    public ArrayList<Relationship> getRelationshipList() {
+        return relationshipList;
+    }
+
     /**
      * 1. description: use this method to take contents from the diagram
      * and store in the appropriate array lists (the classes should go to the classList,
@@ -237,15 +245,16 @@ public class GUIDiagramProject extends javafx.application.Application {
      *
      */
 
+
     public void initializeDiagramContents() {
-        HashMap<String, Class> diagramClasses = Diagram.getClassList();
+        HashMap<String, Class> diagramClasses = CommandLineInterface.getCurrentDiagram().getClassList();
         this.classList.addAll(diagramClasses.values());
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
-        HashMap<String, Relationship> relationshipClasses = Diagram.getRelationshipList();
+        HashMap<String, Relationship> relationshipClasses = CommandLineInterface.getCurrentDiagram().getRelationshipList();
         this.relationshipList.addAll(relationshipClasses.values());
     }
 
@@ -276,6 +285,14 @@ public class GUIDiagramProject extends javafx.application.Application {
                     this.classPanesCoordinates,this);
             this.classPanes.add(temp);
         }
+    }
+
+    public Pane getContentPane() {
+        return contentPane;
+    }
+
+    public ArrayList<ClassAsset> getClassAssets() {
+        return classAssets;
     }
 
     /**
@@ -397,5 +414,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.relationshipPanesCoordinates.clear();
 
     }
+
 
 }

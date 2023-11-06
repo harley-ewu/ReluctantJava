@@ -90,6 +90,7 @@ public class MenuBarController {
         FileChooser fileChooser = new FileChooser();
         Diagram diagram;
         Window stage = hbMenuBar.getScene().getWindow();
+        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         fileChooser.setInitialDirectory(new File(homeFolder));
         fileChooser.setTitle("Load project...");
@@ -101,6 +102,7 @@ public class MenuBarController {
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
             CommandLineInterface.setCurrentDiagram(diagram);
+            UpdateViewController.initView(view);
             System.out.println("Successfully loaded project. \n");
         }catch(NullPointerException nullPointerException){
             System.out.println("Cancelled Load. \n");

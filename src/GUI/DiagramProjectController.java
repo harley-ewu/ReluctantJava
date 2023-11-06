@@ -101,6 +101,7 @@ public class DiagramProjectController {
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
         Diagram diagram;
+        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         fileChooser.setInitialDirectory(new File(homeFolder));
         fileChooser.setTitle("Load project...");
@@ -112,7 +113,7 @@ public class DiagramProjectController {
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
             CommandLineInterface.setCurrentDiagram(diagram);
-            GraphicalUserInterface.getDiagramView().initializeDiagramContents();
+            UpdateViewController.initView(view);
             System.out.println("Successfully loaded project. \n");
         }catch(NullPointerException nullPointerException){
             System.out.println("Cancelled Load. \n");
@@ -134,6 +135,8 @@ public class DiagramProjectController {
         Button submitBtn = new Button("Submit");
         Diagram diagram = CommandLineInterface.getCurrentDiagram();
         Class newClass = new Class("");
+        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
+
         submitBtn.setOnAction(e -> {
             String inputText = tf.getText();
             if(inputText.isEmpty() || inputText.length() > 50) {
@@ -142,6 +145,7 @@ public class DiagramProjectController {
                 newClass.setClassName(inputText);
                 System.out.println("Submitted Class name: " + inputText);
                 diagram.addClass(newClass.getClassName());
+                UpdateViewController.updateAddClass(view, newClass);
                 popupStage.close();
             }
         });
@@ -161,6 +165,7 @@ public class DiagramProjectController {
         System.out.println("adding a new relationship!");
         Stage popupStage = new Stage();
         Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         HBox setRelationshipType = new HBox();
         HBox classOneBox = new HBox();
@@ -332,6 +337,7 @@ public class DiagramProjectController {
                 try{
                     relationship = new Relationship(relationshipType,classOne, classTwo, classOneCard, classTwoCard, ownerClass);
                     diagram.addRelationship(relationship);
+                    //UpdateViewController.UpdateView(view);
                     popupStage.close();
                 }catch(Exception errorMakingRelationship){
                     Alert alert = new Alert(Alert.AlertType.WARNING);
