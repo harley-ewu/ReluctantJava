@@ -43,7 +43,8 @@ public class RelationshipAsset {
     }
 
     public Pane createRelationshipAsset(final ArrayList<Relationship> relationshipList, final ArrayList<Pane> paneArrayList,
-                                        final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> coordinates,
+                                        final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> relationshipCoordinates,
+                                        final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates,
                                         final GUIDiagramProject guiDiagramProject) {
         int textSize = 12;
         String fontType = "Verdana";
@@ -56,7 +57,7 @@ public class RelationshipAsset {
                 "-fx-border-radius: 10");
         Insets margins = new Insets(5, 5,5, 5);
         VBox textContainer = this.setupTextContainer(fontType, textSize, margins, relationshipList, paneArrayList,
-                relationshipAssets, coordinates, guiDiagramProject);
+                relationshipAssets, relationshipCoordinates, classAssetPaneList, classCoordinates, guiDiagramProject);
 
         this.relationshipContainer.getChildren().add(textContainer);
         this.relationshipContainer.setOnMousePressed(this::onMousePressed);
@@ -89,7 +90,8 @@ public class RelationshipAsset {
 
     public VBox setupTextContainer(final String fontType, final int textSize, final Insets margins, final ArrayList<Relationship> relationshipList,
                                    final ArrayList<Pane> paneArrayList, final ArrayList<RelationshipAsset> relationshipAssets,
-                                   final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject) {
+                                   final ArrayList<Point2D> relationshipCoordinates, final ArrayList<Pane> classAssetPaneList,
+                                   final ArrayList<Point2D> classCoordinates, final GUIDiagramProject guiDiagramProject) {
         VBox textContainer = new VBox();
         Text relationshipInfo = new Text();
         relationshipInfo.setFont(Font.font(fontType, textSize));
@@ -98,7 +100,7 @@ public class RelationshipAsset {
         VBox.setMargin(relationshipInfo, margins);
 
         HBox buttonContainer = this.setUpButton(fontType, textSize, margins, relationshipList, paneArrayList,
-                relationshipAssets, coordinates, guiDiagramProject);
+                relationshipAssets, relationshipCoordinates, classAssetPaneList, classCoordinates, guiDiagramProject);
         textContainer.getChildren().addAll(relationshipInfo, buttonContainer);
 
         return textContainer;
@@ -106,13 +108,15 @@ public class RelationshipAsset {
 
     public HBox setUpButton(final String fontType, final int textSize, final Insets margins, final ArrayList<Relationship> relationshipList,
                             final ArrayList<Pane> paneArrayList, final ArrayList<RelationshipAsset> relationshipAssets,
-                            final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject) {
+                            final ArrayList<Point2D> relationshipCoordinates, final ArrayList<Pane> classAssetPaneList,
+                            final ArrayList<Point2D> classCoordinates, final GUIDiagramProject guiDiagramProject) {
         HBox buttonContainer = new HBox();
         buttonContainer.setSpacing(120.0);
 
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font(fontType, textSize));
-        deleteButton.setOnAction(e -> this.deleteRelationship(relationshipList, paneArrayList, relationshipAssets, coordinates, guiDiagramProject));
+        deleteButton.setOnAction(e -> this.deleteRelationship(relationshipList, paneArrayList, relationshipAssets,
+                relationshipCoordinates, classAssetPaneList, classCoordinates, guiDiagramProject));
 
         buttonContainer.getChildren().add(deleteButton);
 
@@ -129,7 +133,8 @@ public class RelationshipAsset {
     }
 
     public void deleteRelationship(final ArrayList<Relationship> relationshipList, final ArrayList<Pane> relationshipAssetPaneList,
-                                   final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> coordinates,
+                                   final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> relationshipCoordinates,
+                                   final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates,
                                    final GUIDiagramProject guiDiagramProject) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
@@ -137,17 +142,24 @@ public class RelationshipAsset {
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
 
         if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-            System.out.println("class deleted");
-            //remove the class from the class list first
+            System.out.println("relationship deleted");
+            //remove the relationship from the relationship list first
             relationshipList.remove(this.index);
-            //remove the class pane from the pane list next
+            //remove the relationship pane from the pane list next
             relationshipAssetPaneList.remove(this.index);
-            //get the x/y positions from the remaining class asset panes
+            //get the x/y positions from the remaining relationship asset panes
             for (int i = 0; i < relationshipAssetPaneList.size(); i++) {
                 double currentXCoordinate = relationshipAssetPaneList.get(i).localToScene(relationshipAssetPaneList.get(i).getBoundsInLocal()).getMinX();
                 double currentYCoordinate = relationshipAssetPaneList.get(i).localToScene(relationshipAssetPaneList.get(i).getBoundsInLocal()).getMinY();
                 Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
-                coordinates.add(coords);
+                relationshipCoordinates.add(coords);
+            }
+
+            for (int i = 0; i < classAssetPaneList.size(); i++) {
+                double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX();
+                double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY();
+                Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
+                classCoordinates.add(coords);
             }
 
             //update the class asset list by taking the new class list and creating new class assets from them
@@ -155,7 +167,7 @@ public class RelationshipAsset {
 
             //refresh the class asset panes and the window
             guiDiagramProject.refreshRelationshipPanes();
-            guiDiagramProject.refreshPanesToPaneWindow();
+            guiDiagramProject.refreshRelationshipPanesToPaneWindow();
 
         }
 

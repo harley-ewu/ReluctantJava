@@ -50,7 +50,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
         //test classes
-        //this.testAssets();
+        this.testAssets();
         //set stage
         stage.setScene(scene);
         stage.show();
@@ -215,6 +215,20 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         System.out.println(this.classAssets.toString());
 
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, false);
+        Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Aggregation, testClass2, testClass3, 1, 1, false);
+        Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass3, 1, 1, false);
+
+        this.relationshipList.add(testRelationship);
+        this.relationshipList.add(testRelationship2);
+        this.relationshipList.add(testRelationship3);
+
+        this.addRelationshipAsset(this.relationshipList);
+        this.addRelationshipPanes();
+        this.addRelationshipPanesToPaneWindow();
+
+        System.out.println(this.relationshipAssets.toString());
+
     }
 
     /**
@@ -267,7 +281,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     public void addClassPanes() {
         for (ClassAsset classAsset : this.classAssets) {
             Pane temp = classAsset.createClassAsset(this.classList,this.classPanes, this.classAssets,
-                    this.classPanesCoordinates,this);
+                    this.classPanesCoordinates, this.relationshipPanes, this.relationshipPanesCoordinates, this);
             this.classPanes.add(temp);
         }
     }
@@ -303,7 +317,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     public void addRelationshipPanes() {
         for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
             Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipPanes, this.relationshipAssets,
-                    this.relationshipPanesCoordinates,this);
+                    this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this);
             this.relationshipPanes.add(temp);
         }
     }
@@ -327,7 +341,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.relationshipPanes.clear();
         for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
             Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipPanes, this.relationshipAssets,
-                    this.relationshipPanesCoordinates,this);
+                    this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this);
             this.relationshipPanes.add(temp);
         }
     }
@@ -342,7 +356,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classPanes.clear();
         for (ClassAsset classAsset : this.classAssets) {
             Pane temp = classAsset.createClassAsset(this.classList, this.classPanes,
-                    this.classAssets, this.classPanesCoordinates,this);
+                    this.classAssets, this.classPanesCoordinates, this.relationshipPanes, this.relationshipPanesCoordinates, this);
             this.classPanes.add(temp);
         }
     }
@@ -369,7 +383,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      * - it then does the same for all relationship
      *
      * */
-
+    /*
     public void refreshPanesToPaneWindow() {
 
         this.contentPane.getChildren().clear();
@@ -389,6 +403,46 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
 
         this.relationshipPanesCoordinates.clear();
+
+    }
+    */
+    public void refreshClassPanesToPaneWindow() {
+        this.contentPane.getChildren().clear();
+
+        for (int i = 0; i < this.classPanes.size(); i++) {
+            this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
+            this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.classPanes.get(i));
+        }
+
+        this.classPanesCoordinates.clear();
+
+        for (int i = 0; i < this.relationshipPanes.size(); i++) {
+            this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
+            this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.relationshipPanes.get(i));
+        }
+    }
+
+    public void refreshRelationshipPanesToPaneWindow() {
+        this.contentPane.getChildren().clear();
+
+        for (int i = 0; i < this.classPanes.size(); i++) {
+            this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
+            this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.classPanes.get(i));
+        }
+
+        for (int i = 0; i < this.relationshipPanes.size(); i++) {
+            this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
+            this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.relationshipPanes.get(i));
+        }
+
+        this.relationshipPanesCoordinates.clear();
+    }
+
+    public void refreshCoordinates() {
 
     }
 }
