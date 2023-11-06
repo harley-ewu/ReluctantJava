@@ -29,6 +29,14 @@ public class GUIDiagramProject extends javafx.application.Application {
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
 
+    public ArrayList<Pane> getRelationshipPanes() {
+        return relationshipPanes;
+    }
+
+    public ArrayList<RelationshipAsset> getRelationshipAssets() {
+        return relationshipAssets;
+    }
+
     public static void startGUI(String[] args){
         try{
             launch();
@@ -338,6 +346,10 @@ public class GUIDiagramProject extends javafx.application.Application {
         for (Pane relationshipAsset : this.relationshipPanes) {
             this.contentPane.getChildren().add(relationshipAsset);
         }
+    }
+
+    public ArrayList<Pane> getClassPanes() {
+        return classPanes;
     }
 
     /**
