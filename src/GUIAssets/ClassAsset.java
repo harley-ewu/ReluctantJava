@@ -3,6 +3,7 @@ import Attributes.Attribute;
 import Class.Class;
 
 import GUI.GUIDiagramProject;
+import Relationships.Relationship;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -273,13 +274,25 @@ public class ClassAsset {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
-        alert.setContentText("Are you sure you want to delete this class?");
+        alert.setContentText("Are you sure you want to delete this class and it's relationships?");
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
 
         if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-            System.out.println("class deleted");
+            System.out.println("class and it's relationships deleted");
             //remove the class from the class list first
             classList.remove(this.pos);
+
+            ArrayList<Relationship> classRelationships = guiDiagramProject.getDiagram().getSingleClassRelationships(currentClass);
+            for(Relationship relationship : classRelationships) {
+                if(guiDiagramProject.getRelationshipAssetFromList(relationship) != null) {
+                    guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
+                            relationshipAssetPaneList, guiDiagramProject.getRelationshipAssets(), relationshipCoordinates,
+                            classAssetPaneList, classCoordinates, guiDiagramProject);
+                }
+            }
+
+            guiDiagramProject.getDiagram().deleteClass(currentClass);
+
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
 

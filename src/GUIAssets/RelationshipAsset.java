@@ -34,6 +34,10 @@ public class RelationshipAsset {
         this.index = index;
     }
 
+    public Relationship getRelationship() {
+        return this.currentRelationship;
+    }
+
     public int getIndex() {
         return this.index;
     }
@@ -196,6 +200,9 @@ public class RelationshipAsset {
             System.out.println("relationship deleted");
             //remove the relationship from the relationship list first
             relationshipList.remove(this.index);
+
+            guiDiagramProject.getDiagram().deleteRelationship(currentRelationship.getClass1(), currentRelationship.getClass2());
+
             //remove the relationship pane from the pane list next
             relationshipAssetPaneList.remove(this.index);
 

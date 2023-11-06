@@ -5,6 +5,7 @@ import Relationships.Relationship;
 import MenuPrompts.MenuPrompts;
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -385,6 +386,11 @@ public class Diagram {
          + this.listOneClassRelationships(c));
       }
    }
+
+   public Class getSingleClass(String className) {
+      return classList.get(className);
+   }
+
    /*
     * Prompts user for both class names, then prompts for all relevant relationship information 
     * and builds relationships between the classes, then adds it to either of their relationship lists
@@ -397,61 +403,6 @@ public class Diagram {
       int c2Cardinality = -2;
       Boolean owner = false;
 
-      /*int choice;
-      while(relationshipType == null) {
-         System.out.println("What Type of Relationship?\n" +
-                 "1. Association \n2. Aggregation \n3.Composition \n4.Generalization");
-         choice = Integer.parseInt(this.scanner.nextLine());
-         if(choice < 1 || choice > 4){
-            System.out.println("Please enter 1 through 4 as your choice");
-         }
-         else if(choice == 1){
-            relationshipType = Relationship.RelationshipType.Realization;
-         }
-         else if(choice == 2) {
-            relationshipType = Relationship.RelationshipType.Aggregation;
-         }
-         else if (choice == 3){
-            relationshipType = Relationship.RelationshipType.Composition;
-         }
-         else{
-            relationshipType = Relationship.RelationshipType.Inheritance;
-         }
-
-      }
-
-      while(c1Cardinality < -1){
-         System.out.println("What is "+c1.getClassName()+"'s Class Cardinality? (Enter -1 for * Cardinality)");
-         c1Cardinality = Integer.parseInt(this.scanner.nextLine());
-         if(c1Cardinality < -1){
-            System.out.println("Please enter a valid cardinality");
-         }
-      }
-
-      while(c2Cardinality < -1){
-         System.out.println("What is "+c2.getClassName()+"'s Class Cardinality? (Enter -1 for * Cardinality)");
-         c2Cardinality = Integer.parseInt(this.scanner.nextLine());
-         if(c2Cardinality < -1){
-            System.out.println("Please enter a valid cardinality");
-         }
-      }
-
-      choice = 0;
-      while(choice != 1 && choice != 2){
-         System.out.println("Which class is the owner of the relationship?\n" +
-                 "1. "+c1.getClassName()+"\n2. "+c2.getClassName()+"\n");
-         choice = Integer.parseInt(this.scanner.nextLine());
-
-         if(choice != 1 && choice != 2){
-            System.out.println("Please enter 1 or 2 as your choice");
-         }
-         else if(choice == 1){
-            owner = true;
-         }
-         else {
-            owner = false;
-         }
-      }*/
       relationshipType = MenuPrompts.relationshipTypePrompt();
       if(relationshipType == null){
          return;
@@ -501,6 +452,26 @@ public class Diagram {
       }
 
       return relationship;
+   }
+
+   public ArrayList<Relationship> getSingleClassRelationships(final Class c1) {
+      ArrayList<Relationship> classRelationships = new ArrayList<Relationship>();
+
+      System.out.println(this.getRelationshipList());
+
+      for(Class item : this.classList.values()){
+         if(item.equals(c1)) continue;
+
+         if(this.relationshipList.get(c1.getClassName() + item.getClassName()) != null){
+            classRelationships.add(this.relationshipList.get(c1.getClassName() + item.getClassName()));
+         }
+         else if(this.relationshipList.get(item.getClassName() + c1.getClassName()) != null){
+            classRelationships.add(this.relationshipList.get(item.getClassName() + c1.getClassName()));
+         }
+      }
+      System.out.println(classRelationships);
+
+      return classRelationships;
    }
 
    //prints to screen all relationships in relationshipList

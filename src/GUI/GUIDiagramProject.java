@@ -1,15 +1,18 @@
 package GUI;
-import Attributes.Attribute;
+
+import Class.Class;
 import Diagram.Diagram;
+import GUIAssets.ClassAsset;
+import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
-import GUIAssets.*;
-import Class.Class;
+
 import java.util.ArrayList;
 public class GUIDiagramProject extends javafx.application.Application {
 
@@ -50,10 +53,32 @@ public class GUIDiagramProject extends javafx.application.Application {
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
         //test classes
-        //this.testAssets();
+        this.testAssets();
         //set stage
         stage.setScene(scene);
         stage.show();
+    }
+
+    public Diagram getDiagram() {
+        return this.diagram;
+    }
+
+    public RelationshipAsset getRelationshipAssetFromList(Relationship relationship) {
+        for(RelationshipAsset relationshipAsset : relationshipAssets) {
+            if(relationshipAsset.getRelationship() == relationship) {
+                return relationshipAsset;
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Relationship> getRelationshipList() {
+        return this.relationshipList;
+    }
+
+    public ArrayList<RelationshipAsset> getRelationshipAssets() {
+        return this.relationshipAssets;
     }
 
     public void setCurrentDiagram(final Diagram diagram) {
@@ -155,10 +180,16 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
     private void testAssets() {
 
+        this.diagram.addClass("test class");
+        this.diagram.addClass("test class 2");
+        this.diagram.addClass("test class 3");
+        this.diagram.addClass("test class 4");
+        /*
         Class testClass = new Class("test class");
         Class testClass2 = new Class("test class 2");
         Class testClass3 = new Class("test class 3");
         Class testClass4 = new Class("test class 4");
+
 
         ArrayList<String> field1List = new ArrayList<>();
         ArrayList<String> field2List = new ArrayList<>();
@@ -208,16 +239,34 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.add(testClass2);
         this.classList.add(testClass3);
         this.classList.add(testClass4);
+        */
+        this.classList.add(this.diagram.getSingleClass("test class"));
+        this.classList.add(this.diagram.getSingleClass("test class 2"));
+        this.classList.add(this.diagram.getSingleClass("test class 3"));
+        this.classList.add(this.diagram.getSingleClass("test class 4"));
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
         System.out.println(this.classAssets.toString());
-
+        /*
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, false);
         Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Aggregation, testClass2, testClass3, 1, 1, false);
         Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass3, 1, 1, false);
+        */
+        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation,
+                this.diagram.getSingleClass("test class"), this.diagram.getSingleClass("test class 2"),
+                1, 1, false);
+        Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Aggregation,
+                this.diagram.getSingleClass("test class 2"), this.diagram.getSingleClass("test class 3"),
+                1, 1, false);
+        Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation,
+                this.diagram.getSingleClass("test class"), this.diagram.getSingleClass("test class 3"),
+                1, 1, false);
+        this.diagram.addRelationship(testRelationship);
+        this.diagram.addRelationship(testRelationship2);
+        this.diagram.addRelationship(testRelationship3);
 
         this.relationshipList.add(testRelationship);
         this.relationshipList.add(testRelationship2);
