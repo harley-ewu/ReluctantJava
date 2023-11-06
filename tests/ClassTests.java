@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -63,27 +62,6 @@ public class ClassTests {
         assertEquals("New Class Name", this.newClass.getClassName());
     }
 
-    @Test
-    void testDisplayAttributes2() {
-        Class test = new Class("Test Class");
-        ArrayList<String> testList = new ArrayList<>();
-        ArrayList<String> testList2 = new ArrayList<>();
-        ArrayList<String> testList3 = new ArrayList<>();
-
-        testList2.add("Boolean");
-        test.createAttribute("testMethod", testList, 2);
-        test.createAttribute("testField1", testList2, 1);
-        test.createAttribute("testMethod2", testList, 2);
-
-        test.sortArrayList(test.getAttributes());
-
-        String expected = "Available Fields and Methods: \n" +
-                "1. testMethod()\n" +
-                "2. testMethod2()\n"+
-                "3. testField1: Boolean\n";
-        assertEquals(expected, test.displayAttributes());
-    }
-
     /*
     @Test
     public void testAddAttributeMethod() {
@@ -126,11 +104,89 @@ public class ClassTests {
 
     }
 
-    */
+    @Test
+    public void testAddRelationship() {
+
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Class otherClass = new Class("Other Class",this.newDiagram);
+        int thisClassCardinality = 1;
+        int otherClassCardinality = -1;
+        boolean owner = true;
+
+        Relationship testRelationship = new Relationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+
+        this.newClass.addRelationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        assertEquals(testRelationship, this.newClass.getRelationship(otherClass));
+
+    }
+
+    @Test
+    public void testDeleteRelationship() {
+
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Class otherClass = new Class("Other Class",this.newDiagram);
+        int thisClassCardinality = 1;
+        int otherClassCardinality = -1;
+        boolean owner = true;
+
+        Relationship testRelationship = new Relationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        this.newClass.addRelationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        assertEquals(testRelationship, this.newClass.getRelationship(otherClass));
+        this.newClass.deleteRelationship(testRelationship);
+        assertTrue(this.newClass.getRelationships().isEmpty());
+
+    }
+*/
+    @Test
+    public void testRelationshipListEmpty() {
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Class otherClass = new Class("Other Class");
+        int thisClassCardinality = 1;
+        int otherClassCardinality = -1;
+        boolean owner = true;
+
+        Relationship testRelationship = new Relationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        this.newClass.deleteRelationship(testRelationship);
+        assertEquals("There are no relationships assigned to this class.\n", this.testOut.toString());
+
+    }
+
+    @Test
+    public void testDisplayRelationships() {
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
+        Class otherClass = new Class("Other Class 1");
+        int thisClassCardinality = 1;
+        int otherClassCardinality = -1;
+        boolean owner = true;
+
+        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Association;
+        Class otherClass2 = new Class("Other Class 2");
+        int thisClassCardinality2 = 1;
+        int otherClassCardinality2 = -1;
+        boolean owner2 = true;
+
+        this.newClass.addRelationship(relationshipType, otherClass, thisClassCardinality, otherClassCardinality, owner);
+        this.newClass.addRelationship(relationshipType2, otherClass2, thisClassCardinality2, otherClassCardinality2, owner2);
+
+        String testText = "Relationships in the Test Class class: \n" +
+                "Class has a Association relationship with Other Class 1\n" +
+                "Owner: true\n" +
+                "This Class Cardinality: 1\n" +
+                "Other Class 1 Class Cardinality: *\n" +
+                "\n" +
+                "Class has a Association relationship with Other Class 2\n" +
+                "Owner: true\n" +
+                "This Class Cardinality: 1\n" +
+                "Other Class 2 Class Cardinality: *\n\n";
+
+        assertEquals(testText, this.newClass.displayRelationships());
+
+    }
+
     @Test
     public void  testDisplayAttributes() {
-        //this.newClass.getAttributes().addAttribute("color");
-        //this.newClass.getAttributes().addAttribute("skin");
+        this.newClass.getAttributes().addAttribute("color");
+        this.newClass.getAttributes().addAttribute("skin");
 
         String output = "Attributes in the Test Class class:\n" +
                 "color\n" +
@@ -139,19 +195,19 @@ public class ClassTests {
         assertEquals(output, this.newClass.displayAttributes());
 
     }
-/*
+
     @Test
     public void testToString() {
-        //this.newClass.getAttributes().addAttribute("color");
-       // this.newClass.getAttributes().addAttribute("skin");
+        this.newClass.getAttributes().addAttribute("color");
+        this.newClass.getAttributes().addAttribute("skin");
 
-        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Realization;
+        Relationship.RelationshipType relationshipType = Relationship.RelationshipType.Association;
         Class otherClass = new Class("Other Class 1");
         int thisClassCardinality = 1;
         int otherClassCardinality = -1;
         boolean owner = true;
 
-        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Realization;
+        Relationship.RelationshipType relationshipType2 = Relationship.RelationshipType.Association;
         Class otherClass2 = new Class("Other Class 2");
         int thisClassCardinality2 = 1;
         int otherClassCardinality2 = -1;
@@ -182,7 +238,4 @@ public class ClassTests {
         assertEquals(output, this.newClass.toString());
 
     }
-
- */
 }
-

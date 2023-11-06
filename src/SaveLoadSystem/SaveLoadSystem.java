@@ -1,156 +1,172 @@
+/*
 package SaveLoadSystem;
 
-import Diagram.Diagram;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import Class.Class;
 
-import java.io.*;
-import java.nio.file.InvalidPathException;
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonException;
+import com.github.cliftonlabs.json_simple.JsonObject;
+import com.github.cliftonlabs.json_simple.Jsoner;
+
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
+*/
 /**
  * Description: This class will contain code regarding the save/load system
- * Use Case: Used to save or load a diagram.
- */
+ * Use Case: Used to save or load a project.
+ *//*
 
 public class SaveLoadSystem {
 
     public SaveLoadSystem(){}
 
-    /**
-     * Description: Saves a project to the default file directory which is the users home directory.
-     * Use case: Call this method when the user wants to save to the default file path.
-     * @param fileName: The name of the project to be saved.
-     * @param diagram: The diagram object of the project.
-     */
-    public static void saveDefaultCLI(String fileName, Diagram diagram){
+    */
+/**
+     * Description: Saves the project to the home directory of the user.
+     * Use case: Call if user wants to save to the default directory.
+     * @param filename: the name of the file to be saved
+     * @param classList: the list of classes that need to be saved
+     *//*
 
-        if(fileName == null || fileName.isEmpty()){
-            throw new IllegalArgumentException("The file name cannot be null or empty");
+    public static void saveDefault(String filename, List<Class> classList){
+
+        if(filename == null || filename.isEmpty()) {
+            throw new IllegalArgumentException("The filename cannot be null or empty.");
         }
 
-        String homeFolder = System.getProperty("user.home");
-        Path path = Paths.get(homeFolder).resolve(fileName + ".json");
-        File fileToBeSaved = new File(path.toString());
-
-        ConvertDiagramToJsonAndWriteToFile(diagram, fileToBeSaved);
-    }
-
-    /**
-     * Description: Saves a project to a file path specified by the user.
-     * Use case: Call if the user wants to save the project to a specified file path.
-     * @param path: The folder or directory that the user wishes to save to.
-     * @param fileName: The name of the project to be saved.
-     * @param diagram: The diagram object of the project.
-     */
-    public static void saveCustomCLI(String path, String fileName, Diagram diagram){
-
-        nullCheckPathAndFilename(path, fileName);
-
-        Path filePath = Paths.get(path).resolve(fileName + ".json");
-        File fileToBeSaved = new File(filePath.toString());
-
-        ConvertDiagramToJsonAndWriteToFile(diagram, fileToBeSaved);
-    }
-
-    /**
-     * Description: Loads a project from a specified file path.
-     * Use case: Call if the user wants to load an existing project.
-     * @param path: The file path to the existing project.
-     * @param fileName: The name of the existing project.
-     * @return - Returns a Diagram object of an existing project on the disk.
-     */
-    public static Diagram loadDiagramCLI(String path, String fileName){
-
-        nullCheckPathAndFilename(path, fileName);
-        try {
-            Path filePath = Paths.get(path).resolve(fileName + ".json");
-            File fileToBeLoaded = new File(filePath.toString());
-            return loadSavedJsonTextAndConvertToDiagramObject(fileToBeLoaded);
-        } catch (InvalidPathException e) {
-            return null;
+        if(classList == null) {
+            throw new IllegalArgumentException("The list of classes must not be null.");
         }
+
+        JsonArray jsonArray = new JsonArray();
+        Path filePath;
+
+        fillJsonArray(classList, jsonArray);
+
+        filePath = getDefaultPath(filename);
+
+        writeToFile(filePath, jsonArray);
     }
 
-    /**
-     * Description: This method is called inside the MenuBarController
-     * in order to save a project starting from the users home directory.
-     * It saves the project once the user has selected a directory.
-     * @param diagram - The diagram object to be saved.
-     * @param file - The file path to where the project will be saved.
-     */
-    public static void saveProjectGUI(Diagram diagram, File file){
-        ConvertDiagramToJsonAndWriteToFile(diagram, file);
-    }
+    */
+/**
+     * Description: Saves the project to a specified file path.
+     * Use case: Call if user wants to save project to specific directory.
+     * @param path: the file path that the file will be saved to
+     * @param filename: the name of the file to be saved
+     * @param classList: the list of classes to be saved
+     *//*
 
-    public static Diagram loadProjectGUI(File file){
-        return loadSavedJsonTextAndConvertToDiagramObject(file);
-    }
+    public static void saveCustom(String path, String filename, List<Class> classList) {
 
-    /**
-     * Description: Converts a diagram object into JSON and then saves it to a file.
-     * Use case: DO NOT USE! THIS IS A HELPER METHOD.
-     * @param diagram: The Diagram object to be converted to JSON.
-     * @param fileToBeSaved: The File object that will be saved.
-     */
-    private static void ConvertDiagramToJsonAndWriteToFile(Diagram diagram, File fileToBeSaved) {
-        try{
-            FileWriter fileWriter = new FileWriter(fileToBeSaved);
-            Gson gson = new GsonBuilder()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .create();
-            String jsonText = gson.toJson(diagram);
-            fileWriter.write(jsonText);
-            fileWriter.close();
-        } catch (IOException e) {
-            System.err.println("There was an error writing to the file");
+        if(path == null) {
+            throw new IllegalArgumentException("The file path is null.");
         }
-    }
 
-    /**
-     * Description: Loads a JSON file of a project and converts it back into a Diagram object.
-     * Use case: DO NOT USE! THIS IS A HELPER METHOD.
-     * @param fileToBeLoaded: The File object where the existing project is stored.
-     * @return - Returns a Diagram object of an existing project on the disk.
-     */
-    private static Diagram loadSavedJsonTextAndConvertToDiagramObject(File fileToBeLoaded){
-
-        Diagram diagram;
-
-        if(fileToBeLoaded.exists()){
-            try{
-                FileReader fileReader = new FileReader(fileToBeLoaded);
-                Gson gson = new GsonBuilder()
-                        .excludeFieldsWithoutExposeAnnotation()
-                        .create();
-                diagram = gson.fromJson(fileReader, Diagram.class);
-                fileReader.close();
-                return diagram;
-            } catch (FileNotFoundException e) {
-                System.err.println("There was an error trying to find the file.");
-                System.err.println("Try checking the file path and file name for typos.");
-            } catch (IOException e) {
-                System.err.println("There was an error opening or closing the file.");
-            }
+        if(filename == null || filename.isEmpty()) {
+            throw new IllegalArgumentException("The filename cannot be null or empty.");
         }
-        return null;
+
+        if(classList == null) {
+            throw new IllegalArgumentException("The list of classes must not be null.");
+        }
+
+        JsonArray jsonArray = new JsonArray();
+        Path filePath;
+
+        fillJsonArray(classList, jsonArray);
+
+        filePath = Paths.get(path).resolve(filename + ".json");
+
+        writeToFile(filePath, jsonArray);
+
     }
 
-    /**
-     * Description: Used to simplify the parameter checking inside the saveCustomCLI and loadDiagramCLI methods.
-     * Use case: DO NOT USE! THIS IS A HELPER METHOD.
-     * @param path: The file path where the project will be saved to / loaded from.
-     * @param fileName: The name of the project.
-     */
-    private static void nullCheckPathAndFilename(String path, String fileName){
+    */
+/**
+     * Description: Loads the project file from a specific file path.
+     * Use case: Call if user wants to load a project.
+     * @param path: the path to the file that the user wishes to load
+     * @return : A List containing the classes saved in the project file.
+     *//*
+
+    public static List<Class> load(String path){
+
         if(path == null || path.isEmpty()){
             throw new IllegalArgumentException("The file path cannot be null or empty.");
         }
 
-        if(fileName == null || fileName.isEmpty()){
-            throw new IllegalArgumentException("The file name cannot be null or empty.");
+        List<Class> classList = new ArrayList<>();
+        Path filepath = Paths.get(path);
+
+        String jsonText = convertJsonTextToString(filepath);
+
+        JsonArray jsonArray = convertStringToJsonArray(jsonText);
+
+        loadUmlClassesIntoList(jsonArray, classList);
+
+        return classList;
+    }
+
+    private static Path getDefaultPath(String filename){
+        String home = System.getProperty("user.home");
+        return Paths.get(home).resolve(filename + ".json");
+    }
+
+    private static void fillJsonArray(List<Class> classList, JsonArray array){
+        for (Class classes : classList) {
+            array.add(classes.toJsonObject());
         }
     }
-}
 
+    private static void writeToFile(Path filePath, JsonArray array) {
+        String jsonText = Jsoner.serialize(array);
+
+        try {
+            Files.write(filePath, jsonText.getBytes(), StandardOpenOption.CREATE);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String convertJsonTextToString(Path filepath){
+        String text;
+
+        try{
+            text = new String(Files.readAllBytes(filepath));
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return text;
+    }
+
+    private static JsonArray convertStringToJsonArray(String jsonText){
+        JsonArray array;
+
+        try{
+            array = (JsonArray) Jsoner.deserialize(jsonText);
+        } catch (JsonException e) {
+            throw new RuntimeException(e);
+        }
+
+        return array;
+    }
+
+    private static void loadUmlClassesIntoList(JsonArray jsonArray, List<Class> classList){
+        for(Object object : jsonArray){
+            JsonObject jsonObject = (JsonObject) object;
+            Class umlClass = Class.fromJsonObject(jsonObject);
+            classList.add(umlClass);
+        }
+    }
+
+
+}
+*/
