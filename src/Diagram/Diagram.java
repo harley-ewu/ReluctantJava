@@ -17,9 +17,9 @@ public class Diagram {
    private String title;
    //private List<Class> classList = new ArrayList<Class>();
    @Expose
-   private HashMap<String, Class> classList;
+   private static HashMap<String, Class> classList;
    @Expose
-   private HashMap<String, Relationship> relationshipList;
+   private static HashMap<String, Relationship> relationshipList;
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -29,8 +29,8 @@ public class Diagram {
       }
       //if diagram comes in as null/empty, should we initialize an empty arraylist?
       this.title = title;
-      this.classList = new HashMap<>();
-      this.relationshipList = new HashMap<>();
+      Diagram.classList = new HashMap<>();
+      Diagram.relationshipList = new HashMap<>();
    }
    
    /*
@@ -48,8 +48,8 @@ public class Diagram {
    /*
     * Getter for classList
     * */
-   public HashMap<String, Class> getClassList(){
-      return this.classList;
+   public static HashMap<String, Class> getClassList(){
+      return Diagram.classList;
    }
 
    /*
@@ -57,13 +57,13 @@ public class Diagram {
    * */
 
    public void setClassList(HashMap<String, Class> classList){
-      this.classList = classList;
+      Diagram.classList = classList;
    }
 
    //Getter for RelationshipList
-   public HashMap<String, Relationship> getRelationshipList() { return this.relationshipList; }
+   public static HashMap<String, Relationship> getRelationshipList() { return Diagram.relationshipList; }
    //Setter for RelationshipList
-   public void setRelationshipList(HashMap<String, Relationship> relationshipList) { this.relationshipList = relationshipList; }
+   public void setRelationshipList(HashMap<String, Relationship> relationshipList) { Diagram.relationshipList = relationshipList; }
 
    /*
    Menu of choices once inside an existing diagram, or when creating a new diagram
@@ -183,9 +183,9 @@ public class Diagram {
    */
    public void addClass(final String className){
       
-      Class c = this.classList.get(className);
+      Class c = Diagram.classList.get(className);
       if (c == null) {
-         this.classList.put(className, new Class(className));
+         Diagram.classList.put(className, new Class(className));
       }
       else {
          System.out.println("Class already exists.");
@@ -245,10 +245,10 @@ public class Diagram {
       //need to delete from hashmap while retaining temp class object and then readd with new name
       //also need to change the name of the actual class object
       if(old != null && !(newName.isEmpty())){
-         Class temp = this.classList.get(old.getClassName());
-         this.classList.remove(temp.getClassName());
+         Class temp = Diagram.classList.get(old.getClassName());
+         Diagram.classList.remove(temp.getClassName());
          temp.setClassName(newName);
-         this.classList.put(newName, temp);
+         Diagram.classList.put(newName, temp);
       }
       else{
          System.out.println("Bad Parameters");
@@ -350,12 +350,12 @@ public class Diagram {
    Lists out all of the classes present in the classList
    */
    public void listClasses() {
-      if(this.classList.size() == 0){
+      if(Diagram.classList.size() == 0){
          System.out.println("Diagram is empty.");
       }
       else {
          System.out.println("Classes: ");
-         System.out.println(this.classList.values());
+         System.out.println(Diagram.classList.values());
          }
       
    } 
@@ -368,7 +368,7 @@ public class Diagram {
          System.out.println("Invalid class name.");
          return null;
       }
-      Class c = this.classList.get(className);
+      Class c = Diagram.classList.get(className);
       return c;
    }
    
@@ -469,7 +469,7 @@ public class Diagram {
 
    public void addRelationship(final Relationship relationship) {
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
-      this.relationshipList.put(relationshipName, relationship);
+      Diagram.relationshipList.put(relationshipName, relationship);
    }
    
 
@@ -481,18 +481,18 @@ public class Diagram {
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
-      this.relationshipList.remove(relationshipName);
-      this.relationshipList.remove(relationshipName2);
+      Diagram.relationshipList.remove(relationshipName);
+      Diagram.relationshipList.remove(relationshipName2);
       
    }
 
    public Relationship findSingleRelationship(final Class c1, final Class c2) {
       String relationshipName = c1.getClassName()+c2.getClassName();
-      Relationship relationship = this.relationshipList.get(relationshipName);
+      Relationship relationship = Diagram.relationshipList.get(relationshipName);
       if(relationship == null)
       {
          relationshipName = c2.getClassName()+c1.getClassName();
-         relationship = this.relationshipList.get(relationshipName);
+         relationship = Diagram.relationshipList.get(relationshipName);
       }
 
       if (relationship == null)
@@ -521,14 +521,14 @@ public class Diagram {
       String str = "Relationships: \n";
       int i = 1;
 
-      for(Class item : this.classList.values()){
+      for(Class item : Diagram.classList.values()){
          if(item.equals(c1)) continue;
-         if(this.relationshipList.get(c1.getClassName() + item.getClassName()) != null){
-            str += String.valueOf(i) + ": " + this.relationshipList.get(c1.getClassName() + item.getClassName()).toString();
+         if(Diagram.relationshipList.get(c1.getClassName() + item.getClassName()) != null){
+            str += String.valueOf(i) + ": " + Diagram.relationshipList.get(c1.getClassName() + item.getClassName()).toString();
             i++;
          }
-         else if(this.relationshipList.get(item.getClassName() + c1.getClassName()) != null){
-            str += String.valueOf(i) + ": " + this.relationshipList.get(item.getClassName() + c1.getClassName()).toString();
+         else if(Diagram.relationshipList.get(item.getClassName() + c1.getClassName()) != null){
+            str += String.valueOf(i) + ": " + Diagram.relationshipList.get(item.getClassName() + c1.getClassName()).toString();
             i++;
          }
       }
@@ -540,12 +540,12 @@ public class Diagram {
    Printing out entire diagram
    */
    public String toString(){
-      if (this.classList.isEmpty()) {
+      if (Diagram.classList.isEmpty()) {
          return "\nDiagram " + this.title + " is empty.\n";
       }
       String diagramString = "";
       diagramString += this.title + "\n\n";
-      for (Class c : this.classList.values()){
+      for (Class c : Diagram.classList.values()){
          diagramString += c.toString();
       }
       
