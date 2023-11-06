@@ -43,8 +43,8 @@ public class ClassAsset {
      * @param classPaneArrayList      The list of panes associated with class assets.
      * @param classAssets        The list of class assets.
      * @param classCoordinates        A list of coordinates representing the positions of class assets.
-     * @param relationshipPaneArrayList
-     * @param relationshipCoordinates
+     * @param relationshipPaneArrayList     The list of panes associates with relationship assets
+     * @param relationshipCoordinates      A list of coordinates representing the positions of relationship assets
      * @param guiDiagramProject  The GUI diagram project that manages the graphical elements
      * @return                  A JavaFX Pane representing the class asset.
      */
@@ -163,6 +163,13 @@ public class ClassAsset {
      * @param fontType
      * @param textSize
      * @param margins
+     * @param classList
+     * @param classPaneArrayList
+     * @param classAssets
+     * @param classCoordinates
+     * @param relationshipPaneArrayList
+     * @param relationshipCoordinates
+     * @param guiDiagramProject
      * @return
      */
 
@@ -195,6 +202,13 @@ public class ClassAsset {
      * @param fontType
      * @param textSize
      * @param margins
+     * @param classList
+     * @param classPaneArrayList
+     * @param classAssets
+     * @param classCoordinates
+     * @param relationshipPaneArrayList
+     * @param relationshipCoordinates
+     * @param guiDiagramProject
      * @return
      */
 
@@ -248,6 +262,8 @@ public class ClassAsset {
      * @param classAssetPaneList   The list of panes associated with the class assets.
      * @param classAssets          The list of class assets.
      * @param classCoordinates          A list of coordinates representing the positions of class assets.
+     * @param relationshipAssetPaneList     the list of panes associated with the relationship assets.
+     * @param relationshipCoordinates   A list of coordinates representing the positions of relationship assets
      * @param guiDiagramProject    The GUI diagram project that manages the graphical elements.
      */
 

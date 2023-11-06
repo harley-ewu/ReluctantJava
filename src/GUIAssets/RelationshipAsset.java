@@ -42,7 +42,19 @@ public class RelationshipAsset {
         this.index = index;
     }
 
-    public Pane createRelationshipAsset(final ArrayList<Relationship> relationshipList, final ArrayList<Pane> paneArrayList,
+    /**
+     * Creates and returns a graphical representation of a relationship asset within a GUI diagram project.
+     *
+     * @param relationshipList
+     * @param relationshipAssetPaneList
+     * @param relationshipAssets
+     * @param relationshipCoordinates
+     * @param classAssetPaneList
+     * @param classCoordinates
+     * @param guiDiagramProject  The GUI diagram project that manages the graphical elements
+     * @return                  A JavaFX Pane representing the class asset.
+     */
+    public Pane createRelationshipAsset(final ArrayList<Relationship> relationshipList, final ArrayList<Pane> relationshipAssetPaneList,
                                         final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> relationshipCoordinates,
                                         final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates,
                                         final GUIDiagramProject guiDiagramProject) {
@@ -56,7 +68,7 @@ public class RelationshipAsset {
                 "-fx-border-width: 1;" +
                 "-fx-border-radius: 10");
         Insets margins = new Insets(5, 5,5, 5);
-        VBox textContainer = this.setupTextContainer(fontType, textSize, margins, relationshipList, paneArrayList,
+        VBox textContainer = this.setupTextContainer(fontType, textSize, margins, relationshipList, relationshipAssetPaneList,
                 relationshipAssets, relationshipCoordinates, classAssetPaneList, classCoordinates, guiDiagramProject);
 
         this.relationshipContainer.getChildren().add(textContainer);
@@ -88,8 +100,22 @@ public class RelationshipAsset {
         this.yOffset = event.getSceneY();
     }
 
+    /**
+     * description: setup for the contents of the relationship
+     * @param fontType
+     * @param textSize
+     * @param margins
+     * @param relationshipList
+     * @param relationshipAssetPaneList
+     * @param relationshipAssets
+     * @param relationshipCoordinates
+     * @param classAssetPaneList
+     * @param classCoordinates
+     * @param guiDiagramProject
+     * @return
+     */
     public VBox setupTextContainer(final String fontType, final int textSize, final Insets margins, final ArrayList<Relationship> relationshipList,
-                                   final ArrayList<Pane> paneArrayList, final ArrayList<RelationshipAsset> relationshipAssets,
+                                   final ArrayList<Pane> relationshipAssetPaneList, final ArrayList<RelationshipAsset> relationshipAssets,
                                    final ArrayList<Point2D> relationshipCoordinates, final ArrayList<Pane> classAssetPaneList,
                                    final ArrayList<Point2D> classCoordinates, final GUIDiagramProject guiDiagramProject) {
         VBox textContainer = new VBox();
@@ -99,15 +125,29 @@ public class RelationshipAsset {
         relationshipInfo.setText(this.currentRelationship.toString());
         VBox.setMargin(relationshipInfo, margins);
 
-        HBox buttonContainer = this.setUpButton(fontType, textSize, margins, relationshipList, paneArrayList,
+        HBox buttonContainer = this.setUpButton(fontType, textSize, margins, relationshipList, relationshipAssetPaneList,
                 relationshipAssets, relationshipCoordinates, classAssetPaneList, classCoordinates, guiDiagramProject);
         textContainer.getChildren().addAll(relationshipInfo, buttonContainer);
 
         return textContainer;
     }
 
+    /**
+     * descriptions: setup method for the delete button
+     * @param fontType
+     * @param textSize
+     * @param margins
+     * @param relationshipList
+     * @param relationshipAssetPaneList
+     * @param relationshipAssets
+     * @param relationshipCoordinates
+     * @param classAssetPaneList
+     * @param classCoordinates
+     * @param guiDiagramProject
+     * @return
+     */
     public HBox setUpButton(final String fontType, final int textSize, final Insets margins, final ArrayList<Relationship> relationshipList,
-                            final ArrayList<Pane> paneArrayList, final ArrayList<RelationshipAsset> relationshipAssets,
+                            final ArrayList<Pane> relationshipAssetPaneList, final ArrayList<RelationshipAsset> relationshipAssets,
                             final ArrayList<Point2D> relationshipCoordinates, final ArrayList<Pane> classAssetPaneList,
                             final ArrayList<Point2D> classCoordinates, final GUIDiagramProject guiDiagramProject) {
         HBox buttonContainer = new HBox();
@@ -115,7 +155,7 @@ public class RelationshipAsset {
 
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font(fontType, textSize));
-        deleteButton.setOnAction(e -> this.deleteRelationship(relationshipList, paneArrayList, relationshipAssets,
+        deleteButton.setOnAction(e -> this.deleteRelationship(relationshipList, relationshipAssetPaneList, relationshipAssets,
                 relationshipCoordinates, classAssetPaneList, classCoordinates, guiDiagramProject));
 
         buttonContainer.getChildren().add(deleteButton);
@@ -132,6 +172,17 @@ public class RelationshipAsset {
         return this.yCoordinate = this.relationshipContainer.localToScene(this.relationshipContainer.getBoundsInLocal()).getMinY();
     }
 
+    /**
+     * This method is used to delete a class and its associated assets from a GUI diagram project.
+     *
+     * @param relationshipList            The list of relationships in the project.
+     * @param relationshipAssetPaneList     the list of panes associated with the relationship assets.
+     * @param relationshipAssets          The list of class assets.
+     * @param relationshipCoordinates   A list of coordinates representing the positions of relationship assets
+     * @param classAssetPaneList   The list of panes associated with the class assets.
+     * @param classCoordinates          A list of coordinates representing the positions of class assets.
+     * @param guiDiagramProject    The GUI diagram project that manages the graphical elements.
+     */
     public void deleteRelationship(final ArrayList<Relationship> relationshipList, final ArrayList<Pane> relationshipAssetPaneList,
                                    final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> relationshipCoordinates,
                                    final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates,
@@ -173,6 +224,13 @@ public class RelationshipAsset {
 
     }
 
+    /**
+     * description: this will take the relationshipList field and relationshipAssets field from the
+     * GUIDiagramProject class, it will then clear the relationshipAssets arrayList and repopulate it with
+     * new RelationshipAssets created from the relationshipList
+     * @param relationshipList
+     * @param relationshipAssets
+     */
     public void updateRelationshipAssetListIndex(final ArrayList<Relationship> relationshipList, final ArrayList<RelationshipAsset> relationshipAssets) {
         relationshipAssets.clear();
         for (int i = 0; i < relationshipList.size(); i++) {

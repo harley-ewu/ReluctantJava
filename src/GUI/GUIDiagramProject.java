@@ -362,50 +362,10 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     /**
-     * currently being used in ClassAsset's deleteClass method for the delete button
-     * and in RelationshipAsset's deleteRelationship method for the delete button
-     *
      * description: clears the contents of the contentPane and repopulates
      * the contentPane (the project window) with the classPanes and their respective coordinates
      * and does the same for relationshipPanes and their respective coordinates
-     *
-     * HOW THIS CURRENTLY WORKS:
-     * - when deleting a class or a relationship, the method goes through the remaining classes and stores their x and y position
-     * as Point2D objects and then stores them into an array list of Point2D objects
-     *
-     * - this method then takes the update classPanes list and the coordinates arraylist and assigns
-     * the coordinates to the panes, so that when you delete a class asset, the remaining class assets
-     * hold their position (since we need to clear the contentPane during the removal process)
-     *
-     * - in execution, the index position of the coordinates should share the same index position as its respective
-     * classPane
-     *
-     * - it then does the same for all relationship
-     *
      * */
-    /*
-    public void refreshPanesToPaneWindow() {
-
-        this.contentPane.getChildren().clear();
-
-        for (int i = 0; i < this.classPanes.size(); i++) {
-            this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
-            this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
-            this.contentPane.getChildren().add(this.classPanes.get(i));
-        }
-
-        this.classPanesCoordinates.clear();
-
-        for (int i = 0; i < this.relationshipPanes.size(); i++) {
-            this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
-            this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
-            this.contentPane.getChildren().add(this.relationshipPanes.get(i));
-        }
-
-        this.relationshipPanesCoordinates.clear();
-
-    }
-    */
     public void refreshClassPanesToPaneWindow() {
         this.contentPane.getChildren().clear();
 
@@ -424,6 +384,11 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
     }
 
+    /**
+     * description: clears the contents of the contentPane and repopulates
+     * the contentPane (the project window) with the relationshipPanes and their respective coordinates
+     * and does the same for classPanes and their respective coordinates
+     * */
     public void refreshRelationshipPanesToPaneWindow() {
         this.contentPane.getChildren().clear();
 
@@ -440,9 +405,5 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
 
         this.relationshipPanesCoordinates.clear();
-    }
-
-    public void refreshCoordinates() {
-
     }
 }
