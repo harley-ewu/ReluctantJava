@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import GUIAssets.*;
 import Class.Class;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 public class GUIDiagramProject extends javafx.application.Application {
 
     private final double scaleFactor = 1.1;
@@ -50,6 +52,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         Scene scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
+        initializeDiagramContents();
         //test classes
         //this.testAssets();
         //set stage
@@ -235,14 +238,15 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void initializeDiagramContents() {
-        //write your code here for populating class array list
+        HashMap<String, Class> diagramClasses = Diagram.getClassList();
+        this.classList.addAll(diagramClasses.values());
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
-        //relationship  stuff should be handled here
-
+        HashMap<String, Relationship> relationshipClasses = Diagram.getRelationshipList();
+        this.relationshipList.addAll(relationshipClasses.values());
     }
 
     /**
@@ -258,6 +262,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.classAssets.add(temp);
             i++;
         }
+
     }
 
     /**

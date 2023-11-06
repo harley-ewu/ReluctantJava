@@ -8,7 +8,6 @@ public class Class {
 
     @Expose
     private String className;
-
     @Expose
     private ArrayList<Attribute> attributes = new ArrayList<>();
 
