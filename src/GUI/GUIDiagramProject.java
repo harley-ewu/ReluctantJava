@@ -23,7 +23,8 @@ public class GUIDiagramProject extends javafx.application.Application {
     private final double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-    private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
+    //private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
+    Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
     private ArrayList<Pane> relationshipPanes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();

@@ -29,6 +29,15 @@ public class Field extends Attribute{
     }
 
     @Override
+    public String getPrimitive() {
+        return this.primitive.replaceAll("[\\[\\]]", "");
+    }
+    @Override
+    public void setPrimitive(String primitive) {
+        this.primitive = primitive;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
