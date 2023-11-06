@@ -50,7 +50,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
         //test classes
-        this.testAssets();
+        //this.testAssets();
         //set stage
         stage.setScene(scene);
         stage.show();
