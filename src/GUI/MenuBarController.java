@@ -103,6 +103,7 @@ public class MenuBarController {
             CommandLineInterface.setCurrentDiagram(diagram);
             System.out.println("Successfully loaded project. \n");
         }catch(NullPointerException nullPointerException){
+            nullPointerException.printStackTrace();
             System.out.println("Cancelled Load. \n");
         }catch(Exception e){
             System.err.println("There was an error trying to load the project. \n");

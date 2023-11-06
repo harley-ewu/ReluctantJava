@@ -1,6 +1,7 @@
 package Relationships;
 
 import Class.Class;
+import com.google.gson.annotations.Expose;
 
 
 public class Relationship {
@@ -12,11 +13,17 @@ public class Relationship {
    }
    
    //variables of a given relationship
+   @Expose
    private RelationshipType relationshipType;//The type of relationship this given relationship is between the given classes
+   @Expose
    private final Class class1; //the 1st class in the given relationship
+   @Expose
    private final Class class2; //the 2nd class in the given relationship
+   @Expose
    private int class1Cardinality; //thinking -1 in case of * amount of cardinality
+   @Expose
    private int class2Cardinality; //thinking -1 in case of * amount of cardinality
+   @Expose
    private boolean owner; //meaning the "contains" side in Aggregation or Composition, or the class that others are Inheriting from in Generalization.
    
    

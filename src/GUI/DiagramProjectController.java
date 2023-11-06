@@ -6,29 +6,28 @@ import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
 import SaveLoadSystem.SaveLoadSystem;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.ChoiceBoxListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class DiagramProjectController {
 
+    /**
+     * Description: Opens the "Save As" from the project view so that the user
+     * can save their work to a specified folder.
+     * @param stage - Takes the Stage object of the project view.
+     */
     protected static void saveAsFile(Stage stage) {
         System.out.println("Saving file as!");
         String homeFolder = System.getProperty("user.home");
@@ -63,6 +62,10 @@ public class DiagramProjectController {
         }
     }
 
+    /**
+     * Description: Allows the user to save new work to an existing project
+     * from the project view.
+     */
     protected static void saveFile() {
         System.out.println("saving file!");
         Diagram diagram = CommandLineInterface.getCurrentDiagram();
@@ -96,11 +99,17 @@ public class DiagramProjectController {
 
     }
 
+    /**
+     * Description: Allows the user to load an existing project from their computer
+     * from the project view.
+     * @param stage - Takes the Stage object from the project view.
+     */
     protected static void loadFile(Stage stage) {
         System.out.println("loading a file!");
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
         Diagram diagram;
+        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         fileChooser.setInitialDirectory(new File(homeFolder));
         fileChooser.setTitle("Load project...");
@@ -112,6 +121,10 @@ public class DiagramProjectController {
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
             CommandLineInterface.setCurrentDiagram(diagram);
+            if(view != null){
+                GraphicalUserInterface.closeDiagram();
+                GraphicalUserInterface.openDiagram(diagram);
+            }
             System.out.println("Successfully loaded project. \n");
         }catch(NullPointerException nullPointerException){
             System.out.println("Cancelled Load. \n");
@@ -124,6 +137,10 @@ public class DiagramProjectController {
         System.out.println("exiting..");
     }
 
+    /**
+     * Description: Allows the user to add a class to their project by selecting
+     * "Add Class" from the menu "Add" on the menu bar.
+     */
     protected static void addClass() {
         System.out.println("adding a new class!");
         Stage popupStage = new Stage();
@@ -133,6 +150,8 @@ public class DiagramProjectController {
         Button submitBtn = new Button("Submit");
         Diagram diagram = CommandLineInterface.getCurrentDiagram();
         Class newClass = new Class("");
+        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
+
         submitBtn.setOnAction(e -> {
             String inputText = tf.getText();
             if(inputText.isEmpty() || inputText.length() > 50) {
@@ -141,6 +160,7 @@ public class DiagramProjectController {
                 newClass.setClassName(inputText);
                 System.out.println("Submitted Class name: " + inputText);
                 diagram.addClass(newClass.getClassName());
+                UpdateViewController.updateAddClass(view, newClass);
                 popupStage.close();
             }
         });
@@ -156,10 +176,15 @@ public class DiagramProjectController {
         popupStage.show();
     }
 
+    /**
+     * Description: Allows a user to add a relationship to the project by selecting
+     * "Add Relationship" from the menu "Add" on the menu bar.
+     */
     protected static void addRelationship() {
         System.out.println("adding a new relationship!");
         Stage popupStage = new Stage();
         Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         HBox setRelationshipType = new HBox();
         HBox classOneBox = new HBox();
@@ -331,6 +356,7 @@ public class DiagramProjectController {
                 try{
                     relationship = new Relationship(relationshipType,classOne, classTwo, classOneCard, classTwoCard, ownerClass);
                     diagram.addRelationship(relationship);
+                    UpdateViewController.updateAddRelationship(view, relationship);
                     popupStage.close();
                 }catch(Exception errorMakingRelationship){
                     Alert alert = new Alert(Alert.AlertType.WARNING);

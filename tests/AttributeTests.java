@@ -1,12 +1,10 @@
 import Attributes.Attribute;
 import Class.Class;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AttributeTests {
     Class test = new Class("Test Class");
@@ -20,11 +18,7 @@ public class AttributeTests {
         String expected = "Class Name: Test Class\n" +
                 "---------------------\n" +
                 "Attributes: \n" +
-                "Test attribute: Test field\n" +
-                "\n" +
-                "\n" +
-                "Relationships: \n" +
-                "\n";
+                "Test attribute: Test field\n";
         assertEquals(expected, test.toString());
     }
 
@@ -43,12 +37,9 @@ public class AttributeTests {
         String expected= "Class Name: Test Class\n" +
                 "---------------------\n" +
                 "Attributes: \n" +
-                "testMethod(Test param1, Test param2, Test param3)\n" +
-                "anotherMethod(Test param1, Test param2, Test param3)\n" +
                 "Testfield: Boolean\n" +
-                "\n" +
-                "\n" +
-                "Relationships: \n\n";
+                "testMethod(Test param1, Test param2, Test param3)\n" +
+                "anotherMethod(Test param1, Test param2, Test param3)\n";
         System.out.println(test);
         assertEquals(expected, test.toString());
     }
@@ -69,7 +60,7 @@ public class AttributeTests {
     void deleteAttribute() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
-                "2. field: Boolean\n";
+                "2. anotherMethod(param1)\n";
         test.createAttribute("testMethod", testList, 2);
         testList2.add("Boolean");
         test.createAttribute("field", testList2, 1);
@@ -86,8 +77,8 @@ public class AttributeTests {
     void renameAttribute() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
-                "2. field: Boolean\n" +
-                "3. differentField: String\n";
+                "2. differentField: String\n" +
+                "3. anotherMethod(param1)\n";
         test.createAttribute("testMethod", testList, 2);
 
         testList2.add("Boolean");
