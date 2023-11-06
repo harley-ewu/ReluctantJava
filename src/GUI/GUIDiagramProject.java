@@ -33,6 +33,14 @@ public class GUIDiagramProject extends javafx.application.Application {
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
 
+    public ArrayList<Pane> getRelationshipPanes() {
+        return relationshipPanes;
+    }
+
+    public ArrayList<RelationshipAsset> getRelationshipAssets() {
+        return relationshipAssets;
+    }
+
     public static void startGUI(String[] args){
         try{
             launch();
@@ -44,6 +52,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     @Override
     public void start(final Stage stage) throws Exception {
+        UpdateViewController.initView(this);
         this.contentPane.setPrefSize(3840,2160);
         //hbox for zoom in and zoom out buttons
         HBox zoomButtons = this.setUpZoomButtons();
@@ -56,7 +65,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         Scene scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
-        initializeDiagramContents();
         //test classes
         this.testAssets();
         //set stage
@@ -169,7 +177,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      * @return
      */
     private Menu setUpClassMenu() {
-        Menu classMenu = new Menu("Class");
+        Menu classMenu = new Menu("Add");
         MenuItem addClassItem = new MenuItem("Add Class");
         addClassItem.setOnAction(e -> DiagramProjectController.addClass());
 
@@ -285,6 +293,14 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     }
 
+    public ArrayList<Class> getClassList() {
+        return classList;
+    }
+
+    public ArrayList<Relationship> getRelationshipList() {
+        return relationshipList;
+    }
+
     /**
      * 1. description: use this method to take contents from the diagram
      * and store in the appropriate array lists (the classes should go to the classList,
@@ -301,15 +317,16 @@ public class GUIDiagramProject extends javafx.application.Application {
      *
      */
 
+
     public void initializeDiagramContents() {
-        HashMap<String, Class> diagramClasses = Diagram.getClassList();
+        HashMap<String, Class> diagramClasses = CommandLineInterface.getCurrentDiagram().getClassList();
         this.classList.addAll(diagramClasses.values());
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
-        HashMap<String, Relationship> relationshipClasses = Diagram.getRelationshipList();
+        HashMap<String, Relationship> relationshipClasses = CommandLineInterface.getCurrentDiagram().getRelationshipList();
         this.relationshipList.addAll(relationshipClasses.values());
     }
 
@@ -340,6 +357,14 @@ public class GUIDiagramProject extends javafx.application.Application {
                     this.classPanesCoordinates, this.relationshipPanes, this.relationshipPanesCoordinates, this);
             this.classPanes.add(temp);
         }
+    }
+
+    public Pane getContentPane() {
+        return contentPane;
+    }
+
+    public ArrayList<ClassAsset> getClassAssets() {
+        return classAssets;
     }
 
     /**
@@ -385,6 +410,10 @@ public class GUIDiagramProject extends javafx.application.Application {
         for (Pane relationshipAsset : this.relationshipPanes) {
             this.contentPane.getChildren().add(relationshipAsset);
         }
+    }
+
+    public ArrayList<Pane> getClassPanes() {
+        return classPanes;
     }
 
     /**
@@ -466,4 +495,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.relationshipPanesCoordinates.clear();
     }
+
+
+
 }
