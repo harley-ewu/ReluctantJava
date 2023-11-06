@@ -13,6 +13,7 @@ import GUIAssets.*;
 import Class.Class;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class GUIDiagramProject extends javafx.application.Application {
 
@@ -40,6 +41,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     @Override
     public void start(final Stage stage) throws Exception {
+        Objects.requireNonNull(stage, "Stage can't be null.");
         this.contentPane.setPrefSize(3840,2160);
         //hbox for zoom in and zoom out buttons
         HBox zoomButtons = this.setUpZoomButtons();
@@ -61,6 +63,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     public void setCurrentDiagram(final Diagram diagram) {
+        Objects.requireNonNull(diagram, "Diagram can't be null.");
         this.diagram = diagram;
     }
 
@@ -104,6 +107,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      * @return
      */
     private MenuBar setUpMenuBar(Stage stage) {
+        Objects.requireNonNull(stage, "Stage can't be null.");
         MenuBar menuBar = new MenuBar();
         menuBar.setPrefWidth(1280);
         //file menu creation
@@ -120,6 +124,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      * @return
      */
     private Menu setUpFileMenu(Stage stage) {
+        Objects.requireNonNull(stage, "Stage can't be null.");
         Menu fileMenu = new Menu("File");
 
         MenuItem openItem = new MenuItem("Save as...");
@@ -256,6 +261,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassAssets(final ArrayList<Class> classList) {
+        Objects.requireNonNull(classList, "Class list can't be null.");
         int i = 0;
         for (Class currentClass : classList) {
             ClassAsset temp = new ClassAsset(currentClass, i);
@@ -294,6 +300,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      * @param relationshipList
      */
     public void addRelationshipAsset(final ArrayList<Relationship> relationshipList) {
+        Objects.requireNonNull(relationshipList, "Relationship list can't be null.");
         int i = 0;
         for(Relationship currentRelationship: relationshipList) {
             RelationshipAsset temp = new RelationshipAsset(currentRelationship, i);

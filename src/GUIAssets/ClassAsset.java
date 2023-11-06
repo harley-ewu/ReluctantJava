@@ -19,6 +19,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class ClassAsset {
@@ -52,6 +53,12 @@ public class ClassAsset {
 
     public Pane createClassAsset(final ArrayList<Class> classList, final ArrayList<Pane> paneArrayList, final ArrayList<ClassAsset> classAssets,
                                  final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject) {
+        Objects.requireNonNull(classList, "Class list can't be null.");
+        Objects.requireNonNull(paneArrayList, "Pane ArrayList list can't be null.");
+        Objects.requireNonNull(classAssets, "Class assets can't be null.");
+        Objects.requireNonNull(coordinates, "Coordinates can't be null.");
+        Objects.requireNonNull(guiDiagramProject, "Class list can't be null.");
+
         int textSize = 12;
         String fontType = "Verdana";
 
@@ -75,11 +82,13 @@ public class ClassAsset {
 
 
     private void onMousePressed(final MouseEvent event) {
+        Objects.requireNonNull(event, "Event can't be null.");
         this.xOffset = event.getSceneX();
         this.yOffset = event.getSceneY();
     }
 
     private void onMouseDragged(final MouseEvent event) {
+        Objects.requireNonNull(event, "Class list can't be null.");
         double deltaX = event.getSceneX() - this.xOffset;
         double deltaY = event.getSceneY() - this.yOffset;
 
@@ -102,9 +111,7 @@ public class ClassAsset {
      * @return
      */
     private StringBuilder displayContents(final ArrayList<String> contents) {
-        if (contents == null) {
-            return null;
-        }
+        Objects.requireNonNull(contents, "Class list can't be null.");
         StringBuilder contentList = new StringBuilder();
 
         for (String content : contents) {
@@ -121,9 +128,7 @@ public class ClassAsset {
      */
 
     private ArrayList<String> returnFieldNames(final Class currentClass) {
-        if (currentClass == null) {
-            return null;
-        }
+        Objects.requireNonNull(currentClass, "Class can't be null.");
         ArrayList<String> fieldNameList = new ArrayList<>();
 
         for(Attribute field : currentClass.getAttributes()) {
@@ -142,9 +147,7 @@ public class ClassAsset {
      * @return
      */
     private ArrayList<String> returnMethodNames(final Class currentClass) {
-        if (currentClass == null) {
-            return null;
-        }
+        Objects.requireNonNull(currentClass, "Current class can't be null.");
 
         ArrayList<String> methodNamesList = new ArrayList<>();
 
@@ -168,6 +171,12 @@ public class ClassAsset {
     private HBox setUpButtons(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
                              final ArrayList<Pane> paneArrayList, final ArrayList<ClassAsset> classAssets,
                              final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject){
+        Objects.requireNonNull(classList, "Class list can't be null.");
+        Objects.requireNonNull(paneArrayList, "Pane array can't be null.");
+        Objects.requireNonNull(classAssets, "Class assets can't be null.");
+        Objects.requireNonNull(coordinates, "Coordinates list can't be null.");
+        Objects.requireNonNull(guiDiagramProject, "Project can't be null.");
+
         HBox buttonContainer = new HBox();
         buttonContainer.setSpacing(120.0);
 
@@ -198,6 +207,12 @@ public class ClassAsset {
     private VBox setupTextContainer(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
                                    final ArrayList<Pane> paneArrayList, final ArrayList<ClassAsset> classAssets,
                                    final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject){
+        Objects.requireNonNull(classList, "Class list can't be null.");
+        Objects.requireNonNull(paneArrayList, "Pane list can't be null.");
+        Objects.requireNonNull(classAssets, "Class assets can't be null.");
+        Objects.requireNonNull(coordinates, "Coordinates can't be null.");
+        Objects.requireNonNull(guiDiagramProject, "Diagram can't be null.");
+
         VBox textContainer = new VBox();
         Text className = new Text();
 
@@ -249,6 +264,11 @@ public class ClassAsset {
 
     public void deleteClass(final ArrayList<Class> classList, final ArrayList<Pane> classAssetPaneList, final ArrayList<ClassAsset> classAssets,
                             final ArrayList<Point2D> coordinates, final GUIDiagramProject guiDiagramProject) {
+        Objects.requireNonNull(classList, "Class list can't be null.");
+        Objects.requireNonNull(classAssetPaneList, "Pane list can't be null.");
+        Objects.requireNonNull(classAssets, "Class assets can't be null.");
+        Objects.requireNonNull(coordinates, "Coordinates can't be null.");
+        Objects.requireNonNull(guiDiagramProject, "Diagram can't be null.");
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
@@ -288,6 +308,8 @@ public class ClassAsset {
      */
 
     public void updateClassAssetListPos(final ArrayList<Class> classList, final ArrayList<ClassAsset> classAssets) {
+        Objects.requireNonNull(classList, "Class list can't be null.");
+        Objects.requireNonNull(classAssets, "Class assets can't be null.");
         classAssets.clear();
         for (int i = 0; i < classList.size(); i++) {
             ClassAsset newClassAsset = new ClassAsset(classList.get(i), i);
