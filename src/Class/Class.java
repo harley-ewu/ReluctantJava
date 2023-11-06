@@ -9,7 +9,9 @@ public class Class {
     @Expose
     private String className;
 
+    @Expose
     private ArrayList<Attribute> attributes = new ArrayList<>();
+
     public Class(final String className) {
         if (className == null) {
             throw new NullPointerException("Class name is null.");
