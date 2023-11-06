@@ -382,6 +382,8 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.relationshipPanes.get(i));
         }
+
+        this.relationshipPanesCoordinates.clear();
     }
 
     /**
@@ -397,6 +399,8 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.classPanes.get(i));
         }
+
+        this.classPanesCoordinates.clear();
 
         for (int i = 0; i < this.relationshipPanes.size(); i++) {
             this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());

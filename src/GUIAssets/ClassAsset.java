@@ -282,6 +282,10 @@ public class ClassAsset {
             classList.remove(this.pos);
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
+
+            relationshipCoordinates.clear();
+            classCoordinates.clear();
+
             //get the x/y positions from the remaining class asset panes
             for (int i = 0; i < classAssetPaneList.size(); i++) {
                 double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX();

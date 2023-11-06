@@ -198,6 +198,10 @@ public class RelationshipAsset {
             relationshipList.remove(this.index);
             //remove the relationship pane from the pane list next
             relationshipAssetPaneList.remove(this.index);
+
+            relationshipCoordinates.clear();
+            classCoordinates.clear();
+
             //get the x/y positions from the remaining relationship asset panes
             for (int i = 0; i < relationshipAssetPaneList.size(); i++) {
                 double currentXCoordinate = relationshipAssetPaneList.get(i).localToScene(relationshipAssetPaneList.get(i).getBoundsInLocal()).getMinX();
