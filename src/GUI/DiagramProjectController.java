@@ -23,6 +23,11 @@ import java.io.File;
 
 public class DiagramProjectController {
 
+    /**
+     * Description: Opens the "Save As" from the project view so that the user
+     * can save their work to a specified folder.
+     * @param stage - Takes the Stage object of the project view.
+     */
     protected static void saveAsFile(Stage stage) {
         System.out.println("Saving file as!");
         String homeFolder = System.getProperty("user.home");
@@ -57,6 +62,10 @@ public class DiagramProjectController {
         }
     }
 
+    /**
+     * Description: Allows the user to save new work to an existing project
+     * from the project view.
+     */
     protected static void saveFile() {
         System.out.println("saving file!");
         Diagram diagram = CommandLineInterface.getCurrentDiagram();
@@ -90,11 +99,17 @@ public class DiagramProjectController {
 
     }
 
+    /**
+     * Description: Allows the user to load an existing project from their computer
+     * from the project view.
+     * @param stage - Takes the Stage object from the project view.
+     */
     protected static void loadFile(Stage stage) {
         System.out.println("loading a file!");
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
         Diagram diagram;
+        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         fileChooser.setInitialDirectory(new File(homeFolder));
         fileChooser.setTitle("Load project...");
@@ -106,6 +121,7 @@ public class DiagramProjectController {
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
             CommandLineInterface.setCurrentDiagram(diagram);
+            UpdateViewController.initView(view);
             System.out.println("Successfully loaded project. \n");
         }catch(NullPointerException nullPointerException){
             System.out.println("Cancelled Load. \n");
@@ -118,6 +134,10 @@ public class DiagramProjectController {
         System.out.println("exiting..");
     }
 
+    /**
+     * Description: Allows the user to add a class to their project by selecting
+     * "Add Class" from the menu "Add" on the menu bar.
+     */
     protected static void addClass() {
         System.out.println("adding a new class!");
         Stage popupStage = new Stage();
@@ -153,6 +173,10 @@ public class DiagramProjectController {
         popupStage.show();
     }
 
+    /**
+     * Description: Allows a user to add a relationship to the project by selecting
+     * "Add Relationship" from the menu "Add" on the menu bar.
+     */
     protected static void addRelationship() {
         System.out.println("adding a new relationship!");
         Stage popupStage = new Stage();
