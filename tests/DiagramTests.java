@@ -1,11 +1,8 @@
-import Class.Class;
 import Diagram.Diagram;
-import Relationships.Relationship;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import Class.Class;
+import java.util.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DiagramTests {
 	
@@ -26,7 +23,7 @@ public class DiagramTests {
 	@Test 
 	void nullClassList() {
 		Diagram diagram = new Diagram("");
-		assertEquals(new HashMap<String, Class>(), diagram.getClassList());
+		assertEquals(new ArrayList<>(), diagram.getClassList());
 	}
 
 	@Test
@@ -41,17 +38,16 @@ public class DiagramTests {
 		assertEquals(testClassList, diagram.getClassList());
 	}
 	
-	@Test
-	void testAddClass() {
+	@Test void testAddClass() {
 		Diagram UMLDiagram = new Diagram("");
 		UMLDiagram.setTitle("test");
-		HashMap<String, Class> classList = UMLDiagram.getClassList();
+		List<Class> classList = UMLDiagram.getClassList();
 		
 		Class c = new Class("testClass");
 		
-		UMLDiagram.addClass(c.getClassName());
+		UMLDiagram.addClass();
 		
-		assertEquals(c.getClassName(), UMLDiagram.getClassList().get(c.getClassName()).getClassName());
+		assertEquals(c.getClass(), classList.get(0).getClass());
 		
 	}
 
