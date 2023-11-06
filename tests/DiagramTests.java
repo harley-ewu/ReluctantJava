@@ -28,6 +28,18 @@ public class DiagramTests {
 		Diagram diagram = new Diagram("");
 		assertEquals(new HashMap<String, Class>(), diagram.getClassList());
 	}
+
+	@Test
+	void getSetClassListTest() {
+		Diagram diagram = new Diagram("");
+		HashMap<String, Class> testClassList = new HashMap<>();
+		Class testClass = new Class("test");
+		testClassList.put("test", testClass);
+
+		diagram.setClassList(testClassList);
+
+		assertEquals(testClassList, diagram.getClassList());
+	}
 	
 	@Test
 	void testAddClass() {
@@ -44,9 +56,59 @@ public class DiagramTests {
 	}
 
 	@Test
+	void deleteClassTest() {
+		Diagram UMLDiagram = new Diagram("");
+		UMLDiagram.setTitle("test");
+		HashMap<String, Class> classList = UMLDiagram.getClassList();
+
+		Class testClass = new Class("testClass");
+
+		UMLDiagram.addClass(testClass.getClassName());
+
+		assertEquals(testClass.getClassName(), UMLDiagram.getClassList().get(testClass.getClassName()).getClassName());
+
+		UMLDiagram.deleteClass(testClass);
+
+		assertEquals(null, UMLDiagram.getClassList().get(testClass.getClassName()));
+	}
+
+	@Test
+	void renameClassTest() {
+		Diagram UMLDiagram = new Diagram("");
+		UMLDiagram.setTitle("test");
+		HashMap<String, Class> classList = UMLDiagram.getClassList();
+
+		Class testClass = new Class("testClass");
+
+		UMLDiagram.addClass(testClass.getClassName());
+
+		assertEquals(testClass.getClassName(), UMLDiagram.getClassList().get(testClass.getClassName()).getClassName());
+
+		String newName = "classTest";
+		UMLDiagram.renameClass(testClass, newName);
+
+		assertEquals(newName, UMLDiagram.getClassList().get(newName).getClassName());
+	}
+
+	@Test
 	void nullRelationshipList() {
 		Diagram diagram = new Diagram("");
 		assertEquals(new HashMap<String, Relationship>(), diagram.getRelationshipList());
+	}
+
+	@Test
+	void getSetRelationshipListTest() {
+		Diagram diagram = new Diagram("");
+		HashMap<String, Relationship> testRelationshipList = new HashMap<>();
+		Class testClass = new Class("testClass");
+		Class testClass2 = new Class("testClass2");
+		Relationship testRelationship = new Relationship(Relationship.RelationshipType.Composition, testClass,
+				testClass2, 1, 1, false);
+		testRelationshipList.put("testClasstestClass2", testRelationship);
+
+		diagram.setRelationshipList(testRelationshipList);
+
+		assertEquals(testRelationshipList, diagram.getRelationshipList());
 	}
 
 	@Test

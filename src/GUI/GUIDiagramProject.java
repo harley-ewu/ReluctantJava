@@ -1,6 +1,8 @@
 package GUI;
 
 import Class.Class;
+import Attributes.Attribute;
+import CLI.CommandLineInterface;
 import Diagram.Diagram;
 import GUIAssets.ClassAsset;
 import GUIAssets.RelationshipAsset;
@@ -14,12 +16,14 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 public class GUIDiagramProject extends javafx.application.Application {
 
     private final double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-    private Diagram diagram = new Diagram("Test Project"); // this should be set in the create diagram menu option
+    private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
     private ArrayList<Pane> classPanes = new ArrayList<>();
     private ArrayList<Pane> relationshipPanes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
@@ -44,7 +48,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         //hbox for zoom in and zoom out buttons
         HBox zoomButtons = this.setUpZoomButtons();
         //menu bar creation
-        MenuBar menuBar = this.setUpMenuBar();
+        MenuBar menuBar = this.setUpMenuBar(stage);
         //setting up scene for stage
         ScrollPane scrollPane = new ScrollPane(this.contentPane);
         scrollPane.setPrefSize(1280,678);
@@ -52,6 +56,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         Scene scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
+        initializeDiagramContents();
         //test classes
         this.testAssets();
         //set stage
@@ -124,11 +129,11 @@ public class GUIDiagramProject extends javafx.application.Application {
      * setup for the menu bar
      * @return
      */
-    private MenuBar setUpMenuBar() {
+    private MenuBar setUpMenuBar(Stage stage) {
         MenuBar menuBar = new MenuBar();
         menuBar.setPrefWidth(1280);
         //file menu creation
-        Menu fileMenu = setUpFileMenu();
+        Menu fileMenu = setUpFileMenu(stage);
         //class menu creation
         Menu classMenu = this.setUpClassMenu();
         //adding menus to menu bar
@@ -140,17 +145,17 @@ public class GUIDiagramProject extends javafx.application.Application {
      * setup for the file menu and its items
      * @return
      */
-    private Menu setUpFileMenu() {
+    private Menu setUpFileMenu(Stage stage) {
         Menu fileMenu = new Menu("File");
 
-        MenuItem openItem = new MenuItem("Open");
-        openItem.setOnAction(e -> DiagramProjectController.openFile());
+        MenuItem openItem = new MenuItem("Save as...");
+        openItem.setOnAction(e -> DiagramProjectController.saveAsFile(stage));
 
         MenuItem saveItem = new MenuItem("Save");
         saveItem.setOnAction(e -> DiagramProjectController.saveFile());
 
-        MenuItem loadItem = new MenuItem("Load");
-        loadItem.setOnAction(e -> DiagramProjectController.loadFile());
+        MenuItem loadItem = new MenuItem("Load...");
+        loadItem.setOnAction(e -> DiagramProjectController.loadFile(stage));
 
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(e -> DiagramProjectController.exit());
@@ -297,14 +302,15 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void initializeDiagramContents() {
-        //write your code here for populating class array list
+        HashMap<String, Class> diagramClasses = Diagram.getClassList();
+        this.classList.addAll(diagramClasses.values());
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
-        //relationship  stuff should be handled here
-
+        HashMap<String, Relationship> relationshipClasses = Diagram.getRelationshipList();
+        this.relationshipList.addAll(relationshipClasses.values());
     }
 
     /**
@@ -320,6 +326,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.classAssets.add(temp);
             i++;
         }
+
     }
 
     /**

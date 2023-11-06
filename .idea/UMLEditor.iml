@@ -112,5 +112,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="javafx-21.0.1" level="application" />
+    <orderEntry type="library" name="javafx-swt" level="project" />
   </component>
 </module>
