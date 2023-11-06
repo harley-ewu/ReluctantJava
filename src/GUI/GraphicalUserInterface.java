@@ -3,7 +3,6 @@ package GUI;
 import CLI.CommandLineInterface;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -11,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -111,13 +109,12 @@ public class GraphicalUserInterface extends javafx.application.Application{
         popupStage.show();
     }
 
-    public static GUIDiagramProject openDiagram(final Diagram currentDiagram) throws Exception {
+    public static void openDiagram(final Diagram currentDiagram) throws Exception {
         diagramStage = new Stage();
         diagramGui = new GUIDiagramProject();
         //diagramGui.setCurrentDiagram(currentDiagram);
         diagramGui.start(diagramStage);
         mainMenuStage.setResizable(false);
-        return diagramGui;
     }
     public static void closeDiagram() {
         if(diagramStage != null) {
