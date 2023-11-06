@@ -336,7 +336,7 @@ public class DiagramProjectController {
                 try{
                     relationship = new Relationship(relationshipType,classOne, classTwo, classOneCard, classTwoCard, ownerClass);
                     diagram.addRelationship(relationship);
-                    //UpdateViewController.UpdateView(view);
+                    UpdateViewController.updateAddRelationship(view, relationship);
                     popupStage.close();
                 }catch(Exception errorMakingRelationship){
                     Alert alert = new Alert(Alert.AlertType.WARNING);
