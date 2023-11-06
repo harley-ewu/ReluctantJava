@@ -195,7 +195,7 @@ public class ClassAsset {
 
         Button editButton = new Button("Edit");
         editButton.setFont(Font.font(fontType, textSize));
-        editButton.setOnAction(e -> this.editClass(classList, paneArrayList, classAssets, classCoordinates, guiDiagramProject));
+        editButton.setOnAction(e -> this.editClass(classList, classPaneArrayList, classAssets, classCoordinates, guiDiagramProject));
 
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font(fontType, textSize));
@@ -467,7 +467,7 @@ public class ClassAsset {
             //this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
             guiDiagramProject.refreshClassPanes();
-            guiDiagramProject.refreshPanesToPaneWindow();
+            guiDiagramProject.refreshClassPanesToPaneWindow();
             popUpStage.close();
         });
 
