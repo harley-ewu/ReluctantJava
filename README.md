@@ -12,11 +12,3 @@ This currently is a UML diagram editor created by the Reluctant Java team for ou
 8. Navigate into the UMLEditor folder.
 9. Run the command `java -jar @UMLEditor.txt UMLEditor.jar`
 11. Follow the prompts from there!
-
-
-### Current team roles:
-Matt - Add/Delete/Rename Classes<br>
-Tanner - Add/Delete/Rename Attributes<br>
-Nick - Add/Delete Relationships<br>
-Nolan - Save/Load<br>
-Lilly & Patrick - Interface lists/help/exit
