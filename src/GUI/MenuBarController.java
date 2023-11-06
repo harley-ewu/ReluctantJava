@@ -90,7 +90,6 @@ public class MenuBarController {
         FileChooser fileChooser = new FileChooser();
         Diagram diagram;
         Window stage = hbMenuBar.getScene().getWindow();
-        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         fileChooser.setInitialDirectory(new File(homeFolder));
         fileChooser.setTitle("Load project...");

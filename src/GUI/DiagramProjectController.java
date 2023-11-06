@@ -6,25 +6,19 @@ import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
 import SaveLoadSystem.SaveLoadSystem;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.ChoiceBoxListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class DiagramProjectController {
@@ -101,7 +95,6 @@ public class DiagramProjectController {
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
         Diagram diagram;
-        GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         fileChooser.setInitialDirectory(new File(homeFolder));
         fileChooser.setTitle("Load project...");
