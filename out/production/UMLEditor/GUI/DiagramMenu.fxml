@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.DiagramMenuController"
+            prefHeight="4000.0" prefWidth="600.0">
+
+    <fx:include source="MenuBar.fxml"/>
+
+    <VBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <Button styleClass="menuButton" text="Add Class" onAction="#addClassGUI"/>
+        <Button styleClass="menuButton" text="Delete Class" onAction="#deleteClassGUI"/>
+        <Button styleClass="menuButton" text="Rename Class" onAction="#renameClassGUI"/>
+        <Button styleClass="menuButton" text="Edit Class" onAction="#editClassGUI"/>
+        <Button styleClass="menuButton" text="Edit Relationships" onAction="#editRelationshipsGUI"/>
+        <Button styleClass="menuButton" text="View Class" onAction="#viewClassGUI"/>
+        <Button styleClass="menuButton" text="View Diagram" onAction="#viewDiagramGUI"/>
+        <Button styleClass="menuButton" text="Help" onAction="#diagramHelpGUI"/>
+        <Button styleClass="menuButton" text="Exit" onAction="#exitUI"/>
+    </VBox>
+
+</AnchorPane>

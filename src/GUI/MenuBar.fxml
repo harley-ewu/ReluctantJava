@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="GUI.MenuBarController"
+      alignment="CENTER_LEFT"
+      fx:id="hbMenuBar"
+      spacing="5">
+
+    <MenuBar HBox.hgrow="ALWAYS">
+        <Menu styleClass="menu" text="_File">
+            <MenuItem text="Save as..." onAction="#handleSaveAs"/>
+            <MenuItem text="Save" onAction="#handleSave"/>
+            <MenuItem text="Load..." onAction="#handleLoad"/>
+        </Menu>
+        <Menu styleClass="menu" text="_View">
+            <MenuItem text="View Item 1" />
+            <MenuItem text="View Item 2"/>
+        </Menu>
+    </MenuBar>
+
+    <Button fx:id="minimizeButton" styleClass="windowControlButton" onAction="#handleMinimize" text="-"/>
+    <Button fx:id="maximizeButton" styleClass="windowControlButton" onAction="#handleMaximize" text="□"/>
+    <Button fx:id="closeButton" styleClass="windowControlButton" onAction="#handleClose" text="X"/>
+
+</HBox>
