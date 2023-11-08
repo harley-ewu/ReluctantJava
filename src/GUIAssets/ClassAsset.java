@@ -293,7 +293,7 @@ public class ClassAsset {
             //remove the class from the class list first
             classList.remove(this.pos);
 
-            ArrayList<Relationship> classRelationships = guiDiagramProject.getDiagram().getSingleClassRelationships(currentClass);
+            ArrayList<Relationship> classRelationships = CommandLineInterface.getCurrentDiagram().getSingleClassRelationships(currentClass);
             for(Relationship relationship : classRelationships) {
                 if(guiDiagramProject.getRelationshipAssetFromList(relationship) != null) {
                     guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
