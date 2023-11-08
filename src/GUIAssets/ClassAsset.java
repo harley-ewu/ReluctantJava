@@ -1,7 +1,8 @@
 package GUIAssets;
-import Attributes.Attribute;
-import Class.Class;
 
+import Attributes.Attribute;
+import CLI.CommandLineInterface;
+import Class.Class;
 import GUI.GUIDiagramProject;
 import Relationships.Relationship;
 import javafx.collections.FXCollections;
@@ -11,10 +12,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -300,7 +302,7 @@ public class ClassAsset {
                 }
             }
 
-            guiDiagramProject.getDiagram().deleteClass(currentClass);
+            CommandLineInterface.getCurrentDiagram().deleteClass(currentClass);
 
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
