@@ -1,15 +1,15 @@
-import org.junit.jupiter.api.Test;
 import CLI.CommandLineInterface;
-
+import org.junit.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class CommandLineInterfaceTest {
+public class CommandLineInterfaceTest {
 
+    public CommandLineInterfaceTest() {}
     @Test
-    void testIsValidUserInputForValidInputs() throws Exception {
+    public void testIsValidUserInputForValidInputs() throws Exception {
         Method method = CLI.CommandLineInterface.class.getDeclaredMethod("isValidUserInput", int.class);
         Field maxChoicesField = CommandLineInterface.class.getDeclaredField("MAX_CHOICES");
 
@@ -24,7 +24,7 @@ class CommandLineInterfaceTest {
     }
 
     @Test
-    void testIsValidUserInputForInvalidInputs() throws Exception {
+    public void testIsValidUserInputForInvalidInputs() throws Exception {
         Method method = CLI.CommandLineInterface.class.getDeclaredMethod("isValidUserInput", int.class);
         Field maxChoicesField = CommandLineInterface.class.getDeclaredField("MAX_CHOICES");
 

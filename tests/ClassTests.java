@@ -1,14 +1,14 @@
 import Class.Class;
 import Diagram.Diagram;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class ClassTests {
 
@@ -20,14 +20,15 @@ public class ClassTests {
     Diagram newDiagram;
     Class newClass;
 
-    @BeforeEach
+    public ClassTests() {}
+    @Before
     public void init() {
 
         this.testOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(this.testOut));
     }
 
-    @AfterEach
+    @After
     public void cleanUp() {
 
         System.setOut(this.ORIGINALOUT);
@@ -43,8 +44,8 @@ public class ClassTests {
         field.set(null, new BufferedReader(new InputStreamReader(System.in)));
     }
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         this.newDiagram = new Diagram("Test Diagram");
         this.newClass = new Class("Test Class");
         //newDiagram.addClass(this.newClass);
@@ -62,7 +63,7 @@ public class ClassTests {
     }
 
     @Test
-    void testDisplayAttributes2() {
+    public void testDisplayAttributes2() {
         Class test = new Class("Test Class");
         ArrayList<String> testList = new ArrayList<>();
         ArrayList<String> testList2 = new ArrayList<>();

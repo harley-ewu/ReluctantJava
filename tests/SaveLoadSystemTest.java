@@ -1,21 +1,18 @@
 import Diagram.Diagram;
 import Class.Class;
 import SaveLoadSystem.SaveLoadSystem;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 
 public class SaveLoadSystemTest {
 
     @Test
-    void saveDefaultCLIRunsSuccessfully() throws Exception {
+    public void saveDefaultCLIRunsSuccessfully() throws Exception {
         Method method = SaveLoadSystem.class.getDeclaredMethod("saveDefaultCLI", String.class, Diagram.class);
         Diagram testDiagram = new Diagram("TestDiagram");
 
@@ -23,7 +20,7 @@ public class SaveLoadSystemTest {
     }
 
     @Test
-    void saveCustomCLIRunsSuccessfully() throws Exception{
+    public void saveCustomCLIRunsSuccessfully() throws Exception {
         Method method = SaveLoadSystem.class.getDeclaredMethod("saveCustomCLI", String.class, String.class, Diagram.class);
         Diagram testDiagram = new Diagram("TestDiagram");
         String home = System.getProperty("user.home");
@@ -33,7 +30,7 @@ public class SaveLoadSystemTest {
     }
 
     @Test
-    void loadDiagramCLIRunsSuccessfully() throws Exception{
+    public void loadDiagramCLIRunsSuccessfully() throws Exception {
         Method method = SaveLoadSystem.class.getDeclaredMethod("loadDiagramCLI", String.class, String.class);
         Diagram testDiagram = new Diagram("TestDiagram");
         SaveLoadSystem.saveDefaultCLI("TestLoadDiagramCLI", testDiagram);
@@ -44,7 +41,7 @@ public class SaveLoadSystemTest {
     }
 
     @Test
-    void loadDiagramCLIAndSaveDefaultCLIIntegrationTest(){
+    public void loadDiagramCLIAndSaveDefaultCLIIntegrationTest() {
         Diagram testSaveDiagram = new Diagram("TestDiagram");
         Class testClassOne = new Class("TestClassOne");
         Class testClassTwo = new Class("TestClassTwo");
@@ -58,8 +55,7 @@ public class SaveLoadSystemTest {
 
         Diagram testLoadDiagram = SaveLoadSystem.loadDiagramCLI(Paths.get(System.getProperty("user.home")).toString(), "IntegrationTestOfSaveAndLoad");
 
-        Assertions.assertEquals(testLoadDiagram.getClassList().get(testClassOne.getClassName()).getClassName(), testSaveDiagram.getClassList().get(testClassOne.getClassName()).getClassName());
-        Assertions.assertEquals(testLoadDiagram.getClassList().get(testClassTwo.getClassName()).getClassName(), testSaveDiagram.getClassList().get(testClassTwo.getClassName()).getClassName());
-
+        assertEquals(testLoadDiagram.getClassList().get(testClassOne.getClassName()).getClassName(), testSaveDiagram.getClassList().get(testClassOne.getClassName()).getClassName());
+        assertEquals(testLoadDiagram.getClassList().get(testClassTwo.getClassName()).getClassName(), testSaveDiagram.getClassList().get(testClassTwo.getClassName()).getClassName());
     }
 }

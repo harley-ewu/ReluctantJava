@@ -1,8 +1,10 @@
 import Attributes.Attribute;
 import Class.Class;
-import org.junit.jupiter.api.Test;
+import org.junit.Test; // Use JUnit 4 annotations
+import org.junit.Assert; // Use JUnit 4 assertions
 
 import java.util.ArrayList;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,8 +13,10 @@ public class AttributeTests {
     ArrayList<String> testList = new ArrayList<>();
     ArrayList<String> testList2 = new ArrayList<>();
     ArrayList<String> testList3 = new ArrayList<>();
+
+    public AttributeTests() { }
     @Test
-    void fieldTest() {
+    public void fieldTest() {
         testList.add("Test field");
         test.createAttribute("Test attribute", testList, 1);
         String expected = "Class Name: Test Class\n" +
@@ -23,7 +27,7 @@ public class AttributeTests {
     }
 
     @Test
-    void sortingArrayListTest() {
+    public void sortingArrayListTest() {
         testList.add("Test param1");
         testList.add("Test param2");
         testList.add("Test param3");
@@ -45,7 +49,7 @@ public class AttributeTests {
     }
 
     @Test
-    void displayAttributes() {
+    public void displayAttributes() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
                 "2. field: Boolean\n";
@@ -57,7 +61,7 @@ public class AttributeTests {
     }
 
     @Test
-    void deleteAttribute() {
+    public void deleteAttribute() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
                 "2. anotherMethod(param1)\n";
@@ -74,7 +78,7 @@ public class AttributeTests {
     }
 
     @Test
-    void renameAttribute() {
+    public void renameAttribute() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
                 "2. differentField: String\n" +
@@ -96,7 +100,7 @@ public class AttributeTests {
     }
 
     @Test
-    void renameSameNameAttribute() {
+    public void renameSameNameAttribute() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
                 "2. field: Boolean\n" +
@@ -119,7 +123,7 @@ public class AttributeTests {
     }
 
     @Test
-    void renameToEmptyName() {
+    public void renameToEmptyName() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod()\n" +
                 "2. field: Boolean\n";
@@ -133,7 +137,7 @@ public class AttributeTests {
     }
 
     @Test
-    void changeParameters() {
+    public void changeParameters() {
         String expected = "Available Fields and Methods: \n" +
                 "1. testMethod(String)\n";
         test.createAttribute("testMethod", testList, 2);

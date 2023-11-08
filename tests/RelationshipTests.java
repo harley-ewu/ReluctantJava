@@ -1,15 +1,14 @@
-//Nick Parkman 10/12/2023 @10:30am
 import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class RelationshipTests {
+
     @Test
-    void toStringTest() throws IllegalArgumentException{
+    public void toStringTest() throws IllegalArgumentException {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
         Class testClass2 = new Class("testClass2");
@@ -23,21 +22,37 @@ public class RelationshipTests {
 
         assertEquals(testResult, testRelationship.toString());
 
-        assertThrows(IllegalArgumentException.class, () ->
-        {Relationship testRelationship2 = new Relationship(null, testClass, testClass2, 1, 2, false);});
+        try {
+            Relationship testRelationship2 = new Relationship(null, testClass, testClass2, 1, 2, false);
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {
+            // Exception expected
+        }
 
-        assertThrows(IllegalArgumentException.class, () ->
-        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, null, null, 1, 2, false);});
+        try {
+            Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, null, null, 1, 2, false);
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {
+            // Exception expected
+        }
 
-        assertThrows(IllegalArgumentException.class, () ->
-        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, -2, 2, false);});
+        try {
+            Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, -2, 2, false);
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {
+            // Exception expected
+        }
 
-        assertThrows(IllegalArgumentException.class, () ->
-        {Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, 2, -2, false);});
+        try {
+            Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Realization, testClass, testClass2, 2, -2, false);
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {
+            // Exception expected
+        }
     }
 
     @Test
-    void toStringSpecialCardinalityTest() {
+    public void toStringSpecialCardinalityTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
         Class testClass2 = new Class("testClass2");
@@ -73,7 +88,7 @@ public class RelationshipTests {
     }
 
     @Test
-    void relationshipTypeGetterSetterTest() {
+    public void relationshipTypeGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
         Class testClass2 = new Class("testClass2");
@@ -83,11 +98,16 @@ public class RelationshipTests {
         testRelationship.setRelationshipType(Relationship.RelationshipType.Composition);
         assertEquals(Relationship.RelationshipType.Composition, testRelationship.getRelationshipType());
 
-        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setRelationshipType(null);});
+        try {
+            testRelationship.setRelationshipType(null);
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {
+            // Exception expected
+        }
     }
 
     @Test
-    void classGetterTest() {
+    public void classGetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
         Class testClass2 = new Class("testClass2");
@@ -97,7 +117,7 @@ public class RelationshipTests {
     }
 
     @Test
-    void class2GetterTest() {
+    public void class2GetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
         Class testClass2 = new Class("testClass2");
@@ -107,7 +127,7 @@ public class RelationshipTests {
     }
 
     @Test
-    void class1CardinalityGetterSetterTest() {
+    public void class1CardinalityGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
         Class testClass2 = new Class("testClass2");
@@ -117,11 +137,16 @@ public class RelationshipTests {
         testRelationship.setClass1Cardinality(2);
         assertEquals(2, testRelationship.getClass1Cardinality());
 
-        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setClass1Cardinality(-2);});
+        try {
+            testRelationship.setClass1Cardinality(-2);
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {
+            // Exception expected
+        }
     }
 
     @Test
-    void class2CardinalityGetterSetterTest() {
+    public void class2CardinalityGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
         Class testClass2 = new Class("testClass2");
@@ -133,7 +158,7 @@ public class RelationshipTests {
     }
 
     @Test
-    void ownerGetterSetterTest() {
+    public void ownerGetterSetterTest() {
         Diagram testDiagram = new Diagram("testDiagram");
         Class testClass = new Class("testClass");
         Class testClass2 = new Class("testClass2");
@@ -143,6 +168,11 @@ public class RelationshipTests {
         testRelationship.setIsOwner(true);
         assertEquals(true, testRelationship.getIsOwner());
 
-        assertThrows(IllegalArgumentException.class, () -> {testRelationship.setClass2Cardinality(-2);});
+        try {
+            testRelationship.setClass2Cardinality(-2);
+            fail("IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {
+            // Exception expected
+        }
     }
 }

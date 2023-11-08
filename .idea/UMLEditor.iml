@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
-  <component name="CheckStyle-IDEA-Module">
-    <option name="configuration">
-      <map />
-    </option>
+  <component name="CheckStyle-IDEA-Module" serialisationVersion="2">
+    <option name="activeLocationsIds" />
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
@@ -114,6 +112,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="javafx-21.0.1" level="application" />
-    <orderEntry type="library" name="lib" level="application" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="junit.jupiter.engine" level="project" />
   </component>
 </module>

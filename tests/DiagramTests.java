@@ -1,36 +1,36 @@
 import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
-import org.junit.jupiter.api.Test;
+import org.junit.Test; // Use JUnit 4 annotations
 
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals; // Use JUnit 4's Assert class
 
 public class DiagramTests {
-	
+	public DiagramTests() {}
 	@Test
-	void getTitleTest() {
+	public void getTitleTest() {
 		
 		Diagram diagram = new Diagram("test");
 		assertEquals("test", diagram.getTitle());
 	}
 	
-	@Test 
-    void setTitleTest() {
+	@Test
+	public void setTitleTest() {
 		Diagram diagram = new Diagram("");
 		diagram.setTitle("test");
 		assertEquals("test", diagram.getTitle());
 	}
 	
-	@Test 
-	void nullClassList() {
+	@Test
+	public void nullClassList() {
 		Diagram diagram = new Diagram("");
 		assertEquals(new HashMap<String, Class>(), diagram.getClassList());
 	}
 
 	@Test
-	void getSetClassListTest() {
+	public void getSetClassListTest() {
 		Diagram diagram = new Diagram("");
 		HashMap<String, Class> testClassList = new HashMap<>();
 		Class testClass = new Class("test");
@@ -42,7 +42,7 @@ public class DiagramTests {
 	}
 	
 	@Test
-	void testAddClass() {
+	public void testAddClass() {
 		Diagram UMLDiagram = new Diagram("");
 		UMLDiagram.setTitle("test");
 		HashMap<String, Class> classList = UMLDiagram.getClassList();
@@ -56,7 +56,7 @@ public class DiagramTests {
 	}
 
 	@Test
-	void deleteClassTest() {
+	public void deleteClassTest() {
 		Diagram UMLDiagram = new Diagram("");
 		UMLDiagram.setTitle("test");
 		HashMap<String, Class> classList = UMLDiagram.getClassList();
@@ -73,7 +73,7 @@ public class DiagramTests {
 	}
 
 	@Test
-	void renameClassTest() {
+	public void renameClassTest() {
 		Diagram UMLDiagram = new Diagram("");
 		UMLDiagram.setTitle("test");
 		HashMap<String, Class> classList = UMLDiagram.getClassList();
@@ -91,13 +91,13 @@ public class DiagramTests {
 	}
 
 	@Test
-	void nullRelationshipList() {
+	public void nullRelationshipList() {
 		Diagram diagram = new Diagram("");
 		assertEquals(new HashMap<String, Relationship>(), diagram.getRelationshipList());
 	}
 
 	@Test
-	void getSetRelationshipListTest() {
+	public void getSetRelationshipListTest() {
 		Diagram diagram = new Diagram("");
 		HashMap<String, Relationship> testRelationshipList = new HashMap<>();
 		Class testClass = new Class("testClass");
@@ -112,7 +112,7 @@ public class DiagramTests {
 	}
 
 	@Test
-	void addRelationshipTest() throws Exception {
+	public void addRelationshipTest() throws Exception {
 		Diagram UMLDiagram = new Diagram("");
 
 		Class testClass = new Class("testClass");
@@ -129,7 +129,7 @@ public class DiagramTests {
 	}
 
 	@Test
-	void deleteRelationshipTest() throws Exception {
+	public void deleteRelationshipTest() throws Exception {
 		Diagram UMLDiagram = new Diagram("");
 
 		Class testClass = new Class("testClass");
@@ -149,7 +149,7 @@ public class DiagramTests {
 	}
 
 	@Test
-	void findSingleRelationshipTest() throws Exception {
+	public void findSingleRelationshipTest() throws Exception {
 		Diagram UMLDiagram = new Diagram("");
 
 		Class testClass = new Class("testClass");
@@ -166,7 +166,7 @@ public class DiagramTests {
 	}
 
 	@Test
-	void listAllRelationshipsTest() throws Exception {
+	public void listAllRelationshipsTest() throws Exception {
 		Diagram UMLDiagram = new Diagram("");
 
 		Class testClass = new Class("testClass");
@@ -203,7 +203,7 @@ public class DiagramTests {
 	}
 
 	@Test
-	void listOneClassRelationshipsTest() {
+	public void listOneClassRelationshipsTest() {
 		Diagram UMLDiagram = new Diagram("");
 
 		Class testClass = new Class("testClass");
