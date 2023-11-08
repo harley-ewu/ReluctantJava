@@ -1,7 +1,7 @@
 import Attributes.Attribute;
 import Class.Class;
-import org.junit.Test; // Use JUnit 4 annotations
-import org.junit.Assert; // Use JUnit 4 assertions
+import org.junit.Test;
+
 
 import java.util.ArrayList;
 

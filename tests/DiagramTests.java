@@ -1,11 +1,11 @@
 import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
-import org.junit.Test; // Use JUnit 4 annotations
+import org.junit.Test;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals; // Use JUnit 4's Assert class
+import static org.junit.Assert.assertEquals;
 
 public class DiagramTests {
 	public DiagramTests() {}
