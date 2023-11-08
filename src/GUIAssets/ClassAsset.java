@@ -1,5 +1,6 @@
 package GUIAssets;
 import Attributes.Attribute;
+import Attributes.Field;
 import Class.Class;
 
 import GUI.GUIDiagramProject;
@@ -195,7 +196,7 @@ public class ClassAsset {
 
         Button editButton = new Button("Edit");
         editButton.setFont(Font.font(fontType, textSize));
-        editButton.setOnAction(e -> this.editClass(classList, paneArrayList, classAssets, classCoordinates, guiDiagramProject));
+        editButton.setOnAction(e -> this.editClass(classList, classPaneArrayList, classAssets, classCoordinates, guiDiagramProject));
 
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font(fontType, textSize));
@@ -350,6 +351,10 @@ public class ClassAsset {
      */
     private void editClass(ArrayList<Class> classList, ArrayList<Pane> classAssetPaneList, ArrayList<ClassAsset> classAssets,ArrayList<Point2D> classCoordinates, GUIDiagramProject guiDiagramProject ) {
 
+        ArrayList<Attribute> newFields = new ArrayList<>();
+        ArrayList<Attribute> newMethods = new ArrayList<>();
+
+
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(640);
@@ -357,6 +362,21 @@ public class ClassAsset {
         popUpStage.setResizable(false);
         Pane root = new Pane();
         Scene scene = new Scene(root, 640, 480);
+
+        //edit class name
+        Text currentName = new Text("Current class name: " + this.currentClass.getClassName());
+        currentName.setLayoutX(80);
+        currentName.setLayoutY(20);
+
+        // -- text field
+        HBox newNameAddContainer = new HBox();
+        Text enterNewName = new Text("Enter new class name here");
+        TextField newNameField = new TextField();
+        newNameAddContainer.getChildren().addAll(newNameField, enterNewName);
+        newNameAddContainer.setSpacing(20);
+        newNameAddContainer.setLayoutX(80);
+        newNameAddContainer.setLayoutY(50);
+
 
         //setup drop down menu for fields
         HBox fieldsHBox = new HBox();
@@ -366,7 +386,7 @@ public class ClassAsset {
 
         fieldsHBox.getChildren().add(comboBoxFields);
         fieldsHBox.setLayoutX(scene.getWidth()/8);
-        fieldsHBox.setLayoutY(scene.getHeight()-400);
+        fieldsHBox.setLayoutY(scene.getHeight()-350);
         comboBoxFields.setValue("Fields");
         comboBoxFields.setPrefWidth(120);
 
@@ -389,7 +409,7 @@ public class ClassAsset {
         //add field button
         Button addFieldButton = new Button();
         addFieldButton.setText("Add Field");
-        addFieldButton.setOnAction(e -> this.addField());
+        addFieldButton.setOnAction(e -> this.addField(newFields));
 
         //delete field button
         Button deleteFieldButton = new Button();
@@ -422,7 +442,7 @@ public class ClassAsset {
 
         methodsHBox.getChildren().add(comboBoxMethods);
         methodsHBox.setLayoutX(scene.getWidth()/8);
-        methodsHBox.setLayoutY(scene.getHeight()-270);
+        methodsHBox.setLayoutY(scene.getHeight()-220);
         comboBoxMethods.setValue("Methods");
         comboBoxMethods.setPrefWidth(120);
 
@@ -431,13 +451,13 @@ public class ClassAsset {
         Text fields = new Text();
         fields.setText("Fields");
         fields.setFont(Font.font("Verdana", 24));
-        fields.setLayoutX(scene.getWidth()/6 - 28);
-        fields.setLayoutY(scene.getHeight()- 410);
+        fields.setLayoutX(scene.getWidth()/6-28);
+        fields.setLayoutY(scene.getHeight()-360);
 
         Text methods = new Text();
         methods.setText("Methods");
-        methods.setLayoutX(scene.getWidth()/6 - 28);
-        methods.setLayoutY(scene.getHeight()-280);
+        methods.setLayoutX(scene.getWidth()/6-28);
+        methods.setLayoutY(scene.getHeight()-240);
         methods.setFont(Font.font("Verdana", 24));
 
         //edit method button
@@ -459,15 +479,38 @@ public class ClassAsset {
         HBox submitButtonContainer = new HBox();
         submitButtonContainer.setSpacing(50);
         Button submitButton = new Button();
-        submitButton.setText("Update Pane");
+        submitButton.setText("Submit");
         submitButton.setOnAction(e -> {
+
+            boolean isUnique = true;
+
+            for (Class currentClass : guiDiagramProject.getClassList()) {
+                if (newNameField.getText().equals(currentClass.getClassName())) {
+                    isUnique = false;
+                }
+
+            }
+
+            if (isUnique) {
+                if (!newNameField.getText().isEmpty()) {
+                    this.currentClass.setClassName(newNameField.getText());
+                }
+            }
+
+            if (!newFields.isEmpty()) {
+                this.currentClass.getAttributes().addAll(newFields);
+            }
+
+            if (!newMethods.isEmpty()) {
+                this.currentClass.getAttributes().addAll(newMethods);
+            }
 
             this.updateCoordinates(classAssetPaneList, classCoordinates);
             //update the class asset list by taking the new class list and creating new class assets from them
             //this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
-            guiDiagramProject.refreshClassPanes();
-            guiDiagramProject.refreshPanesToPaneWindow();
+            //guiDiagramProject.refreshClassPanes();
+            //guiDiagramProject.refreshClassPanesToPaneWindow();
             popUpStage.close();
         });
 
@@ -492,13 +535,14 @@ public class ClassAsset {
         background.setWidth(scene.getWidth()-18);
         background.setHeight(scene.getHeight()-110);
 
-        root.getChildren().addAll(background, fieldsHBox, methodsHBox, submitButtonContainer, fields, methods);
+        root.getChildren().addAll(background, currentName,newNameAddContainer,fieldsHBox, methodsHBox, submitButtonContainer, fields, methods);
 
         popUpStage.setTitle("Class Editor");
         popUpStage.setScene(scene);
         popUpStage.show();
 
     }
+
 
     private void editField(Attribute attribute) {
         if (attribute == null) {
@@ -593,7 +637,12 @@ public class ClassAsset {
 
     }
 
-    public void addField() {
+    /**
+     * description: method for add field button in edit class
+     * @param newFieldList
+     */
+
+    public void addField(ArrayList<Attribute> newFieldList) {
 
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
@@ -608,8 +657,7 @@ public class ClassAsset {
         Text currentNames = new Text();
         currentNames.setLayoutX(20);
         currentNames.setLayoutY(20);
-        currentNames.setText("Create a new Attribute");
-
+        currentNames.setText("Create a new Field");
 
         HBox addNameContainer = new HBox();
         addNameContainer.setSpacing(20);
@@ -650,11 +698,20 @@ public class ClassAsset {
                     isUnique = false;
                 }
             }
+
+            for (Attribute currentAttribute: newFieldList) {
+                if (currentAttribute.getName().equals(addNameField.getText())) {
+                    isUnique = false;
+                }
+            }
+
             //handle unique name
             if (isUnique) {
-                newAttribute.setName(addNameField.getText());
-                newAttribute.setPrimitive(addPrimitiveField.getText());
-                this.attributeList.add(newAttribute);
+                ArrayList<String> primitiveType = new ArrayList<>();
+                primitiveType.add(addPrimitiveField.getText());
+                newFieldList.add(newAttribute.addAttribute(addNameField.getText(), primitiveType, Attribute.Type.FIELD));
+                //to test delete later
+                System.out.println(newFieldList);
                 popUpStage.close();
             } else {
                 Alert notUnique = new Alert(Alert.AlertType.WARNING);

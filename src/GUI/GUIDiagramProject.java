@@ -87,13 +87,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         return null;
     }
 
-    public ArrayList<Relationship> getRelationshipList() {
-        return this.relationshipList;
-    }
-
-    public ArrayList<RelationshipAsset> getRelationshipAssets() {
-        return this.relationshipAssets;
-    }
 
     public void setCurrentDiagram(final Diagram diagram) {
         this.diagram = diagram;

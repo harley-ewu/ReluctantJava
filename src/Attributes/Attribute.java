@@ -60,8 +60,9 @@ public class Attribute {
         this.name = name;
     }
 
+
     public void setPrimitive(String primitive) {
-        this.name = primitive;
+
     }
 
     public String getPrimitive() {

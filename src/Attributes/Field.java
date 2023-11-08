@@ -32,6 +32,8 @@ public class Field extends Attribute{
     public String getPrimitive() {
         return this.primitive.replaceAll("[\\[\\]]", "");
     }
+
+
     @Override
     public void setPrimitive(String primitive) {
         this.primitive = primitive;
