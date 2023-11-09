@@ -1,10 +1,16 @@
 package Attributes;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Method extends Attribute{
+
+    @Expose
     private ArrayList<String> parameters = new ArrayList<>();
+
+    @Expose
     private Type type;
 
     public Method(String name) {

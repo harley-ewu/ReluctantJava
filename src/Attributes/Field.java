@@ -1,10 +1,16 @@
 package Attributes;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Objects;
 
 public class Field extends Attribute{
+    @Expose
     private String primitive;
+
+    @Expose
     private Type type;
+
     public Field(String name, String primitive) {
         super(name);
         this.primitive = primitive;

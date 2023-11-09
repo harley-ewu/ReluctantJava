@@ -1,13 +1,18 @@
 package Attributes;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Attribute {
     // Attribute name and variable type.
+    @Expose
     private String name;
+
     private Type type;
+
     public enum Type {
         FIELD,
         METHOD
@@ -71,7 +76,7 @@ public class Attribute {
 
     @Override
     public String toString(){
-        return name;
+        return this.name;
     }
 
     @Override
