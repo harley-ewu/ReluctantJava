@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 
@@ -349,7 +350,8 @@ public class ClassAsset {
     /**
      * description: this is the action event for the edit button
      */
-    private void editClass(ArrayList<Class> classList, ArrayList<Pane> classAssetPaneList, ArrayList<ClassAsset> classAssets,ArrayList<Point2D> classCoordinates, GUIDiagramProject guiDiagramProject ) {
+    private void editClass(ArrayList<Class> classList, ArrayList<Pane> classAssetPaneList, ArrayList<ClassAsset> classAssets,
+                           ArrayList<Point2D> classCoordinates, GUIDiagramProject guiDiagramProject ) {
 
         ArrayList<Attribute> newFields = new ArrayList<>();
         ArrayList<Attribute> newMethods = new ArrayList<>();
@@ -463,10 +465,20 @@ public class ClassAsset {
         //edit method button
         Button editMethodButton = new Button();
         editMethodButton.setText("Edit Method");
+        editMethodButton.setOnAction(e -> {
+            for (Attribute attribute : this.attributeList) {
+                String comboBoxName = comboBoxMethods.getValue();
+                if (attribute.toString().equals(comboBoxName)) {
+                    this.editMethod(attribute);
+                    return;
+                }
+            }
+        });
 
         //add method button
         Button addMethodButton = new Button();
         addMethodButton.setText("Add Method");
+        addMethodButton.setOnAction(e -> this.addMethod());
 
         //delete method button
         Button deleteMethodButton = new Button();
@@ -542,7 +554,6 @@ public class ClassAsset {
         popUpStage.show();
 
     }
-
 
     private void editField(Attribute attribute) {
         if (attribute == null) {
@@ -637,6 +648,131 @@ public class ClassAsset {
 
     }
 
+    private void editMethod(Attribute attribute) {
+
+        ArrayList<String> newParameters = new ArrayList<>();
+
+        Stage popUpStage = new Stage();
+        popUpStage.initModality(Modality.APPLICATION_MODAL);
+        popUpStage.setWidth(640);
+        popUpStage.setHeight(480);
+        popUpStage.setResizable(false);
+        Pane root = new Pane();
+        Scene scene = new Scene(root, 640, 480);
+
+        //edit class name
+        Text currentName = new Text("Current method name: \t\t\t\t" + this.currentClass.getClassName());
+        currentName.setLayoutX(80);
+        currentName.setLayoutY(20);
+
+        // -- text field
+        HBox newNameAddContainer = new HBox();
+        Text enterNewName = new Text("Enter new method name here");
+        TextField newNameField = new TextField();
+        newNameAddContainer.getChildren().addAll(newNameField, enterNewName);
+        newNameAddContainer.setSpacing(20);
+        newNameAddContainer.setLayoutX(80);
+        newNameAddContainer.setLayoutY(50);
+
+
+        //setup drop down menu for fields
+        HBox parametersHBox = new HBox();
+        parametersHBox.setSpacing(150);
+
+        ComboBox<String> comboBoxParameters = new ComboBox();
+
+        parametersHBox.getChildren().add(comboBoxParameters );
+        parametersHBox.setLayoutX(scene.getWidth()/8);
+        parametersHBox.setLayoutY(scene.getHeight()-350);
+        comboBoxParameters.setValue("Fields");
+        comboBoxParameters.setPrefWidth(120);
+
+        VBox parameterButtonContainer = new VBox();
+        parameterButtonContainer.setSpacing(5);
+
+        //edit parameter button
+        Button editParametersButton = new Button();
+        editParametersButton.setText("Edit Parameter");
+        editParametersButton.setOnAction(e -> {
+            for (String parameter : attribute.getParameters()) {
+                String comboBoxName = comboBoxParameters.getValue();
+                if (attribute.toString().equals(comboBoxName)) {
+                    //this.editParameter(attribute);
+                    return;
+                }
+            }
+        });
+
+        //add parameter button
+        Button addParameterButton = new Button();
+        addParameterButton.setText("Add Parameter");
+        //addParameterButton.setOnAction(e -> this.addField(newParameters));
+
+        //delete parameter button
+        Button deleteParameterButton = new Button();
+        deleteParameterButton.setText("Delete Parameter");
+        deleteParameterButton.setOnAction(e -> {
+            for (String parameter : attribute.getParameters()) {
+                String comboBoxName = comboBoxParameters.getValue();
+                if (attribute.toString().equals(comboBoxName)) {
+                    //this.deleteParameter(attribute);
+                    return;
+                }
+            }
+        });
+
+        parameterButtonContainer.getChildren().addAll(editParametersButton, addParameterButton, deleteParameterButton);
+
+        parametersHBox.getChildren().addAll(parameterButtonContainer);
+
+        ObservableList<String> observableParametersList = FXCollections.observableArrayList();
+        for (String parameter: attribute.getParameters()) {
+            observableParametersList.add(parameter);
+        }
+
+        comboBoxParameters.setItems(observableParametersList);
+
+
+
+        //Update button
+        HBox submitButtonContainer = new HBox();
+        submitButtonContainer.setSpacing(50);
+        Button submitButton = new Button();
+        submitButton.setText("Submit");
+        submitButton.setOnAction(e -> {
+            popUpStage.close();
+        });
+
+        //Cancel button
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+        cancelButton.setOnAction(e -> popUpStage.close());
+
+        submitButtonContainer.getChildren().addAll(submitButton, cancelButton);
+        submitButtonContainer.setLayoutX(root.getWidth()/2-80);
+        submitButtonContainer.setLayoutY(root.getHeight()-100);
+        ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
+
+        for (String method : attribute.getParameters()) {
+            observableMethodsList.add(method);
+        }
+
+        comboBoxParameters.setItems(observableMethodsList);
+
+        Rectangle background = new Rectangle();
+        background.setStyle("-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;");
+        background.setWidth(scene.getWidth()-18);
+        background.setHeight(scene.getHeight()-110);
+
+        root.getChildren().addAll(background, currentName,newNameAddContainer,parametersHBox, submitButtonContainer);
+
+        popUpStage.setTitle("Method Editor");
+        popUpStage.setScene(scene);
+        popUpStage.show();
+
+    }
+
+
     /**
      * description: method for add field button in edit class
      * @param newFieldList
@@ -663,7 +799,7 @@ public class ClassAsset {
         addNameContainer.setSpacing(20);
         Text addFieldLabel = new Text();
         TextField addNameField = new TextField();
-        addFieldLabel.setText("Enter New Name:");
+        addFieldLabel.setText("Enter new name:");
         addNameContainer.setLayoutX(50);
         addNameContainer.setLayoutY(scene.getHeight()/2-70);
 
@@ -671,10 +807,10 @@ public class ClassAsset {
 
         //edit primitive type text field
         HBox addPrimitiveContainer = new HBox();
-        addPrimitiveContainer.setSpacing(17);
+        addPrimitiveContainer.setSpacing(42);
         Text addPrimitiveLabel = new Text();
         TextField addPrimitiveField = new TextField();
-        addPrimitiveLabel.setText("Add A Type:");
+        addPrimitiveLabel.setText("Add a type:");
         addPrimitiveContainer.setLayoutX(60);
         addPrimitiveContainer.setLayoutY(scene.getHeight()/2-20);
 
@@ -706,7 +842,7 @@ public class ClassAsset {
             }
 
             //handle unique name
-            if (isUnique) {
+            if (isUnique && !addNameField.getText().isEmpty() && !addPrimitiveField.getText().isEmpty()) {
                 ArrayList<String> primitiveType = new ArrayList<>();
                 primitiveType.add(addPrimitiveField.getText());
                 newFieldList.add(newAttribute.addAttribute(addNameField.getText(), primitiveType, Attribute.Type.FIELD));
@@ -730,6 +866,22 @@ public class ClassAsset {
 
         root.getChildren().addAll(currentNames,addNameContainer, addPrimitiveContainer, submitContainer);
         popUpStage.setTitle("Add Field");
+        popUpStage.setScene(scene);
+        popUpStage.show();
+    }
+
+
+
+    public void addMethod() {
+        Stage popUpStage = new Stage();
+        popUpStage.initModality(Modality.APPLICATION_MODAL);
+        popUpStage.setWidth(426);
+        popUpStage.setHeight(240);
+        popUpStage.setResizable(false);
+        Pane root = new Pane();
+        root.setStyle("-fx-background-color: lightblue");
+        Scene scene = new Scene(root, 426, 240);
+
         popUpStage.setScene(scene);
         popUpStage.show();
     }

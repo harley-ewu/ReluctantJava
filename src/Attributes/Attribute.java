@@ -60,6 +60,10 @@ public class Attribute {
         this.name = name;
     }
 
+    public ArrayList<String> getParameters() {
+        return null;
+    }
+
 
     public void setPrimitive(String primitive) {
 

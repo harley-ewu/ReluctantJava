@@ -53,7 +53,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     @Override
     public void start(final Stage stage) throws Exception {
-        UpdateViewController.initView(this);
+        //UpdateViewController.initView(this);
         this.contentPane.setPrefSize(3840,2160);
         //hbox for zoom in and zoom out buttons
         HBox zoomButtons = this.setUpZoomButtons();
@@ -191,7 +191,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.diagram.addClass("test class 2");
         this.diagram.addClass("test class 3");
         this.diagram.addClass("test class 4");
-        /*
+
         Class testClass = new Class("test class");
         Class testClass2 = new Class("test class 2");
         Class testClass3 = new Class("test class 3");
@@ -246,11 +246,11 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.add(testClass2);
         this.classList.add(testClass3);
         this.classList.add(testClass4);
-        */
-        this.classList.add(this.diagram.getSingleClass("test class"));
-        this.classList.add(this.diagram.getSingleClass("test class 2"));
-        this.classList.add(this.diagram.getSingleClass("test class 3"));
-        this.classList.add(this.diagram.getSingleClass("test class 4"));
+
+        //this.classList.add(this.diagram.getSingleClass("test class"));
+        //this.classList.add(this.diagram.getSingleClass("test class 2"));
+        //this.classList.add(this.diagram.getSingleClass("test class 3"));
+        //this.classList.add(this.diagram.getSingleClass("test class 4"));
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
