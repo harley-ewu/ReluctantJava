@@ -31,6 +31,7 @@ public class Attribute {
      * @param type: the type of attribute the user wants
      */
     //TODO: get name, get type, set name, set type
+    /*
     public Attribute addAttribute(final String name, ArrayList<String> parameters, final Type type) {
         Objects.requireNonNull(name, "Name can't be null.");
 
@@ -47,7 +48,7 @@ public class Attribute {
         } else {
             return null;
         }
-    }
+    }*/
 
     public String getName() {
         return this.name;

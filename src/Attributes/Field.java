@@ -4,51 +4,44 @@ import com.google.gson.annotations.Expose;
 
 import java.util.Objects;
 
-public class Field extends Attribute{
+public class Field{
     @Expose
     private String primitive;
 
     @Expose
-    private Type type;
+    private String name;
 
     public Field(String name, String primitive) {
-        super(name);
+        this.name = name;
         this.primitive = primitive;
-        this.setType();
     }
 
-
-
-    @Override
-    public Type getType() {
-        return this.type;
-    }
-
-
-    public void setType() {
-        this.type = Type.FIELD;
-    }
-
-    @Override
-    public String toString() {
-        return (super.toString() + ": " + this.primitive.replaceAll("[\\[\\]]", ""));
-    }
-
-    @Override
     public String getPrimitive() {
         return this.primitive.replaceAll("[\\[\\]]", "");
     }
-    @Override
+
     public void setPrimitive(String primitive) {
         this.primitive = primitive;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Field field = (Field) o;
-        return primitive.equals(field.primitive);
+        return this.primitive.equals(field.primitive) && this.name.equals(field.name);
+    }
+
+    @Override
+    public String toString() {
+        return ( this.name + ": " + this.primitive.replaceAll("[\\[\\]]", ""));
     }
 }

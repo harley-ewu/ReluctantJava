@@ -1,6 +1,8 @@
 package Class;
 
 import Attributes.Attribute;
+import Attributes.Field;
+import Attributes.Method;
 import com.google.gson.annotations.Expose;
 import java.util.*;
 
@@ -9,7 +11,9 @@ public class Class {
     @Expose
     private String className;
     @Expose
-    private ArrayList<Attribute> attributes = new ArrayList<>();
+    private ArrayList<Field> fields = new ArrayList<>();
+    @Expose
+    private ArrayList<Method> methods = new ArrayList<>();
 
     public Class(final String className) {
         if (className == null) {
@@ -25,101 +29,116 @@ public class Class {
     //getters
     public String getClassName() {
         return this.className;
-
     }
 
-    /**
-     * returns the attributes object attached to the Class class
-     * @return
-     */
-
-    public ArrayList<Attribute> getAttributes() {
-        return this.attributes;
-    }
-
-    /*
-    public ArrayList getRelationships(){
-        return new ArrayList<>(this.relationships);
-    }
-    */
     /**
      * description: used to set a name for the class or rename a class
      * @param newClassName - the name of the new class a user wants to rename a class to
      */
     //setters
     public void setClassName(final String newClassName) {
-        if (newClassName == null) {
-            throw new NullPointerException("Class name parameter is null.");
+        if (newClassName == null || newClassName.isEmpty()) {
+            throw new NullPointerException("Class name parameter is null or empty.");
         }
 
         this.className = newClassName;
     }
 
     /**
-     * description: createAttribute is a menu option method, prompting the user to enter a name for an attribute
-     * @param name - the name of the class
-     * @param parameters - a list of parameters for a method (will be a single
-     * @param input - the number the user inputted in the menu indicating type.
+     * Description: Gets the list of fields currently in the class
+     * @return - returns the list of fields in the class
      */
-    public void createAttribute(String name, ArrayList<String> parameters, int input) {
-        if (name.isEmpty() || parameters == null || input > 2 || input < 1) {
-            return;
-        }
-        Attribute attribute = new Attribute();
-        // Depending on the input taken from the user, construct either a field or method attribute.
-        if (input == 1) {
-            attribute = (Attribute) attribute.addAttribute(name, parameters, Attribute.Type.FIELD);
-        } else if (input == 2) {
-            attribute = (Attribute) attribute.addAttribute(name, parameters,  Attribute.Type.METHOD);
-        } else {
-            throw new IllegalArgumentException("Invalid input. Please enter 1 for field or 2 for method.");
-        }
-        if (attribute != null && !duplicateAttributeCheck(attribute)) {
-            attributes.add(attribute);
+    public ArrayList<Field> getFields() {
+        return fields;
+    }
+
+    /**
+     * Description: Sets the list of fields in the class to a new list
+     * @param fields - the new list of fields
+     */
+    public void setFields(ArrayList<Field> fields) {
+        this.fields = fields;
+    }
+
+    /**
+     * Description: Gets the list of methods currently in the class
+     * @return - returns the list of the methods
+     */
+    public ArrayList<Method> getMethods() {
+        return methods;
+    }
+
+    /**
+     * Description: Sets the list of methods in the class to a new list.
+     * @param methods - the new list of methods
+     */
+    public void setMethods(ArrayList<Method> methods) {
+        this.methods = methods;
+    }
+
+    /**
+     * Description: Creates a new field and adds it to the list of fields if
+     * a field with the same name does not exist.
+     * @param name - the name of the new field
+     * @param parameters - the primitive of the new field
+     * @return - returns true if successfully adds new field,
+     * returns false if a field of the same name exists.
+     */
+    public boolean createField(String name, ArrayList<String> parameters) {
+        nullCheckFieldParams(name, parameters);
+
+        Field field = new Field(name, parameters.getFirst());
+
+        for(Field existingField : this.fields){
+            if(existingField.getName().equals(name)){
+                return false;
+            }
         }
 
+        this.fields.add(field);
+        return true;
+    }
+
+    /**
+     * Description: Creates a new method and adds it to the list if
+     * a methods with the same name and params does not exist.
+     * @param name - The name of the new method
+     * @param parameters - The params of the new method
+     * @return - Returns true if successfully adds the method,
+     * returns false if a method of the same name and parameters exists.
+     */
+    public boolean createMethod(String name, ArrayList<String> parameters) {
+        nullCheckMethodParams(name, parameters);
+
+        Method method = new Method(name, parameters);
+
+        if(this.methods.contains(method)){
+            return false;
+        }else{
+            this.methods.add(method);
+            return true;
+        }
     }
 
     /**
      * description: deleteAttribute is a menu option method, prompting the user to enter an attribute to delete
      */
-    public void deleteAttribute(int input) {
-        if (input < 1 || input > this.attributes.size()+1) {
-            return;
+    public boolean deleteField(int input) {
+        if (input < 1 || input > this.fields.size()+1) {
+            return false;
         }
 
-        this.attributes.remove(input-1);
+        this.fields.remove(input-1);
+        return true;
     }
 
-    /**
-     * description: returns a string of all attributes currently within the class
-     * @return
-     */
-    public String displayAttributes() {
-        sortArrayList(this.attributes);
-        StringBuilder display = new StringBuilder();
-
-        display.append("Available Fields and Methods: \n");
-
-        int i = 0;
-
-        for (Attribute attribute : this.attributes) {
-            display.append((i+1)+". "+ attribute.toString().replaceAll("[\\[\\]]", "")+"\n");
-            i++;
+    public boolean deleteMethod(int input) {
+        if (input < 1 || input > this.methods.size()+1) {
+            return false;
         }
 
-        return display.toString();
-    }
-
-    public boolean duplicateAttributeCheck(Attribute newAttribute) {
-        boolean found = false;
-        for (int i = 0; i < this.attributes.size(); i++) {
-            if (newAttribute.equals(this.attributes.get(i))) {
-                found = true;
-                break;
-            }
-        }
-        return found;
+        this.methods.remove(input-1);
+        return true;
     }
 
     /**
@@ -127,14 +146,24 @@ public class Class {
      * @param input - The index of the attribute in the list to be changed.
      * @param newName - The new name to for the attribute.
      * @param parameters - List of new parameters.
-     * @param type - Indicates whether the attribute is a field or method.
+     *
      */
-    public void renameAttribute(int input, String newName, ArrayList<String> parameters, Attribute.Type type) {
-        if(input <= this.attributes.size() && input >= 1  && !newName.isEmpty()) {
-            Attribute newAttribute = new Attribute();
-            newAttribute = newAttribute.addAttribute(newName, parameters, type);
-            if (!duplicateAttributeCheck(newAttribute)) {
-                this.attributes.set(input - 1, newAttribute);
+    public void renameField(int input, String newName, ArrayList<String> parameters) {
+        if(input <= this.fields.size() && input >= 1  && !newName.isEmpty()) {
+            for(Field existingField : this.fields){
+                if(existingField.getName().equals(newName)){
+                    return;
+                }
+            }
+            this.fields.get(input - 1).setName(newName);
+        }
+    }
+
+    public void renameMethod(int input, String newName, ArrayList<String> parameters) {
+        if(input <= this.methods.size() && input >= 1  && !newName.isEmpty()) {
+            Method method = new Method(newName, parameters);
+            if(!this.methods.contains(method)){
+                this.methods.get(input - 1).setName(newName);
             }
         }
     }
@@ -144,13 +173,18 @@ public class Class {
      * @param newParameters - List of new parameters.
      * @param index - Index of attribute to be changed.
      */
-    public void renameAttributeParameters(ArrayList<String> newParameters, int index) {
-        if (index <= this.attributes.size() && index >= 1) {
-            Attribute oldAttribute = this.attributes.get(index - 1);
-            Attribute newAttribute = new Attribute(oldAttribute.getName());
-            newAttribute = newAttribute.addAttribute(oldAttribute.getName(), newParameters, Attribute.Type.METHOD);
-            if (!duplicateAttributeCheck(newAttribute)) {
-                this.attributes.set(index - 1, newAttribute);
+    public void renameFieldPrimitive(ArrayList<String> newParameters, int index) {
+        if (index <= this.fields.size() && index >= 1) {
+            this.fields.get(index - 1).setPrimitive(newParameters.getFirst());
+        }
+    }
+
+    public void renameMethodParams(ArrayList<String> newParameters, int index){
+        if (index <= this.methods.size() && index >= 1) {
+            Method method = this.methods.get(index - 1);
+            method.setParameters(newParameters);
+            if(!this.methods.contains(method)){
+                this.methods.get(index - 1).setParameters(newParameters);
             }
         }
     }
@@ -182,7 +216,42 @@ public class Class {
 
         return help;
     }*/
-    
+
+    /**
+     * description: returns a string of all attributes currently within the class
+     * @return
+     */
+    public String displayAttributes() {
+        StringBuilder display = new StringBuilder();
+
+        display.append("Available Fields and Methods: \n");
+
+        display.append("Fields: \n");
+
+        int i = 0;
+
+        for (Field field : this.fields) {
+            display.append(i + 1)
+                    .append(". ")
+                    .append(field.toString().replaceAll("[\\[\\]]", ""))
+                    .append("\n");
+            i++;
+        }
+
+        display.append("Methods: \n");
+
+        i = 0;
+
+        for (Method method : this.methods) {
+            display.append(i + 1)
+                    .append(". ")
+                    .append(method.toString().replaceAll("[\\[\\]]", ""))
+                    .append("\n");
+            i++;
+        }
+
+        return display.toString();
+    }
 
     /**
      * description: toString will display all contents of the class object including: name, attributes, and relationships
@@ -190,17 +259,34 @@ public class Class {
      */
     @Override
     public String toString() {
-        StringBuilder relationships = new StringBuilder();
-        StringBuilder attributeString = new StringBuilder();
-        sortArrayList(this.attributes);
+        StringBuilder fieldsString = new StringBuilder();
+        StringBuilder methodsString = new StringBuilder();
 
-        for (Attribute attribute : this.attributes) {
-            attributeString.append(attribute.toString().replaceAll("[\\[\\]]", "") +"\n");
+        for (Field field : this.fields) {
+            fieldsString.append(field.toString().replaceAll("[\\[\\]]", "")).append("\n");
+        }
+
+        for (Method method : this.methods) {
+            methodsString.append(method.toString().replaceAll("[\\[\\]]", "")).append("\n");
         }
 
         return "Class Name: " + this.getClassName() + "\n"
                 +"---------------------\n"
-                + "Attributes: \n" + attributeString;
+                + "Fields: \n" + fieldsString
+                + "Methods: \n" + methodsString
+                + "\n";
+    }
+
+    private void nullCheckFieldParams(String name, ArrayList<String> parameters) {
+        if (name.isEmpty() || parameters == null) {
+            throw new IllegalArgumentException("Name cannot be empty and primitive cannot be null");
+        }
+    }
+
+    private void nullCheckMethodParams(String name, ArrayList<String> parameters) {
+        if (name.isEmpty() || parameters == null) {
+            throw new IllegalArgumentException("Name cannot be empty and parameters cannot be null");
+        }
     }
 
 }

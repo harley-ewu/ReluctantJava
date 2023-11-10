@@ -5,23 +5,21 @@ import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Method extends Attribute{
+public class Method{
 
     @Expose
     private ArrayList<String> parameters = new ArrayList<>();
 
     @Expose
-    private Type type;
+    private String name;
 
     public Method(String name) {
-        super(name);
-        this.setType();
+        this.name = name;
     }
 
     public Method(String name, ArrayList<String> parameters) {
-        super(name);
+        this.name = name;
         this.parameters = parameters;
-        this.type = Type.METHOD;
     }
 
     /**
@@ -35,6 +33,18 @@ public class Method extends Attribute{
         this.parameters.addAll(parameter);
     }
 
+    public ArrayList<String> getParameters() {
+        return parameters;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void addParameter(String parameter) {
         this.parameters.add(parameter);
     }
@@ -46,27 +56,19 @@ public class Method extends Attribute{
         this.parameters.remove(input-1);
     }
 
-    @Override
-    public Type getType() {
-        return this.type;
-    }
-
-
-    public void setType() {
-        this.type = Type.METHOD;
-    }
 
     @Override
     public String toString() {
-        return (super.toString() + "(" + parameters.toString().replaceAll("[\\[\\]]", "") + ")");
+        return (this.name + "(" + parameters.toString().replaceAll("[\\[\\]]", "") + ")");
     }
+
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Method method = (Method) o;
-        return parameters.equals(method.parameters);
+        return this.parameters.equals(method.parameters) && this.name.equals(method.name);
     }
 }
