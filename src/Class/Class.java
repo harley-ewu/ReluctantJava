@@ -111,20 +111,22 @@ public class Class {
         nullCheckMethodParams(name, parameters);
 
         Method method = new Method(name, parameters);
-
-        if(this.methods.contains(method)){
-            return false;
-        }else{
-            this.methods.add(method);
-            return true;
+        for(Method existingMethod : this.methods){
+            if(existingMethod.equals(method)){
+                return false;
+            }
         }
+        this.methods.add(method);
+        return true;
     }
 
     /**
-     * description: deleteAttribute is a menu option method, prompting the user to enter an attribute to delete
+     * Description: Deletes a field at the specified index from the list of fields
+     * @param input - the index of the field
+     * @return - returns true if successful delete, returns false if index out of bounds.
      */
     public boolean deleteField(int input) {
-        if (input < 1 || input > this.fields.size()+1) {
+        if (input < 1 || input > this.fields.size()) {
             return false;
         }
 
@@ -132,8 +134,13 @@ public class Class {
         return true;
     }
 
+    /**
+     * Description: Deletes a method at a specified index from the list of methods
+     * @param input - the index of the method
+     * @return - returns true if successfully deletes, returns false if index out of bounds
+     */
     public boolean deleteMethod(int input) {
-        if (input < 1 || input > this.methods.size()+1) {
+        if (input < 1 || input > this.methods.size()) {
             return false;
         }
 
@@ -142,80 +149,81 @@ public class Class {
     }
 
     /**
-     * description: method that handles renaming an attribute
-     * @param input - The index of the attribute in the list to be changed.
-     * @param newName - The new name to for the attribute.
-     * @param parameters - List of new parameters.
-     *
+     * Description: Renames an existing field in the list of fields
+     * @param input - the index of the field to be renamed
+     * @param newName - the new name for the field
+     * @return - returns true if renaming the field is successful, returns false if the index
+     * of the field is out of bounds or if the new name exists as the name of a different
+     * field in the list of fields
      */
-    public void renameField(int input, String newName, ArrayList<String> parameters) {
+    public boolean renameField(int input, String newName) {
         if(input <= this.fields.size() && input >= 1  && !newName.isEmpty()) {
-            for(Field existingField : this.fields){
-                if(existingField.getName().equals(newName)){
-                    return;
-                }
-            }
-            this.fields.get(input - 1).setName(newName);
+            return false;
         }
+        for(Field existingField : this.fields){
+            if(existingField.getName().equals(newName)){
+                return false;
+            }
+        }
+        this.fields.get(input - 1).setName(newName);
+        return true;
     }
 
-    public void renameMethod(int input, String newName, ArrayList<String> parameters) {
+    /**
+     * Description: Renames an existing method in the list of methods.
+     * @param input - the index of the method to be renamed
+     * @param newName - the new name for the existing method
+     * @param parameters - the params of the existing method.
+     * @return - returns true if successfully renames method, returns false if the index is out of bounds
+     * or if the resulting method already exists in the list of methods
+     */
+    public boolean renameMethod(int input, String newName, ArrayList<String> parameters) {
         if(input <= this.methods.size() && input >= 1  && !newName.isEmpty()) {
-            Method method = new Method(newName, parameters);
-            if(!this.methods.contains(method)){
-                this.methods.get(input - 1).setName(newName);
-            }
+            return false;
         }
+        Method method = new Method(newName, parameters);
+        if(!this.methods.contains(method)){
+            this.methods.get(input - 1).setName(newName);
+            return true;
+        }
+        return false;
     }
 
     /**
-     * description: method that handles renaming an attribute
-     * @param newParameters - List of new parameters.
-     * @param index - Index of attribute to be changed.
+     * Description: Renames the primitive of a field in the list of fields
+     * @param newParameters - the name of the new primitive for the existing field
+     * @param index - the index of the field to have its parameter name changed
+     * @return - Returns true if successfully renames the fields primitive,
+     * returns false if the index for the field is out of bounds.
      */
-    public void renameFieldPrimitive(ArrayList<String> newParameters, int index) {
+    public boolean renameFieldPrimitive(ArrayList<String> newParameters, int index) {
         if (index <= this.fields.size() && index >= 1) {
-            this.fields.get(index - 1).setPrimitive(newParameters.getFirst());
+            return false;
         }
-    }
-
-    public void renameMethodParams(ArrayList<String> newParameters, int index){
-        if (index <= this.methods.size() && index >= 1) {
-            Method method = this.methods.get(index - 1);
-            method.setParameters(newParameters);
-            if(!this.methods.contains(method)){
-                this.methods.get(index - 1).setParameters(newParameters);
-            }
-        }
+        this.fields.get(index - 1).setPrimitive(newParameters.getFirst());
+        return true;
     }
 
     /**
-     * description: This method sorts the array list by either field or method.
-     * @param unsortedList - The list to be sorted.
+     * Description: Renames the parameters of a method in the list of methods
+     * @param newParameters - the list of new parameters
+     * @param index - the index of the method to have its params changed
+     * @return - returns true if the params for the method are successfully changed,
+     * returns false if the index for the method is out of bounds or if a method of
+     * the same name and params already exists in the list of methods.
      */
-    public void sortArrayList(ArrayList<Attribute> unsortedList) {
-        Comparator<Attribute> arrayListComparator = new Comparator<Attribute>() {
-            @Override
-            public int compare(Attribute s1, Attribute s2) {
-                char lastChar1 = s1.toString().charAt(s1.toString().length() - 3);
-                char lastChar2 = s2.toString().charAt(s2.toString().length() - 3);
-                return Character.compare(lastChar1, lastChar2);
-            }
-        };
-        Collections.sort(unsortedList, arrayListComparator);
+    public boolean renameMethodParams(ArrayList<String> newParameters, int index){
+        if (index <= this.methods.size() && index >= 1) {
+            return false;
+        }
+        Method method = this.methods.get(index - 1);
+        method.setParameters(newParameters);
+        if(!this.methods.contains(method)){
+            this.methods.get(index - 1).setParameters(newParameters);
+            return true;
+        }
+        return false;
     }
-
-    /*public String help() {
-        String help = "How to use this menu:\n" +
-                "1. Add attribute -- prompts user to enter a name for a new attribute\n" +
-                "2. Delete attribute -- prompts user to enter a name of an (existing) attribute to delete\n" +
-                "3. Rename attriubte -- prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute\n" +
-                "4. Display relationships -- displays all relationships assigned to the class\n" +
-                "5. Display all contents -- displays the contents of the class including: name, attributes, and relationships\n" +
-                "6. Return to Diagram Menu -- returns the user to the diagram menu holding the class\n";
-
-        return help;
-    }*/
 
     /**
      * description: returns a string of all attributes currently within the class
@@ -277,12 +285,22 @@ public class Class {
                 + "\n";
     }
 
+    /**
+     * Description: A helper method for checking input params for making fields
+     * @param name - the name to be checked
+     * @param parameters - the primivtive to be checked
+     */
     private void nullCheckFieldParams(String name, ArrayList<String> parameters) {
         if (name.isEmpty() || parameters == null) {
             throw new IllegalArgumentException("Name cannot be empty and primitive cannot be null");
         }
     }
 
+    /**
+     * Description: A helper method for checking input params for making methods
+     * @param name - the name to be checked
+     * @param parameters - the params to be checked
+     */
     private void nullCheckMethodParams(String name, ArrayList<String> parameters) {
         if (name.isEmpty() || parameters == null) {
             throw new IllegalArgumentException("Name cannot be empty and parameters cannot be null");
