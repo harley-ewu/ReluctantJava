@@ -1,16 +1,13 @@
 package Controller;
 
+import Attributes.Attribute;
 import CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
-import Class.Class;
-import CLI.CommandLineInterface;
 import MenuPrompts.MenuPrompts;
-import Relationships.Relationship.RelationshipType;
 
-import java.util.*;
-
-import Attributes.Attribute;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MenuController {
 
@@ -65,7 +62,7 @@ public class MenuController {
                 //View class - name needed
                 case 6:
                     Class c = MenuPrompts.printSingleClassPrompt(diagram);
-                    diagram.printSingleClass(c);
+                    System.out.println(diagram.printSingleClass(c));
                     break;
                 //View Diagram
                 case 7:

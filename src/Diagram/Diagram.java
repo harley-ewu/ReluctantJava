@@ -102,9 +102,13 @@ public class Diagram {
    Renames a class in the classList
    */
    public void renameClass(final Class old, final String newName) {
+      if(old != null && findSingleClass(old.getClassName()) == null){
+         System.out.println("Class does not exist to rename.");
+         return;
+      }
       //need to delete from hashmap while retaining temp class object and then read with new name
       //also need to change the name of the actual class object
-      if(old != null && !(newName.isEmpty())){
+      else if(old != null && !(newName.isEmpty())){
          Class temp = this.classList.get(old.getClassName());
          this.classList.remove(temp.getClassName());
          temp.setClassName(newName);
@@ -118,13 +122,13 @@ public class Diagram {
    /*
    Lists out all of the classes present in the classList
    */
-   public void listClasses() {
+   public String listClasses() {
       if(this.classList.size() == 0){
-         System.out.println("Diagram is empty.");
+         return "Diagram is empty.";
       }
       else {
-         System.out.println("Classes: ");
-         System.out.println(this.classList.values());
+         return "Classes: " +
+         this.classList.values();
          }
       
    } 
@@ -133,7 +137,7 @@ public class Diagram {
    Finds out if class exists
    */
    public Class findSingleClass(final String className) {
-      if(className == null) {
+      if(className == null || className.isEmpty()) {
          System.out.println("Invalid class name.");
          return null;
       }
@@ -144,14 +148,14 @@ public class Diagram {
    /*
    Prints out all information about a given class
    */
-   public void printSingleClass(final Class c) {
+   public String printSingleClass(final Class c) {
       if (c == null){
-         System.out.println("Class does not exist.");
+         return "Class does not exist.";
       }
       else {
-         System.out.println(c.toString() + "\n"
+         return c.toString() + "\n"
          +"---------------------\n"
-         + this.listOneClassRelationships(c));
+         + this.listOneClassRelationships(c);
       }
    }
 
@@ -164,7 +168,9 @@ public class Diagram {
     * and builds relationships between the classes, then adds it to either of their relationship lists
     */
    public void addRelationship(Class c1, Class c2) {
-      if (c1 == c2) return;
+      if (c1 == c2) {
+         return;
+      }
 
       Relationship.RelationshipType relationshipType = null;
       int c1Cardinality = -2;

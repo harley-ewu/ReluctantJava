@@ -1,17 +1,39 @@
 import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DiagramTests {
+
+	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+	private final PrintStream originalOut = System.out;
+	private final PrintStream originalErr = System.err;
+
+	@BeforeEach
+	public void setUpStreams() {
+		System.setOut(new PrintStream(outContent));
+		System.setErr(new PrintStream(errContent));
+	}
+
+	@AfterEach
+	public void restoreStreams() {
+		System.setOut(originalOut);
+		System.setErr(originalErr);
+	}
 	
 	@Test
 	void getTitleTest() {
-		
 		Diagram diagram = new Diagram("test");
 		assertEquals("test", diagram.getTitle());
 	}
@@ -41,34 +63,6 @@ public class DiagramTests {
 		assertEquals(hash1, diagram.getClassList());
 	}
 
-	@Test void testAddClass() {
-	Diagram diagram = new Diagram("");
-	diagram.setTitle("test");
-	diagram.addClass("testClass");
-	Class c = diagram.getClassList().get("testClass");
-	assertEquals(c, diagram.getClassList().get(c.getClassName()));
-	}
-
-	@Test
-	void deleteClassTest() {
-		Diagram diagram = new Diagram("testDiagram");
-		diagram.addClass("testClass");
-
-		diagram.deleteClass(diagram.getClassList().get("testClass"));
-
-		assertEquals(null, diagram.getClassList().get("testClass"));
-		//need to also test relationships being deleted
-
-	}
-
-	@Test
-	void renameClassTest() {
-		Diagram d = new Diagram("testD");
-		d.addClass("test");
-		d.renameClass(d.getClassList().get("test"), "newName");
-		assertEquals("newName", d.getClassList().get("newName").getClassName());
-	}
-
 	@Test
 	void findSingleClassTest() {
 		Diagram d = new Diagram("test");
@@ -76,16 +70,7 @@ public class DiagramTests {
 		d.addClass("testClass");
 		Class c1 = d.getClassList().get("testClass");
 		assertEquals(c1, d.findSingleClass("testClass"));
-	}
-
-	@Test
-	void addRelationshipTest() {
-
-	}
-
-	@Test 
-	void deleteRelationshipTest() {
-
+		assertEquals(null, d.findSingleClass(""));
 	}
 
 	@Test 
@@ -117,6 +102,8 @@ public class DiagramTests {
 		UMLDiagram.addClass(c.getClassName());
 		
 		assertEquals(c.getClassName(), UMLDiagram.getClassList().get(c.getClassName()).getClassName());
+		UMLDiagram.addClass("testClass");
+		assertEquals("Class already exists.\n", outContent.toString());
 		
 	}
 
@@ -127,13 +114,17 @@ public class DiagramTests {
 		HashMap<String, Class> classList = UMLDiagram.getClassList();
 
 		Class testClass = new Class("testClass");
+		Class testClass2 = new Class("testClass2");
 
 		UMLDiagram.addClass(testClass.getClassName());
+		UMLDiagram.addClass(testClass2.getClassName());
+		Relationship r = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, true);
+		UMLDiagram.addRelationship(r);
 
 		assertEquals(testClass.getClassName(), UMLDiagram.getClassList().get(testClass.getClassName()).getClassName());
 
 		UMLDiagram.deleteClass(testClass);
-
+		assertEquals(new HashMap<>(), UMLDiagram.getRelationshipList());
 		assertEquals(null, UMLDiagram.getClassList().get(testClass.getClassName()));
 	}
 
@@ -151,8 +142,14 @@ public class DiagramTests {
 
 		String newName = "classTest";
 		UMLDiagram.renameClass(testClass, newName);
-
 		assertEquals(newName, UMLDiagram.getClassList().get(newName).getClassName());
+
+		Class wrongClass = new Class("classTestWrong");
+		UMLDiagram.renameClass(wrongClass, "newName");
+		assertEquals("Class does not exist to rename.\n", outContent.toString());
+
+		UMLDiagram.renameClass(null, "newName");
+		assertEquals("Class does not exist to rename.\nBad Parameters\n", outContent.toString());
 	}
 
 	@Test
@@ -178,7 +175,7 @@ public class DiagramTests {
 
 	@Test
 	void addRelationshipTest() throws Exception {
-		Diagram UMLDiagram = new Diagram("");
+		Diagram UMLDiagram = new Diagram("testD");
 
 		Class testClass = new Class("testClass");
 		UMLDiagram.addClass(testClass.getClassName());
@@ -217,11 +214,13 @@ public class DiagramTests {
 	void findSingleRelationshipTest() throws Exception {
 		Diagram UMLDiagram = new Diagram("");
 
+
+
 		Class testClass = new Class("testClass");
 		UMLDiagram.addClass(testClass.getClassName());
 		Class testClass2 = new Class("testClass2");
 		UMLDiagram.addClass(testClass2.getClassName());
-
+		assertEquals(null, UMLDiagram.findSingleRelationship(testClass, testClass2));
 		Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, true);
 		String testRelationshipKey = testClass.getClassName() + testClass2.getClassName();
 		UMLDiagram.addRelationship(testRelationship);
@@ -284,7 +283,7 @@ public class DiagramTests {
 		Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass3, 1, 1, true);
 		UMLDiagram.addRelationship(testRelationship2);
 
-		Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation, testClass2, testClass3, 1, 1, true);
+		Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation, testClass3, testClass2, 1, 1, true);
 		UMLDiagram.addRelationship(testRelationship3);
 
 		String testStr = "Relationships: \n"
@@ -298,5 +297,106 @@ public class DiagramTests {
 				+ "testClass2 Class Cardinality: 1\n";
 
 		assertEquals(testStr, UMLDiagram.listOneClassRelationships(testClass));
+		String testStr2 = "Relationships: \n" +
+				"1: testClass3 has a Aggregation relationship with testClass2\n" +
+				"Owner: true\n" +
+				"testClass3 Class Cardinality: 1\n" +
+				"testClass2 Class Cardinality: 1\n" +
+				"2: testClass has a Aggregation relationship with testClass2\n" +
+				"Owner: true\n" +
+				"testClass Class Cardinality: 1\n" +
+				"testClass2 Class Cardinality: 1\n";
+		assertEquals(testStr2, UMLDiagram.listOneClassRelationships(testClass2));
 	}
+
+	@Test
+	void getSaveLocationTest() {
+		Diagram d = new Diagram("test");
+        assertEquals(null, d.getSaveLocation());
+	}
+	@Test
+	void setSaveLocationTest() {
+		Diagram d = new Diagram("test");
+		String saveLocation = "testLocation";
+		d.setSaveLocation("testLocation");
+		assertEquals(saveLocation, d.getSaveLocation());
+
+	}
+
+	@Test
+	void getSingleClassTest(){
+		Diagram d = new Diagram("test");
+		d.addClass("testClass");
+		assertEquals("testClass", d.getSingleClass("testClass").getClassName());
+		assertEquals(null, d.findSingleClass("testClass2"));
+	}
+
+	@Test
+	void printSingleClassTest() {
+		Diagram d = new Diagram("test");
+
+		assertEquals("Class does not exist.", d.printSingleClass(null));
+		d.addClass("testClass");
+		Class c = d.getSingleClass("testClass");
+
+		String testString = "Class Name: testClass\n" +
+				"---------------------\n" +
+				"Attributes: \n" +
+				"\n" +
+				"---------------------\n" +
+				"Relationships: \n";
+		assertEquals(testString, d.printSingleClass(c));
+	}
+
+	@Test
+	void listClasses() {
+		Diagram d = new Diagram("test");
+		assertEquals("Diagram is empty.", d.listClasses());
+
+		d.addClass("testClass");
+		String testString = "Classes: [Class Name: testClass\n" +
+				"---------------------\n" +
+				"Attributes: \n" +
+				"]";
+		assertEquals(testString, d.listClasses());
+	}
+
+	@Test
+	void diagramConstructorTest() {
+		assertThrows(NullPointerException.class, () ->
+				new Diagram((null)));
+	}
+
+	@Test
+	void toStringDiagramTest() {
+		Diagram d = new Diagram("test");
+		String testString = "\nDiagram test is empty.\n";
+		assertEquals(testString, d.toString());
+		d.addClass("testClass");
+		testString = "\nDiagram: test\n" +
+				"\n" +
+				"Class Name: testClass\n" +
+				"---------------------\n" +
+				"Attributes: \n" +
+				"\n" +
+				"Relationship List: \n";
+		assertEquals(testString, d.toString());
+	}
+
+	@Test
+	void getSingleClassRelationshipsTest() {
+		Diagram d = new Diagram ("test");
+		Class c1 = new Class("c1");
+		Class c2 = new Class("c2");
+		assertEquals(new ArrayList<>(), d.getSingleClassRelationships(c1));
+		d.addClass(c1.getClassName());
+		d.addClass(c2.getClassName());
+		Relationship r = new Relationship(Relationship.RelationshipType.Aggregation, c1, c2, 1, 1, true);
+		d.addRelationship(r);
+		ArrayList<Relationship> test = new ArrayList<Relationship>();
+		test.add(r);
+		assertEquals(test, d.getSingleClassRelationships(c1));
+		assertEquals(test, d.getSingleClassRelationships(c2));
+	}
+
 }
