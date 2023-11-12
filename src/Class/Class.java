@@ -1,6 +1,5 @@
 package Class;
 
-import Attributes.Attribute;
 import Attributes.Field;
 import Attributes.Method;
 import com.google.gson.annotations.Expose;
@@ -16,15 +15,15 @@ public class Class {
     private ArrayList<Method> methods = new ArrayList<>();
 
     public Class(final String className) {
-        if (className == null) {
-            throw new NullPointerException("Class name is null.");
+        if (className == null || className.isEmpty()) {
+            throw new IllegalArgumentException("Class name is null or empty.");
         }
         this.className = className;
     }
 
     /**
      * returns the current name of the class
-     * @return
+     * @return - returns a string with the name of the class
      */
     //getters
     public String getClassName() {
@@ -38,7 +37,7 @@ public class Class {
     //setters
     public void setClassName(final String newClassName) {
         if (newClassName == null || newClassName.isEmpty()) {
-            throw new NullPointerException("Class name parameter is null or empty.");
+            throw new IllegalArgumentException("Class name parameter is null or empty.");
         }
 
         this.className = newClassName;
@@ -85,9 +84,11 @@ public class Class {
      * returns false if a field of the same name exists.
      */
     public boolean createField(String name, ArrayList<String> parameters) {
-        nullCheckFieldParams(name, parameters);
+        if (name == null || name.isEmpty() || parameters == null || parameters.isEmpty()) {
+            return false;
+        }
 
-        Field field = new Field(name, parameters.getFirst());
+        Field field = new Field(name, parameters.get(0));
 
         for(Field existingField : this.fields){
             if(existingField.getName().equals(name)){
@@ -108,7 +109,9 @@ public class Class {
      * returns false if a method of the same name and parameters exists.
      */
     public boolean createMethod(String name, ArrayList<String> parameters) {
-        nullCheckMethodParams(name, parameters);
+        if (name == null || name.isEmpty() || parameters == null) {
+            return false;
+        }
 
         Method method = new Method(name, parameters);
         for(Method existingMethod : this.methods){
@@ -157,7 +160,7 @@ public class Class {
      * field in the list of fields
      */
     public boolean renameField(int input, String newName) {
-        if(input <= this.fields.size() && input >= 1  && !newName.isEmpty()) {
+        if(input > this.fields.size() || input < 1  || newName == null || newName.isEmpty()) {
             return false;
         }
         for(Field existingField : this.fields){
@@ -178,7 +181,7 @@ public class Class {
      * or if the resulting method already exists in the list of methods
      */
     public boolean renameMethod(int input, String newName, ArrayList<String> parameters) {
-        if(input <= this.methods.size() && input >= 1  && !newName.isEmpty()) {
+        if(input > this.methods.size() || input < 1  || newName == null || newName.isEmpty() || parameters == null) {
             return false;
         }
         Method method = new Method(newName, parameters);
@@ -197,10 +200,10 @@ public class Class {
      * returns false if the index for the field is out of bounds.
      */
     public boolean renameFieldPrimitive(ArrayList<String> newParameters, int index) {
-        if (index <= this.fields.size() && index >= 1) {
+        if (index > this.fields.size() || index < 1 || newParameters == null || newParameters.isEmpty()) {
             return false;
         }
-        this.fields.get(index - 1).setPrimitive(newParameters.getFirst());
+        this.fields.get(index - 1).setPrimitive(newParameters.get(0));
         return true;
     }
 
@@ -213,11 +216,10 @@ public class Class {
      * the same name and params already exists in the list of methods.
      */
     public boolean renameMethodParams(ArrayList<String> newParameters, int index){
-        if (index <= this.methods.size() && index >= 1) {
+        if (index > this.methods.size() || index < 1 || newParameters == null) {
             return false;
         }
-        Method method = this.methods.get(index - 1);
-        method.setParameters(newParameters);
+        Method method = new Method(this.methods.get(index - 1).getName(), newParameters);
         if(!this.methods.contains(method)){
             this.methods.get(index - 1).setParameters(newParameters);
             return true;
@@ -283,28 +285,6 @@ public class Class {
                 + "Fields: \n" + fieldsString
                 + "Methods: \n" + methodsString
                 + "\n";
-    }
-
-    /**
-     * Description: A helper method for checking input params for making fields
-     * @param name - the name to be checked
-     * @param parameters - the primivtive to be checked
-     */
-    private void nullCheckFieldParams(String name, ArrayList<String> parameters) {
-        if (name.isEmpty() || parameters == null) {
-            throw new IllegalArgumentException("Name cannot be empty and primitive cannot be null");
-        }
-    }
-
-    /**
-     * Description: A helper method for checking input params for making methods
-     * @param name - the name to be checked
-     * @param parameters - the params to be checked
-     */
-    private void nullCheckMethodParams(String name, ArrayList<String> parameters) {
-        if (name.isEmpty() || parameters == null) {
-            throw new IllegalArgumentException("Name cannot be empty and parameters cannot be null");
-        }
     }
 
 }

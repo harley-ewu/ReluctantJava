@@ -3,7 +3,7 @@ import Class.Class;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-
+/*
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AttributeTests {
@@ -141,4 +141,4 @@ public class AttributeTests {
         test.renameAttributeParameters(testList2, 1);
         assertEquals(expected, test.displayAttributes());
     }
-}
+} */

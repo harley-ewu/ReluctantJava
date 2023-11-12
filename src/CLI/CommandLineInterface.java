@@ -410,13 +410,14 @@ public class CommandLineInterface {
         System.out.println("\n" + currentClass.getClassName() + " Class Editor");
         System.out.println("""
                               1 - Add attribute
-                              2 - Delete attribute
-                              3 - Rename Attribute
-                              4 - Display attributes
-                              5 - Display relationships
-                              6 - Display all contents
-                              7 - Return to Diagram Menu
-                              8 - Help
+                              2 - Delete Field
+                              3 - Delete Method
+                              4 - Rename Attribute
+                              5 - Display attributes
+                              6 - Display relationships
+                              7 - Display all contents
+                              8 - Return to Diagram Menu
+                              9 - Help
                              
                              Enter a number:""");
         System.out.print("--> ");
