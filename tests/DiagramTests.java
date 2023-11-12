@@ -122,10 +122,13 @@ public class DiagramTests {
 		Relationship r = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, true);
 		UMLDiagram.addRelationship(r);
 
+		UMLDiagram.addClass(testClass.getClassName());
+
 		assertEquals(testClass.getClassName(), UMLDiagram.getClassList().get(testClass.getClassName()).getClassName());
 
 		UMLDiagram.deleteClass(testClass);
 		assertEquals(new HashMap<>(), UMLDiagram.getRelationshipList());
+
 		assertEquals(null, UMLDiagram.getClassList().get(testClass.getClassName()));
 	}
 

@@ -45,4 +45,5 @@ public class Field extends Attribute{
         Field field = (Field) o;
         return primitive.equals(field.primitive);
     }
+
 }

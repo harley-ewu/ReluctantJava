@@ -106,8 +106,6 @@ public class Diagram {
          System.out.println("Class does not exist to rename.");
          return;
       }
-      //need to delete from hashmap while retaining temp class object and then read with new name
-      //also need to change the name of the actual class object
       else if(old != null && !(newName.isEmpty())){
          Class temp = this.classList.get(old.getClassName());
          this.classList.remove(temp.getClassName());
