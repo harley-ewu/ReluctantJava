@@ -141,7 +141,9 @@ public class CommandLineInterface {
         System.out.println("""
                     1 - Save to Default Path
                     2 - Save to Custom Path
-                    Any other key - Do Not Save
+
+                    Enter a number:
+                    (Any other key - Do Not Save)
                     """);
         System.out.print("--> ");
 
@@ -179,7 +181,9 @@ public class CommandLineInterface {
                 System.out.println("""
                 1 - Retry with a new path
                 2 - Save to Default Path
-                Any other key - Do Not Save
+
+                Enter a number:
+                (Any other key - Do Not Save)
                 """);
                 System.out.print("--> ");
                 userChoice = scan.next().charAt(0);
