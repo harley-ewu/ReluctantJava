@@ -11,6 +11,11 @@ public class Field{
     private String name;
 
     public Field(String name, String primitive) {
+        if(name == null || name.isEmpty()){
+            throw new IllegalArgumentException("The field name cannot be null or empty");
+        }else if(primitive == null || primitive.isEmpty()){
+            throw new IllegalArgumentException("The field primitive cannot be null or empty");
+        }
         this.name = name;
         this.primitive = primitive;
     }
@@ -28,6 +33,9 @@ public class Field{
      * @param primitive - The name of the primitive for the field.
      */
     public void setPrimitive(String primitive) {
+        if(primitive == null || primitive.isEmpty()){
+            throw new IllegalArgumentException("The field primitive cannot be null or empty");
+        }
         this.primitive = primitive;
     }
 
@@ -44,6 +52,9 @@ public class Field{
      * @param name - The new name for the field.
      */
     public void setName(String name) {
+        if(name == null || name.isEmpty()){
+            throw new IllegalArgumentException("The field name cannot be null or empty");
+        }
         this.name = name;
     }
 
