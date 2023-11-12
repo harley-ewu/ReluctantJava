@@ -456,13 +456,13 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.classPanesCoordinates.clear();
 
-        for (int i = 0; i < this.relationshipPanes.size(); i++) {
+/*        for (int i = 0; i < this.relationshipPanes.size(); i++) {
             this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
             this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.relationshipPanes.get(i));
         }
 
-        this.relationshipPanesCoordinates.clear();
+        this.relationshipPanesCoordinates.clear();*/
     }
 
     /**
