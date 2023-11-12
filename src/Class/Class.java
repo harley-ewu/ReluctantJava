@@ -90,11 +90,10 @@ public class Class {
 
         Field field = new Field(name, parameters.get(0));
 
-        for(Field existingField : this.fields){
-            if(existingField.getName().equals(name)){
+        for(Field existingField : this.fields)
+            if (existingField.getName().equals(name)) {
                 return false;
             }
-        }
 
         this.fields.add(field);
         return true;
