@@ -119,7 +119,7 @@ public class MenuController {
     public static void newClassMenuControl(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while(!shouldTerminate) {
-            int choice = CommandLineInterface.newClassMenuChoice();
+            int choice = CommandLineInterface.newClassMenuChoice(currentClass);
             Class c2 = null;
             switch(choice) {
                 //Add attribute
@@ -254,12 +254,14 @@ public class MenuController {
 
         } while (choice < 1 || choice > currentClass.getAttributes().size()+1);*/
         int choice = MenuPrompts.deleteAttributePrompts(currentClass);
+        if(choice == 0) return;
         currentClass.deleteAttribute(choice);
 
     }
 
     public static void renameAttribute(Class currentClass, Scanner scanner) {
         int input = MenuPrompts.renameAttributePrompt(currentClass);
+        if(input == 0) return;
         String newName = MenuPrompts.renameAttributeNewName();
         ArrayList<String> parameters = new ArrayList<>();
 

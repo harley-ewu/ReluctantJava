@@ -447,6 +447,10 @@ public class MenuPrompts {
     }
 
     public static int deleteAttributePrompts(final Class currentClass) {
+        if(currentClass.getAttributes().isEmpty()){
+            System.out.println("\nNo attributes avaialble to delete");
+            return 0;
+        }
         int choice = -99;
         do {
             System.out.println("Delete an attribute:");
@@ -465,6 +469,10 @@ public class MenuPrompts {
     }
 
     public static int renameAttributePrompt(final Class currentClass) {
+        if(currentClass.getAttributes().isEmpty()){
+            System.out.println("\nNo attributes avaialble to delete");
+            return 0;
+        }
         int choice = -99;
         do {
             System.out.println("Rename an attribute: ");

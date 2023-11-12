@@ -289,7 +289,7 @@ public class Diagram {
       String diagramString = "";
       diagramString += this.title + "\n\n";
       for (Class c : this.classList.values()){
-         diagramString += c.toString();
+         diagramString += "\n" + c.toString();
       }
       
       return "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();

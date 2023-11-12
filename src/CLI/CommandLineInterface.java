@@ -62,7 +62,7 @@ public class CommandLineInterface {
     private static int getUserChoice() {
         Scanner scan = new Scanner(System.in);
         int userInput = -1;
-
+        
         System.out.println("""
                                 
                                 
@@ -75,8 +75,14 @@ public class CommandLineInterface {
                  7 - Open GUI
                  8 - Exit
                 
-                 Enter a number:
                 """);
+        if(currentDiagram == null){
+            System.out.println("No diagrams are currently loaded or created.\n");
+        }
+        else {
+            System.out.println("The diagram '"+ currentDiagram.getTitle() + "' is your current diagram.\n");
+        }
+        System.out.println("Enter a number:");
         System.out.print("--> ");
         while (true) {
             try {
@@ -304,7 +310,7 @@ public class CommandLineInterface {
     public static int diagramMenuChoice() {
         int userInput = -99;
         Scanner scan = new Scanner(System.in);
-        System.out.println("UML Diagram Editor Menu");
+        System.out.println("\nUML Diagram Editor Menu - '" + currentDiagram.getTitle()+"'");
         System.out.println("""
             
                                 1 - Add Class
@@ -363,10 +369,10 @@ public class CommandLineInterface {
                 """);
     }
 
-    public static int newClassMenuChoice(){
+    public static int newClassMenuChoice(final Class currentClass){
         int userInput = -99;
         Scanner scan = new Scanner(System.in);
-        System.out.println("New Class Editor");
+        System.out.println("\nNew Class Editor - '" + currentClass.getClassName() + "'");
         System.out.println("""
                                 
                                 1 - Add Attribute
@@ -411,6 +417,7 @@ public class CommandLineInterface {
         int userInput = -99;
         Scanner scan = new Scanner(System.in);
         //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
+        System.out.println("\n" + currentClass);
         System.out.println("\n" + currentClass.getClassName() + " Class Editor");
         System.out.println("""
                               1 - Add attribute
