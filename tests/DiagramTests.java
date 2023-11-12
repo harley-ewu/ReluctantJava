@@ -1,4 +1,5 @@
 import Class.Class;
+import Controller.MenuController;
 import Diagram.Diagram;
 import Relationships.Relationship;
 import org.junit.jupiter.api.AfterEach;
@@ -187,6 +188,9 @@ public class DiagramTests {
 		UMLDiagram.addRelationship(testRelationship);
 
 		assertEquals(testRelationship, UMLDiagram.getRelationshipList().get(testRelationshipKey));
+
+		MenuController.addRelationship(testClass, testClass, UMLDiagram);
+		assertEquals(1, UMLDiagram.getRelationshipList().size());
 
 	}
 

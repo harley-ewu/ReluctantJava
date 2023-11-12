@@ -5,6 +5,7 @@ import CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
 import MenuPrompts.MenuPrompts;
+import Relationships.Relationship;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -135,7 +136,7 @@ public class MenuController {
                     if(c2 == null) {
                         break;
                     }
-                   diagram.addRelationship(currentClass, c2);
+                   addRelationship(currentClass, c2, diagram);
                    break;
                 case 3:
                    shouldTerminate = true;
@@ -147,6 +148,30 @@ public class MenuController {
                    break;
              }
         }
+    }
+
+    public static void addRelationship(final Class c1, final Class c2, final Diagram currentDiagram){
+        if (c1 == c2) {
+            return;
+        }
+        Relationship.RelationshipType relationshipType = null;
+        int c1Cardinality = -2;
+        int c2Cardinality = -2;
+        Boolean owner = false;
+
+        relationshipType = MenuPrompts.relationshipTypePrompt();
+        if(relationshipType == null){
+            return;
+        }
+        c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
+        if(c1Cardinality < -1) {
+            return;
+        }
+        c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
+        owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
+
+        Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
+        currentDiagram.addRelationship(relationship);
     }
 
     public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
@@ -294,7 +319,7 @@ public class MenuController {
             }
             switch(choice) {
                 case 1:
-                    diagram.addRelationship(c1, c2);
+                    addRelationship(c1, c2, diagram);
                     break;
                 case 2:
                     diagram.deleteRelationship(c1, c2);

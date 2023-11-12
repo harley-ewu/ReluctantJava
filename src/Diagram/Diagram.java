@@ -22,7 +22,7 @@ public class Diagram {
    @Expose
    private HashMap<String, Relationship> relationshipList;
    private Scanner scanner = new Scanner(System.in);
-   
+
    public Diagram(final String title) {
 
       if (title == null) {
@@ -167,7 +167,7 @@ public class Diagram {
     * Prompts user for both class names, then prompts for all relevant relationship information 
     * and builds relationships between the classes, then adds it to either of their relationship lists
     */
-   public void addRelationship(Class c1, Class c2) {
+   /*public void addRelationship(Class c1, Class c2) {
       if (c1 == c2) {
          return;
       }
@@ -190,7 +190,7 @@ public class Diagram {
 
       Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
       addRelationship(relationship);
-   }
+   }*/
 
    public void addRelationship(final Relationship relationship) {
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
