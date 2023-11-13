@@ -1,7 +1,6 @@
 package GUI;
 
 import Class.Class;
-import Attributes.Attribute;
 import CLI.CommandLineInterface;
 import Diagram.Diagram;
 import GUIAssets.ClassAsset;

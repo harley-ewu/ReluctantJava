@@ -3,14 +3,9 @@ package Controller;
 import CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
-import Class.Class;
-import CLI.CommandLineInterface;
 import MenuPrompts.MenuPrompts;
-import Relationships.Relationship.RelationshipType;
 
 import java.util.*;
-
-import Attributes.Attribute;
 
 public class MenuController {
 

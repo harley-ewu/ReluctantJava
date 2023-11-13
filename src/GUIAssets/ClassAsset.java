@@ -1,5 +1,4 @@
 package GUIAssets;
-import Attributes.Attribute;
 import Attributes.Field;
 import Attributes.Method;
 import Class.Class;
@@ -16,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
