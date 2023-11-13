@@ -13,10 +13,18 @@ public class Method{
     private String name;
 
     public Method(String name) {
+        if(name == null || name.isEmpty()){
+            throw new IllegalArgumentException("The method name cannot be null or empty");
+        }
         this.name = name;
     }
 
     public Method(String name, ArrayList<String> parameters) {
+        if(name == null || name.isEmpty()){
+            throw new IllegalArgumentException("The method name cannot be null or empty");
+        }else if(parameters == null){
+            throw new IllegalArgumentException("The parameters cannot be null");
+        }
         this.name = name;
         this.parameters = parameters;
     }
@@ -28,6 +36,9 @@ public class Method{
      */
 
     public void setParameters(ArrayList<String> parameter) {
+        if(parameter == null){
+            throw new IllegalArgumentException("The parameters cannot be null");
+        }
         this.parameters.clear();
         this.parameters.addAll(parameter);
     }
@@ -53,6 +64,9 @@ public class Method{
      * @param name - the new name of the method object.
      */
     public void setName(String name) {
+        if(name == null || name.isEmpty()){
+            throw new IllegalArgumentException("The method name cannot be null or empty");
+        }
         this.name = name;
     }
 
@@ -60,19 +74,24 @@ public class Method{
      * Description: Adds a param to the list of params for the method object.
      * @param parameter - the name of the new param
      */
-    public void addParameter(String parameter) {
+    public boolean addParameter(String parameter) {
+        if(parameter == null || parameter.isEmpty()){
+            throw new IllegalArgumentException("The new parameter cannot be null or empty");
+        }
         this.parameters.add(parameter);
+        return true;
     }
 
     /**
      * Description: Removes a param from the list of params in the method object.
      * @param input - The index of the param to be removed.
      */
-    public void removeParameter(int input) {
-        if (input < 1 || input > this.parameters.size()+1) {
-            return;
+    public boolean removeParameter(int input) {
+        if (input < 1 || input > this.parameters.size()) {
+            return false;
         }
         this.parameters.remove(input-1);
+        return true;
     }
 
     /**
