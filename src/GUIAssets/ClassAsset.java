@@ -1,8 +1,8 @@
 package GUIAssets;
-import Attributes.Field;
-import Attributes.Method;
-import Class.Class;
 
+import Attributes.Attribute;
+import CLI.CommandLineInterface;
+import Class.Class;
 import GUI.GUIDiagramProject;
 import Relationships.Relationship;
 import javafx.collections.FXCollections;
@@ -12,7 +12,9 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -26,8 +28,7 @@ public class ClassAsset {
 
     private Class currentClass;
     private Pane classContainer;
-    private ArrayList<Field> fieldList = new ArrayList<>();
-    public ArrayList<Method> methodList = new ArrayList<>();
+    private ArrayList<Attribute> attributeList = new ArrayList<>();
 
     private ArrayList<String> fields;
     private ArrayList<String> methods;
@@ -124,8 +125,7 @@ public class ClassAsset {
     }
 
     private void initAttributeList(final Class currentClass) {
-        this.fieldList.addAll(currentClass.getFields());
-        this.methodList.addAll(currentClass.getMethods());
+        this.attributeList.addAll(currentClass.getAttributes());
     }
 
     /**
@@ -140,8 +140,11 @@ public class ClassAsset {
         }
         ArrayList<String> fieldNameList = new ArrayList<>();
 
-        for(Field field : currentClass.getFields()) {
+        for(Attribute field : currentClass.getAttributes()) {
+            if (field.getType() == Attribute.Type.FIELD) {
                 fieldNameList.add(field.toString());
+            }
+
         }
 
         return fieldNameList;
@@ -159,8 +162,10 @@ public class ClassAsset {
 
         ArrayList<String> methodNamesList = new ArrayList<>();
 
-        for (Method method: currentClass.getMethods()) {
+        for (Attribute method: currentClass.getAttributes()) {
+            if(method.getType() == Attribute.Type.METHOD) {
                 methodNamesList.add(method.toString());
+            }
         }
 
         return methodNamesList;
@@ -288,7 +293,7 @@ public class ClassAsset {
             //remove the class from the class list first
             classList.remove(this.pos);
 
-            ArrayList<Relationship> classRelationships = guiDiagramProject.getDiagram().getSingleClassRelationships(currentClass);
+            ArrayList<Relationship> classRelationships = CommandLineInterface.getCurrentDiagram().getSingleClassRelationships(currentClass);
             for(Relationship relationship : classRelationships) {
                 if(guiDiagramProject.getRelationshipAssetFromList(relationship) != null) {
                     guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
@@ -297,7 +302,7 @@ public class ClassAsset {
                 }
             }
 
-            guiDiagramProject.getDiagram().deleteClass(currentClass);
+            CommandLineInterface.getCurrentDiagram().deleteClass(currentClass);
 
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
@@ -374,10 +379,10 @@ public class ClassAsset {
         Button editFieldButton = new Button();
         editFieldButton.setText("Edit Field");
         editFieldButton.setOnAction(e -> {
-            for (Field field : this.fieldList) {
+            for (Attribute attribute : this.attributeList) {
                 String comboBoxName = comboBoxFields.getValue();
-                if (field.toString().equals(comboBoxName)) {
-                    this.editField(field);
+                if (attribute.toString().equals(comboBoxName)) {
+                    this.editField(attribute);
                     return;
                 }
             }
@@ -392,10 +397,10 @@ public class ClassAsset {
         Button deleteFieldButton = new Button();
         deleteFieldButton.setText("Delete Field");
         deleteFieldButton.setOnAction(e -> {
-            for (Field field : this.fieldList) {
+            for (Attribute attribute : this.attributeList) {
                 String comboBoxName = comboBoxFields.getValue();
-                if (field.toString().equals(comboBoxName)) {
-                    this.deleteField(field);
+                if (attribute.toString().equals(comboBoxName)) {
+                    this.deleteField(attribute);
                     return;
                 }
             }
@@ -497,9 +502,9 @@ public class ClassAsset {
 
     }
 
-    private void editField(Field field) {
-        if (field == null) {
-            System.out.println("field is null");
+    private void editField(Attribute attribute) {
+        if (attribute == null) {
+            System.out.println("attribute is null");
         }
 
         Stage popUpStage = new Stage();
@@ -515,7 +520,7 @@ public class ClassAsset {
         Text currentNames = new Text();
         currentNames.setLayoutX(20);
         currentNames.setLayoutY(20);
-        currentNames.setText("current name: " + field.getName() + "\t\t\t\t" + "current type: " + field.getPrimitive());
+        currentNames.setText("current name: " + attribute.getName() + "\t\t\t\t" + "current type: " + attribute.getPrimitive());
 
 
         HBox editNameContainer = new HBox();
@@ -551,15 +556,15 @@ public class ClassAsset {
         submitButton.setOnAction(e -> {
             if (!editNameField.getText().isEmpty() || !editPrimitiveField.getText().isEmpty()) {
                 boolean isUnique = true;
-                for (Field currentField : this.fieldList) {
-                    if (currentField.getName().equals(editNameField.getText())) {
+                for (Attribute currentAttribute : this.attributeList) {
+                    if (attribute.getName().equals(editNameField.getText())) {
                         isUnique = false;
                     }
                 }
                 //handle unique name
                 if (isUnique) {
-                    field.setName(editNameField.getText());
-                    field.setPrimitive(editPrimitiveField.getText());
+                    attribute.setName(editNameField.getText());
+                    attribute.setPrimitive(editPrimitiveField.getText());
                     popUpStage.close();
                 } else {
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
@@ -638,17 +643,20 @@ public class ClassAsset {
         Button submitButton = new Button();
         submitButton.setText("Submit");
 
+        Attribute newAttribute = new Attribute();
+
         submitButton.setOnAction(e -> {
             boolean isUnique = true;
-            for (Field currentField : this.fieldList) {
-                if (currentField.getName().equals(addNameField.getText())) {
+            for (Attribute currentAttribute : this.attributeList) {
+                if (currentAttribute.getName().equals(addNameField.getText())) {
                     isUnique = false;
                 }
             }
             //handle unique name
             if (isUnique) {
-                Field newField = new Field(addNameField.getText(), addPrimitiveField.getText());
-                this.fieldList.add(newField);
+                newAttribute.setName(addNameField.getText());
+                newAttribute.setPrimitive(addPrimitiveField.getText());
+                this.attributeList.add(newAttribute);
                 popUpStage.close();
             } else {
                 Alert notUnique = new Alert(Alert.AlertType.WARNING);
@@ -671,22 +679,19 @@ public class ClassAsset {
         popUpStage.show();
     }
 
-    public void deleteField(Field field) {
-        if (field == null) {
+    public void deleteField(Attribute attribute) {
+        if (attribute == null) {
             System.out.println("attribute or combo box is null");
         }
 
-        this.fieldList.remove(field);
+        this.attributeList.remove(attribute);
 
         this.printAttributeList();
     }
 
     public void printAttributeList() {
-        for (Field field : this.fieldList) {
-            System.out.println(field.toString());
-        }
-        for (Method method : this.methodList) {
-            System.out.println(method.toString());
+        for (Attribute attribute2 : this.attributeList) {
+            System.out.println(attribute2.toString());
         }
     }
 
