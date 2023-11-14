@@ -6,6 +6,7 @@ import Diagram.Diagram;
 import Class.Class;
 import CLI.CommandLineInterface;
 import MenuPrompts.MenuPrompts;
+import Relationships.Relationship;
 import Relationships.Relationship.RelationshipType;
 
 import java.util.*;
@@ -65,7 +66,7 @@ public class MenuController {
                 //View class - name needed
                 case 6:
                     Class c = MenuPrompts.printSingleClassPrompt(diagram);
-                    diagram.printSingleClass(c);
+                    System.out.println(diagram.printSingleClass(c));
                     break;
                 //View Diagram
                 case 7:
@@ -138,7 +139,7 @@ public class MenuController {
                     if(c2 == null) {
                         break;
                     }
-                   diagram.addRelationship(currentClass, c2);
+                   addRelationship(currentClass, c2, diagram);
                    break;
                 case 3:
                    shouldTerminate = true;
@@ -150,6 +151,33 @@ public class MenuController {
                    break;
              }
         }
+    }
+
+    /*
+     * Prompts user for both class names, then prompts for all relevant relationship information
+     * and builds relationships between the classes, then adds it to either of their relationship lists
+     */
+    public static void addRelationship(Class c1, Class c2, Diagram diagram) {
+        if (c1 == c2) return;
+
+        Relationship.RelationshipType relationshipType = null;
+        int c1Cardinality = -2;
+        int c2Cardinality = -2;
+        Boolean owner = false;
+
+        relationshipType = MenuPrompts.relationshipTypePrompt();
+        if (relationshipType == null) {
+            return;
+        }
+        c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
+        if (c1Cardinality < -1) {
+            return;
+        }
+        c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
+        owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
+
+        Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
+        diagram.addRelationship(relationship);
     }
 
     public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
@@ -297,7 +325,7 @@ public class MenuController {
             }
             switch(choice) {
                 case 1:
-                    diagram.addRelationship(c1, c2);
+                    addRelationship(c1, c2, diagram);
                     break;
                 case 2:
                     diagram.deleteRelationship(c1, c2);
