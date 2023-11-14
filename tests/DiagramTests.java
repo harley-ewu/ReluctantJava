@@ -2,10 +2,10 @@ import Class.Class;
 import Controller.MenuController;
 import Diagram.Diagram;
 import Relationships.Relationship;
+import Controller.MenuController;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -32,7 +32,6 @@ public class DiagramTests {
 		System.setOut(originalOut);
 		System.setErr(originalErr);
 	}
-	
 	@Test
 	void getTitleTest() {
 		Diagram diagram = new Diagram("test");
@@ -73,7 +72,6 @@ public class DiagramTests {
 		assertEquals(c1, d.findSingleClass("testClass"));
 		assertEquals(null, d.findSingleClass(""));
 	}
-
 	@Test 
 	void nullClassList() {
 		Diagram diagram = new Diagram("");
@@ -105,7 +103,6 @@ public class DiagramTests {
 		assertEquals(c.getClassName(), UMLDiagram.getClassList().get(c.getClassName()).getClassName());
 		UMLDiagram.addClass("testClass");
 		assertEquals("Class already exists.\n", outContent.toString());
-		
 	}
 
 	@Test
@@ -319,7 +316,7 @@ public class DiagramTests {
 	@Test
 	void getSaveLocationTest() {
 		Diagram d = new Diagram("test");
-        assertEquals(null, d.getSaveLocation());
+		assertEquals(null, d.getSaveLocation());
 	}
 	@Test
 	void setSaveLocationTest() {
@@ -405,5 +402,4 @@ public class DiagramTests {
 		assertEquals(test, d.getSingleClassRelationships(c1));
 		assertEquals(test, d.getSingleClassRelationships(c2));
 	}
-
 }

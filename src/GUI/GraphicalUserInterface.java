@@ -44,8 +44,8 @@ public class GraphicalUserInterface extends javafx.application.Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         mainMenuStage = primaryStage;
-        URL mainView = getClass().getResource("MainMenu.fxml");
-        URL cssPath = getClass().getResource("MenuStyles.css");
+        URL mainView = getClass().getResource("/MainMenu.fxml");
+        URL cssPath = getClass().getResource("/MenuStyles.css");
         
 
         if(mainView == null){
