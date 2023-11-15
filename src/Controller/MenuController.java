@@ -10,6 +10,7 @@ import Relationships.Relationship.RelationshipType;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import Diagram.AutoComplete;
 
 public class MenuController {
 
@@ -23,7 +24,13 @@ public class MenuController {
 
             String className = "";
             while(!shouldTerminate) {
-                int choice = CommandLineInterface.diagramMenuChoice();
+                String stringChoice = CommandLineInterface.diagramMenuChoice();
+                if (!Character.isDigit(stringChoice.charAt(0))){
+                    //autocomplete methods
+                    autoCompleteOptionsControl(stringChoice, diagram);
+                    continue;
+                }
+                int choice = Integer.parseInt(stringChoice);
                 Class currentClass = null;
                 switch (choice) {
                 //Add Class - name needed
@@ -336,6 +343,12 @@ public class MenuController {
                 default:
                     break;
             }
+        }
+    }
+
+    public static void autoCompleteOptionsControl(final String userChoiceString, final Diagram diagram) {
+        if(userChoiceString.trim().equals("add")){
+            addClass(diagram);
         }
     }
 }

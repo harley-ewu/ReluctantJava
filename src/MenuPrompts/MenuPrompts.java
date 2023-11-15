@@ -302,11 +302,11 @@ public class MenuPrompts {
         int userInput = -99;
         System.out.println("Relationship Editor");
         System.out.println("""
-            
+                               --------------------------
                                 1 - Add Relationship
                                 2 - Delete Relationship
                                 3 - Back to Diagram Menu
-                                
+                               --------------------------    
                                 Enter a number:""");
         System.out.print("--> ");
 

@@ -2,6 +2,7 @@ package CLI;
 
 import Class.Class;
 import Controller.MenuController;
+import Diagram.AutoComplete;
 import Diagram.Diagram;
 import GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
@@ -19,6 +20,7 @@ import java.util.Scanner;
 public class CommandLineInterface {
 
     private static final int MAX_CHOICES = 8;
+    private static AutoComplete ac = new AutoComplete();
 
     private static Diagram currentDiagram;
     public static void main(String[] args){
@@ -64,8 +66,9 @@ public class CommandLineInterface {
         int userInput = -1;
         
         System.out.println("""
-                                
-                                
+                
+                     UML Diagram Menu
+                --------------------------            
                  1 - New Diagram
                  2 - View Existing Diagram
                  3 - Edit Existing Diagram
@@ -74,16 +77,19 @@ public class CommandLineInterface {
                  6 - Help
                  7 - Open GUI
                  8 - Exit
-                
+                --------------------------
                 """);
         if(currentDiagram == null){
-            System.out.println("No diagrams are currently loaded or created.\n");
+            System.out.println("* No diagrams are currently loaded or created *\n");
         }
         else {
-            System.out.println("The diagram '"+ currentDiagram.getTitle() + "' is your current diagram.\n");
+            System.out.println("* The diagram '"+ currentDiagram.getTitle() + "' is your current diagram *\n");
         }
-        System.out.println("Enter a number:");
+        System.out.println("--------------------------\n");
+        //System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("Enter a number from menu above ");
         System.out.print("--> ");
+        //String input = ac.initialize();
         while (true) {
             try {
                 userInput = Integer.parseInt(scan.nextLine());
@@ -145,9 +151,10 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
 
         System.out.println("""
+                    --------------------------
                     1 - Save to Default Path
                     2 - Save to Custom Path
-
+                    --------------------------
                     Enter a number:
                     (Any other key - Do Not Save)
                     """);
@@ -307,41 +314,54 @@ public class CommandLineInterface {
         return true;
     }
 
-    public static int diagramMenuChoice() {
-        int userInput = -99;
+    public static String diagramMenuChoice() {
+        int numberInput = -99;
         Scanner scan = new Scanner(System.in);
-        System.out.println("\nUML Diagram Editor Menu - '" + currentDiagram.getTitle()+"'");
+        System.out.println("--------------------------");
+        System.out.println("\nUML Diagram Editor Menu  \n\t'" + currentDiagram.getTitle()+"'");
         System.out.println("""
-            
-                                1 - Add Class
-                                2 - Delete Class
-                                3 - Rename Class
-                                4 - Edit Class
-                                5 - Edit Relationships
-                                6 - View Class
-                                7 - View Diagram
-                                8 - Help
-                                9 - Exit
-                                
-                                Enter a number:""");
+                            --------------------------
+                             1 - Add Class
+                             2 - Delete Class
+                             3 - Rename Class
+                             4 - Edit Class
+                             5 - Edit Relationships
+                             6 - View Class
+                             7 - View Diagram
+                             8 - Help
+                             9 - Exit
+                            -------------------------- 
+                            """);
+        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
         System.out.print("--> ");
-
-        while (true) {
-            try {
-                userInput = Integer.parseInt(scan.nextLine());
-                if (userInput >= 1 && userInput <= 9) {
-                    break;
-                } else {
-                    int choices = MAX_CHOICES + 1;
-                    System.out.println("Invalid input. Please enter a number between 1 and " + choices);
-                    System.out.print("--> ");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number");
-                System.out.print("--> ");
-            }
+        
+        String userInput = ac.getCommands();
+        if(!ac.isNumber(userInput)){
+            return userInput;
         }
-        return userInput;
+        numberInput = Integer.parseInt(userInput);
+        boolean first = true;
+        //If the user types a number
+                while (true) {
+                    try {
+                        if(!first)
+                            numberInput = Integer.parseInt(scan.nextLine());
+                        if (numberInput >= 1 && numberInput <= 9) {
+                            break;
+                        } else {
+                            first = false;
+                            int choices = MAX_CHOICES + 1;
+                            System.out.println("Invalid input. Please enter a number between 1 and " + choices);
+                            System.out.print("--> ");
+                        }
+                    } catch (NumberFormatException e) {
+                        first = false;
+                        System.out.println("Please enter a valid number");
+                        System.out.print("--> ");
+                    }
+        }
+        
+        return numberInput + "";
 
     }
 
@@ -374,13 +394,13 @@ public class CommandLineInterface {
         Scanner scan = new Scanner(System.in);
         System.out.println("\nNew Class Editor - '" + currentClass.getClassName() + "'");
         System.out.println("""
-                                
-                                1 - Add Attribute
-                                2 - Add Relationship
-                                3 - Back to Diagram Menu
-                                4 - Help
-                                
-                                Enter a number:""");
+                            --------------------------   
+                             1 - Add Attribute
+                             2 - Add Relationship
+                             3 - Back to Diagram Menu
+                             4 - Help
+                            --------------------------   
+                            Enter a number:""");
         System.out.print("--> ");
         while (true) {
             try {
@@ -420,6 +440,7 @@ public class CommandLineInterface {
         System.out.println("\n" + currentClass);
         System.out.println("\n" + currentClass.getClassName() + " Class Editor");
         System.out.println("""
+                            --------------------------
                               1 - Add attribute
                               2 - Delete attribute
                               3 - Rename Attribute
@@ -428,7 +449,7 @@ public class CommandLineInterface {
                               6 - Display all contents
                               7 - Return to Diagram Menu
                               8 - Help
-                             
+                            --------------------------
                              Enter a number:""");
         System.out.print("--> ");
 
