@@ -362,16 +362,27 @@ public class ClassAsset {
 
     /**
      * delete attribute functionality for the editClass method
-     * @param newAttributes
-     * @param deletedList
+     * @param newFields
+     * @param deletedFields
      * @param comboBox
      */
-    public void deleteAttribute(ArrayList<Attribute> newAttributes, ArrayList<Attribute> deletedList, ComboBox<String> comboBox) {
-        for (Attribute attribute : newAttributes) {
+    public void deleteField(ArrayList<Field> newFields, ArrayList<Field> deletedFields, ComboBox<String> comboBox) {
+        for (Field field : newFields) {
             String comboBoxName = comboBox.getValue();
-            if (attribute.toString().equals(comboBoxName)) {
-                deletedList.add(attribute);
-                newAttributes.remove(attribute); //add this to the "deleted array list"
+            if (field.toString().equals(comboBoxName)) {
+                deletedFields.add(field);
+                newFields.remove(field); //add this to the "deleted array list"
+                return;
+            }
+        }
+    }
+
+    public void deleteMethod(ArrayList<Method> newMethods, ArrayList<Method> deletedMethods, ComboBox<String> comboBox) {
+        for (Method method : newMethods) {
+            String comboBoxName = comboBox.getValue();
+            if (method.toString().equals(comboBoxName)) {
+                deletedMethods.add(method);
+                newMethods.remove(method); //add this to the "deleted array list"
                 return;
             }
         }
@@ -389,14 +400,12 @@ public class ClassAsset {
             nullAlertMessage("editClass");
         }
 
-        ArrayList<Attribute> newFields = new ArrayList<>();
-        ArrayList<Attribute> deletedAttributes = new ArrayList<>();
+        ArrayList<Field> newFields = new ArrayList<>(currentClass.getFields());
+        ArrayList<Field> deletedFields = new ArrayList<>();
 
-        for(Attribute field : currentClass.getAttributes()) {
-            if (field.getType() == Attribute.Type.FIELD) {
-                newFields.add(field);
-            }
-        }
+        ArrayList<Method> newMethods = new ArrayList<>(currentClass.getMethods());
+        ArrayList<Method> deletedMethods = new ArrayList<>();
+
 
         System.out.println("current local list: " + newFields);
         System.out.println("current actual list:" + returnFieldNames(currentClass));
@@ -404,13 +413,6 @@ public class ClassAsset {
         System.out.println();
         System.out.println();
         System.out.println();
-        ArrayList<Attribute> newMethods = new ArrayList<>();
-
-        for(Attribute method : currentClass.getAttributes()) {
-            if (method.getType() == Attribute.Type.METHOD) {
-                newMethods.add(method);
-            }
-        }
 
         ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
         ObservableList<String> observableFieldsList = FXCollections.observableArrayList();
@@ -432,7 +434,7 @@ public class ClassAsset {
 
         //display deleted attributes
         Text deletedList = new Text();
-        deletedList.setText("*To be deleted: " + deletedAttributes);
+        deletedList.setText("*To be deleted: " + deletedFields + " " + deletedMethods);
 
         miscText.getChildren().addAll(onSubmit, deletedList);
         miscText.setLayoutX(20);
@@ -472,10 +474,10 @@ public class ClassAsset {
         Button editFieldButton = new Button();
         editFieldButton.setText("Edit Field");
         editFieldButton.setOnAction(e -> {
-            for (Attribute attribute : newFields) {
+            for (Field field : newFields) {
                 String comboBoxName = comboBoxFields.getValue();
-                if (attribute.toString().equals(comboBoxName)) {
-                    this.editField(newFields, attribute, comboBoxFields, observableFieldsList);
+                if (field.toString().equals(comboBoxName)) {
+                    this.editField(newFields, field, comboBoxFields, observableFieldsList);
                     return;
                 }
             }
@@ -490,15 +492,15 @@ public class ClassAsset {
         Button deleteFieldButton = new Button();
         deleteFieldButton.setText("Delete Field");
         deleteFieldButton.setOnAction(e -> {
-            this.deleteAttribute(newFields, deletedAttributes, comboBoxFields);
+            this.deleteField(newFields, deletedFields, comboBoxFields);
             observableFieldsList.clear();
-            for (Attribute attribute : newFields) {
-                observableFieldsList.add(attribute.toString());
+            for (Field field : newFields) {
+                observableFieldsList.add(field.toString());
             }
 
             comboBoxFields.setItems(observableFieldsList);
             comboBoxFields.setValue("Fields");
-            deletedList.setText("*To be deleted: " + deletedAttributes);
+            deletedList.setText("*To be deleted: " + deletedFields);
         });
 
         fieldButtonContainer.getChildren().addAll(editFieldButton, addFieldButton, deleteFieldButton);
@@ -528,10 +530,10 @@ public class ClassAsset {
         Button editMethodButton = new Button();
         editMethodButton.setText("Edit Method");
         editMethodButton.setOnAction(e -> {
-            for (Attribute attribute : newMethods) {
+            for (Method method : newMethods) {
                 String comboBoxName = comboBoxMethods.getValue();
-                if (attribute.toString().equals(comboBoxName)) {
-                    this.editMethod(newMethods, attribute, comboBoxMethods, observableMethodsList);
+                if (method.toString().equals(comboBoxName)) {
+                    this.editMethod(newMethods, method, comboBoxMethods, observableMethodsList);
                     return;
                 }
             }
@@ -546,14 +548,14 @@ public class ClassAsset {
         Button deleteMethodButton = new Button();
         deleteMethodButton.setText("Delete Method");
         deleteMethodButton.setOnAction(e -> {
-            this.deleteAttribute(newMethods, deletedAttributes, comboBoxMethods);
+            this.deleteMethod(newMethods, deletedMethods, comboBoxMethods);
             observableMethodsList.clear();
-            for (Attribute attribute : newMethods) {
-                observableMethodsList.add(attribute.toString());
+            for (Method method : newMethods) {
+                observableMethodsList.add(method.toString());
             }
             comboBoxMethods.setValue("Methods");
             comboBoxMethods.setItems(observableMethodsList);
-            deletedList.setText("*To be deleted: " + deletedAttributes);
+            deletedList.setText("*To be deleted: " + deletedMethods);
         }
         );
 
@@ -583,17 +585,18 @@ public class ClassAsset {
             }
 
             //for fields and methods, we will clear the attributes list once and update with the local lists
-            this.currentClass.getAttributes().clear();
-            this.currentClass.getAttributes().addAll(newFields);
-            this.currentClass.getAttributes().addAll(newMethods);
+            this.currentClass.getFields().clear();
+            this.currentClass.getMethods().clear();
+            this.currentClass.getFields().addAll(newFields);
+            this.currentClass.getMethods().addAll(newMethods);
 
             //apply deleted attributes
-            for (Attribute deletedAttribute: deletedAttributes) {
-                for(Attribute currentAttribute: this.currentClass.getAttributes()) {
-                    if (deletedAttribute.toString().equals(currentAttribute.toString())) {
-                        this.currentClass.getAttributes().remove(currentAttribute);
-                    }
-                }
+            for (Field deletedField : deletedFields) {
+                this.currentClass.getFields().remove(deletedField);
+            }
+
+            for (Method deletedMethod : deletedMethods) {
+                this.currentClass.getFields().remove(deletedMethod);
             }
 
             this.updateCoordinates(classAssetPaneList, classCoordinates);
@@ -616,7 +619,8 @@ public class ClassAsset {
         {
             newFields.clear();
             newMethods.clear();
-            deletedAttributes.clear();
+            deletedFields.clear();
+            deletedMethods.clear();
             popUpStage.close();
         }
         );
@@ -645,8 +649,8 @@ public class ClassAsset {
 
     }
 
-    private void editField(final ArrayList<Attribute> newFieldsList, final Attribute attribute, final ComboBox<String> comboBoxFields, final ObservableList<String> observableListFields) {
-        if (attribute == null) {
+    private void editField(final ArrayList<Field> newFieldsList, final Field field, final ComboBox<String> comboBoxFields, final ObservableList<String> observableListFields) {
+        if (field == null) {
             System.out.println("attribute is null");
         }
 
@@ -663,7 +667,7 @@ public class ClassAsset {
         Text currentNames = new Text();
         currentNames.setLayoutX(20);
         currentNames.setLayoutY(20);
-        currentNames.setText("current name: " + attribute.getName() + "\t\t\t\t" + "current type: " + attribute.getPrimitive());
+        currentNames.setText("current name: " + field.getName() + "\t\t\t\t" + "current type: " + field.getPrimitive());
 
 
         HBox editNameContainer = new HBox();
@@ -708,10 +712,10 @@ public class ClassAsset {
                 }
                 //handle unique name
                 if (isUnique) {
-                    attribute.setName(editNameField.getText());
-                    attribute.setPrimitive(editPrimitiveField.getText());
+                    field.setName(editNameField.getText());
+                    field.setPrimitive(editPrimitiveField.getText());
 
-                    this.updateComboBox(newFieldsList, comboBoxFields, observableListFields);
+                    this.updateFieldComboBox(newFieldsList, comboBoxFields, observableListFields);
                     popUpStage.close();
                 } else {
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
@@ -744,17 +748,17 @@ public class ClassAsset {
     /**
      * allows the user to edit an existing method in a class
      * @param newMethodsList
-     * @param attribute
+     * @param method
      * @param comboBoxMethods
      * @param observableMethodsList
      */
-    private void editMethod(final ArrayList<Attribute> newMethodsList, final Attribute attribute,
+    private void editMethod(final ArrayList<Method> newMethodsList, final Method method,
                             final ComboBox<String> comboBoxMethods, final ObservableList<String> observableMethodsList) {
 
         ArrayList<String> newParameters = new ArrayList<>();
 
-        if (attribute != null && !attribute.getParameters().isEmpty()) {
-            newParameters.addAll(attribute.getParameters());
+        if (method != null && !method.getParameters().isEmpty()) {
+            newParameters.addAll(method.getParameters());
         }
 
         ArrayList<String> deletedParameters = new ArrayList<>();
@@ -769,7 +773,7 @@ public class ClassAsset {
         Scene scene = new Scene(root, 640, 480);
 
         //edit class name
-        Text currentName = new Text("Current method name: \t\t\t\t\t" + attribute.getName());
+        Text currentName = new Text("Current method name: \t\t\t\t\t" + method.getName());
         currentName.setLayoutX(80);
         currentName.setLayoutY(20);
 
@@ -806,17 +810,15 @@ public class ClassAsset {
         ObservableList<String> observableParameterList = FXCollections.observableArrayList();
 
         //store the parameters in the combobox
-        for (String method : attribute.getParameters()) {
-            observableParameterList.add(method);
-        }
+        observableParameterList.addAll(method.getParameters());
 
         //edit parameter button
         Button editParametersButton = new Button();
         editParametersButton.setText("Edit Parameter");
         editParametersButton.setOnAction(e -> {
 
-        for (int i = 0; i < attribute.getParameters().size(); i++) {
-                if (attribute.getParameters().get(i).equals(comboBoxParameters.getValue())) {
+        for (int i = 0; i < method.getParameters().size(); i++) {
+                if (method.getParameters().get(i).equals(comboBoxParameters.getValue())) {
                     this.editParameter(newParameters, newParameters.get(i).toString(), i, comboBoxParameters, observableParameterList);
                     return;
                 }
@@ -853,9 +855,7 @@ public class ClassAsset {
         parameterButtonContainer.getChildren().addAll(editParametersButton, addParameterButton, deleteParameterButton);
         parametersHBox.getChildren().addAll(parameterButtonContainer);
         ObservableList<String> observableParametersList = FXCollections.observableArrayList();
-        for (String parameter: attribute.getParameters()) {
-            observableParametersList.add(parameter);
-        }
+        observableParametersList.addAll(method.getParameters());
 
         comboBoxParameters.setItems(observableParametersList);
 
@@ -866,10 +866,10 @@ public class ClassAsset {
         submitButton.setText("Submit");
         submitButton.setOnAction(e -> {
             //clear the attribute parameters list and add the new list (which will include previous parameters or if delete, not the previous params)
-            attribute.getParameters().clear();
-            attribute.getParameters().addAll(newParameters);
+            method.getParameters().clear();
+            method.getParameters().addAll(newParameters);
 
-            this.updateComboBox(newMethodsList, comboBoxMethods, observableMethodsList);
+            this.updateMethodComboBox(newMethodsList, comboBoxMethods, observableMethodsList);
             popUpStage.close();
         });
 
@@ -1029,8 +1029,6 @@ public class ClassAsset {
         Button submitButton = new Button();
         submitButton.setText("Submit");
 
-        Attribute newAttribute = new Attribute();
-
         submitButton.setOnAction(e -> {
             boolean isUnique = true;
 
@@ -1080,7 +1078,7 @@ public class ClassAsset {
      * @param newFieldList
      */
 
-    public void addField(final ArrayList<Attribute> newFieldList, final ComboBox<String> comboBoxFields, final ObservableList<String> observableFieldsList) {
+    public void addField(final ArrayList<Field> newFieldList, final ComboBox<String> comboBoxFields, final ObservableList<String> observableFieldsList) {
 
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
@@ -1127,18 +1125,16 @@ public class ClassAsset {
         Button submitButton = new Button();
         submitButton.setText("Submit");
 
-        Attribute newAttribute = new Attribute();
-
         submitButton.setOnAction(e -> {
             boolean isUnique = true;
-            for (Attribute currentAttribute : this.attributeList) {
-                if (currentAttribute.getName().equals(addNameField.getText())) {
+            for (Field currentField : this.fieldList) {
+                if (currentField.getName().equals(addNameField.getText())) {
                     isUnique = false;
                 }
             }
 
-            for (Attribute currentAttribute: newFieldList) {
-                if (currentAttribute.getName().equals(addNameField.getText())) {
+            for (Field currentField: newFieldList) {
+                if (currentField.getName().equals(addNameField.getText())) {
                     isUnique = false;
                 }
             }
@@ -1147,10 +1143,10 @@ public class ClassAsset {
             if (isUnique && !addNameField.getText().isEmpty() && !addPrimitiveField.getText().isEmpty()) {
                 ArrayList<String> primitiveType = new ArrayList<>();
                 primitiveType.add(addPrimitiveField.getText());
-                newFieldList.add(newAttribute.addAttribute(addNameField.getText(), primitiveType, Attribute.Type.FIELD));
+                newFieldList.add(new Field(addNameField.getText(), primitiveType.get(0)));
 
                 //update combobox (turn into method later?)
-                this.updateComboBox(newFieldList, comboBoxFields, observableFieldsList);
+                this.updateFieldComboBox(newFieldList, comboBoxFields, observableFieldsList);
                 popUpStage.close();
             } else {
                 Alert notUnique = new Alert(Alert.AlertType.WARNING);
@@ -1180,7 +1176,7 @@ public class ClassAsset {
      * @param comboBoxMethod
      * @param observableMethodsList
      */
-    public void addMethod(final ArrayList<Attribute> newMethodsList, final ComboBox<String> comboBoxMethod, final ObservableList<String> observableMethodsList) {
+    public void addMethod(final ArrayList<Method> newMethodsList, final ComboBox<String> comboBoxMethod, final ObservableList<String> observableMethodsList) {
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(426);
@@ -1246,7 +1242,7 @@ public class ClassAsset {
             }
         });
 
-        addParameterContainer .getChildren().addAll(addParameterLabel, addParameterField, addParameterButton);
+        addParameterContainer.getChildren().addAll(addParameterLabel, addParameterField, addParameterButton);
 
         //container for submit and cancel button
         HBox submitContainer = new HBox();
@@ -1257,33 +1253,31 @@ public class ClassAsset {
         Button submitButton = new Button();
         submitButton.setText("Submit");
 
-        Attribute newAttribute = new Attribute();
-
         submitButton.setOnAction(e -> {
 
-            Attribute attributeFactory = new Attribute();
-            Attribute container = attributeFactory.addAttribute(addNameField.getText(), addedParameters, Attribute.Type.METHOD);
+            Method newMethod = new Method(addNameField.getText(), addedParameters);
+            //Attribute container = attributeFactory.addAttribute(addNameField.getText(), addedParameters, Attribute.Type.METHOD);
 
             boolean isUnique = true;
             if (!addNameField.getText().isEmpty()) {
                 //check the local methods list for duplicate methods
-                for (Attribute currentAttribute : newMethodsList) {
+                for (Method currentMethod : newMethodsList) {
                         //take the to string from current index in attribute list and compare it to generate attribute
-                        if (currentAttribute.toString().equals(container.toString())) {
+                        if (currentMethod.toString().equals(newMethod.toString())) {
                             isUnique = false;
                         }
                 }
                 //check the class attributes list for duplicate methods
-                for (Attribute currentAttribute : this.attributeList) {
+                for (Method currentAttribute : this.methodList) {
                     //take the to string from current index in attribute list and compare it to generate attribute
-                    if (currentAttribute.toString().equals(container.toString())) {
+                    if (currentAttribute.toString().equals(newMethod.toString())) {
                         isUnique = false;
                     }
                 }
                 //handle unique name
                 if (isUnique) {
-                    newMethodsList.add(container);
-                    this.updateComboBox(newMethodsList, comboBoxMethod, observableMethodsList);
+                    newMethodsList.add(newMethod);
+                    this.updateMethodComboBox(newMethodsList, comboBoxMethod, observableMethodsList);
                     System.out.println("temp method list elements: " + newMethodsList); //to be removed
                     popUpStage.close();
                 } else {
@@ -1314,15 +1308,24 @@ public class ClassAsset {
 
     /**
      * generic functionality for updating an attribute list for editClass method
-     * @param newAttributeList
+     * @param newFieldList
      * @param AttributeComboBox
      * @param observableAttributeList
      */
 
-    public void updateComboBox(ArrayList<Attribute> newAttributeList, ComboBox<String> AttributeComboBox, ObservableList<String> observableAttributeList) {
+    public void updateFieldComboBox(ArrayList<Field> newFieldList, ComboBox<String> AttributeComboBox, ObservableList<String> observableAttributeList) {
         observableAttributeList.clear();
-        for (Attribute attribute : newAttributeList) {
+        for (Field attribute : newFieldList) {
             observableAttributeList.add(attribute.toString());
+        }
+
+        AttributeComboBox.setItems(observableAttributeList);
+    }
+
+    public void updateMethodComboBox(ArrayList<Method> newMethodList, ComboBox<String> AttributeComboBox, ObservableList<String> observableAttributeList) {
+        observableAttributeList.clear();
+        for (Method method : newMethodList) {
+            observableAttributeList.add(method.toString());
         }
 
         AttributeComboBox.setItems(observableAttributeList);
