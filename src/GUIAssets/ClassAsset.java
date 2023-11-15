@@ -1,6 +1,7 @@
 package GUIAssets;
 
-import Attributes.Attribute;
+import Attributes.Field;
+import Attributes.Method;
 import CLI.CommandLineInterface;
 import Class.Class;
 import GUI.GUIDiagramProject;
@@ -30,7 +31,8 @@ public class ClassAsset {
 
     private Class currentClass;
     private Pane classContainer;
-    private ArrayList<Attribute> attributeList = new ArrayList<>();
+    private ArrayList<Field> fieldList = new ArrayList<>();
+    public ArrayList<Method> methodList = new ArrayList<>();
 
     private ArrayList<String> fields;
     private ArrayList<String> methods;
@@ -128,7 +130,8 @@ public class ClassAsset {
     }
 
     private void initAttributeList(final Class currentClass) {
-        this.attributeList.addAll(currentClass.getAttributes());
+        this.fieldList.addAll(currentClass.getFields());
+        this.methodList.addAll(currentClass.getMethods());
     }
 
     /**
@@ -143,11 +146,8 @@ public class ClassAsset {
         }
         ArrayList<String> fieldNameList = new ArrayList<>();
 
-        for(Attribute field : currentClass.getAttributes()) {
-            if (field.getType() == Attribute.Type.FIELD) {
-                fieldNameList.add(field.toString());
-            }
-
+        for(Field field : currentClass.getFields()) {
+            fieldNameList.add(field.toString());
         }
 
         return fieldNameList;
@@ -165,10 +165,8 @@ public class ClassAsset {
 
         ArrayList<String> methodNamesList = new ArrayList<>();
 
-        for (Attribute method: currentClass.getAttributes()) {
-            if(method.getType() == Attribute.Type.METHOD) {
-                methodNamesList.add(method.toString());
-            }
+        for (Method method: currentClass.getMethods()) {
+            methodNamesList.add(method.toString());
         }
 
         return methodNamesList;
@@ -1349,8 +1347,11 @@ public class ClassAsset {
      * testing method -- to be deleted
      */
     public void printAttributeList() {
-        for (Attribute attribute : this.attributeList) {
-            System.out.println(attribute.toString());
+        for (Field field : this.fieldList) {
+            System.out.println(field.toString());
+        }
+        for (Method method : this.methodList) {
+            System.out.println(method.toString());
         }
     }
 
