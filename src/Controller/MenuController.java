@@ -23,9 +23,12 @@ public class MenuController {
             //String className = "";
             while(!shouldTerminate) {
                 String stringChoice = CommandLineInterface.diagramMenuChoice();
+                if(stringChoice.isEmpty()){
+                    continue;
+                }
                 if (!Character.isDigit(stringChoice.charAt(0))){
                     //autocomplete methods
-                    autoCompleteOptionsControl(stringChoice, diagram);
+                    autoCompleteOptionsControl(stringChoice.trim(), diagram);
                     continue;
                 }
                 int choice = Integer.parseInt(stringChoice);
@@ -33,22 +36,14 @@ public class MenuController {
                 switch (choice) {
                 //Add Class - name needed
                 case 1:
-                    /*className = MenuPrompts.addClassPrompt();
-                    diagram.addClass(className);
-                    newClassMenuControl(false, diagram.getClassList().get(className), diagram);*/
                     addClass(diagram);
                     break;
                 //Delete Class - name needed
                 case 2:
-                    /*Class deletedClass = MenuPrompts.deleteClassPrompt(diagram);
-                    diagram.deleteClass(deletedClass);*/
                     deleteClass(diagram);
                     break;
                 //Rename Class - current and new name needed
                 case 3:
-                    /*Class old = MenuPrompts.renameClassPromptOriginalName(diagram);
-                    String newName = MenuPrompts.renameClassPromptNewName(diagram, old);
-                    diagram.renameClass(old, newName);*/
                     renameClass(diagram);
                     break;
                 //Edit Class - name needed
@@ -57,9 +52,6 @@ public class MenuController {
                     if(currentClass == null){
                         break;
                     }
-                    /*while(currentClass == null){
-                        currentClass = MenuPrompts.editClassPrompt(diagram);
-                    }*/
                     editClassSubMenu(false, currentClass, diagram);
                     break;
                 //edit relationships
@@ -345,7 +337,7 @@ public class MenuController {
     }
 
     public static void autoCompleteOptionsControl(final String userChoiceString, final Diagram diagram) {
-        if(userChoiceString.trim().equals("add")){
+        if(userChoiceString.equals("add")){
             addClass(diagram);
         }
     }

@@ -300,7 +300,7 @@ public class MenuPrompts {
 
     public static int editRelationshipsMenuChoice() {
         int userInput = -99;
-        System.out.println("Relationship Editor");
+        System.out.println("\nRelationship Editor");
         System.out.println("""
                                --------------------------
                                 1 - Add Relationship

@@ -10,21 +10,56 @@ import java.util.TreeSet;
 
 public class AutoComplete {
 
-    Terminal terminal;
-    LineReader lineReader;
+    private Terminal terminal;
+    private LineReader lineReader;
 
     public AutoComplete() {
         try {
             this.terminal = TerminalBuilder.builder()
                             .build();
-            this.lineReader = LineReaderBuilder.builder()
+            /*this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add", "delete", "rename", "view", "back", "edit", "save", "load", "exit")))
-                    .build();
+                    .completer(new SimpleCompleter(Arrays.asList("add relationship", "add method", "rename", "view", "back", "edit", "save", "load", "exit")))
+                    .build();*/
         } catch(Exception e) {
             System.out.println("You tryna crash the program??");
         }
         
+    }
+
+    public void classLineReader(){
+        this.lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new SimpleCompleter(Arrays.asList("add class", "delete class", "rename class", "add relationship", "delete relationship", "edit class", "edit relationships", "view class", "view diagram", "help")))
+                    .build();
+    }
+
+    public void mainLineReader() {
+        this.lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new SimpleCompleter(Arrays.asList("view diagram", "edit current diagram", "save current", "load existing", "help", "gui")))
+                    .build();
+    }
+
+    public void newClassLineReader(){
+        this.lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new SimpleCompleter(Arrays.asList("add attribute", "add relationship", "back", "help")))
+                    .build();
+    }
+
+    public void editClassLineReader() {
+        this.lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new SimpleCompleter(Arrays.asList("add attribute", "delete attribute", "rename attribute", "display attributes", "display relationships", "display all contents", "back", "help")))
+                    .build();
+    }
+
+    public void relationshipEditorLineReader() {
+        this.lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new SimpleCompleter(Arrays.asList("add relationship", "delete relationship")))
+                    .build();
     }
 
     public String getCommands(){
@@ -46,10 +81,8 @@ public class AutoComplete {
                 //String line2 = lineReader2.readLine(prompt2);
 
                 if (line == "") {
-                    System.out.println("Time to exit.");
                     break; // User pressed Enter
                 }
-                System.out.println("Reading: " + line);
                 return line ;
             }
         } catch (Exception e) {
@@ -59,6 +92,9 @@ public class AutoComplete {
     }
 
     public boolean isNumber(final String input) {
+        if(input.isEmpty()){
+            return false;
+        }
         if(Character.isDigit(input.charAt(0))){
             return true;
         }

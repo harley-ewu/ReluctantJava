@@ -6,7 +6,6 @@ import Diagram.Diagram;
 import GUI.GraphicalUserInterface;
 import MenuPrompts.AutoComplete;
 import SaveLoadSystem.SaveLoadSystem;
-import Class.Class;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -333,8 +332,8 @@ public class CommandLineInterface {
                             -------------------------- 
                             """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
-        System.out.print("--> ");
-        
+        System.out.println("--> ");
+        ac.classLineReader();
         String userInput = ac.getCommands();
         if(!ac.isNumber(userInput)){
             return userInput;
@@ -497,5 +496,9 @@ public class CommandLineInterface {
 
     public static Diagram getCurrentDiagram(){
         return currentDiagram;
+    }
+
+    public static AutoComplete getAutoCompleteObject() {
+        return ac;
     }
 }
