@@ -285,7 +285,7 @@ public class Diagram {
          return "\nDiagram " + this.title + " is empty.\n";
       }
       String diagramString = "";
-      diagramString += this.title + "\n\n";
+      diagramString += this.title + "\n";
       for (Class c : this.classList.values()){
          diagramString += "\n" + c.toString();
       }
