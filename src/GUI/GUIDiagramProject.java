@@ -22,8 +22,8 @@ public class GUIDiagramProject extends javafx.application.Application {
     private final double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-    //private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
-    Diagram diagram = new Diagram("test diagram");
+    private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
+    //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
     private ArrayList<Pane> relationshipPanes = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
@@ -35,6 +35,10 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public ArrayList<Pane> getRelationshipPanes() {
         return relationshipPanes;
+    }
+
+    public ArrayList<RelationshipAsset> getRelationshipAssets() {
+        return relationshipAssets;
     }
 
     public static void startGUI(String[] args){
@@ -61,7 +65,8 @@ public class GUIDiagramProject extends javafx.application.Application {
         Scene scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
-
+        //test classes
+        //this.testAssets();
         //set stage
         stage.setScene(scene);
         stage.show();
@@ -81,13 +86,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         return null;
     }
 
-    public ArrayList<Relationship> getRelationshipList() {
-        return this.relationshipList;
-    }
-
-    public ArrayList<RelationshipAsset> getRelationshipAssets() {
-        return this.relationshipAssets;
-    }
 
     public void setCurrentDiagram(final Diagram diagram) {
         this.diagram = diagram;
@@ -186,7 +184,6 @@ public class GUIDiagramProject extends javafx.application.Application {
     /**
      * description: temp method to test out functionality of assets ; to be removed
      */
-    /*
     private void testAssets() {
 
         this.diagram.addClass("test class");
@@ -249,21 +246,21 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.add(testClass3);
         this.classList.add(testClass4);
 
-        this.classList.add(this.diagram.getSingleClass("test class"));
-        this.classList.add(this.diagram.getSingleClass("test class 2"));
-        this.classList.add(this.diagram.getSingleClass("test class 3"));
-        this.classList.add(this.diagram.getSingleClass("test class 4"));
+        //this.classList.add(this.diagram.getSingleClass("test class"));
+        //this.classList.add(this.diagram.getSingleClass("test class 2"));
+        //this.classList.add(this.diagram.getSingleClass("test class 3"));
+        //this.classList.add(this.diagram.getSingleClass("test class 4"));
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
         System.out.println(this.classAssets.toString());
-
+        /*
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, false);
         Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Aggregation, testClass2, testClass3, 1, 1, false);
         Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass3, 1, 1, false);
-
+        */
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation,
                 this.diagram.getSingleClass("test class"), this.diagram.getSingleClass("test class 2"),
                 1, 1, false);
@@ -287,10 +284,14 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         System.out.println(this.relationshipAssets.toString());
 
-    }*/
+    }
 
     public ArrayList<Class> getClassList() {
         return classList;
+    }
+
+    public ArrayList<Relationship> getRelationshipList() {
+        return relationshipList;
     }
 
     /**
@@ -454,13 +455,13 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.classPanesCoordinates.clear();
 
-        for (int i = 0; i < this.relationshipPanes.size(); i++) {
+/*        for (int i = 0; i < this.relationshipPanes.size(); i++) {
             this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
             this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.relationshipPanes.get(i));
         }
 
-        this.relationshipPanesCoordinates.clear();
+        this.relationshipPanesCoordinates.clear();*/
     }
 
     /**

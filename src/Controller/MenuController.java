@@ -3,9 +3,15 @@ package Controller;
 import CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
+import Class.Class;
+import CLI.CommandLineInterface;
 import MenuPrompts.MenuPrompts;
+import Relationships.Relationship;
+import Relationships.Relationship.RelationshipType;
 
 import java.util.*;
+
+import Attributes.Attribute;
 
 public class MenuController {
 
@@ -60,7 +66,7 @@ public class MenuController {
                 //View class - name needed
                 case 6:
                     Class c = MenuPrompts.printSingleClassPrompt(diagram);
-                    diagram.printSingleClass(c);
+                    System.out.println(diagram.printSingleClass(c));
                     break;
                 //View Diagram
                 case 7:
@@ -133,7 +139,7 @@ public class MenuController {
                     if(c2 == null) {
                         break;
                     }
-                   diagram.addRelationship(currentClass, c2);
+                   addRelationship(currentClass, c2, diagram);
                    break;
                 case 3:
                    shouldTerminate = true;
@@ -147,6 +153,33 @@ public class MenuController {
         }
     }
 
+    /*
+     * Prompts user for both class names, then prompts for all relevant relationship information
+     * and builds relationships between the classes, then adds it to either of their relationship lists
+     */
+    public static void addRelationship(Class c1, Class c2, Diagram diagram) {
+        if (c1 == c2) return;
+
+        Relationship.RelationshipType relationshipType = null;
+        int c1Cardinality = -2;
+        int c2Cardinality = -2;
+        Boolean owner = false;
+
+        relationshipType = MenuPrompts.relationshipTypePrompt();
+        if (relationshipType == null) {
+            return;
+        }
+        c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
+        if (c1Cardinality < -1) {
+            return;
+        }
+        c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
+        owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
+
+        Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
+        diagram.addRelationship(relationship);
+    }
+
     public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while (!shouldTerminate) {
@@ -156,28 +189,25 @@ public class MenuController {
                 case 1: //add attribute
                     addAttribute(currentClass, scanner);
                     break;
-                case 2: //delete field
-                    deleteField(currentClass, scanner);
+                case 2: //delete attribute
+                    deleteAttribute(currentClass, scanner);
                     break;
-                case 3: //delete method
-                    deleteMethod(currentClass, scanner);
-                    break;
-                case 4: //rename attribute
+                case 3: //rename attribute
                     renameAttribute(currentClass, scanner);
                     break;
-                case 5: //display attributes
+                case 4: //display attributes
                     System.out.println(currentClass.displayAttributes());
                     break;
-                case 6: //display relationships
+                case 5: //display relationships
                     System.out.println(diagram.listAllRelationships());
                     break;
-                case 7: //display all contents
+                case 6: //display all contents
                     System.out.println(currentClass);
                     break;
-                case 8: //return to diagram menu
+                case 7: //return to diagram menu
                     shouldTerminate = true;
                     break;
-                case 9: //help
+                case 8: //help
                     CommandLineInterface.editClassMenuHelp();
                     break;
                 default:
@@ -198,8 +228,6 @@ public class MenuController {
 
             }while(parameters == null && parameters.isEmpty());
 
-            currentClass.createField(name, parameters);
-
         } else {
             int option = -99;
             do {
@@ -212,13 +240,12 @@ public class MenuController {
 
             }while (option != 2);
 
-            currentClass.createMethod(name, parameters);
-
         }
 
+        currentClass.createAttribute(name, parameters, choice);
     }
 
-    public static void deleteField(Class currentClass, Scanner scanner) {
+    public static void deleteAttribute(Class currentClass, Scanner scanner) {
         /*int choice = -99;
         do {
             System.out.println("Delete an attribute:");
@@ -232,32 +259,13 @@ public class MenuController {
             }
 
         } while (choice < 1 || choice > currentClass.getAttributes().size()+1);*/
-        int choice = MenuPrompts.deleteFieldPrompts(currentClass);
-        currentClass.deleteField(choice);
-
-    }
-
-    public static void deleteMethod(Class currentClass, Scanner scanner) {
-        /*int choice = -99;
-        do {
-            System.out.println("Delete an attribute:");
-            //need to add message if no attributes exist
-            System.out.println(currentClass.displayAttributes());
-            System.out.print("\nchoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
-            try {
-                choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number");
-            }
-
-        } while (choice < 1 || choice > currentClass.getAttributes().size()+1);*/
-        int choice = MenuPrompts.deleteMethodPrompts(currentClass);
-        currentClass.deleteMethod(choice);
+        int choice = MenuPrompts.deleteAttributePrompts(currentClass);
+        currentClass.deleteAttribute(choice);
 
     }
 
     public static void renameAttribute(Class currentClass, Scanner scanner) {
-        //int input = MenuPrompts.renameAttributePrompt(currentClass);
+        int input = MenuPrompts.renameAttributePrompt(currentClass);
         String newName = MenuPrompts.renameAttributeNewName();
         ArrayList<String> parameters = new ArrayList<>();
 
@@ -266,20 +274,18 @@ public class MenuController {
                 type = MenuPrompts.promptAttributeType();
                 
                 if (type == 1) {
-                    int input = MenuPrompts.renameFieldPrompt(currentClass);
                     parameters = MenuPrompts.renameFieldParameterPrompt();
-                    currentClass.renameField(input, newName);
+                    currentClass.renameAttribute(input, newName, parameters, Attribute.Type.FIELD);
                     break;
                 }
                 int option = -99;
                 do {
-                    int input = MenuPrompts.renameMethodPrompt(currentClass);
                     option = MenuPrompts.addParameterPrompt();
                     if (option == 1) {
                         String parameterName = MenuPrompts.promptParameterName();
                         parameters.add(parameterName);
                     }
-                    currentClass.renameMethod(input, newName, parameters);
+                    currentClass.renameAttribute(input, newName, parameters, Attribute.Type.METHOD);
                 }while (option != 2);
 
             }while (type != 2);
@@ -319,7 +325,7 @@ public class MenuController {
             }
             switch(choice) {
                 case 1:
-                    diagram.addRelationship(c1, c2);
+                    addRelationship(c1, c2, diagram);
                     break;
                 case 2:
                     diagram.deleteRelationship(c1, c2);
