@@ -2,9 +2,9 @@ package CLI;
 
 import Class.Class;
 import Controller.MenuController;
-import Diagram.AutoComplete;
 import Diagram.Diagram;
 import GUI.GraphicalUserInterface;
+import MenuPrompts.AutoComplete;
 import SaveLoadSystem.SaveLoadSystem;
 import Class.Class;
 

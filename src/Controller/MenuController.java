@@ -6,11 +6,9 @@ import Class.Class;
 import Diagram.Diagram;
 import MenuPrompts.MenuPrompts;
 import Relationships.Relationship;
-import Relationships.Relationship.RelationshipType;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import Diagram.AutoComplete;
 
 public class MenuController {
 
@@ -22,7 +20,7 @@ public class MenuController {
     */
     public static void diagramMenuControl(boolean shouldTerminate, final Diagram diagram){
 
-            String className = "";
+            //String className = "";
             while(!shouldTerminate) {
                 String stringChoice = CommandLineInterface.diagramMenuChoice();
                 if (!Character.isDigit(stringChoice.charAt(0))){
