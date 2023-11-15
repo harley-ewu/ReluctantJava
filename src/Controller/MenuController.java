@@ -11,8 +11,6 @@ import Relationships.Relationship.RelationshipType;
 
 import java.util.*;
 
-import Attributes.Attribute;
-
 public class MenuController {
 
     /**
@@ -189,25 +187,28 @@ public class MenuController {
                 case 1: //add attribute
                     addAttribute(currentClass, scanner);
                     break;
-                case 2: //delete attribute
-                    deleteAttribute(currentClass, scanner);
+                case 2: //delete field
+                    deleteField(currentClass, scanner);
                     break;
-                case 3: //rename attribute
+                case 3: //delete method
+                    deleteMethod(currentClass, scanner);
+                    break;
+                case 4: //rename attribute
                     renameAttribute(currentClass, scanner);
                     break;
-                case 4: //display attributes
+                case 5: //display attributes
                     System.out.println(currentClass.displayAttributes());
                     break;
-                case 5: //display relationships
+                case 6: //display relationships
                     System.out.println(diagram.listAllRelationships());
                     break;
-                case 6: //display all contents
+                case 7: //display all contents
                     System.out.println(currentClass);
                     break;
-                case 7: //return to diagram menu
+                case 8: //return to diagram menu
                     shouldTerminate = true;
                     break;
-                case 8: //help
+                case 9: //help
                     CommandLineInterface.editClassMenuHelp();
                     break;
                 default:
@@ -228,6 +229,8 @@ public class MenuController {
 
             }while(parameters == null && parameters.isEmpty());
 
+            currentClass.createField(name, parameters);
+
         } else {
             int option = -99;
             do {
@@ -240,12 +243,13 @@ public class MenuController {
 
             }while (option != 2);
 
+            currentClass.createMethod(name, parameters);
+
         }
 
-        currentClass.createAttribute(name, parameters, choice);
     }
 
-    public static void deleteAttribute(Class currentClass, Scanner scanner) {
+    public static void deleteField(Class currentClass, Scanner scanner) {
         /*int choice = -99;
         do {
             System.out.println("Delete an attribute:");
@@ -259,36 +263,57 @@ public class MenuController {
             }
 
         } while (choice < 1 || choice > currentClass.getAttributes().size()+1);*/
-        int choice = MenuPrompts.deleteAttributePrompts(currentClass);
-        currentClass.deleteAttribute(choice);
+        int choice = MenuPrompts.deleteFieldPrompts(currentClass);
+        currentClass.deleteField(choice);
+
+    }
+
+    public static void deleteMethod(Class currentClass, Scanner scanner) {
+        /*int choice = -99;
+        do {
+            System.out.println("Delete an attribute:");
+            //need to add message if no attributes exist
+            System.out.println(currentClass.displayAttributes());
+            System.out.print("\nchoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+
+        } while (choice < 1 || choice > currentClass.getAttributes().size()+1);*/
+        int choice = MenuPrompts.deleteMethodPrompts(currentClass);
+        currentClass.deleteMethod(choice);
 
     }
 
     public static void renameAttribute(Class currentClass, Scanner scanner) {
-        int input = MenuPrompts.renameAttributePrompt(currentClass);
+        //int input = MenuPrompts.renameAttributePrompt(currentClass);
         String newName = MenuPrompts.renameAttributeNewName();
         ArrayList<String> parameters = new ArrayList<>();
 
         int type = -99;
-            do {
-                type = MenuPrompts.promptAttributeType();
-                
-                if (type == 1) {
-                    parameters = MenuPrompts.renameFieldParameterPrompt();
-                    currentClass.renameAttribute(input, newName, parameters, Attribute.Type.FIELD);
-                    break;
-                }
-                int option = -99;
-                do {
-                    option = MenuPrompts.addParameterPrompt();
-                    if (option == 1) {
-                        String parameterName = MenuPrompts.promptParameterName();
-                        parameters.add(parameterName);
-                    }
-                    currentClass.renameAttribute(input, newName, parameters, Attribute.Type.METHOD);
-                }while (option != 2);
+        do {
+            type = MenuPrompts.promptAttributeType();
 
-            }while (type != 2);
+            if (type == 1) {
+                int input = MenuPrompts.renameFieldPrompt(currentClass);
+                parameters = MenuPrompts.renameFieldParameterPrompt();
+                currentClass.renameField(input, newName);
+                break;
+            }
+            int option = -99;
+            do {
+                int input = MenuPrompts.renameMethodPrompt(currentClass);
+                option = MenuPrompts.addParameterPrompt();
+                if (option == 1) {
+                    String parameterName = MenuPrompts.promptParameterName();
+                    parameters.add(parameterName);
+                }
+                currentClass.renameMethod(input, newName, parameters);
+            }while (option != 2);
+
+        }while (type != 2);
     }
 
     /**
