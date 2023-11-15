@@ -45,6 +45,10 @@ public class Method extends Attribute{
         return this.type;
     }
 
+    @Override
+    public ArrayList<String> getParameters() {
+        return this.parameters;
+    }
 
     public void setType() {
         this.type = Type.METHOD;
