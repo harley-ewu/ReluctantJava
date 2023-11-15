@@ -27,6 +27,9 @@ public class AutoComplete {
         
     }
 
+    /**
+    * Constructor for LineReader that reads class actions from standard input
+    */
     public void classLineReader(){
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
@@ -34,13 +37,19 @@ public class AutoComplete {
                     .build();
     }
 
+    /**
+    * Sets the LineReader used to read actions for main menu from the command line. 
+    */
     public void mainLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("view diagram", "edit current diagram", "save current", "load existing", "help", "gui")))
+                    .completer(new SimpleCompleter(Arrays.asList("new-diagram", "view-diagram", "edit-current-diagram", "save", "load-existing-diagram", "help", "gui", "exit")))
                     .build();
     }
 
+    /**
+    * Creates a new line reader for new class actions.
+    */
     public void newClassLineReader(){
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
@@ -48,6 +57,9 @@ public class AutoComplete {
                     .build();
     }
 
+    /**
+    * Constructor for LineReader for editClass
+    */
     public void editClassLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
@@ -55,6 +67,9 @@ public class AutoComplete {
                     .build();
     }
 
+    /**
+    * Line reader for relationship editor.
+    */
     public void relationshipEditorLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
@@ -62,16 +77,15 @@ public class AutoComplete {
                     .build();
     }
 
+    /**
+    * Gets commands from JLine and prompts user for input. This is used to create command and entity to edit
+    * 
+    * 
+    * @return String of commands or
+    */
     public String getCommands(){
         String line = "";
         try {
-            // Set up JLine terminal
-            /*Terminal terminal = TerminalBuilder.builder()
-                    .build();
-            LineReader lineReader = LineReaderBuilder.builder()
-                    .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add", "delete", "rename", "view", "back", "edit", "save", "load", "exit")))
-                    .build();*/
 
             // Main loop to read input
             while (true) {
@@ -91,6 +105,13 @@ public class AutoComplete {
         return line;
     }
 
+    /**
+    * Checks if the input is a number. This is used to determine if the user is trying to enter a number
+    * 
+    * @param input - the string to check for a number
+    * 
+    * @return true if the input is a number false if not or if the input is empty or not a number
+    */
     public boolean isNumber(final String input) {
         if(input.isEmpty()){
             return false;
@@ -101,11 +122,6 @@ public class AutoComplete {
         return false;
     }
 
-    public static void main(String[] args) {
-        AutoComplete test = new AutoComplete();
-        test.getCommands();
-    }
-
     private class SimpleCompleter implements Completer {
         private final SortedSet<String> candidates = new TreeSet<>();
 
@@ -113,6 +129,13 @@ public class AutoComplete {
             candidates.addAll(suggestions);
         }
 
+        /**
+        * Completes the given line. This is called by Parser#complete ( ParsedLine Candidate ) when it encounters a line that doesn't start with a word or is part of a word.
+        * 
+        * @param reader - the line reader to use. Can be null in which case the parser is not used.
+        * @param line - the line to complete. Can be null in which case the parser is not used.
+        * @param candidates - the list to fill with completions for the given
+        */
         @Override
         public void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
             String word = line.word().toLowerCase();

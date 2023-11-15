@@ -38,9 +38,18 @@ public class CommandLineInterface {
         currentDiagram = null;
 
         while (!shouldTerminate) {
-            int userChoice = getUserChoice();
+            String userChoice = getUserChoice();
+            if(userChoice.isEmpty()){
+                continue;
+            }
+            if (!Character.isDigit(userChoice.charAt(0))){
+                //autocomplete methods
+                shouldTerminate = AutoCompleteControl(userChoice.trim(), shouldTerminate);
+                continue;
+            }
+            int choice = Integer.parseInt(userChoice);
 
-            switch (userChoice) {
+            switch (choice) {
                 case 1 -> currentDiagram = createNewDiagram(currentDiagram);
                 case 2 -> viewDiagram(currentDiagram);
                 case 3 -> editDiagram(currentDiagram);
@@ -60,9 +69,9 @@ public class CommandLineInterface {
      * @return: Int representing the users choice
      * */
 
-    private static int getUserChoice() {
+    private static String getUserChoice() {
         Scanner scan = new Scanner(System.in);
-        int userInput = -1;
+        int numberInput = -1;
         
         System.out.println("""
                 
@@ -85,16 +94,24 @@ public class CommandLineInterface {
             System.out.println("* The diagram '"+ currentDiagram.getTitle() + "' is your current diagram *\n");
         }
         System.out.println("--------------------------\n");
-        //System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
-        System.out.println("Enter a number from menu above ");
-        System.out.print("--> ");
-        //String input = ac.initialize();
+        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        //System.out.println("Enter a number from menu above ");
+        System.out.println("--> ");
+        ac.mainLineReader();
+        String userInput = ac.getCommands();
+        if(!ac.isNumber(userInput)){
+            return userInput;
+        }
+        numberInput = Integer.parseInt(userInput);
+        boolean first = true;
         while (true) {
             try {
-                userInput = Integer.parseInt(scan.nextLine());
-                if (isValidUserInput(userInput)) {
+                if(!first)
+                    numberInput = Integer.parseInt(scan.nextLine());
+                if (numberInput >= 1 && numberInput <= 8) {
                     break;
                 } else {
+                    first = false;
                     System.out.println("Invalid input. Please enter a number between 1 and " + MAX_CHOICES);
                     System.out.print("--> ");
                 }
@@ -501,4 +518,36 @@ public class CommandLineInterface {
     public static AutoComplete getAutoCompleteObject() {
         return ac;
     }
+
+    public static boolean AutoCompleteControl(final String command, boolean shouldTerminate) {
+        switch (command) {
+            case "new-diagram":
+                currentDiagram = createNewDiagram(currentDiagram);
+                break;
+            case "view-diagram":
+                viewDiagram(currentDiagram);
+                break;
+            case "edit-current-diagram":
+                editDiagram(currentDiagram);
+                break;
+            case "save":
+                saveDiagram(currentDiagram);
+                break;
+            case "load-existing-diagram":
+                loadDiagram();
+                break;
+            case "help":
+                help();
+                break;
+            case "gui":
+                break;
+            case "exit":
+                shouldTerminate = exit(currentDiagram);
+                return true;
+            default:
+                System.out.println("Not a recognized command.");
+        }
+        return false;
+    }
+
 }
