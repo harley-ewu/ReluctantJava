@@ -1,7 +1,8 @@
 package GUIAssets;
 
-import CLI.CommandLineInterface;
-import GUI.GUIDiagramProject;
+import application.Application;
+import application.CLI.CommandLineInterface;
+import application.GUI.GUIDiagramProject;
 import Relationships.Relationship;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -202,7 +203,7 @@ public class RelationshipAsset {
             //remove the relationship from the relationship list first
             relationshipList.remove(this.index);
 
-            CommandLineInterface.getCurrentDiagram().deleteRelationship(currentRelationship.getClass1(), currentRelationship.getClass2());
+            Application.getCurrentDiagram().deleteRelationship(currentRelationship.getClass1(), currentRelationship.getClass2());
 
             //remove the relationship pane from the pane list next
             relationshipAssetPaneList.remove(this.index);

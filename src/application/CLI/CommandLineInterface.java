@@ -1,11 +1,12 @@
-package CLI;
+package application.CLI;
 
 import Class.Class;
 import Controller.MenuController;
 import Diagram.Diagram;
-import GUI.GraphicalUserInterface;
+import application.Application;
+import application.GUI.GraphicalUserInterface;
 import SaveLoadSystem.SaveLoadSystem;
-import Class.Class;
+import application.UserInterface;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -16,15 +17,11 @@ import java.util.Scanner;
  * Description: This class will contain code related to the CLI
  * Use case: Call the start method from main to start the CLI
  * */
-public class CommandLineInterface {
+public class CommandLineInterface implements UserInterface {
 
     private static final int MAX_CHOICES = 8;
 
-    private static Diagram currentDiagram;
-    public static void main(String[] args){
-        boolean shouldTerminate = false;
-        startCLI(shouldTerminate);
-    }
+    public CommandLineInterface(){}
 
     /*
      * Description: This method will start the CLI
@@ -32,22 +29,21 @@ public class CommandLineInterface {
      * */
 
 
-    private static void startCLI(boolean shouldTerminate){
+    public void launchUmlEditor(){
 
-        currentDiagram = null;
-
+        boolean shouldTerminate = false;
         while (!shouldTerminate) {
             int userChoice = getUserChoice();
 
             switch (userChoice) {
-                case 1 -> currentDiagram = createNewDiagram(currentDiagram);
-                case 2 -> viewDiagram(currentDiagram);
-                case 3 -> editDiagram(currentDiagram);
-                case 4 -> saveDiagram(currentDiagram);
-                case 5 -> currentDiagram = loadDiagram();
+                case 1 -> Application.setCurrentDiagram(createNewDiagram(Application.getCurrentDiagram()));
+                case 2 -> viewDiagram(Application.getCurrentDiagram());
+                case 3 -> editDiagram(Application.getCurrentDiagram());
+                case 4 -> saveDiagram(Application.getCurrentDiagram());
+                case 5 -> Application.setCurrentDiagram(loadDiagram());
                 case 6 -> help();
-                case 7 -> new Thread(() -> GraphicalUserInterface.startGUI(new String[0])).start();
-                case 8 -> shouldTerminate = exit(currentDiagram);
+                case 7 -> new Thread(() -> new GraphicalUserInterface().launchUmlEditor()).start();
+                case 8 -> shouldTerminate = exit(Application.getCurrentDiagram());
                 default -> System.out.println("There is a bug in getUserChoice");
             }
         }
@@ -457,13 +453,5 @@ public class CommandLineInterface {
 
             Option 6 - Return to Diagram Menu: returns the user to the diagram menu holding the class
                 """);
-    }
-
-    public static void setCurrentDiagram(Diagram diagram){
-        currentDiagram = diagram;
-    }
-
-    public static Diagram getCurrentDiagram(){
-        return currentDiagram;
     }
 }

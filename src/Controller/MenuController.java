@@ -1,13 +1,10 @@
 package Controller;
 
-import CLI.CommandLineInterface;
+import application.CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
-import Class.Class;
-import CLI.CommandLineInterface;
 import MenuPrompts.MenuPrompts;
 import Relationships.Relationship;
-import Relationships.Relationship.RelationshipType;
 
 import java.util.*;
 
