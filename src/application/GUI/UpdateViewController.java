@@ -1,6 +1,7 @@
-package GUI;
+package application.GUI;
 
-import CLI.CommandLineInterface;
+import application.Application;
+import application.CLI.CommandLineInterface;
 import Relationships.Relationship;
 import Class.Class;
 
@@ -10,9 +11,9 @@ public class UpdateViewController {
 
     private UpdateViewController(){}
 
-    public static void initView(GUIDiagramProject view){
-        HashMap<String, Class> diagramClasses = CommandLineInterface.getCurrentDiagram().getClassList();
-        HashMap<String, Relationship> relationshipClasses = CommandLineInterface.getCurrentDiagram().getRelationshipList();
+    public static void initView(application.GUI.GUIDiagramProject view){
+        HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
+        HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
 
         view.getContentPane().getChildren().removeAll(view.getClassPanes());
         view.getContentPane().getChildren().removeAll(view.getRelationshipPanes());

@@ -1,6 +1,7 @@
-package GUI;
+package application.GUI;
 
-import CLI.CommandLineInterface;
+import application.Application;
+import application.CLI.CommandLineInterface;
 import Diagram.Diagram;
 import SaveLoadSystem.SaveLoadSystem;
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ public class MenuBarController {
     public void handleSaveAs(ActionEvent event) {
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
         Window stage = hbMenuBar.getScene().getWindow();
 
         if(diagram == null){
@@ -53,7 +54,7 @@ public class MenuBarController {
 
     @FXML
     public void handleSave(ActionEvent event) {
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
 
         if(diagram == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -100,7 +101,7 @@ public class MenuBarController {
         try{
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
-            CommandLineInterface.setCurrentDiagram(diagram);
+            Application.setCurrentDiagram(diagram);
             System.out.println("Successfully loaded project. \n");
         }catch(NullPointerException nullPointerException){
             nullPointerException.printStackTrace();

@@ -1,7 +1,8 @@
-package GUI;
+package application.GUI;
 
 
-import CLI.CommandLineInterface;
+import application.Application;
+import application.CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
@@ -32,7 +33,7 @@ public class DiagramProjectController {
         System.out.println("Saving file as!");
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
 
         if(diagram == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -68,7 +69,7 @@ public class DiagramProjectController {
      */
     protected static void saveFile() {
         System.out.println("saving file!");
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
 
         if(diagram == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -120,7 +121,7 @@ public class DiagramProjectController {
         try{
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
-            CommandLineInterface.setCurrentDiagram(diagram);
+            Application.setCurrentDiagram(diagram);
             if(view != null){
                 GraphicalUserInterface.closeDiagram();
                 GraphicalUserInterface.openDiagram(diagram);
@@ -148,7 +149,7 @@ public class DiagramProjectController {
         Label errorLabel = new Label();
         Label label = new Label("Enter a name for the Class");
         Button submitBtn = new Button("Submit");
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
         Class newClass = new Class("");
         GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
@@ -183,7 +184,7 @@ public class DiagramProjectController {
     protected static void addRelationship() {
         System.out.println("adding a new relationship!");
         Stage popupStage = new Stage();
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
         GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         HBox setRelationshipType = new HBox();
