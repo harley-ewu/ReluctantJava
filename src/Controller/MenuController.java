@@ -1,7 +1,6 @@
 package Controller;
 
-import Attributes.Attribute;
-import CLI.CommandLineInterface;
+import application.CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
 import MenuPrompts.MenuPrompts;

@@ -5,7 +5,7 @@
 
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="GUI.MenuBarController"
+      fx:controller="application.GUI.MenuBarController"
       alignment="CENTER_LEFT"
       fx:id="hbMenuBar"
       spacing="5">

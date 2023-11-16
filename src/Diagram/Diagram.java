@@ -276,6 +276,14 @@ public class Diagram {
 
       return str;
    }
+
+   public Diagram createSnapshot(String saveLocation, String title, HashMap<String, Class> classList, HashMap<String, Relationship> relationshipList) {
+      Diagram diagram = new Diagram(title);
+      diagram.setSaveLocation(saveLocation);
+      diagram.setClassList(classList);
+      diagram.setRelationshipList(relationshipList);
+      return diagram;
+   }
    
    /*
    Printing out entire diagram
