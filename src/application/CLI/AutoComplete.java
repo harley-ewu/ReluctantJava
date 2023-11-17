@@ -1,4 +1,4 @@
-package MenuPrompts;
+package application.CLI;
 import org.jline.reader.*;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -33,7 +33,7 @@ public class AutoComplete {
     public void classLineReader(){
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add class", "delete class", "rename class", "add relationship", "delete relationship", "edit class", "edit relationships", "view class", "view diagram", "help")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-class", "delete-class", "rename-class", "delete-relationship", "edit-class", "edit-relationships", "view-class", "view-diagram", "help", "exit")))
                     .build();
     }
 

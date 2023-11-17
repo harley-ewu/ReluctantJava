@@ -1,10 +1,12 @@
 package Controller;
 
+import application.Application;
 import application.CLI.CommandLineInterface;
 import Class.Class;
 import Diagram.Diagram;
 import MenuPrompts.MenuPrompts;
 import Relationships.Relationship;
+import Attributes.Attribute;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -27,7 +29,7 @@ public class MenuController {
                 }
                 if (!Character.isDigit(stringChoice.charAt(0))){
                     //autocomplete methods
-                    autoCompleteOptionsControl(stringChoice.trim(), diagram);
+                    shouldTerminate = autoCompleteOptionsControl(stringChoice.trim(), diagram, shouldTerminate);
                     continue;
                 }
                 int choice = Integer.parseInt(stringChoice);
@@ -116,7 +118,7 @@ public class MenuController {
     public static void newClassMenuControl(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while(!shouldTerminate) {
-            int choice = CommandLineInterface.newClassMenuChoice(currentClass);
+            int choice = CommandLineInterface.newClassMenuChoice();
             Class c2 = null;
             switch(choice) {
                 //Add attribute
@@ -335,9 +337,44 @@ public class MenuController {
         }
     }
 
-    public static void autoCompleteOptionsControl(final String userChoiceString, final Diagram diagram) {
-        if(userChoiceString.equals("add")){
-            addClass(diagram);
+    public static boolean autoCompleteOptionsControl(final String command, final Diagram diagram, boolean shouldTerminate) {
+        Class currentClass = null;
+        switch (command) {
+            case("add-class"):
+                addClass(diagram);
+                break;
+            case("delete-class"):
+                deleteClass(diagram);
+                break;
+            case("rename-class"):
+                renameClass(diagram);
+                break;
+            case("edit-class"):
+                currentClass = MenuPrompts.editClassPrompt(diagram);
+                if(currentClass == null){
+                    break;
+                }
+                editClassSubMenu(false, currentClass, diagram);
+                break;
+            case("edit-relationships"):
+                editRelationshipsControl(shouldTerminate, diagram);
+                break;
+            case("view-class"):
+                Class c = MenuPrompts.printSingleClassPrompt(diagram);
+                System.out.println(diagram.printSingleClass(c));
+                break;
+            case("view-diagram"):
+                System.out.println(diagram);
+                break;   
+            case("help"):
+                CommandLineInterface.diagramHelp();
+                break;
+            case("exit"):
+                shouldTerminate = true;
+                return true;
+            default:
+                System.out.println("Not a recognized command.");
         }
+        return false;
     }
 }

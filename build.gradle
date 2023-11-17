@@ -50,6 +50,6 @@ javafx {
 }
 
 application {
-    mainClass = 'CLI.CommandLineInterface'
+    mainClass = 'application.Application'
 }
 
