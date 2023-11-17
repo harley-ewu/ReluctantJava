@@ -28,7 +28,7 @@ public class MenuController {
                 }
                 if (!Character.isDigit(stringChoice.charAt(0))){
                     //autocomplete methods
-                    shouldTerminate = autoCompleteOptionsControl(stringChoice.trim(), diagram, shouldTerminate);
+                    shouldTerminate = typingDiagramMenuControl(stringChoice.trim(), diagram);
                     continue;
                 }
                 int choice = Integer.parseInt(stringChoice);
@@ -344,7 +344,7 @@ public class MenuController {
             }
         }
     }
-    public static boolean autoCompleteOptionsControl(final String command, final Diagram diagram, boolean shouldTerminate) {
+    public static boolean typingDiagramMenuControl(final String command, final Diagram diagram) {
         Class currentClass = null;
         switch (command) {
             case("add-class"):
@@ -364,7 +364,7 @@ public class MenuController {
                 editClassSubMenu(false, currentClass, diagram);
                 break;
             case("edit-relationships"):
-                editRelationshipsControl(shouldTerminate, diagram);
+                editRelationshipsControl(false, diagram);
                 break;
             case("view-class"):
                 Class c = MenuPrompts.printSingleClassPrompt(diagram);
@@ -377,7 +377,6 @@ public class MenuController {
                 CommandLineInterface.diagramHelp();
                 break;
             case("exit"):
-                shouldTerminate = true;
                 return true;
             default:
                 System.out.println("Not a recognized command.");

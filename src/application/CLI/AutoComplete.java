@@ -17,10 +17,6 @@ public class AutoComplete {
         try {
             this.terminal = TerminalBuilder.builder()
                             .build();
-            /*this.lineReader = LineReaderBuilder.builder()
-                    .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add relationship", "add method", "rename", "view", "back", "edit", "save", "load", "exit")))
-                    .build();*/
         } catch(Exception e) {
             System.out.println("You tryna crash the program??");
         }
@@ -89,10 +85,7 @@ public class AutoComplete {
 
             // Main loop to read input
             while (true) {
-                //String prompt = "Type Command (press Tab for autocomplete): ";
-                //String prompt2 = "Type what entity to edit (press Tab for autocomplete): ";
                 line = this.lineReader.readLine();
-                //String line2 = lineReader2.readLine(prompt2);
 
                 if (line == "") {
                     break; // User pressed Enter

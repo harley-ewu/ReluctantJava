@@ -41,7 +41,7 @@ public class CommandLineInterface implements UserInterface {
             }
             if (!Character.isDigit(userChoice.charAt(0))){
                 //autocomplete methods
-                shouldTerminate = AutoCompleteControl(userChoice.trim(), shouldTerminate);
+                shouldTerminate = typingMainMenuControl(userChoice.trim());
                 continue;
             }
             int choice = Integer.parseInt(userChoice);
@@ -501,7 +501,7 @@ public class CommandLineInterface implements UserInterface {
                 """);
     }
 
-    public static boolean AutoCompleteControl(final String command, boolean shouldTerminate) {
+    public static boolean typingMainMenuControl(final String command) {
         Diagram currentDiagram = Application.getCurrentDiagram();
         switch (command) {
             case "new-diagram":
@@ -526,7 +526,6 @@ public class CommandLineInterface implements UserInterface {
             case "gui":
                 break;
             case "exit":
-                shouldTerminate = exit(currentDiagram);
                 return true;
             default:
                 System.out.println("Not a recognized command.");
