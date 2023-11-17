@@ -22,7 +22,16 @@ public class MenuController {
 
             String className = "";
             while(!shouldTerminate) {
-                int choice = CommandLineInterface.diagramMenuChoice();
+                String stringChoice = CommandLineInterface.diagramMenuChoice();
+                if(stringChoice.isEmpty()){
+                    continue;
+                }
+                if (!Character.isDigit(stringChoice.charAt(0))){
+                    //autocomplete methods
+                    shouldTerminate = autoCompleteOptionsControl(stringChoice.trim(), diagram, shouldTerminate);
+                    continue;
+                }
+                int choice = Integer.parseInt(stringChoice);
                 Class currentClass = null;
                 switch (choice) {
                 //Add Class - name needed
@@ -334,5 +343,45 @@ public class MenuController {
                     break;
             }
         }
+    }
+    public static boolean autoCompleteOptionsControl(final String command, final Diagram diagram, boolean shouldTerminate) {
+        Class currentClass = null;
+        switch (command) {
+            case("add-class"):
+                addClass(diagram);
+                break;
+            case("delete-class"):
+                deleteClass(diagram);
+                break;
+            case("rename-class"):
+                renameClass(diagram);
+                break;
+            case("edit-class"):
+                currentClass = MenuPrompts.editClassPrompt(diagram);
+                if(currentClass == null){
+                    break;
+                }
+                editClassSubMenu(false, currentClass, diagram);
+                break;
+            case("edit-relationships"):
+                editRelationshipsControl(shouldTerminate, diagram);
+                break;
+            case("view-class"):
+                Class c = MenuPrompts.printSingleClassPrompt(diagram);
+                System.out.println(diagram.printSingleClass(c));
+                break;
+            case("view-diagram"):
+                System.out.println(diagram);
+                break;   
+            case("help"):
+                CommandLineInterface.diagramHelp();
+                break;
+            case("exit"):
+                shouldTerminate = true;
+                return true;
+            default:
+                System.out.println("Not a recognized command.");
+        }
+        return false;
     }
 }
