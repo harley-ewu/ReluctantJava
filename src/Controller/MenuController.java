@@ -19,30 +19,29 @@ public class MenuController {
     * @param diagram - Diagram to get menu control for ( used for newClassMenuControl
     */
     public static void diagramMenuControl(boolean shouldTerminate, final Diagram diagram){
-
-            String className = "";
             while(!shouldTerminate) {
-                int choice = CommandLineInterface.diagramMenuChoice();
+                String stringChoice = CommandLineInterface.diagramMenuChoice();
+                if(stringChoice.isEmpty()){
+                    continue;
+                }
+                if (!Character.isDigit(stringChoice.charAt(0))){
+                    //autocomplete methods
+                    shouldTerminate = typingDiagramMenuControl(stringChoice.trim(), diagram);
+                    continue;
+                }
+                int choice = Integer.parseInt(stringChoice);
                 Class currentClass = null;
                 switch (choice) {
                 //Add Class - name needed
                 case 1:
-                    /*className = MenuPrompts.addClassPrompt();
-                    diagram.addClass(className);
-                    newClassMenuControl(false, diagram.getClassList().get(className), diagram);*/
                     addClass(diagram);
                     break;
                 //Delete Class - name needed
                 case 2:
-                    /*Class deletedClass = MenuPrompts.deleteClassPrompt(diagram);
-                    diagram.deleteClass(deletedClass);*/
                     deleteClass(diagram);
                     break;
                 //Rename Class - current and new name needed
                 case 3:
-                    /*Class old = MenuPrompts.renameClassPromptOriginalName(diagram);
-                    String newName = MenuPrompts.renameClassPromptNewName(diagram, old);
-                    diagram.renameClass(old, newName);*/
                     renameClass(diagram);
                     break;
                 //Edit Class - name needed
@@ -51,14 +50,11 @@ public class MenuController {
                     if(currentClass == null){
                         break;
                     }
-                    /*while(currentClass == null){
-                        currentClass = MenuPrompts.editClassPrompt(diagram);
-                    }*/
-                    editClassSubMenu(false, currentClass, diagram);
+                    editClassSubMenu(currentClass, diagram);
                     break;
                 //edit relationships
                 case 5:
-                    editRelationshipsControl(false, diagram);
+                    editRelationshipsControl(diagram);
                     break;
                 //View class - name needed
                 case 6:
@@ -88,7 +84,7 @@ public class MenuController {
             return;
         }
         diagram.addClass(className);
-        newClassMenuControl(false, diagram.getClassList().get(className), diagram);
+        newClassMenuControl(diagram.getClassList().get(className), diagram);
     }
 
     public static void deleteClass(final Diagram diagram) {
@@ -116,9 +112,9 @@ public class MenuController {
     * @param currentClass - the class to add or remove attributes to
     * @param diagram - the diagram to add or remove relationships to
     */
-    public static void newClassMenuControl(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
+    public static void newClassMenuControl(final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
-        while(!shouldTerminate) {
+        while(true) {
             int choice = CommandLineInterface.newClassMenuChoice();
             Class c2 = null;
             switch(choice) {
@@ -139,8 +135,8 @@ public class MenuController {
                    addRelationship(currentClass, c2, diagram);
                    break;
                 case 3:
-                   shouldTerminate = true;
-                   break;
+                   return;
+                   
                 case 4:
                    CommandLineInterface.newClassMenuHelp();
                    break;
@@ -177,9 +173,9 @@ public class MenuController {
         diagram.addRelationship(relationship);
     }
 
-    public static void editClassSubMenu(boolean shouldTerminate, final Class currentClass, final Diagram diagram) {
+    public static void editClassSubMenu(final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
-        while (!shouldTerminate) {
+        while (true) {
             int choice = CommandLineInterface.editClassMenuChoice(currentClass);
             switch (choice) {
 
@@ -202,8 +198,7 @@ public class MenuController {
                     System.out.println(currentClass);
                     break;
                 case 7: //return to diagram menu
-                    shouldTerminate = true;
-                    break;
+                    return;
                 case 8: //help
                     CommandLineInterface.editClassMenuHelp();
                     break;
@@ -294,13 +289,13 @@ public class MenuController {
     * @param shouldTerminate - true if the method should terminate prematurely
     * @param diagram - Diagram to edit relationships in
     */
-    public static void editRelationshipsControl(boolean shouldTerminate, final Diagram diagram){
+    public static void editRelationshipsControl(final Diagram diagram){
         if(diagram.getClassList().size() < 2){
             System.out.println("\nCannot form a relationship with only a single class existing.\n");
             return;
         }
         Scanner scanner = new Scanner(System.in);
-        while(!shouldTerminate){
+        while(true){
             int choice = MenuPrompts.editRelationshipsMenuChoice();
             Class c1 = null;
             Class c2 = null;
@@ -313,12 +308,6 @@ public class MenuController {
                 if(c2 == null) {
                     break;
                 }
-                /*while(c1 == null){
-                    c1 = MenuPrompts.promptClass1Relationship(diagram);
-                }
-                while(c2 == null) {
-                    c2 = MenuPrompts.promptClass2Relationship(diagram);
-                }*/
             }
             switch(choice) {
                 case 1:
@@ -328,11 +317,51 @@ public class MenuController {
                     diagram.deleteRelationship(c1, c2);
                     break;
                 case 3: 
-                    shouldTerminate = true;
-                    break;
+                    //shouldTerminate = true;
+                    return;
+                    //break;
                 default:
                     break;
             }
         }
+    }
+    public static boolean typingDiagramMenuControl(final String command, final Diagram diagram) {
+        Class currentClass = null;
+        switch (command) {
+            case("add-class"):
+                addClass(diagram);
+                break;
+            case("delete-class"):
+                deleteClass(diagram);
+                break;
+            case("rename-class"):
+                renameClass(diagram);
+                break;
+            case("edit-class"):
+                currentClass = MenuPrompts.editClassPrompt(diagram);
+                if(currentClass == null){
+                    break;
+                }
+                editClassSubMenu(currentClass, diagram);
+                break;
+            case("edit-relationships"):
+                editRelationshipsControl(diagram);
+                break;
+            case("view-class"):
+                Class c = MenuPrompts.printSingleClassPrompt(diagram);
+                System.out.println(diagram.printSingleClass(c));
+                break;
+            case("view-diagram"):
+                System.out.println(diagram);
+                break;   
+            case("help"):
+                CommandLineInterface.diagramHelp();
+                break;
+            case("exit"):
+                return true;
+            default:
+                System.out.println("Not a recognized command.");
+        }
+        return false;
     }
 }

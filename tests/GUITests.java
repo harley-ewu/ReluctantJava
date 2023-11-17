@@ -1,9 +1,10 @@
-import GUI.GUIDiagramProject;
+import application.GUI.GUIDiagramProject;
 import org.junit.jupiter.api.Test;
 import Diagram.Diagram;
 import Class.Class;
 import Relationships.Relationship;
-import CLI.CommandLineInterface;
+import application.Application;
+import application.CLI.CommandLineInterface;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +27,7 @@ public class GUITests {
         testDiagram.addRelationship(relationship);
         testGUI.addClassAssets(classAssets);
 
-        CommandLineInterface.setCurrentDiagram(testDiagram);
+        Application.setCurrentDiagram(testDiagram);
 
         assertNotNull(testGUI.getClassAssets());
         assertNotNull(testGUI.getRelationshipAssets());
