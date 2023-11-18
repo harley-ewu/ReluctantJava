@@ -16,8 +16,8 @@ public class DiagramMemento {
     public DiagramMemento(Diagram diagram) {
         this.diagram = diagram;
         this.title = diagram.getTitle();
-        this.classList = diagram.getClassList();
-        this.relationshipList = diagram.getRelationshipList();
+        this.classList = new HashMap<>(diagram.getClassList());
+        this.relationshipList = new HashMap<>(diagram.getRelationshipList());
     }
 
     public Diagram getDiagram() {return this.diagram;}
@@ -30,10 +30,4 @@ public class DiagramMemento {
 
     public HashMap<String, Relationship> getRelationshipList() {return this.relationshipList;}
 
-    /*public void restore() {
-        this.diagram.setTitle(this.title);
-        this.diagram.setSaveLocation(saveLocation);
-        this.diagram.setClassList(this.classList);
-        this.diagram.setRelationshipList(relationshipList);
-    }*/
 }

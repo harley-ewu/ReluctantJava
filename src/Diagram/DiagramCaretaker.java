@@ -12,10 +12,13 @@ public class DiagramCaretaker {
     }
 
     public DiagramMemento getDiagram(int index) {
-        return diagramMementoList.get(index);
+        return this.diagramMementoList.get(index);
     }
 
     public int getCurrentIndex() {
         return this.currentIndex;
     }
+
+    public void setCurrentIndex(int index) { this.currentIndex = index;}
+    public ArrayList<DiagramMemento> getDiagramMementoList() {return this.diagramMementoList;}
 }

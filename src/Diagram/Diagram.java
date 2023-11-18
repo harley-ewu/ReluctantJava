@@ -45,6 +45,7 @@ public class Diagram {
    
    /*Setter for diagram title*/
    public void setTitle(final String title){
+      createSnapshot();
       this.title = title;
    }
    
@@ -284,20 +285,31 @@ public class Diagram {
    }
 
    public void createSnapshot() {
-      /*Diagram diagram = new Diagram(title);
-      diagram.setSaveLocation(saveLocation);
-      diagram.setClassList(classList);
-      diagram.setRelationshipList(relationshipList)*/;
       DiagramMemento memento = new DiagramMemento(this);
       caretaker.makeBackupUp(memento);
    }
 
-   public void undo() {
-      DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex()-1);
+   private void applyMemento(DiagramMemento memento) {
       this.setTitle(memento.getTitle());
       this.setSaveLocation(memento.getSaveLocation());
-      this.setClassList(memento.getClassList());
-      this.setRelationshipList(memento.getRelationshipList());
+      this.setClassList(new HashMap<>(memento.getClassList()));
+      this.setRelationshipList(new HashMap<>(memento.getRelationshipList()));
+   }
+
+   public void undo() {
+      if (caretaker.getCurrentIndex() != -1) {
+         DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
+         applyMemento(memento);
+         caretaker.setCurrentIndex(caretaker.getCurrentIndex() - 1);
+      }
+   }
+
+   public void redo() {
+      if (caretaker.getCurrentIndex() < caretaker.getDiagramMementoList().size() - 1) {
+         caretaker.setCurrentIndex(caretaker.getCurrentIndex() + 1);
+         DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
+         applyMemento(memento);
+      }
    }
    
    /*
