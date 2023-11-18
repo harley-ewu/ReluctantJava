@@ -2,7 +2,9 @@ package GUIAssets;
 
 import Attributes.Field;
 import Attributes.Method;
-import CLI.CommandLineInterface;
+import application.CLI.CommandLineInterface;
+import application.Application;
+import application.GUI.GUIDiagramProject;
 import Class.Class;
 import application.GUI.GUIDiagramProject;
 import Relationships.Relationship;
