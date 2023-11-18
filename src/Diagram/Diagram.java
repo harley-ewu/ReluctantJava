@@ -75,7 +75,7 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
-         createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
+         createSnapshot();
          this.classList.put(className, new Class(className));
       }
       else {
@@ -94,7 +94,7 @@ public class Diagram {
       if (deletedClass.getClassName().isEmpty()) {
          return;
       }
-      createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
+      createSnapshot();
       classList.remove(deletedClass.getClassName());
       
       for(Class item : classList.values()){
@@ -111,7 +111,7 @@ public class Diagram {
          return;
       }
       else if(old != null && !(newName.isEmpty())){
-         createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
+         createSnapshot();
          Class temp = this.classList.get(old.getClassName());
          this.classList.remove(temp.getClassName());
          temp.setClassName(newName);
@@ -194,7 +194,7 @@ public class Diagram {
    }*/
 
    public void addRelationship(final Relationship relationship) {
-      createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
+      createSnapshot();
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
       this.relationshipList.put(relationshipName, relationship);
    }
@@ -204,7 +204,7 @@ public class Diagram {
     * Finds out both classes belonging to the relationship and deletes the relationship from both of the classes corresponding lists
     */
    public void deleteRelationship(final Class c1, final Class c2){
-      createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
+      createSnapshot();
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
@@ -283,17 +283,21 @@ public class Diagram {
       return str;
    }
 
-   public void createSnapshot(String saveLocation, String title, HashMap<String, Class> classList, HashMap<String, Relationship> relationshipList) {
+   public void createSnapshot() {
       /*Diagram diagram = new Diagram(title);
       diagram.setSaveLocation(saveLocation);
       diagram.setClassList(classList);
       diagram.setRelationshipList(relationshipList)*/;
-      DiagramMemento memento = new DiagramMemento(this, this.title);
+      DiagramMemento memento = new DiagramMemento(this);
       caretaker.makeBackupUp(memento);
    }
 
    public void undo() {
-
+      DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex()-1);
+      this.setTitle(memento.getTitle());
+      this.setSaveLocation(memento.getSaveLocation());
+      this.setClassList(memento.getClassList());
+      this.setRelationshipList(memento.getRelationshipList());
    }
    
    /*

@@ -11,11 +11,11 @@ public class DiagramCaretaker {
         this.currentIndex++;
     }
 
-    public DiagramMemento restore(int index) {
+    public DiagramMemento getDiagram(int index) {
         return diagramMementoList.get(index);
     }
 
-    public int getIndex() {
+    public int getCurrentIndex() {
         return this.currentIndex;
     }
 }
