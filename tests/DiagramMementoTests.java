@@ -1,5 +1,6 @@
 import Diagram.Diagram;
 import org.junit.jupiter.api.Test;
+import Diagram.DiagramMemento;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -178,5 +179,12 @@ public class DiagramMementoTests {
 
         diagram.redo();
         assertEquals(expected, diagram.toString());
+    }
+
+    @Test
+    public void getDiagramMementoTest(){
+        DiagramMemento memento = new DiagramMemento(diagram);
+
+        assertEquals(diagram, memento.getDiagram());
     }
 }
