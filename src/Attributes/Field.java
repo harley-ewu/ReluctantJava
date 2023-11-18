@@ -44,7 +44,7 @@ public class Field{
      * @return - Returns a string with the name of the field.
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
