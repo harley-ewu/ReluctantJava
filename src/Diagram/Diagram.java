@@ -300,13 +300,17 @@ public class Diagram {
       if (caretaker.getCurrentIndex() != -1) {
          DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
          applyMemento(memento);
-         caretaker.setCurrentIndex(caretaker.getCurrentIndex() - 1);
+         if(caretaker.getCurrentIndex() != 0) {
+            caretaker.setCurrentIndex(caretaker.getCurrentIndex() - 2);
+         }
       }
    }
 
    public void redo() {
       if (caretaker.getCurrentIndex() < caretaker.getDiagramMementoList().size() - 1) {
-         caretaker.setCurrentIndex(caretaker.getCurrentIndex() + 1);
+         if (caretaker.getCurrentIndex() <= 1) {
+            caretaker.setCurrentIndex(caretaker.getCurrentIndex() + 2);
+         }
          DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
          applyMemento(memento);
       }
