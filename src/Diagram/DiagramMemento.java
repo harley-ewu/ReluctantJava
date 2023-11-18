@@ -20,8 +20,8 @@ public class DiagramMemento {
         }
         this.diagram = diagram;
         this.title = title;
-        this.classList = new HashMap<>();
-        this.relationshipList = new HashMap<>();
+        this.classList = diagram.getClassList();
+        this.relationshipList = diagram.getRelationshipList();
     }
 
     public void restore() {

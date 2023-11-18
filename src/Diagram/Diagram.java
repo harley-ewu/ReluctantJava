@@ -21,6 +21,7 @@ public class Diagram {
    private HashMap<String, Class> classList;
    @Expose
    private HashMap<String, Relationship> relationshipList;
+   private DiagramCaretaker caretaker;
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -32,6 +33,7 @@ public class Diagram {
       this.title = title;
       this.classList = new HashMap<>();
       this.relationshipList = new HashMap<>();
+      this.caretaker = new DiagramCaretaker();
    }
    
    /*
@@ -73,6 +75,7 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
+         createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
          this.classList.put(className, new Class(className));
       }
       else {
@@ -91,6 +94,7 @@ public class Diagram {
       if (deletedClass.getClassName().isEmpty()) {
          return;
       }
+      createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
       classList.remove(deletedClass.getClassName());
       
       for(Class item : classList.values()){
@@ -107,6 +111,7 @@ public class Diagram {
          return;
       }
       else if(old != null && !(newName.isEmpty())){
+         createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
          Class temp = this.classList.get(old.getClassName());
          this.classList.remove(temp.getClassName());
          temp.setClassName(newName);
@@ -189,6 +194,7 @@ public class Diagram {
    }*/
 
    public void addRelationship(final Relationship relationship) {
+      createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
       this.relationshipList.put(relationshipName, relationship);
    }
@@ -198,7 +204,7 @@ public class Diagram {
     * Finds out both classes belonging to the relationship and deletes the relationship from both of the classes corresponding lists
     */
    public void deleteRelationship(final Class c1, final Class c2){
-
+      createSnapshot(this.saveLocation, this.title, this.classList, this.relationshipList);
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
@@ -277,12 +283,17 @@ public class Diagram {
       return str;
    }
 
-   public Diagram createSnapshot(String saveLocation, String title, HashMap<String, Class> classList, HashMap<String, Relationship> relationshipList) {
-      Diagram diagram = new Diagram(title);
+   public void createSnapshot(String saveLocation, String title, HashMap<String, Class> classList, HashMap<String, Relationship> relationshipList) {
+      /*Diagram diagram = new Diagram(title);
       diagram.setSaveLocation(saveLocation);
       diagram.setClassList(classList);
-      diagram.setRelationshipList(relationshipList);
-      return diagram;
+      diagram.setRelationshipList(relationshipList)*/;
+      DiagramMemento memento = new DiagramMemento(this, this.title);
+      caretaker.makeBackupUp(memento);
+   }
+
+   public void undo() {
+
    }
    
    /*
