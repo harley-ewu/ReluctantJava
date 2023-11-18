@@ -241,38 +241,12 @@ public class MenuController {
     }
 
     public static void deleteField(Class currentClass, Scanner scanner) {
-        /*int choice = -99;
-        do {
-            System.out.println("Delete an attribute:");
-            //need to add message if no attributes exist
-            System.out.println(currentClass.displayAttributes());
-            System.out.print("\nchoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
-            try {
-                choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number");
-            }
-
-        } while (choice < 1 || choice > currentClass.getAttributes().size()+1);*/
         int choice = MenuPrompts.deleteFieldPrompts(currentClass);
         currentClass.deleteField(choice);
 
     }
 
     public static void deleteMethod(Class currentClass, Scanner scanner) {
-        /*int choice = -99;
-        do {
-            System.out.println("Delete an attribute:");
-            //need to add message if no attributes exist
-            System.out.println(currentClass.displayAttributes());
-            System.out.print("\nchoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
-            try {
-                choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number");
-            }
-
-        } while (choice < 1 || choice > currentClass.getAttributes().size()+1);*/
         int choice = MenuPrompts.deleteMethodPrompts(currentClass);
         currentClass.deleteMethod(choice);
 
