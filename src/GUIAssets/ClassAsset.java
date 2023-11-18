@@ -4,7 +4,7 @@ import Attributes.Field;
 import Attributes.Method;
 import CLI.CommandLineInterface;
 import Class.Class;
-import GUI.GUIDiagramProject;
+import application.GUI.GUIDiagramProject;
 import Relationships.Relationship;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -294,7 +294,7 @@ public class ClassAsset {
             //remove the class from the class list first
             classList.remove(this.pos);
 
-            ArrayList<Relationship> classRelationships = CommandLineInterface.getCurrentDiagram().getSingleClassRelationships(currentClass);
+            ArrayList<Relationship> classRelationships = Application.getCurrentDiagram().getSingleClassRelationships(currentClass);
             for(Relationship relationship : classRelationships) {
                 if(guiDiagramProject.getRelationshipAssetFromList(relationship) != null) {
                     guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
@@ -303,7 +303,7 @@ public class ClassAsset {
                 }
             }
 
-            CommandLineInterface.getCurrentDiagram().deleteClass(currentClass);
+            Application.getCurrentDiagram().deleteClass(currentClass);
 
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);

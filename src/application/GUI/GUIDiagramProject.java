@@ -1,11 +1,15 @@
-package GUI;
+package application.GUI;
 
 import Class.Class;
-import CLI.CommandLineInterface;
+import Attributes.Attribute;
+import application.Application;
+import application.CLI.CommandLineInterface;
 import Diagram.Diagram;
 import GUIAssets.ClassAsset;
 import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
+import application.GUI.DiagramProjectController;
+import application.GUI.UpdateViewController;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,7 +26,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     private final double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-    private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
+    private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
     //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
     private ArrayList<Pane> relationshipPanes = new ArrayList<>();
@@ -312,14 +316,14 @@ public class GUIDiagramProject extends javafx.application.Application {
 
 
     public void initializeDiagramContents() {
-        HashMap<String, Class> diagramClasses = CommandLineInterface.getCurrentDiagram().getClassList();
+        HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
         this.classList.addAll(diagramClasses.values());
 
         this.addClassAssets(this.classList);
         this.addClassPanes();
         this.addClassPanesToPaneWindow();
 
-        HashMap<String, Relationship> relationshipClasses = CommandLineInterface.getCurrentDiagram().getRelationshipList();
+        HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
         this.relationshipList.addAll(relationshipClasses.values());
     }
 

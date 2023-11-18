@@ -1,15 +1,14 @@
-package GUI;
+package application.GUI;
 
-import CLI.CommandLineInterface;
+import Diagram.Diagram;
+import application.Application;
+import application.CLI.CommandLineInterface;
+import application.UserInterface;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -19,20 +18,19 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Optional;
 
-import Diagram.Diagram;
-
-public class GraphicalUserInterface extends javafx.application.Application{
+public class GraphicalUserInterface extends javafx.application.Application implements UserInterface {
 
     private static Stage mainMenuStage;
     private static Stage diagramStage;
     private static Diagram diagram;
     private static GUIDiagramProject diagramGui;
 
+    public GraphicalUserInterface() {}
     /**
      * Description: Launches the graphical user interface display for the UML editor
      * Use Case: Call this under the 'Start GUI' Switch block
      */
-    public static void startGUI(String[] args){
+    public void launchUmlEditor(){
         try{
             launch();
         }
@@ -87,7 +85,7 @@ public class GraphicalUserInterface extends javafx.application.Application{
                 diagram.setTitle(inputText);
                 System.out.println("Submitted text: " + inputText);
                 popupStage.close();
-                CommandLineInterface.setCurrentDiagram(diagram);
+                Application.setCurrentDiagram(diagram);
                 try {
 
                     openDiagram(diagram);
@@ -155,10 +153,10 @@ public class GraphicalUserInterface extends javafx.application.Application{
     }
 
     private static void save() {
-        if(CommandLineInterface.getCurrentDiagram().getSaveLocation() == null){
-            DiagramProjectController.saveAsFile(mainMenuStage);
+        if(Application.getCurrentDiagram().getSaveLocation() == null){
+            application.GUI.DiagramProjectController.saveAsFile(mainMenuStage);
         }else{
-            DiagramProjectController.saveFile();
+            application.GUI.DiagramProjectController.saveFile();
         }
     }
 
