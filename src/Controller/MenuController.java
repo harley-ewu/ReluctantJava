@@ -105,8 +105,7 @@ public class MenuController {
 
     /**
     * Displays the menu for adding attributes and relationships to a diagram. This method returns when the user presses enter in the menu or terminates
-    * 
-    * @param shouldTerminate - true if the method should terminate prematurely
+    *
     * @param currentClass - the class to add or remove attributes to
     * @param diagram - the diagram to add or remove relationships to
     */
@@ -199,8 +198,7 @@ public class MenuController {
                     System.out.println(currentClass);
                     break;
                 case 8: //return to diagram menu
-                    shouldTerminate = true;
-                    break;
+                    return;
                 case 9: //help
                     CommandLineInterface.editClassMenuHelp();
                     break;
@@ -311,8 +309,7 @@ public class MenuController {
 
     /**
     * Allows the user to edit relationships in the diagram.
-    * 
-    * @param shouldTerminate - true if the method should terminate prematurely
+    *
     * @param diagram - Diagram to edit relationships in
     */
     public static void editRelationshipsControl(final Diagram diagram){
