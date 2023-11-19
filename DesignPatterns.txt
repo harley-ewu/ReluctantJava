@@ -1,24 +1,45 @@
-Model:
--Attribute
--Field
--Method
--Class
--Diagram
--Relationship
--SaveLoadSystem
+Model-View-Controller:
 
-View:
--CommandLineInterface
--GraphicalUserInterface
--GUIDiagramProject
--ClassAsset
--RelationshipAsset
--MenuPrompts
+    Model:
+    -Attribute
+    -Field
+    -Method
+    -Class
+    -Diagram
+    -Relationship
+    -SaveLoadSystem
 
-Controller:
--CommandLineInterface
--MenuController
--DiagramProjectController
--MainMenuController
--MenuBarController
--ClassAsset
+    View:
+    -CommandLineInterface
+    -GraphicalUserInterface
+    -GUIDiagramProject
+    -ClassAsset
+    -RelationshipAsset
+    -MenuPrompts
+
+    Controller:
+    -CommandLineInterface
+    -MenuController
+    -DiagramProjectController
+    -MainMenuController
+    -MenuBarController
+    -ClassAsset
+
+Strategy:
+
+    Algorithm: launchUmlEditor in UserInterface interface
+
+    The launchUmlEditor implementation is selected at runtime, between the GUI and CLI version
+    based on arguments received in the main method
+
+Chain of Responsibilities:
+
+    Everything in the requests, validators, and handlers package is related to the chain of
+    responsibilities pattern. An initial request is created, and then sent to a mediator for
+    validation and handling.
+
+Mediator:
+
+    The mediator registers services (request, validator, and handler), and serves as a central
+    point to allow requests to hit each component in a service
+
