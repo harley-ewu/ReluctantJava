@@ -21,6 +21,7 @@ public class Diagram {
    private HashMap<String, Class> classList;
    @Expose
    private HashMap<String, Relationship> relationshipList;
+   private DiagramCaretaker caretaker;
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -32,6 +33,7 @@ public class Diagram {
       this.title = title;
       this.classList = new HashMap<>();
       this.relationshipList = new HashMap<>();
+      this.caretaker = new DiagramCaretaker();
    }
    
    /*
@@ -43,6 +45,7 @@ public class Diagram {
    
    /*Setter for diagram title*/
    public void setTitle(final String title){
+      createSnapshot();
       this.title = title;
    }
    
@@ -73,6 +76,7 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
+         createSnapshot();
          this.classList.put(className, new Class(className));
       }
       else {
@@ -91,6 +95,7 @@ public class Diagram {
       if (deletedClass.getClassName().isEmpty()) {
          return;
       }
+      createSnapshot();
       classList.remove(deletedClass.getClassName());
       
       for(Class item : classList.values()){
@@ -107,6 +112,7 @@ public class Diagram {
          return;
       }
       else if(old != null && !(newName.isEmpty())){
+         createSnapshot();
          Class temp = this.classList.get(old.getClassName());
          this.classList.remove(temp.getClassName());
          temp.setClassName(newName);
@@ -189,6 +195,7 @@ public class Diagram {
    }*/
 
    public void addRelationship(final Relationship relationship) {
+      createSnapshot();
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
       this.relationshipList.put(relationshipName, relationship);
    }
@@ -198,7 +205,7 @@ public class Diagram {
     * Finds out both classes belonging to the relationship and deletes the relationship from both of the classes corresponding lists
     */
    public void deleteRelationship(final Class c1, final Class c2){
-
+      createSnapshot();
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
@@ -277,12 +284,36 @@ public class Diagram {
       return str;
    }
 
-   public Diagram createSnapshot(String saveLocation, String title, HashMap<String, Class> classList, HashMap<String, Relationship> relationshipList) {
-      Diagram diagram = new Diagram(title);
-      diagram.setSaveLocation(saveLocation);
-      diagram.setClassList(classList);
-      diagram.setRelationshipList(relationshipList);
-      return diagram;
+   public void createSnapshot() {
+      DiagramMemento memento = new DiagramMemento(this);
+      caretaker.makeBackupUp(memento);
+   }
+
+   private void applyMemento(DiagramMemento memento) {
+      this.setTitle(memento.getTitle());
+      this.setSaveLocation(memento.getSaveLocation());
+      this.setClassList(new HashMap<>(memento.getClassList()));
+      this.setRelationshipList(new HashMap<>(memento.getRelationshipList()));
+   }
+
+   public void undo() {
+      if (caretaker.getCurrentIndex() != -1) {
+         DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
+         applyMemento(memento);
+         if(caretaker.getCurrentIndex() != 0) {
+            caretaker.setCurrentIndex(caretaker.getCurrentIndex() - 2);
+         }
+      }
+   }
+
+   public void redo() {
+      if (caretaker.getCurrentIndex() < caretaker.getDiagramMementoList().size() - 1) {
+         if (caretaker.getCurrentIndex() <= 1) {
+            caretaker.setCurrentIndex(caretaker.getCurrentIndex() + 2);
+         }
+         DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
+         applyMemento(memento);
+      }
    }
    
    /*
