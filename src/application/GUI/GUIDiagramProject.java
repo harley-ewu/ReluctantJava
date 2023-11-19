@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class GUIDiagramProject extends javafx.application.Application {
 
-    private final double scaleFactor = 1.1;
+    private  double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
@@ -92,23 +92,30 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
 
-    public void setCurrentDiagram(final Diagram diagram) {
-        this.diagram = diagram;
-    }
-
     /**
      * descrption: allows zoom in functionality
      */
-    private void zoomIn() {
+/*    private void zoomIn() {
         this.scaleTransform.setX(this.scaleTransform.getX() * this.scaleFactor);
         this.scaleTransform.setY(this.scaleTransform.getY() * this.scaleFactor);
-    }
+    }*/
     /**
      * descrption: allows zoom out functionality
      */
-    private void zoomOut() {
+/*    private void zoomOut() {
         this.scaleTransform.setX(this.scaleTransform.getX() / this.scaleFactor);
         this.scaleTransform.setY(this.scaleTransform.getY() / this.scaleFactor);
+    }*/
+
+    private void zoom(final double factor) {
+        this.scaleFactor *= factor;
+
+        System.out.println("scale factor: " + this.scaleFactor);
+
+        for (Pane classPane : this.classPanes) {
+            classPane.setScaleX(this.scaleFactor);
+            classPane.setScaleY(this.scaleFactor);
+        }
     }
 
     /**
@@ -119,9 +126,9 @@ public class GUIDiagramProject extends javafx.application.Application {
         zoomButtons.setSpacing(10);
         Button zoomInButton = new Button("Zoom In");
         Button zoomOutButton = new Button("Zoom Out");
-        zoomInButton.setOnAction(event -> this.zoomIn());
-        zoomOutButton.setOnAction(event -> this.zoomOut());
-        this.contentPane.getTransforms().add(this.scaleTransform);
+        zoomInButton.setOnAction(event -> this.zoom(1.1));
+        zoomOutButton.setOnAction(event -> this.zoom(0.9));
+        //this.contentPane.getTransforms().add(this.scaleTransform);
         //adding buttons to hbox
         zoomButtons.getChildren().add(zoomInButton);
         zoomButtons.getChildren().add(zoomOutButton);
@@ -189,108 +196,6 @@ public class GUIDiagramProject extends javafx.application.Application {
     /**
      * description: temp method to test out functionality of assets ; to be removed
      */
-/*    private void testAssets() {
-
-        this.diagram.addClass("test class");
-        this.diagram.addClass("test class 2");
-        this.diagram.addClass("test class 3");
-        this.diagram.addClass("test class 4");
-
-        Class testClass = new Class("test class");
-        Class testClass2 = new Class("test class 2");
-        Class testClass3 = new Class("test class 3");
-        Class testClass4 = new Class("test class 4");
-
-
-        ArrayList<String> field1List = new ArrayList<>();
-        ArrayList<String> field2List = new ArrayList<>();
-
-        field1List.add("integer");
-        field2List.add("character");
-
-        ArrayList<String> params = new ArrayList<>();
-        ArrayList<String> params1 = new ArrayList<>();
-        params1.add("param1");
-        params1.add("param2");
-
-        ArrayList<String> params2 = new ArrayList<>();
-        params2.add("param1");
-        params2.add("param2");
-        params2.add("param3");
-
-        Attribute attribute = new Attribute();
-
-        testClass.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
-        testClass.getAttributes().add(attribute.addAttribute("fieldf",field2List,Attribute.Type.FIELD));
-        testClass.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
-        testClass.getAttributes().add(attribute.addAttribute("meterd2",params1,Attribute.Type.METHOD));
-        testClass.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
-
-        testClass2.getAttributes().add(attribute.addAttribute("freld1",field1List,Attribute.Type.FIELD));
-        testClass2.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
-        testClass2.getAttributes().add(attribute.addAttribute("mwhod1",params,Attribute.Type.METHOD));
-        testClass2.getAttributes().add(attribute.addAttribute("method2",params1,Attribute.Type.METHOD));
-        testClass2.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
-
-        testClass3.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
-        testClass3.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
-        testClass3.getAttributes().add(attribute.addAttribute("method1",params,Attribute.Type.METHOD));
-        testClass3.getAttributes().add(attribute.addAttribute("meted2",params1,Attribute.Type.METHOD));
-        testClass3.getAttributes().add(attribute.addAttribute("method3",params2,Attribute.Type.METHOD));
-
-        testClass4.getAttributes().add(attribute.addAttribute("field1",field1List,Attribute.Type.FIELD));
-        testClass4.getAttributes().add(attribute.addAttribute("field2",field2List,Attribute.Type.FIELD));
-        testClass4.getAttributes().add(attribute.addAttribute("method4",params,Attribute.Type.METHOD));
-        testClass4.getAttributes().add(attribute.addAttribute("me2",params1,Attribute.Type.METHOD));
-        testClass4.getAttributes().add(attribute.addAttribute("metwod3",params2,Attribute.Type.METHOD));
-
-        //ArrayList<Class> testClassArrayList = new ArrayList<>();
-
-        this.classList.add(testClass);
-        this.classList.add(testClass2);
-        this.classList.add(testClass3);
-        this.classList.add(testClass4);
-
-        //this.classList.add(this.diagram.getSingleClass("test class"));
-        //this.classList.add(this.diagram.getSingleClass("test class 2"));
-        //this.classList.add(this.diagram.getSingleClass("test class 3"));
-        //this.classList.add(this.diagram.getSingleClass("test class 4"));
-
-        this.addClassAssets(this.classList);
-        this.addClassPanes();
-        this.addClassPanesToPaneWindow();
-
-        System.out.println(this.classAssets.toString());
-        *//*
-        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, false);
-        Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Aggregation, testClass2, testClass3, 1, 1, false);
-        Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass3, 1, 1, false);
-        *//*
-        Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation,
-                this.diagram.getSingleClass("test class"), this.diagram.getSingleClass("test class 2"),
-                1, 1, false);
-        Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Aggregation,
-                this.diagram.getSingleClass("test class 2"), this.diagram.getSingleClass("test class 3"),
-                1, 1, false);
-        Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation,
-                this.diagram.getSingleClass("test class"), this.diagram.getSingleClass("test class 3"),
-                1, 1, false);
-        this.diagram.addRelationship(testRelationship);
-        this.diagram.addRelationship(testRelationship2);
-        this.diagram.addRelationship(testRelationship3);
-
-        this.relationshipList.add(testRelationship);
-        this.relationshipList.add(testRelationship2);
-        this.relationshipList.add(testRelationship3);
-
-        this.addRelationshipAsset(this.relationshipList);
-        this.addRelationshipPanes();
-        this.addRelationshipPanesToPaneWindow();
-
-        System.out.println(this.relationshipAssets.toString());
-
-    }*/
-
     public ArrayList<Class> getClassList() {
         return classList;
     }
@@ -350,11 +255,11 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassPanes() {
-        double x = 20;
-        double y = 20;
+        double x = 50;
+        double y = 50;
         for (ClassAsset classAsset : this.classAssets) {
             Pane temp = this.createDraggablePane(x,y,classAsset);
-            x+=100;
+            x+=temp.getWidth()+300;
 
             this.classPanes.add(temp);
         }
@@ -394,7 +299,8 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     private boolean isColliding(double x, double y, double width, double height, Pane otherClassPane) {
         Bounds bounds = otherClassPane.localToScene(otherClassPane.getBoundsInLocal());
-        return bounds.intersects(x,y,width,height);
+
+        return bounds.intersects(x,y,width * this.scaleFactor,height * this.scaleFactor);
     }
 
     public Pane getContentPane() {
