@@ -3,14 +3,16 @@ package application;
 import Diagram.Diagram;
 import application.CLI.CommandLineInterface;
 import application.GUI.GraphicalUserInterface;
+import application.startup.Startup;
 
 public class Application {
 
     private static Diagram currentDiagram;
 
     public static void main(String[] args){
-        UserInterface userInterface;
+        Startup.init();
 
+        UserInterface userInterface;
 
         if(!(args.length == 0) && args[0].equals("GUI")){
             userInterface = new GraphicalUserInterface();
