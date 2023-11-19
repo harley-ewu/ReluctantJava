@@ -70,8 +70,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         Scene scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
-        //test classes
-        //this.testAssets();
         //set stage
         stage.setScene(scene);
         stage.show();
@@ -95,17 +93,6 @@ public class GUIDiagramProject extends javafx.application.Application {
     /**
      * descrption: allows zoom in functionality
      */
-/*    private void zoomIn() {
-        this.scaleTransform.setX(this.scaleTransform.getX() * this.scaleFactor);
-        this.scaleTransform.setY(this.scaleTransform.getY() * this.scaleFactor);
-    }*/
-    /**
-     * descrption: allows zoom out functionality
-     */
-/*    private void zoomOut() {
-        this.scaleTransform.setX(this.scaleTransform.getX() / this.scaleFactor);
-        this.scaleTransform.setY(this.scaleTransform.getY() / this.scaleFactor);
-    }*/
 
     private void zoom(final double factor) {
         this.scaleFactor *= factor;
