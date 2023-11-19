@@ -15,8 +15,8 @@ public class Class {
     private ArrayList<Method> methods = new ArrayList<>();
 
     public Class(final String className) {
-        if (className == null || className.isEmpty()) {
-            throw new IllegalArgumentException("Class name is null or empty.");
+        if (className == null) {
+            throw new IllegalArgumentException("Class name is null.");
         }
         this.className = className;
     }
