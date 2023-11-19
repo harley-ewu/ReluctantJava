@@ -11,6 +11,7 @@ import Relationships.Relationship;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -84,19 +85,19 @@ public class ClassAsset {
                 classAssets, classCoordinates, relationshipPaneArrayList, relationshipCoordinates, guiDiagramProject);
 
         this.classContainer.getChildren().add(textContainer);
-        this.classContainer.setOnMousePressed(this::onMousePressed);
-        this.classContainer.setOnMouseDragged(this::onMouseDragged);
+        //this.classContainer.setOnMousePressed(this::onMousePressed);
+        //this.classContainer.setOnMouseDragged(this::onMouseDragged);
 
         return this.classContainer;
     }
 
 
-    private void onMousePressed(final MouseEvent event) {
+/*    private void onMousePressed(final MouseEvent event) {
         this.xOffset = event.getSceneX();
         this.yOffset = event.getSceneY();
-    }
+    }*/
 
-    private void onMouseDragged(final MouseEvent event) {
+/*    private void onMouseDragged(final MouseEvent event) {
         double deltaX = event.getSceneX() - this.xOffset;
         double deltaY = event.getSceneY() - this.yOffset;
 
@@ -109,9 +110,11 @@ public class ClassAsset {
         pane.setTranslateX(pane.getTranslateX() + deltaX);
         pane.setTranslateY(pane.getTranslateY() + deltaY);
 
+
         this.xOffset = event.getSceneX();
         this.yOffset = event.getSceneY();
-    }
+    }*/
+
 
     /**
      * searches an existing array list and puts contents in a stringbuilder

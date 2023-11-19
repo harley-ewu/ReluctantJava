@@ -1,7 +1,7 @@
 package application.GUI;
 
 import Class.Class;
-import Attributes.Attribute;
+//import Attributes.Attribute;
 import application.Application;
 import application.CLI.CommandLineInterface;
 import Diagram.Diagram;
@@ -10,6 +10,7 @@ import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
 import application.GUI.DiagramProjectController;
 import application.GUI.UpdateViewController;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -188,7 +189,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     /**
      * description: temp method to test out functionality of assets ; to be removed
      */
-    private void testAssets() {
+/*    private void testAssets() {
 
         this.diagram.addClass("test class");
         this.diagram.addClass("test class 2");
@@ -260,11 +261,11 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.addClassPanesToPaneWindow();
 
         System.out.println(this.classAssets.toString());
-        /*
+        *//*
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass2, 1, 1, false);
         Relationship testRelationship2 = new Relationship(Relationship.RelationshipType.Aggregation, testClass2, testClass3, 1, 1, false);
         Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation, testClass, testClass3, 1, 1, false);
-        */
+        *//*
         Relationship testRelationship = new Relationship(Relationship.RelationshipType.Aggregation,
                 this.diagram.getSingleClass("test class"), this.diagram.getSingleClass("test class 2"),
                 1, 1, false);
@@ -288,7 +289,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         System.out.println(this.relationshipAssets.toString());
 
-    }
+    }*/
 
     public ArrayList<Class> getClassList() {
         return classList;
@@ -349,11 +350,51 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassPanes() {
+        double x = 20;
+        double y = 20;
         for (ClassAsset classAsset : this.classAssets) {
-            Pane temp = classAsset.createClassAsset(this.classList,this.classPanes, this.classAssets,
-                    this.classPanesCoordinates, this.relationshipPanes, this.relationshipPanesCoordinates, this);
+            Pane temp = this.createDraggablePane(x,y,classAsset);
+            x+=100;
+
             this.classPanes.add(temp);
         }
+    }
+
+    private Pane createDraggablePane(double x, double y, ClassAsset classAsset) {
+        Pane temp = classAsset.createClassAsset(this.classList, this.classPanes, this.classAssets, this.classPanesCoordinates,
+                this.relationshipPanes, this.relationshipPanesCoordinates, this);
+
+        temp.relocate(x,y);
+
+        temp.setOnMousePressed(e -> {
+            temp.toFront(); // Bring the node container to the front
+            e.consume();
+        });
+
+        temp.setOnMouseDragged(e -> {
+            double newX = e.getSceneX() - temp.getWidth()/2;
+            double newY = e.getSceneY() - temp.getHeight()/2;
+
+            boolean collisionDetected = false;
+            for (Pane otherClassPane : this.classPanes) {
+                if (otherClassPane != temp && isColliding(newX, newY, temp.getWidth(), temp.getHeight(), otherClassPane)) {
+                    collisionDetected = true;
+                }
+            }
+
+            if (!collisionDetected) {
+                temp.setLayoutX(newX);
+                temp.setLayoutY(newY);
+            }
+            e.consume();
+        });
+
+        return temp;
+    }
+
+    private boolean isColliding(double x, double y, double width, double height, Pane otherClassPane) {
+        Bounds bounds = otherClassPane.localToScene(otherClassPane.getBoundsInLocal());
+        return bounds.intersects(x,y,width,height);
     }
 
     public Pane getContentPane() {
