@@ -137,7 +137,7 @@ public class MenuController {
             if (!Character.isDigit(stringChoice.charAt(0))){
                 boolean quit = false;
                 //autocomplete methods
-                quit = typingNewClassMenuControl(stringChoice.trim(), diagram, currentClass);
+                quit = typingNewClassMenuControl(stringChoice.trim(), diagram, currentClass, scanner);
                 if(quit) return;
                 continue;
             }
@@ -210,7 +210,18 @@ public class MenuController {
     public static void editClassSubMenu(final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            int choice = CommandLineInterface.editClassMenuChoice(currentClass);
+            String stringChoice = CommandLineInterface.editClassMenuChoice(currentClass);
+            if(stringChoice.isEmpty()){
+                continue;
+            }
+            if (!Character.isDigit(stringChoice.charAt(0))){
+                //autocomplete methods
+                boolean quit = false;
+                quit = typingEditClassSubMenuControl(stringChoice.trim(), diagram, currentClass, scanner);
+                if(quit) return;
+                continue;
+            }
+            int choice = Integer.parseInt(stringChoice);
             switch (choice) {
 
                 case 1: //add attribute
@@ -397,8 +408,7 @@ public class MenuController {
         return false;
     }
 
-    public static boolean typingNewClassMenuControl(final String command, final Diagram diagram, final Class currentClass) {
-        Scanner scanner = new Scanner(System.in);
+    public static boolean typingNewClassMenuControl(final String command, final Diagram diagram, final Class currentClass, final Scanner scanner) {
         Class c2 = null;
         switch(command) {
             case ("add-attribute"):
@@ -420,8 +430,39 @@ public class MenuController {
             case("help"):
                 break;
             default:
-                break;
+                System.out.println("Not a recognized command.");
         }
+        return false;
+    }
+
+    public static boolean typingEditClassSubMenuControl(final String command, final Diagram diagram, final Class currentClass, final Scanner scanner) {
+        switch(command){
+            case("add-attribute"):
+                addAttribute(currentClass, scanner);
+                break;
+            case("delete-attribute"):
+                deleteAttribute(currentClass, scanner);
+                break;
+            case("rename-attribute"):
+            renameAttribute(currentClass, scanner);
+                break;
+            case("display-attributes"):
+                System.out.println(currentClass.displayAttributes());
+                break;
+            case("display-relationships"):
+                System.out.println(diagram.listAllRelationships());
+                break;
+            case("display-all"):
+                System.out.println(currentClass);
+                break;
+            case("back"):
+                return true;
+            case("help"):
+                break;
+            default:
+                System.out.println("Not a recognized command.");
+        }
+
         return false;
     }
 }

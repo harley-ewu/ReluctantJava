@@ -459,8 +459,8 @@ public class CommandLineInterface implements UserInterface {
                 """);
     }
 
-    public static int editClassMenuChoice(final Class currentClass) {
-        int userInput = -99;
+    public static String editClassMenuChoice(final Class currentClass) {
+        int numberInput = -99;
         System.out.println("\n" + currentClass);
         Scanner scan = new Scanner(System.in);
         //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
@@ -477,16 +477,26 @@ public class CommandLineInterface implements UserInterface {
                              7 - Return to Diagram Menu
                              8 - Help
                             --------------------------
-                             Enter a number:""");
-        System.out.print("--> ");
-
+                            """);
+        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("--> ");
+        ac.editClassLineReader();
+        String userInput = ac.getCommands();
+        if(!ac.isNumber(userInput)){
+            return userInput;
+        }
+        numberInput = Integer.parseInt(userInput);
+        boolean first = true;
         while (true) {
 
             try {
-                userInput = Integer.parseInt(scan.nextLine());
-                if (isValidUserInput(userInput)) {
+                if(!first)
+                    numberInput = Integer.parseInt(scan.nextLine());
+                if (numberInput >= 1 && numberInput <= 9) {
+                    userInput = numberInput + "";
                     break;
                 } else {
+                    first = false;
                     System.out.println("Please enter a valid option, 1-" + MAX_CHOICES);
                     System.out.print("--> ");
                 }
