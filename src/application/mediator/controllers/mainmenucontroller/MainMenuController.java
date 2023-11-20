@@ -1,7 +1,8 @@
-package application.GUI;
+package application.mediator.controllers.mainmenucontroller;
 
 import application.Application;
 import application.CLI.CommandLineInterface;
+import application.GUI.GraphicalUserInterface;
 
 public class MainMenuController {
 

@@ -1,15 +1,13 @@
 package application.GUI;
 
 import Class.Class;
-//import Attributes.Attribute;
-import application.Application;
-import application.CLI.CommandLineInterface;
 import Diagram.Diagram;
 import GUIAssets.ClassAsset;
 import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
-import application.GUI.DiagramProjectController;
-import application.GUI.UpdateViewController;
+import application.Application;
+import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
+import application.mediator.controllers.updateviewcontroller.UpdateViewController;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;

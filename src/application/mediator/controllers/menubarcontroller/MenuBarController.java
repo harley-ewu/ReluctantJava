@@ -1,4 +1,4 @@
-package application.GUI;
+package application.mediator.controllers.menubarcontroller;
 
 import application.Application;
 import application.CLI.CommandLineInterface;

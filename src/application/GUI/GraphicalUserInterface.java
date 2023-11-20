@@ -2,8 +2,8 @@ package application.GUI;
 
 import Diagram.Diagram;
 import application.Application;
-import application.CLI.CommandLineInterface;
 import application.UserInterface;
+import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -154,9 +154,9 @@ public class GraphicalUserInterface extends javafx.application.Application imple
 
     private static void save() {
         if(Application.getCurrentDiagram().getSaveLocation() == null){
-            application.GUI.DiagramProjectController.saveAsFile(mainMenuStage);
+            DiagramProjectController.saveAsFile(mainMenuStage);
         }else{
-            application.GUI.DiagramProjectController.saveFile();
+            DiagramProjectController.saveFile();
         }
     }
 
