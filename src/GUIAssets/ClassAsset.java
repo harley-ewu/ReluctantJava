@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -44,6 +45,10 @@ public class ClassAsset {
         this.initAttributeList(currentClass);
     }
 
+    public Class getCurrentClass() {
+        return this.currentClass;
+    }
+
     /**
      * Creates and returns a graphical representation of a class asset within a GUI diagram project.
      *
@@ -51,16 +56,17 @@ public class ClassAsset {
      * @param classPaneArrayList      The list of panes associated with class assets.
      * @param classAssets        The list of class assets.
      * @param classCoordinates        A list of coordinates representing the positions of class assets.
-     * @param relationshipPaneArrayList     The list of panes associates with relationship assets
+     * @param relationshipListArrayList     The list of panes associates with relationship assets
      * @param relationshipCoordinates      A list of coordinates representing the positions of relationship assets
+     * @param relationshipAssets
      * @param guiDiagramProject  The GUI diagram project that manages the graphical elements
      * @return                  A JavaFX Pane representing the class asset.
      */
 
 
-    public Pane createClassAsset(final ArrayList<Class> classList, final ArrayList<Pane> classPaneArrayList, final ArrayList<ClassAsset> classAssets,
-                                 final ArrayList<Point2D> classCoordinates, final ArrayList<Pane> relationshipPaneArrayList,
-                                 final ArrayList<Point2D> relationshipCoordinates, final GUIDiagramProject guiDiagramProject) {
+    public <relationshipAssets> Pane createClassAsset(final ArrayList<Class> classList, final ArrayList<Pane> classPaneArrayList, final ArrayList<ClassAsset> classAssets,
+                                                      final ArrayList<Point2D> classCoordinates, final ArrayList<Line> relationshipListArrayList,
+                                                      final ArrayList<Point2D> relationshipCoordinates, final ArrayList<RelationshipAsset> relationshipAssets, final GUIDiagramProject guiDiagramProject) {
         int textSize = 12;
         String fontType = "Verdana";
 
@@ -74,11 +80,11 @@ public class ClassAsset {
         Insets margins = new Insets(5, 5,5, 5);
 
         VBox textContainer = this.setupTextContainer(fontType, textSize, margins, classList, classPaneArrayList,
-                classAssets, classCoordinates, relationshipPaneArrayList, relationshipCoordinates, guiDiagramProject);
+                classAssets, classCoordinates, relationshipListArrayList, relationshipCoordinates, guiDiagramProject);
 
         this.classContainer.getChildren().add(textContainer);
         this.classContainer.setOnMousePressed(this::onMousePressed);
-        this.classContainer.setOnMouseDragged(this::onMouseDragged);
+        this.classContainer.setOnMouseDragged(event -> onMouseDragged(event, classPaneArrayList, classAssets, classCoordinates, relationshipAssets));
 
         return this.classContainer;
     }
@@ -89,7 +95,8 @@ public class ClassAsset {
         this.yOffset = event.getSceneY();
     }
 
-    private void onMouseDragged(final MouseEvent event) {
+    private void onMouseDragged(final MouseEvent event, final ArrayList<Pane> classPaneArrayList, final ArrayList<ClassAsset> classAssets,
+                                final ArrayList<Point2D> classCoordinates, final ArrayList<RelationshipAsset> relationshipAssets) {
         double deltaX = event.getSceneX() - this.xOffset;
         double deltaY = event.getSceneY() - this.yOffset;
 
@@ -104,6 +111,10 @@ public class ClassAsset {
 
         this.xOffset = event.getSceneX();
         this.yOffset = event.getSceneY();
+
+        for (RelationshipAsset relationshipAsset :relationshipAssets) {
+            RelationshipAsset.updateRelationshipLines(relationshipAsset, classPaneArrayList, classCoordinates, classAssets);
+        }
     }
 
     /**
@@ -180,7 +191,7 @@ public class ClassAsset {
      * @param classPaneArrayList
      * @param classAssets
      * @param classCoordinates
-     * @param relationshipPaneArrayList
+     * @param relationshipLineArrayList
      * @param relationshipCoordinates
      * @param guiDiagramProject
      * @return
@@ -189,7 +200,7 @@ public class ClassAsset {
 
     public HBox setUpButtons(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
                              final ArrayList<Pane> classPaneArrayList, final ArrayList<ClassAsset> classAssets,
-                             final ArrayList<Point2D> classCoordinates, final ArrayList<Pane> relationshipPaneArrayList,
+                             final ArrayList<Point2D> classCoordinates, final ArrayList<Line> relationshipLineArrayList,
                              final ArrayList<Point2D> relationshipCoordinates, final GUIDiagramProject guiDiagramProject){
 
         HBox buttonContainer = new HBox();
@@ -203,7 +214,7 @@ public class ClassAsset {
         deleteButton.setFont(Font.font(fontType, textSize));
 
         deleteButton.setOnAction(e -> this.deleteClass(classList, classPaneArrayList, classAssets, classCoordinates,
-                relationshipPaneArrayList, relationshipCoordinates, guiDiagramProject));
+                relationshipLineArrayList, relationshipCoordinates, guiDiagramProject));
 
         buttonContainer.getChildren().add(editButton);
         buttonContainer.getChildren().add(deleteButton);
@@ -222,7 +233,7 @@ public class ClassAsset {
      * @param classPaneArrayList
      * @param classAssets
      * @param classCoordinates
-     * @param relationshipPaneArrayList
+     * @param relationshipLineArrayList
      * @param relationshipCoordinates
      * @param guiDiagramProject
      * @return
@@ -230,7 +241,7 @@ public class ClassAsset {
 
     public VBox setupTextContainer(final String fontType, final int textSize, final Insets margins, final ArrayList<Class> classList,
                                    final ArrayList<Pane> classPaneArrayList, final ArrayList<ClassAsset> classAssets,
-                                   final ArrayList<Point2D> classCoordinates, final ArrayList<Pane> relationshipPaneArrayList,
+                                   final ArrayList<Point2D> classCoordinates, final ArrayList<Line> relationshipLineArrayList,
                                    final ArrayList<Point2D> relationshipCoordinates, final GUIDiagramProject guiDiagramProject){
 
         VBox textContainer = new VBox();
@@ -259,7 +270,7 @@ public class ClassAsset {
 
 
         HBox buttonContainer = this.setUpButtons(fontType, textSize, margins,classList, classPaneArrayList,
-                classAssets, classCoordinates, relationshipPaneArrayList, relationshipCoordinates, guiDiagramProject);
+                classAssets, classCoordinates, relationshipLineArrayList, relationshipCoordinates, guiDiagramProject);
 
         textContainer.getChildren().addAll(className, fieldsNames, methodsNames, buttonContainer);
 
@@ -274,13 +285,13 @@ public class ClassAsset {
      * @param classAssetPaneList   The list of panes associated with the class assets.
      * @param classAssets          The list of class assets.
      * @param classCoordinates          A list of coordinates representing the positions of class assets.
-     * @param relationshipAssetPaneList     the list of panes associated with the relationship assets.
+     * @param relationshipAssetLineList     the list of panes associated with the relationship assets.
      * @param relationshipCoordinates   A list of coordinates representing the positions of relationship assets
      * @param guiDiagramProject    The GUI diagram project that manages the graphical elements.
      */
 
     public void deleteClass(final ArrayList<Class> classList, final ArrayList<Pane> classAssetPaneList, final ArrayList<ClassAsset> classAssets,
-                            final ArrayList<Point2D> classCoordinates, final ArrayList<Pane> relationshipAssetPaneList,
+                            final ArrayList<Point2D> classCoordinates, final ArrayList<Line> relationshipAssetLineList,
                             final ArrayList<Point2D> relationshipCoordinates, final GUIDiagramProject guiDiagramProject) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -297,7 +308,7 @@ public class ClassAsset {
             for(Relationship relationship : classRelationships) {
                 if(guiDiagramProject.getRelationshipAssetFromList(relationship) != null) {
                     guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
-                            relationshipAssetPaneList, guiDiagramProject.getRelationshipAssets(), relationshipCoordinates,
+                            relationshipAssetLineList, guiDiagramProject.getRelationshipAssets(), relationshipCoordinates,
                             classAssetPaneList, classCoordinates, guiDiagramProject);
                 }
             }
@@ -314,9 +325,9 @@ public class ClassAsset {
 
             this.updateCoordinates(classAssetPaneList, classCoordinates);
 
-            for (int i = 0; i < relationshipAssetPaneList.size(); i++) {
-                double currentXCoordinate = relationshipAssetPaneList.get(i).localToScene(relationshipAssetPaneList.get(i).getBoundsInLocal()).getMinX();
-                double currentYCoordinate = relationshipAssetPaneList.get(i).localToScene(relationshipAssetPaneList.get(i).getBoundsInLocal()).getMinY();
+            for (int i = 0; i < relationshipAssetLineList.size(); i++) {
+                double currentXCoordinate = relationshipAssetLineList.get(i).localToScene(relationshipAssetLineList.get(i).getBoundsInLocal()).getMinX();
+                double currentYCoordinate = relationshipAssetLineList.get(i).localToScene(relationshipAssetLineList.get(i).getBoundsInLocal()).getMinY();
                 Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
                 relationshipCoordinates.add(coords);
             }

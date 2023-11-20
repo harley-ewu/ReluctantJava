@@ -1,7 +1,6 @@
 package GUI;
 
 import Class.Class;
-import Attributes.Attribute;
 import CLI.CommandLineInterface;
 import Diagram.Diagram;
 import GUIAssets.ClassAsset;
@@ -12,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
@@ -26,7 +26,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     //private Diagram diagram = CommandLineInterface.getCurrentDiagram(); // this should be set in the create diagram menu option
     Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
-    private ArrayList<Pane> relationshipPanes = new ArrayList<>();
+    private ArrayList<javafx.scene.shape.Line> relationshipLines = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
     private ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
     private ArrayList<Point2D> classPanesCoordinates = new ArrayList<>();
@@ -34,8 +34,8 @@ public class GUIDiagramProject extends javafx.application.Application {
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
 
-    public ArrayList<Pane> getRelationshipPanes() {
-        return relationshipPanes;
+    public ArrayList<javafx.scene.shape.Line> getRelationshipLines() {
+        return relationshipLines;
     }
 
     public static void startGUI(String[] args){
@@ -347,7 +347,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     public void addClassPanes() {
         for (ClassAsset classAsset : this.classAssets) {
             Pane temp = classAsset.createClassAsset(this.classList,this.classPanes, this.classAssets,
-                    this.classPanesCoordinates, this.relationshipPanes, this.relationshipPanesCoordinates, this);
+                    this.classPanesCoordinates, this.relationshipLines, this.relationshipPanesCoordinates, this.relationshipAssets, this);
             this.classPanes.add(temp);
         }
     }
@@ -388,19 +388,19 @@ public class GUIDiagramProject extends javafx.application.Application {
      * description: takes the relationshipAssets list, converts them to pane modules using the built-in
      * createRelationshipAsset method and then stores them into the relationshipPanes arraylist
      */
-    public void addRelationshipPanes() {
+    public void addRelationshipLines() {
         for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
-            Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipPanes, this.relationshipAssets,
-                    this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this);
-            this.relationshipPanes.add(temp);
+            Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
+                    this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            this.relationshipLines.add(temp);
         }
     }
 
     /**
      * description: populates the contentPane with the relationshipAssets list
      */
-    public void addRelationshipPanesToPaneWindow() {
-        for (Pane relationshipAsset : this.relationshipPanes) {
+    public void addRelationshipLinesToPaneWindow() {
+        for (Line relationshipAsset : this.relationshipLines) {
             this.contentPane.getChildren().add(relationshipAsset);
         }
     }
@@ -416,11 +416,11 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void refreshRelationshipPanes() {
-        this.relationshipPanes.clear();
+        this.relationshipLines.clear();
         for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
-            Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipPanes, this.relationshipAssets,
-                    this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this);
-            this.relationshipPanes.add(temp);
+            Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
+                    this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this.classAssets);
+            this.relationshipLines.add(temp);
         }
     }
 
@@ -434,7 +434,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classPanes.clear();
         for (ClassAsset classAsset : this.classAssets) {
             Pane temp = classAsset.createClassAsset(this.classList, this.classPanes,
-                    this.classAssets, this.classPanesCoordinates, this.relationshipPanes, this.relationshipPanesCoordinates, this);
+                    this.classAssets, this.classPanesCoordinates, this.relationshipLines, this.relationshipPanesCoordinates, this.relationshipAssets, this);
             this.classPanes.add(temp);
         }
     }
@@ -455,10 +455,10 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.classPanesCoordinates.clear();
 
-        for (int i = 0; i < this.relationshipPanes.size(); i++) {
-            this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
-            this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
-            this.contentPane.getChildren().add(this.relationshipPanes.get(i));
+        for (int i = 0; i < this.relationshipLines.size(); i++) {
+            this.relationshipLines.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
+            this.relationshipLines.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.relationshipLines.get(i));
         }
 
         this.relationshipPanesCoordinates.clear();
@@ -480,10 +480,10 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.classPanesCoordinates.clear();
 
-        for (int i = 0; i < this.relationshipPanes.size(); i++) {
-            this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
-            this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
-            this.contentPane.getChildren().add(this.relationshipPanes.get(i));
+        for (int i = 0; i < this.relationshipLines.size(); i++) {
+            this.relationshipLines.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
+            this.relationshipLines.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.relationshipLines.get(i));
         }
 
         this.relationshipPanesCoordinates.clear();
