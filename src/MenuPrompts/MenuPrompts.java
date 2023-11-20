@@ -446,13 +446,13 @@ public class MenuPrompts {
         return newParam;
     }
 
-    public static int deleteAttributePrompts(final Class currentClass) {
+    public static int deleteFieldPrompts(final Class currentClass) {
         int choice = -99;
         do {
             System.out.println("Delete an attribute:");
             //need to add message if no attributes exist
             System.out.println(currentClass.displayAttributes());
-            System.out.print("\nChoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
+            System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
@@ -460,23 +460,57 @@ public class MenuPrompts {
                 System.out.print("--> ");
             }
 
-        } while (choice < 1 || choice > currentClass.getAttributes().size()+1);
+        } while (choice < 1 || choice > currentClass.getFields().size()+1);
         return choice;
     }
 
-    public static int renameAttributePrompt(final Class currentClass) {
+    public static int deleteMethodPrompts(final Class currentClass) {
         int choice = -99;
         do {
-            System.out.println("Rename an attribute: ");
+            System.out.println("Delete an attribute:");
+            //need to add message if no attributes exist
             System.out.println(currentClass.displayAttributes());
-            System.out.print("\nChoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
+            System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
                 System.out.print("--> ");
             }
-        }while (choice < 1 || choice > currentClass.getAttributes().size()+1);
+
+        } while (choice < 1 || choice > currentClass.getMethods().size()+1);
+        return choice;
+    }
+
+    public static int renameFieldPrompt(final Class currentClass) {
+        int choice = -99;
+        do {
+            System.out.println("Rename a field: ");
+            System.out.println(currentClass.displayAttributes());
+            System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " -> ");
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+                System.out.print("--> ");
+            }
+        }while (choice < 1 || choice > currentClass.getFields().size()+1);
+        return choice;
+    }
+
+    public static int renameMethodPrompt(final Class currentClass) {
+        int choice = -99;
+        do {
+            System.out.println("Rename a method: ");
+            System.out.println(currentClass.displayAttributes());
+            System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " -> ");
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+                System.out.print("--> ");
+            }
+        }while (choice < 1 || choice > currentClass.getMethods().size()+1);
         return choice;
     }
 
