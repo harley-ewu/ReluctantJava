@@ -1,4 +1,4 @@
-package application.mediator.requests;
+package application.mediator.common;
 
 public abstract class Request {
     private final String requestName;

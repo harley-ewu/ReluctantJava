@@ -1,8 +1,8 @@
-package application.mediator;
+package application.mediator.common;
 
-import application.mediator.handlers.IHandler;
-import application.mediator.requests.Request;
-import application.mediator.validators.IValidator;
+import application.mediator.common.IHandler;
+import application.mediator.common.Request;
+import application.mediator.common.IValidator;
 
 import java.util.HashMap;
 import java.util.Objects;

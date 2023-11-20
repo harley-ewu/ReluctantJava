@@ -1,4 +1,4 @@
-package application.GUI;
+package application.mediator.controllers.diagrammenucontroller;
 
 import Diagram.Diagram;
 
