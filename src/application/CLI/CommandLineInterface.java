@@ -105,6 +105,7 @@ public class CommandLineInterface implements UserInterface {
                 if(!first)
                     numberInput = Integer.parseInt(scan.nextLine());
                 if (numberInput >= 1 && numberInput <= 8) {
+                    userInput = numberInput + "";
                     break;
                 } else {
                     first = false;
@@ -361,6 +362,7 @@ public class CommandLineInterface implements UserInterface {
                 if(!first)
                     numberInput = Integer.parseInt(scan.nextLine());
                 if (numberInput >= 1 && numberInput <= 9) {
+                    userInput = numberInput + "";
                     break;
                 } else {
                     first = false;
@@ -401,25 +403,37 @@ public class CommandLineInterface implements UserInterface {
                 """);
     }
 
-    public static int newClassMenuChoice(){
-        int userInput = -99;
+    public static String newClassMenuChoice(){
+        int numberInput = -99;
         Scanner scan = new Scanner(System.in);
-        System.out.println("New Class Editor");
+        System.out.println("\n--------------------------");
+        System.out.println("    New Class Editor");
         System.out.println("""
-                                
-                                1 - Add Attribute
-                                2 - Add Relationship
-                                3 - Back to Diagram Menu
-                                4 - Help
-                                
-                                Enter a number:""");
-        System.out.print("--> ");
+                            -------------------------- 
+                             1 - Add Attribute
+                             2 - Add Relationship
+                             3 - Back to Diagram Menu
+                             4 - Help
+                            --------------------------
+                                """);
+        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("--> ");
+        ac.newClassLineReader();
+        String userInput = ac.getCommands();
+        if(!ac.isNumber(userInput)){
+            return userInput;
+        }
+        numberInput = Integer.parseInt(userInput);
+        boolean first = true;
         while (true) {
             try {
-                userInput = Integer.parseInt(scan.nextLine());
-                if (isValidUserInput(userInput)) {
+                if(!first)
+                    numberInput = Integer.parseInt(scan.nextLine());
+                if (numberInput >= 1 && numberInput <= 9) {
+                    userInput = numberInput + "";
                     break;
                 } else {
+                    first = false;
                     System.out.println("Invalid input. Please enter a number between 1 and 3");
                     System.out.print("--> ");
                 }
@@ -447,19 +461,22 @@ public class CommandLineInterface implements UserInterface {
 
     public static int editClassMenuChoice(final Class currentClass) {
         int userInput = -99;
+        System.out.println("\n" + currentClass);
         Scanner scan = new Scanner(System.in);
         //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
-        System.out.println("\n" + currentClass.getClassName() + " Class Editor");
+        System.out.println("\n--------------------------");
+        System.out.println("'" + currentClass.getClassName() + "''  - Class Editor");
         System.out.println("""
-                              1 - Add attribute
-                              2 - Delete attribute
-                              3 - Rename Attribute
-                              4 - Display attributes
-                              5 - Display relationships
-                              6 - Display all contents
-                              7 - Return to Diagram Menu
-                              8 - Help
-                             
+                            --------------------------
+                             1 - Add attribute
+                             2 - Delete attribute
+                             3 - Rename Attribute
+                             4 - Display attributes
+                             5 - Display relationships
+                             6 - Display all contents
+                             7 - Return to Diagram Menu
+                             8 - Help
+                            --------------------------
                              Enter a number:""");
         System.out.print("--> ");
 
