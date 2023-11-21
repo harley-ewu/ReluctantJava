@@ -512,7 +512,8 @@ public class MenuPrompts {
             System.out.println("\nClass list is empty. Please add a class.");
             return;
         }
-        System.out.println("\nClass List:");
+        System.out.println("\n---------------------");
+        System.out.println("    Class List:");
         System.out.println("---------------------");
         diagram.getClassList().forEach((key, value) -> {
             System.out.println(key);

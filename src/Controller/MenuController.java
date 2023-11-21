@@ -8,6 +8,8 @@ import Relationships.Relationship;
 
 import java.util.*;
 
+import org.jline.console.impl.Builtins.Command;
+
 public class MenuController {
 
     /**
@@ -59,10 +61,13 @@ public class MenuController {
                     System.out.println(diagram);
                     break;
                 case 7:
-                    CommandLineInterface.diagramHelp();
+                    CommandLineInterface.saveDiagram(diagram);
                     break;
                 case 8:
-                    shouldTerminate = true;
+                    CommandLineInterface.diagramHelp();
+                    break;
+                case 9:
+                    shouldTerminate = CommandLineInterface.exit(diagram);
                     break;
                 default:
                     break;
@@ -154,8 +159,11 @@ public class MenuController {
                    addRelationship(currentClass, c2, diagram);
                    break;
                 case 3:
-                   return;
+                    CommandLineInterface.saveDiagram(diagram);
+                    break;
                 case 4:
+                    return;
+                case 5:
                    CommandLineInterface.newClassMenuHelp();
                    break;
                 default:
@@ -228,14 +236,14 @@ public class MenuController {
                 case 4: //rename attribute
                     renameAttribute(currentClass, scanner);
                     break;
-                case 5: //display attributes
-                    System.out.println(currentClass.displayAttributes());
-                    break;
-                case 6:
+                case 5:
                     editRelationshipsControl(diagram);
                     break;
-                case 7: //display all contents
+                case 6: //display all contents
                     System.out.println(currentClass);
+                    break;
+                case 7:
+                    CommandLineInterface.saveDiagram(diagram);
                     break;
                 case 8: //return to diagram menu
                     return;
@@ -419,6 +427,9 @@ public class MenuController {
             case("view-diagram"):
                 System.out.println(diagram);
                 break;   
+            case("save"):
+                CommandLineInterface.saveDiagram(diagram);
+                break;
             case("help"):
                 CommandLineInterface.diagramHelp();
                 break;
@@ -446,6 +457,9 @@ public class MenuController {
                     break;
                 }
                 addRelationship(currentClass, c2, diagram);
+                break;
+            case("save"):
+                CommandLineInterface.saveDiagram(diagram);
                 break;
             case("back"):
                 return true;
@@ -481,6 +495,12 @@ public class MenuController {
             case("display-all"):
                 System.out.println(currentClass);
                 break;
+            case("add-class"):
+                addClass(diagram);
+                break;
+            case("save"):
+                CommandLineInterface.saveDiagram(diagram);
+                break;
             case("back"):
                 return true;
             case("help"):
@@ -510,6 +530,9 @@ public class MenuController {
                 break;
             case("delete-relationship"):
                 diagram.deleteRelationship(c1, c2);
+                break;
+            case("save"):
+                CommandLineInterface.saveDiagram(diagram);
                 break;
             case("back"):
                 return true;
