@@ -226,7 +226,7 @@ public class Diagram {
 
    //prints to screen all relationships in relationshipList
    public String listAllRelationships(){
-      String str = "Relationship List: \n";
+      String str = "Relationship List: \n\n";
       int i = 1;
       for (Relationship relationship : relationshipList.values()) {
          str += String.valueOf(i) +": ";
@@ -255,6 +255,10 @@ public class Diagram {
       }
 
       return str;
+   }
+
+   public DiagramCaretaker getCaretaker() {
+      return this.caretaker;
    }
 
    public void createSnapshot() {

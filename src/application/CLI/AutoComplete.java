@@ -68,7 +68,7 @@ public class AutoComplete {
     public void relationshipEditorLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add-relationship", "delete-relationship", "save", "back", "exit")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-relationship", "delete-relationship", "view-relationships", "save", "back", "exit")))
                     .build();
     }
 

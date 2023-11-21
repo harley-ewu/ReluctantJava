@@ -339,9 +339,9 @@ public class CommandLineInterface implements UserInterface {
         int numberInput = -99;
         Scanner scan = new Scanner(System.in);
         System.out.println("\n--------------------------");
-        System.out.println("UML Diagram Editor Menu  \n\t'" + Application.getCurrentDiagram().getTitle() + "'");
+        System.out.println(" UML Diagram Editor Menu  \n\t'" + Application.getCurrentDiagram().getTitle() + "'");
         System.out.println("""
-                             --------------------------
+                            --------------------------
                              1 - Add Class
                              2 - Delete Class
                              3 - Rename Class
@@ -549,9 +549,12 @@ public class CommandLineInterface implements UserInterface {
                 """);
     }
 
-    public static String editRelationshipsMenuChoice() {
+    public static String editRelationshipsMenuChoice(final Diagram currentDiagram) {
         int numberInput = -99;
         Scanner scanner = new Scanner(System.in);
+        System.out.println("\n--------------------------");
+        System.out.println(currentDiagram.listAllRelationships());
+        System.out.println("\n--------------------------\n");
         System.out.println("\n--------------------------");
         System.out.println("Relationship Editor");
         System.out.println("""
