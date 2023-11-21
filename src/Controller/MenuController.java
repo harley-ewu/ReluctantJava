@@ -283,7 +283,7 @@ public class MenuController {
 
         }
 
-        currentClass.createAttribute(name, parameters, choice);
+        //currentClass.createAttribute(name, parameters, choice);
         System.out.println("\nAn attribute has successfully been added!");
     }
 
@@ -300,11 +300,11 @@ public class MenuController {
     }
 
     public static void renameAttribute(Class currentClass, Scanner scanner) {
-        if(currentClass.getAttributes().size() < 1){
+        if(currentClass.getMethods().size() < 1 && currentClass.getFields().size() < 1){
             System.out.println("\nNo attributes exist to delete.");
             return;
         }
-        int input = MenuPrompts.renameAttributePrompt(currentClass);
+        //int input = MenuPrompts.renameAttributePrompt(currentClass);
         String newName = MenuPrompts.renameAttributeNewName();
         ArrayList<String> parameters = new ArrayList<>();
 
@@ -446,8 +446,11 @@ public class MenuController {
             case("add-attribute"):
                 addAttribute(currentClass, scanner);
                 break;
-            case("delete-attribute"):
-                deleteAttribute(currentClass, scanner);
+            case("delete-field"):
+                deleteField(currentClass, scanner);
+                break;
+            case("delete-method"):
+                deleteMethod(currentClass, scanner);
                 break;
             case("rename-attribute"):
             renameAttribute(currentClass, scanner);

@@ -59,7 +59,7 @@ public class AutoComplete {
     public void editClassLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add-attribute", "delete-attribute", "rename-attribute", "display-attributes", "display-relationships", "display-all", "back", "help")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-attribute", "delete-field", "delete-method", "rename-attribute", "display-attributes", "display-relationships", "display-all", "back", "help")))
                     .build();
     }
 
