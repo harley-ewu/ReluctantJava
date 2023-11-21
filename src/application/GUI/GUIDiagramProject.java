@@ -278,11 +278,11 @@ public class GUIDiagramProject extends javafx.application.Application {
                 temp.setLayoutY(newY);
             }
 
+            e.consume();
+
             for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
                 RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
             }
-
-            e.consume();
         });
 
         return temp;

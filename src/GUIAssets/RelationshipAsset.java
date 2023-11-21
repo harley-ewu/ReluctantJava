@@ -306,7 +306,8 @@ public class RelationshipAsset {
         }
     }
 
-    public static void updateRelationshipLines(final RelationshipAsset relationshipAsset, final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates, final ArrayList<ClassAsset> classAssets) {
+    public static void updateRelationshipLines(final RelationshipAsset relationshipAsset, final ArrayList<Pane> classAssetPaneList,
+                                               final ArrayList<Point2D> classCoordinates, final ArrayList<ClassAsset> classAssets) {
         Line relationshipLine = relationshipAsset.relationshipContainer;
 
         Class ownerClass;
@@ -333,7 +334,8 @@ public class RelationshipAsset {
             }
         }
 
-        //getClassAssetPanesCoords(classAssetPaneList, classCoordinates);
+        classCoordinates.clear();
+
         for (int i = 0; i < classAssetPaneList.size(); i++) {
             double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX();
             double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY();
