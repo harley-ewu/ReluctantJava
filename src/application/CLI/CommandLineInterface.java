@@ -71,7 +71,7 @@ public class CommandLineInterface implements UserInterface {
         int numberInput = -1;
 
         System.out.print("""
-                --------------------------           
+                \n--------------------------           
                     UML Diagram Menu
                 --------------------------              
                  1 - New Diagram
@@ -300,6 +300,8 @@ public class CommandLineInterface implements UserInterface {
         System.out.println("""
                  MAIN MENU COMMANDS:
 
+                 Tab Btn  - Hit tab to see all available commands to type
+
                  Option 1 - New Diagram: Create a new UML Diagram
                 
                  Option 2 - View Existing Diagram: View the currently loaded diagram
@@ -312,7 +314,7 @@ public class CommandLineInterface implements UserInterface {
                 
                  Option 6 - Help: Lists a description of all available commands
                 
-                 Option 7 - Start GUI: Opens the graphical user interface associated with this program
+                 Option 7 - Open GUI: Opens the graphical user interface associated with this program
                 
                  Option 8 - Exit: Exit the program
                 """);
@@ -341,11 +343,10 @@ public class CommandLineInterface implements UserInterface {
                              2 - Delete Class
                              3 - Rename Class
                              4 - Edit Class
-                             5 - Edit Relationships
-                             6 - View Class
-                             7 - View Diagram
-                             8 - Help
-                             9 - Exit
+                             5 - View Class
+                             6 - View Diagram
+                             7 - Help
+                             8 - Exit
                             --------------------------
                             """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -383,6 +384,8 @@ public class CommandLineInterface implements UserInterface {
         System.out.println("""
             DIAGRAM MENU COMMANDS:
 
+            Tab Btn  - Hit tab to see all available commands to type.
+
             Option 1 - Add Class: Create and add a class to the diagram
            
             Option 2 - Delete Class: Delete existing class from the diagram
@@ -391,15 +394,13 @@ public class CommandLineInterface implements UserInterface {
            
             Option 4 - Edit Class: Opens up sub-menu with class editing options
            
-            Option 5 - Edit Relationships: Opens up sub-menu with relationship add/delete options
+            Option 5 - View Class: Lists all attributes and relationships of existing class
            
-            Option 6 - View Class: Lists all attributes and relationships of existing class
+            Option 6 - View Diagram: Lists all classes and their properties in current diagram
            
-            Option 7 - View Diagram: Lists all classes and their properties in current diagram
-           
+            Option 7 - Help: See how each option functions
+
             Option 8 - Exit: Exit the program
-           
-            Option 9 - Help: See how each option functions
                 """);
     }
 
@@ -449,6 +450,8 @@ public class CommandLineInterface implements UserInterface {
         System.out.println("""
             NEW CLASS MENU COMMANDS:
 
+            Tab Btn  - Hit tab to see all available commands to type
+
             Option 1 - Add Attribute: Opens up sub-menu for creating an attribute for the current class
            
             Option 2 - Add Relationship: Opens up a sub-menu for adding a relationship between two classes
@@ -468,14 +471,15 @@ public class CommandLineInterface implements UserInterface {
         System.out.println("'" + currentClass.getClassName() + "''  - Class Editor");
         System.out.println("""
                             --------------------------
-                             1 - Add attribute
-                             2 - Delete attribute
-                             3 - Rename Attribute
-                             4 - Display attributes
-                             5 - Display relationships
-                             6 - Display all contents
-                             7 - Return to Diagram Menu
-                             8 - Help
+                             1 - Add Attribute
+                             2 - Delete Field
+                             3 - Delete Method
+                             4 - Rename Attribute
+                             5 - Display Attributes
+                             6 - Edit Relationships
+                             7 - Display All Contents
+                             8 - Return to Diagram Menu
+                             9 - Help
                             --------------------------
                             """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -514,18 +518,69 @@ public class CommandLineInterface implements UserInterface {
         System.out.println("""
             CLASS MENU COMMANDS:
 
+            Tab Btn  - Hit tab to see all available commands to type
+
             Option 1 - Add attribute: Prompts user to enter a name for a new attribute
 
-            Option 2 - Delete attribute: Prompts user to enter a name of an (existing) attribute to delete
+            Option 2 - Delete Field: Prompts user to enter a name of an (existing) field to delete
 
-            Option 3 - Rename attribute: Prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute
+            Option 3 - Delete Method: Prompts user to enter a name of an (existing) method to delete
 
-            Option 4 - Display relationships: Displays all relationships assigned to the class
+            Option 4 - Rename Attribute: Prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute
+      
+            Option 5 - Display Attributes: Displays all attributes assigned to the class
+            
+            Option 6 - Edit Relationships: Opens up sub-menu with relationship add/delete options
 
-            Option 5 - Display all contents: displays the contents of the class including name, attributes, and relationships
+            Option 7 - Display All Contents: displays the contents of the class including name, attributes, and relationships
 
-            Option 6 - Return to Diagram Menu: returns the user to the diagram menu holding the class
+            Option 8 - Return to Diagram Menu: returns the user to the diagram menu holding the class
+
+            Option 9 - Help: Lists descriptions of each command
                 """);
+    }
+
+    public static String editRelationshipsMenuChoice() {
+        int numberInput = -99;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\n--------------------------");
+        System.out.println("Relationship Editor");
+        System.out.println("""
+                            --------------------------
+                             1 - Add Relationship
+                             2 - Delete Relationship
+                             3 - View Relationships
+                             4 - Back to Diagram Menu
+                            --------------------------   
+                            """);
+        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("--> ");
+        ac.relationshipEditorLineReader();
+        String userInput = ac.getCommands();
+        if(!ac.isNumber(userInput)){
+            return userInput;
+        }
+        numberInput = Integer.parseInt(userInput);
+        boolean first = true;
+
+        while (true) {
+            try {
+                if(!first)
+                    numberInput = Integer.parseInt(scanner.nextLine());
+                if (numberInput >= 1 && numberInput <= 9) {
+                    userInput = numberInput + "";
+                    break;
+                } else {
+                    first = false;
+                    System.out.println("Invalid input. Please enter a number between 1 and 4");
+                    System.out.print("--> ");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+                System.out.print("--> ");
+            }
+        }
+        return userInput;
     }
 
     public static boolean typingMainMenuControl(final String command) {

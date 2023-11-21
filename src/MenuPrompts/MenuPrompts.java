@@ -306,35 +306,7 @@ public class MenuPrompts {
         return c1;
     }
 
-    public static int editRelationshipsMenuChoice() {
-        int userInput = -99;
-        System.out.println("\n--------------------------");
-        System.out.println("Relationship Editor");
-        System.out.println("""
-                            --------------------------
-                             1 - Add Relationship
-                             2 - Delete Relationship
-                             3 - Back to Diagram Menu
-                            --------------------------   
-                                Enter a number:""");
-        System.out.print("--> ");
-
-        while (true) {
-            try {
-                userInput = Integer.parseInt(scanner.nextLine());
-                if (userInput >= 1 && userInput <= 3) {
-                    break;
-                } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and 3");
-                    System.out.print("--> ");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number");
-                System.out.print("--> ");
-            }
-        }
-        return userInput;
-    }
+    
 
     public static Class promptClass1Relationship(final Diagram diagram) {
         listClasses(diagram);
