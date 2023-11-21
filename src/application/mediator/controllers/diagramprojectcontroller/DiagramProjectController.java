@@ -399,5 +399,4 @@ public class DiagramProjectController {
         System.out.println("editing class...");
     }
 
-
 }

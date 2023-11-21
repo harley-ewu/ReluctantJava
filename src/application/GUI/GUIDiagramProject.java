@@ -134,8 +134,9 @@ public class GUIDiagramProject extends javafx.application.Application {
         Menu fileMenu = setUpFileMenu(stage);
         //class menu creation
         Menu classMenu = this.setUpClassMenu();
+        Menu editMenu = this.setUpEditMenu();
         //adding menus to menu bar
-        menuBar.getMenus().addAll(fileMenu,classMenu);
+        menuBar.getMenus().addAll(fileMenu,classMenu, editMenu);
         return menuBar;
     }
 
@@ -161,6 +162,21 @@ public class GUIDiagramProject extends javafx.application.Application {
         fileMenu.getItems().addAll(openItem, saveItem, loadItem, exitItem);
         return fileMenu;
     }
+
+    private Menu setUpEditMenu() {
+        Menu editMenu = new Menu("Edit");
+
+        MenuItem undoItem = new MenuItem("Undo");
+        undoItem.setOnAction(e -> this.undo());
+
+        MenuItem redoItem = new MenuItem("Redo");
+        redoItem.setOnAction(e -> this.redo());
+
+        editMenu.getItems().addAll(undoItem, redoItem);
+
+        return editMenu;
+    }
+
 
     /**
      * setup for the class menu and its items
@@ -423,6 +439,24 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
 
         this.relationshipPanesCoordinates.clear();
+    }
+
+    public void undo() {
+        System.out.println("Undoing..");
+        System.out.println(diagram.toString());
+        this.diagram.undo();
+        this.classAssets.clear();
+        this.addClassAssets(this.classList);
+        this.addClassPanes();
+        System.out.println(diagram.toString());
+    }
+
+    public void redo() {
+        System.out.println("Redoing..");
+        this.diagram.redo();
+        this.classAssets.clear();
+        this.addClassAssets(this.classList);
+        this.addClassPanes();
     }
 
 
