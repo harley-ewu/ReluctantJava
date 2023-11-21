@@ -162,6 +162,7 @@ public class MenuPrompts {
             } catch(NumberFormatException e) {
                 //System.out.println("Please enter a valid number");
                 //System.out.print("--> ");
+                System.out.println("\nExiting...");
                 break;
             }
 
@@ -193,6 +194,7 @@ public class MenuPrompts {
             }catch(NumberFormatException e){
                 //System.out.println("Please enter a valid cardinality");
                 //System.out.print("--> ");
+                System.out.println("\nExiting...");
                 break;
             }
         }
@@ -222,8 +224,10 @@ public class MenuPrompts {
                     c2Cardinality = Integer.parseInt(scanner.nextLine());
                 }
             }catch(NumberFormatException e){
-                System.out.println("Please enter a valid cardinality");
-                System.out.print("--> ");
+                //System.out.println("Please enter a valid cardinality");
+                //System.out.print("--> ");
+                System.out.println("\nExiting...");
+                break;
             }
         }
 
@@ -278,6 +282,10 @@ public class MenuPrompts {
      * @return class name or " " if class doesn't exist in the diagram or if user cancels the
      */
     public static Class editClassPrompt(final Diagram diagram) {
+        if(diagram.getClassList().size() < 1){
+            System.out.println("\nNo classes have been created to edit.");
+            return null;
+        }
         listClasses(diagram);
         System.out.println("Enter name of class to edit from list above (or press blank enter to exit):");
         System.out.print("--> ");
@@ -298,34 +306,7 @@ public class MenuPrompts {
         return c1;
     }
 
-    public static int editRelationshipsMenuChoice() {
-        int userInput = -99;
-        System.out.println("Relationship Editor");
-        System.out.println("""
-            
-                                1 - Add Relationship
-                                2 - Delete Relationship
-                                3 - Back to Diagram Menu
-                                
-                                Enter a number:""");
-        System.out.print("--> ");
-
-        while (true) {
-            try {
-                userInput = Integer.parseInt(scanner.nextLine());
-                if (userInput >= 1 && userInput <= 3) {
-                    break;
-                } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and 3");
-                    System.out.print("--> ");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number");
-                System.out.print("--> ");
-            }
-        }
-        return userInput;
-    }
+    
 
     public static Class promptClass1Relationship(final Diagram diagram) {
         listClasses(diagram);
@@ -334,6 +315,7 @@ public class MenuPrompts {
         System.out.print("--> ");
         String ownerString = scanner.nextLine();
         if(ownerString.isEmpty()) {
+            System.out.println("\nExiting...");
             return null;
         }
         Class c1 = diagram.findSingleClass(ownerString);
@@ -352,6 +334,7 @@ public class MenuPrompts {
         System.out.print("--> ");
         String otherString = scanner.nextLine();
         if(otherString.isEmpty()){
+            System.out.println("\nExiting...");
             return null;
         }
         Class c2 = diagram.findSingleClass(otherString);
@@ -525,6 +508,10 @@ public class MenuPrompts {
     }
 
     public static void listClasses (final Diagram diagram) {
+        if(diagram.getClassList().size() < 1){
+            System.out.println("\nClass list is empty. Please add a class.");
+            return;
+        }
         System.out.println("\nClass List:");
         System.out.println("---------------------");
         diagram.getClassList().forEach((key, value) -> {

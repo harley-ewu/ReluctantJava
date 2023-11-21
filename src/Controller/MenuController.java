@@ -50,23 +50,18 @@ public class MenuController {
                     }
                     editClassSubMenu(currentClass, diagram);
                     break;
-                //edit relationships
-                case 5:
-                    editRelationshipsControl(diagram);
-                    break;
                 //View class - name needed
-                case 6:
-                    Class c = MenuPrompts.printSingleClassPrompt(diagram);
-                    System.out.println(diagram.printSingleClass(c));
+                case 5:
+                    viewSingleClass(diagram);
                     break;
                 //View Diagram
-                case 7:
+                case 6:
                     System.out.println(diagram);
                     break;
-                case 8:
+                case 7:
                     CommandLineInterface.diagramHelp();
                     break;
-                case 9:
+                case 8:
                     shouldTerminate = true;
                     break;
                 default:
@@ -82,12 +77,13 @@ public class MenuController {
             return;
         }
         diagram.addClass(className);
+        System.out.println("\nClass '" + className + "' has been successfully added!");
         newClassMenuControl(diagram.getClassList().get(className), diagram);
     }
 
     public static void deleteClass(final Diagram diagram) {
         if(diagram.getClassList().size() < 1){
-            System.out.println("There are no classes to delete");
+            System.out.println("\nThere are no classes to delete");
             return;
         }
         Class deletedClass = MenuPrompts.deleteClassPrompt(diagram);
@@ -95,12 +91,27 @@ public class MenuController {
             return;
         }
         diagram.deleteClass(deletedClass);
+        System.out.println("\nClass '" + deletedClass.getClassName() + "' has been successfully deleted!");
     }
 
     public static void renameClass(final Diagram diagram) {
+        if(diagram.getClassList().size() < 1){
+            System.out.println("\nThere are no classes to rename.");
+            return;
+        }
         Class old = MenuPrompts.renameClassPromptOriginalName(diagram);
         String newName = MenuPrompts.renameClassPromptNewName(diagram, old);
         diagram.renameClass(old, newName);
+        System.out.println("\nClass has been successfully renamed!");
+    }
+
+    public static void viewSingleClass(final Diagram diagram){
+        if(diagram.getClassList().size() < 1){
+            System.out.println("\nThere are no classes to display.");
+            return;
+        }
+        Class c = MenuPrompts.printSingleClassPrompt(diagram);
+        System.out.println(diagram.printSingleClass(c));
     }
 
     /**
@@ -112,7 +123,18 @@ public class MenuController {
     public static void newClassMenuControl(final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while(true) {
-            int choice = CommandLineInterface.newClassMenuChoice();
+            String stringChoice = CommandLineInterface.newClassMenuChoice();
+            if(stringChoice.isEmpty()){
+                    continue;
+                }
+            if (!Character.isDigit(stringChoice.charAt(0))){
+                boolean quit = false;
+                //autocomplete methods
+                quit = typingNewClassMenuControl(stringChoice.trim(), diagram, currentClass, scanner);
+                if(quit) return;
+                continue;
+            }
+            int choice = Integer.parseInt(stringChoice);
             Class c2 = null;
             switch(choice) {
                 //Add attribute
@@ -122,7 +144,7 @@ public class MenuController {
                 //Add relationship
                 case 2:
                     if(diagram.getClassList().size() < 2){
-                        System.out.println("\nCannot form a relationship with only a single class existing.\n");
+                        System.out.println("\nCannot form a relationship with current number of classes existing.\n");
                         break;
                     }
                     c2 = MenuPrompts.promptClass2Relationship(diagram);
@@ -133,7 +155,6 @@ public class MenuController {
                    break;
                 case 3:
                    return;
-                   
                 case 4:
                    CommandLineInterface.newClassMenuHelp();
                    break;
@@ -148,8 +169,10 @@ public class MenuController {
      * and builds relationships between the classes, then adds it to either of their relationship lists
      */
     public static void addRelationship(Class c1, Class c2, Diagram diagram) {
-        if (c1 == c2) return;
-
+        if (c1 == c2) {
+            System.out.println("\nCannot form a relationship with itself.");
+            return;
+        }
         Relationship.RelationshipType relationshipType = null;
         int c1Cardinality = -2;
         int c2Cardinality = -2;
@@ -157,23 +180,40 @@ public class MenuController {
 
         relationshipType = MenuPrompts.relationshipTypePrompt();
         if (relationshipType == null) {
+            //System.out.println("\nExiting relationship editor...");
             return;
         }
         c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
         if (c1Cardinality < -1) {
+            //System.out.println("\nExiting relationship editor...");
             return;
         }
         c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
+        if(c2Cardinality < -1){
+            return;
+        }
         owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
 
         Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
         diagram.addRelationship(relationship);
+        System.out.println("\nA new relationship has successfully been added!");
     }
 
     public static void editClassSubMenu(final Class currentClass, final Diagram diagram) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            int choice = CommandLineInterface.editClassMenuChoice(currentClass);
+            String stringChoice = CommandLineInterface.editClassMenuChoice(currentClass);
+            if(stringChoice.isEmpty()){
+                continue;
+            }
+            if (!Character.isDigit(stringChoice.charAt(0))){
+                //autocomplete methods
+                boolean quit = false;
+                quit = typingEditClassSubMenuControl(stringChoice.trim(), diagram, currentClass, scanner);
+                if(quit) return;
+                continue;
+            }
+            int choice = Integer.parseInt(stringChoice);
             switch (choice) {
 
                 case 1: //add attribute
@@ -191,8 +231,8 @@ public class MenuController {
                 case 5: //display attributes
                     System.out.println(currentClass.displayAttributes());
                     break;
-                case 6: //display relationships
-                    System.out.println(diagram.listAllRelationships());
+                case 6:
+                    editRelationshipsControl(diagram);
                     break;
                 case 7: //display all contents
                     System.out.println(currentClass);
@@ -238,21 +278,37 @@ public class MenuController {
 
         }
 
+        //currentClass.createAttribute(name, parameters, choice);
+        System.out.println("\nAn attribute has successfully been added!");
     }
 
     public static void deleteField(Class currentClass, Scanner scanner) {
+        if(currentClass.getFields().size() < 1){
+            System.out.println("There are no fields to delete");
+            return;
+        }
         int choice = MenuPrompts.deleteFieldPrompts(currentClass);
         currentClass.deleteField(choice);
+        System.out.println("Field has sucessfully been deleted!");
 
     }
 
     public static void deleteMethod(Class currentClass, Scanner scanner) {
+        if(currentClass.getMethods().size() < 1){
+            System.out.println("There are no methods to delete");
+            return;
+        }
         int choice = MenuPrompts.deleteMethodPrompts(currentClass);
         currentClass.deleteMethod(choice);
+        System.out.println("Method has successfully been deleted!");
 
     }
 
     public static void renameAttribute(Class currentClass, Scanner scanner) {
+        if(currentClass.getMethods().size() < 1 && currentClass.getFields().size() < 1){
+            System.out.println("\nNo attributes exist to rename.");
+            return;
+        }
         //int input = MenuPrompts.renameAttributePrompt(currentClass);
         String newName = MenuPrompts.renameAttributeNewName();
         ArrayList<String> parameters = new ArrayList<>();
@@ -278,7 +334,8 @@ public class MenuController {
                 currentClass.renameMethod(input, newName, parameters);
             }while (option != 2);
 
-        }while (type != 2);
+            }while (type != 2);
+        System.out.println("\nAttribute has been successfully renamed!");
     }
 
     /**
@@ -288,12 +345,23 @@ public class MenuController {
     */
     public static void editRelationshipsControl(final Diagram diagram){
         if(diagram.getClassList().size() < 2){
-            System.out.println("\nCannot form a relationship with only a single class existing.\n");
+            System.out.println("\nCannot modify a relationship with current number of classes existing.\n");
             return;
         }
         Scanner scanner = new Scanner(System.in);
         while(true){
-            int choice = MenuPrompts.editRelationshipsMenuChoice();
+            String stringChoice = CommandLineInterface.editRelationshipsMenuChoice();
+                if(stringChoice.isEmpty()){
+                    continue;
+                }
+                if (!Character.isDigit(stringChoice.charAt(0))){
+                    //autocomplete methods
+                    boolean quit = false;
+                    quit = typingEditRelationshipControl(stringChoice.trim(), diagram, scanner);
+                    if(quit) return;
+                    continue;
+                }
+                int choice = Integer.parseInt(stringChoice);
             Class c1 = null;
             Class c2 = null;
             if (choice != 3){
@@ -313,10 +381,10 @@ public class MenuController {
                 case 2:
                     diagram.deleteRelationship(c1, c2);
                     break;
-                case 3: 
-                    //shouldTerminate = true;
+                case 3:
+                    diagram.listAllRelationships();
+                case 4: 
                     return;
-                    //break;
                 default:
                     break;
             }
@@ -354,6 +422,97 @@ public class MenuController {
             case("help"):
                 CommandLineInterface.diagramHelp();
                 break;
+            case("exit"):
+                return true;
+            default:
+                System.out.println("Not a recognized command.");
+        }
+        return false;
+    }
+
+    public static boolean typingNewClassMenuControl(final String command, final Diagram diagram, final Class currentClass, final Scanner scanner) {
+        Class c2 = null;
+        switch(command) {
+            case ("add-attribute"):
+                addAttribute(currentClass, scanner);
+                break;
+            case("add-relationship"):
+                if(diagram.getClassList().size() < 2){
+                    System.out.println("\nCannot form a relationship with only a single class existing.\n");
+                    break;
+                }
+                c2 = MenuPrompts.promptClass2Relationship(diagram);
+                if(c2 == null) {
+                    break;
+                }
+                addRelationship(currentClass, c2, diagram);
+                break;
+            case("back"):
+                return true;
+            case("help"):
+                CommandLineInterface.newClassMenuHelp();
+                break;
+            default:
+                System.out.println("Not a recognized command.");
+        }
+        return false;
+    }
+
+    public static boolean typingEditClassSubMenuControl(final String command, final Diagram diagram, final Class currentClass, final Scanner scanner) {
+        switch(command){
+            case("add-attribute"):
+                addAttribute(currentClass, scanner);
+                break;
+            case("delete-field"):
+                deleteField(currentClass, scanner);
+                break;
+            case("delete-method"):
+                deleteMethod(currentClass, scanner);
+                break;
+            case("rename-attribute"):
+            renameAttribute(currentClass, scanner);
+                break;
+            case("display-attributes"):
+                System.out.println(currentClass.displayAttributes());
+                break;
+            case("display-relationships"):
+                System.out.println(diagram.listAllRelationships());
+                break;
+            case("display-all"):
+                System.out.println(currentClass);
+                break;
+            case("back"):
+                return true;
+            case("help"):
+                CommandLineInterface.editClassMenuHelp();
+                break;
+            default:
+                System.out.println("Not a recognized command.");
+        }
+
+        return false;
+    }
+
+    public static boolean typingEditRelationshipControl(final String command, final Diagram diagram, final Scanner scanner){
+        Class c1 = null;
+        Class c2 = null;
+        c1 = MenuPrompts.promptClass1Relationship(diagram);
+        if (c1 == null) {
+            return true;
+        }
+        c2 = MenuPrompts.promptClass2Relationship(diagram);
+        if(c2 == null) {
+            return true;
+        }
+        switch(command) {
+            case("add-relationship"):
+                addRelationship(c1, c2, diagram);
+                break;
+            case("delete-relationship"):
+                diagram.deleteRelationship(c1, c2);
+                break;
+            case("back"):
+                return true;
             case("exit"):
                 return true;
             default:

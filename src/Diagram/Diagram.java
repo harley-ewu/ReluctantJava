@@ -167,33 +167,6 @@ public class Diagram {
       return classList.get(className);
    }
 
-   /*
-    * Prompts user for both class names, then prompts for all relevant relationship information 
-    * and builds relationships between the classes, then adds it to either of their relationship lists
-    */
-   /*public void addRelationship(Class c1, Class c2) {
-      if (c1 == c2) return;
-
-      Relationship.RelationshipType relationshipType = null;
-      int c1Cardinality = -2;
-      int c2Cardinality = -2;
-      Boolean owner = false;
-
-      relationshipType = MenuPrompts.relationshipTypePrompt();
-      if(relationshipType == null){
-         return;
-      }
-      c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
-      if(c1Cardinality < -1) {
-         return;
-      }
-      c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
-      owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
-
-      Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
-      addRelationship(relationship);
-   }*/
-
    public void addRelationship(final Relationship relationship) {
       createSnapshot();
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();

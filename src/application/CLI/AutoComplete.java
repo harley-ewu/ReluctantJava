@@ -29,7 +29,7 @@ public class AutoComplete {
     public void classLineReader(){
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add-class", "delete-class", "rename-class", "delete-relationship", "edit-class", "edit-relationships", "view-class", "view-diagram", "help", "exit")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-class", "delete-class", "rename-class", "edit-class", "view-class", "view-diagram", "help", "exit")))
                     .build();
     }
 
@@ -49,7 +49,7 @@ public class AutoComplete {
     public void newClassLineReader(){
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add attribute", "add relationship", "back", "help")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-attribute", "add-relationship", "view-relationships", "back", "help")))
                     .build();
     }
 
@@ -59,7 +59,7 @@ public class AutoComplete {
     public void editClassLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add attribute", "delete attribute", "rename attribute", "display attributes", "display relationships", "display all contents", "back", "help")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-attribute", "delete-field", "delete-method", "rename-attribute", "display-attributes", "add-relationship", "delete-relationship", "edit-relationships", "display-relationships", "display-all", "back", "help")))
                     .build();
     }
 
@@ -69,7 +69,7 @@ public class AutoComplete {
     public void relationshipEditorLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add relationship", "delete relationship")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-relationship", "delete-relationship", "back", "exit")))
                     .build();
     }
 
@@ -93,7 +93,7 @@ public class AutoComplete {
                 return line ;
             }
         } catch (Exception e) {
-            System.out.println("You tryna crash the program?? Again???");
+            System.out.println("\nYou tryna crash the program??");
         }
         return line;
     }
