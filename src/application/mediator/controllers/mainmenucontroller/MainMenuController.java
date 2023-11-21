@@ -1,7 +1,8 @@
-package GUI;
+package application.mediator.controllers.mainmenucontroller;
 
-import CLI.CommandLineInterface;
-import javafx.scene.control.Button;
+import application.Application;
+import application.CLI.CommandLineInterface;
+import application.GUI.GraphicalUserInterface;
 
 public class MainMenuController {
 
@@ -16,8 +17,8 @@ public class MainMenuController {
     }
 
     public void viewDiagramGUI() throws Exception{
-        if(CommandLineInterface.getCurrentDiagram() != null) {
-            GraphicalUserInterface.openDiagram(CommandLineInterface.getCurrentDiagram());
+        if(Application.getCurrentDiagram() != null) {
+            GraphicalUserInterface.openDiagram(Application.getCurrentDiagram());
             System.out.println("Editing/Viewing Diagram");
         }else{
             GraphicalUserInterface.noDiagramLoadedAlert();

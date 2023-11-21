@@ -1,11 +1,14 @@
-package GUI;
+package application.mediator.controllers.diagramprojectcontroller;
 
 
-import CLI.CommandLineInterface;
+import application.Application;
 import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
 import SaveLoadSystem.SaveLoadSystem;
+import application.GUI.GUIDiagramProject;
+import application.GUI.GraphicalUserInterface;
+import application.mediator.controllers.updateviewcontroller.UpdateViewController;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -28,11 +31,11 @@ public class DiagramProjectController {
      * can save their work to a specified folder.
      * @param stage - Takes the Stage object of the project view.
      */
-    protected static void saveAsFile(Stage stage) {
+    public static void saveAsFile(Stage stage) {
         System.out.println("Saving file as!");
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
 
         if(diagram == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -66,9 +69,9 @@ public class DiagramProjectController {
      * Description: Allows the user to save new work to an existing project
      * from the project view.
      */
-    protected static void saveFile() {
+    public static void saveFile() {
         System.out.println("saving file!");
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
 
         if(diagram == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -104,7 +107,7 @@ public class DiagramProjectController {
      * from the project view.
      * @param stage - Takes the Stage object from the project view.
      */
-    protected static void loadFile(Stage stage) {
+    public static void loadFile(Stage stage) {
         System.out.println("loading a file!");
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
@@ -120,7 +123,7 @@ public class DiagramProjectController {
         try{
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
-            CommandLineInterface.setCurrentDiagram(diagram);
+            Application.setCurrentDiagram(diagram);
             if(view != null){
                 GraphicalUserInterface.closeDiagram();
                 GraphicalUserInterface.openDiagram(diagram);
@@ -133,7 +136,7 @@ public class DiagramProjectController {
         }
     }
 
-    protected static void exit() {
+    public static void exit() {
         System.out.println("exiting..");
     }
 
@@ -141,14 +144,14 @@ public class DiagramProjectController {
      * Description: Allows the user to add a class to their project by selecting
      * "Add Class" from the menu "Add" on the menu bar.
      */
-    protected static void addClass() {
+    public static void addClass() {
         System.out.println("adding a new class!");
         Stage popupStage = new Stage();
         TextField tf = new TextField();
         Label errorLabel = new Label();
         Label label = new Label("Enter a name for the Class");
         Button submitBtn = new Button("Submit");
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
         Class newClass = new Class("");
         GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
@@ -180,10 +183,10 @@ public class DiagramProjectController {
      * Description: Allows a user to add a relationship to the project by selecting
      * "Add Relationship" from the menu "Add" on the menu bar.
      */
-    protected static void addRelationship() {
+    public static void addRelationship() {
         System.out.println("adding a new relationship!");
         Stage popupStage = new Stage();
-        Diagram diagram = CommandLineInterface.getCurrentDiagram();
+        Diagram diagram = Application.getCurrentDiagram();
         GUIDiagramProject view = GraphicalUserInterface.getDiagramView();
 
         HBox setRelationshipType = new HBox();
