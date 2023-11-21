@@ -2,21 +2,16 @@ package GUIAssets;
 
 import Attributes.Field;
 import Attributes.Method;
-import application.CLI.CommandLineInterface;
+import Class.Class;
+import Relationships.Relationship;
 import application.Application;
 import application.GUI.GUIDiagramProject;
-import Class.Class;
-import application.GUI.GUIDiagramProject;
-import Relationships.Relationship;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -26,7 +21,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 
@@ -92,7 +86,7 @@ public class ClassAsset {
 
         this.classContainer.getChildren().add(textContainer);
         //this.classContainer.setOnMousePressed(this::onMousePressed);
-        this.classContainer.setOnMouseDragged(event -> onMouseDragged(event, classPaneArrayList, classAssets, classCoordinates, relationshipAssets));
+        //this.classContainer.setOnMouseDragged(event -> onMouseDragged(event, classPaneArrayList, classAssets, classCoordinates, relationshipAssets));
 
         return this.classContainer;
     }
@@ -102,7 +96,7 @@ public class ClassAsset {
         this.xOffset = event.getSceneX();
         this.yOffset = event.getSceneY();
     }*/
-
+    /*
     private void onMouseDragged(final MouseEvent event, final ArrayList<Pane> classPaneArrayList, final ArrayList<ClassAsset> classAssets,
                                 final ArrayList<Point2D> classCoordinates, final ArrayList<RelationshipAsset> relationshipAssets) {
         double deltaX = event.getSceneX() - this.xOffset;
@@ -125,7 +119,7 @@ public class ClassAsset {
             RelationshipAsset.updateRelationshipLines(relationshipAsset, classPaneArrayList, classCoordinates, classAssets);
         }
     }
-
+    */
 
     /**
      * searches an existing array list and puts contents in a stringbuilder

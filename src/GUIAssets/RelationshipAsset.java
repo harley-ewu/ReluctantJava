@@ -1,7 +1,6 @@
 package GUIAssets;
 
 import application.Application;
-import application.CLI.CommandLineInterface;
 import application.GUI.GUIDiagramProject;
 import Relationships.Relationship;
 import Class.Class;
@@ -285,7 +284,7 @@ public class RelationshipAsset {
             this.updateRelationshipAssetListIndex(relationshipList, relationshipAssets); //to be removed
 
             //refresh the class asset panes and the window
-            guiDiagramProject.refreshRelationshipPanes();
+            guiDiagramProject.refreshRelationshipLines();
             guiDiagramProject.refreshRelationshipPanesToPaneWindow();
 
         }
