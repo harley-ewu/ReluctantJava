@@ -410,18 +410,18 @@ public class CommandLineInterface implements UserInterface {
                 """);
     }
 
-    public static String newClassMenuChoice(){
+    public static String newClassMenuChoice(final Class currentClass){
         int numberInput = -99;
         Scanner scan = new Scanner(System.in);
         System.out.println("\n--------------------------");
-        System.out.println("    New Class Editor");
+        System.out.println(" New Class Editor \n'" + currentClass.getClassName() + "'");
         System.out.println("""
                             -------------------------- 
                              1 - Add Attribute
                              2 - Add Relationship
                              3 - Save Changes
-                             4 - Back to Diagram Menu
-                             5 - Help
+                             4 - Help
+                             5 - Back to Diagram Menu
                             --------------------------
                                 """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -465,19 +465,20 @@ public class CommandLineInterface implements UserInterface {
            
             Option 3 - Save Changes: Saves current diagram to location of your choice
             
-            Option 4 - Back to Diagram Menu: Returns you to Edit Diagram Menu
-           
-            Option 5 - Help: See how each option functions
+            Option 4 - Help: See how each option functions
+
+            Option 5 - Back to Diagram Menu: Returns you to Edit Diagram Menu
                 """);
     }
 
-    public static String editClassMenuChoice(final Class currentClass) {
+    public static String editClassMenuChoice(final Class currentClass, final Diagram diagram) {
         int numberInput = -99;
         System.out.println("\n" + currentClass);
+        System.out.println(diagram.listOneClassRelationships(currentClass));
         Scanner scan = new Scanner(System.in);
         //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
         System.out.println("\n--------------------------");
-        System.out.println("'" + currentClass.getClassName() + "''  - Class Editor");
+        System.out.println("'" + currentClass.getClassName() + "' - Class Editor");
         System.out.println("""
                             --------------------------
                              1 - Add Attribute
@@ -487,8 +488,8 @@ public class CommandLineInterface implements UserInterface {
                              5 - Edit Relationships
                              6 - Display All Contents
                              7 - Save Changes
-                             8 - Return to Diagram Menu
-                             9 - Help
+                             8 - Help
+                             9 - Return to Diagram Menu
                             --------------------------
                             """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -543,20 +544,20 @@ public class CommandLineInterface implements UserInterface {
 
             Option 7 - Save Changes: Saves current diagram to location of your choice
            
-            Option 8 - Return to Diagram Menu: returns the user to the diagram menu holding the class
-
-            Option 9 - Help: Lists descriptions of each command
+            Option 8 - Help: Lists descriptions of each command
+            
+            Option 9 - Return to Diagram Menu: returns the user to the diagram menu holding the class
                 """);
     }
 
-    public static String editRelationshipsMenuChoice(final Diagram currentDiagram) {
+    public static String editRelationshipsMenuChoice(final Diagram currentDiagram, final Class currentClass) {
         int numberInput = -99;
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n--------------------------");
         System.out.println(currentDiagram.listAllRelationships());
         System.out.println("\n--------------------------\n");
         System.out.println("\n--------------------------");
-        System.out.println("Relationship Editor");
+        System.out.println("Relationship Editor \n'" + currentClass.getClassName() +"'");
         System.out.println("""
                             --------------------------
                              1 - Add Relationship

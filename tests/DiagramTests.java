@@ -252,7 +252,8 @@ public class DiagramTests {
 		Relationship testRelationship3 = new Relationship(Relationship.RelationshipType.Aggregation, testClass2, testClass3, 1, 1, true);
 		UMLDiagram.addRelationship(testRelationship3);
 
-		String testStr = "Relationship List: \n\n"
+		String testStr = "\n--------------------------\n"
+				+ "Relationship List: \n\n"
 				+ "1: testClass2 has a Aggregation relationship with testClass3\n"
 				+ "Owner: true\n"
 				+ "testClass2 Class Cardinality: 1\n"
@@ -264,7 +265,8 @@ public class DiagramTests {
 				+ "3: testClass has a Aggregation relationship with testClass3\n"
 				+ "Owner: true\n"
 				+ "testClass Class Cardinality: 1\n"
-				+ "testClass3 Class Cardinality: 1\n";
+				+ "testClass3 Class Cardinality: 1\n"
+				+ "\n--------------------------\n";
 
 		assertEquals(testStr, UMLDiagram.listAllRelationships());
 	}
@@ -342,11 +344,16 @@ public class DiagramTests {
 		d.addClass("testClass");
 		Class c = d.getSingleClass("testClass");
 
-		String testString = "Class Name: testClass\n" +
-				"---------------------\n" +
+		String testString = "\n" +
+				"--------------------------\n" +
+				"Class Name: testClass\n" +
+				"--------------------------\n" +
 				"Fields: \n" +
-				"Methods: \n\n\n" +
-				"---------------------\n" +
+				"Methods: \n" +
+				"\n" +
+				"--------------------------\n" +
+				"\n" +
+				"--------------------------\n" +
 				"Relationships: \n";
 		assertEquals(testString, d.printSingleClass(c));
 	}
@@ -357,10 +364,14 @@ public class DiagramTests {
 		assertEquals("Diagram is empty.", d.listClasses());
 
 		d.addClass("testClass");
-		String testString = "Classes: [Class Name: testClass\n" +
-				"---------------------\n" +
+		String testString = "Classes: [\n" +
+				"--------------------------\n" +
+				"Class Name: testClass\n" +
+				"--------------------------\n" +
 				"Fields: \n" +
-				"Methods: \n\n" +
+				"Methods: \n" +
+				"\n" +
+				"--------------------------\n" +
 				"]";
 		assertEquals(testString, d.listClasses());
 	}
@@ -377,14 +388,25 @@ public class DiagramTests {
 		String testString = "\nDiagram test is empty.\n";
 		assertEquals(testString, d.toString());
 		d.addClass("testClass");
-		testString = "\nDiagram: test\n" +
+		testString = "\n" +
+				"--------------------------\n" +
+				"Diagram: test\n" +
 				"\n" +
+				"\n" +
+				"--------------------------\n" +
 				"Class Name: testClass\n" +
-				"---------------------\n" +
+				"--------------------------\n" +
 				"Fields: \n" +
 				"Methods: \n" +
-				"\n\n" +
-				"Relationship List: \n\n";
+				"\n" +
+				"--------------------------\n" +
+				"\n" +
+				"\n" +
+				"--------------------------\n" +
+				"Relationship List: \n" +
+				"\n" +
+				"\n" +
+				"--------------------------\n";
 		assertEquals(testString, d.toString());
 	}
 
@@ -413,4 +435,40 @@ public class DiagramTests {
 
 		assertNotNull(dc.getDiagramMementoList().get(0));
 	}
+
+	@Test
+	void applyMementoTest() {
+		Diagram d = new Diagram("test");
+		DiagramMemento dm = new DiagramMemento(d);
+		//d.applyMemento(dm);
+		assertEquals(dm.getTitle(), d.getTitle());
+		assertEquals(dm.getSaveLocation(), d.getSaveLocation());
+		assertEquals(dm.getClassList(), d.getClassList());
+		assertEquals(dm.getRelationshipList(), d.getRelationshipList());
+	}
+
+	@Test
+	void undoTest() {
+		Diagram d = new Diagram("OriginalDiagram");
+		d.setTitle("NewDiagram");
+		assertEquals("NewDiagram", d.getTitle());
+
+		d.undo();
+		assertEquals("OriginalDiagram", d.getTitle());
+	}
+
+	@Test
+	void redoTest() {
+		Diagram d = new Diagram("OriginalDiagram");
+		d.setTitle("NewDiagram");
+		assertEquals("NewDiagram", d.getTitle());
+
+		d.undo();
+		assertEquals("OriginalDiagram", d.getTitle());
+
+		d.redo();
+		assertEquals("NewDiagram", d.getTitle());
+	}
+
+
 }

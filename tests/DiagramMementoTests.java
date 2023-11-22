@@ -130,24 +130,55 @@ public class DiagramMementoTests {
     public void undoClassTest() {
         diagram.addClass("TestClass");
         diagram.addClass("AnotherClass");
-        String expected =
-                "\nDiagram: OriginalDiagram\n\n" +
-                "Class Name: AnotherClass\n" +
-                "---------------------\n" +
-                "Attributes: \n" +
-                "Class Name: TestClass\n" +
-                "---------------------\n" +
-                "Attributes: \n" +
+        String expected = "\n" +
+                "--------------------------\n" +
+                "Diagram: OriginalDiagram\n" +
                 "\n" +
-                "Relationship List: \n";
+                "\n" +
+                "--------------------------\n" +
+                "Class Name: AnotherClass\n" +
+                "--------------------------\n" +
+                "Fields: \n" +
+                "Methods: \n" +
+                "\n" +
+                "--------------------------\n" +
+                "\n" +
+                "--------------------------\n" +
+                "Class Name: TestClass\n" +
+                "--------------------------\n" +
+                "Fields: \n" +
+                "Methods: \n" +
+                "\n" +
+                "--------------------------\n" +
+                "\n" +
+                "\n" +
+                "--------------------------\n" +
+                "Relationship List: \n" +
+                "\n" +
+                "\n" +
+                "--------------------------\n";
         assertEquals(expected, diagram.toString());
 
         String newExpectation =
-                "\nDiagram: OriginalDiagram\n\n" +
-                "Class Name: TestClass\n" +
-                "---------------------\n" +
-                "Attributes: \n\n" +
-                "Relationship List: \n";
+                "\n" +
+                        "--------------------------\n" +
+                        "Diagram: OriginalDiagram\n" +
+                        "\n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "Class Name: TestClass\n" +
+                        "--------------------------\n" +
+                        "Fields: \n" +
+                        "Methods: \n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "\n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "Relationship List: \n" +
+                        "\n" +
+                        "\n" +
+                        "--------------------------\n";
         diagram.undo();
         assertEquals(newExpectation, diagram.toString());
     }
@@ -157,23 +188,55 @@ public class DiagramMementoTests {
         diagram.addClass("TestClass");
         diagram.addClass("AnotherClass");
         String expected =
-                "\nDiagram: OriginalDiagram\n\n" +
-                        "Class Name: AnotherClass\n" +
-                        "---------------------\n" +
-                        "Attributes: \n" +
-                        "Class Name: TestClass\n" +
-                        "---------------------\n" +
-                        "Attributes: \n" +
+                "\n" +
+                        "--------------------------\n" +
+                        "Diagram: OriginalDiagram\n" +
                         "\n" +
-                        "Relationship List: \n";
+                        "\n" +
+                        "--------------------------\n" +
+                        "Class Name: AnotherClass\n" +
+                        "--------------------------\n" +
+                        "Fields: \n" +
+                        "Methods: \n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "Class Name: TestClass\n" +
+                        "--------------------------\n" +
+                        "Fields: \n" +
+                        "Methods: \n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "\n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "Relationship List: \n" +
+                        "\n" +
+                        "\n" +
+                        "--------------------------\n";
         assertEquals(expected, diagram.toString());
 
         String newExpectation =
-                "\nDiagram: OriginalDiagram\n\n" +
+                "\n" +
+                        "--------------------------\n" +
+                        "Diagram: OriginalDiagram\n" +
+                        "\n" +
+                        "\n" +
+                        "--------------------------\n" +
                         "Class Name: TestClass\n" +
-                        "---------------------\n" +
-                        "Attributes: \n\n" +
-                        "Relationship List: \n";
+                        "--------------------------\n" +
+                        "Fields: \n" +
+                        "Methods: \n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "\n" +
+                        "\n" +
+                        "--------------------------\n" +
+                        "Relationship List: \n" +
+                        "\n" +
+                        "\n" +
+                        "--------------------------\n";
         diagram.undo();
         assertEquals(newExpectation, diagram.toString());
 

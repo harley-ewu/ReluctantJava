@@ -158,7 +158,7 @@ public class Diagram {
       }
       else {
          return c.toString() + "\n"
-         +"---------------------\n"
+         +"--------------------------\n"
          + this.listOneClassRelationships(c);
       }
    }
@@ -234,7 +234,7 @@ public class Diagram {
          i++;
       }
 
-      return str;
+      return "\n--------------------------\n" + str + "\n--------------------------\n";
    }
 
    //prints to screen all relationships for one class
@@ -306,7 +306,7 @@ public class Diagram {
          diagramString += c.toString();
       }
       
-      return "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
+      return "\n--------------------------" + "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
    }
    
    public void setSaveLocation(String saveLocation){

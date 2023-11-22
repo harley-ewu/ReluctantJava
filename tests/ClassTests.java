@@ -377,13 +377,15 @@ public class ClassTests {
         this.testClass.getFields().add(this.testField);
         this.testClass.getMethods().add(this.testMethod);
 
-        String output = "Class Name: " + this.testClass.getClassName() + "\n"
-                +"---------------------\n"
+        String output = "\n--------------------------\n"
+                +"Class Name: " + this.testClass.getClassName() + "\n"
+                +"--------------------------\n"
                 + "Fields: \n"
                 + "TestField: String\n"
                 + "Methods: \n"
                 + "TestMethod(param1, param2)\n"
-                + "\n";
+                +"\n"
+                + "--------------------------\n";
 
         assertEquals(output, this.testClass.toString());
     }
