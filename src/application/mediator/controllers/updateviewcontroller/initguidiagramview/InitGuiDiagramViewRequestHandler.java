@@ -22,9 +22,9 @@ public class InitGuiDiagramViewRequestHandler implements IHandler {
         HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
 
         view.getContentPane().getChildren().removeAll(view.getClassPanes());
-        view.getContentPane().getChildren().removeAll(view.getRelationshipPanes());
+        view.getContentPane().getChildren().removeAll(view.getRelationshipLines());
         view.getClassPanes().clear();
-        view.getRelationshipPanes().clear();
+        view.getRelationshipLines().clear();
 
         view.getClassList().clear();
         view.getClassList().addAll(diagramClasses.values());
@@ -38,6 +38,6 @@ public class InitGuiDiagramViewRequestHandler implements IHandler {
 
         view.addRelationshipAsset(view.getRelationshipList());
         view.addRelationshipPanes();
-        view.addRelationshipPanesToPaneWindow();
+        view.addRelationshipLinesToPaneWindow();
     }
 }

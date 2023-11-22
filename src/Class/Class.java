@@ -14,7 +14,7 @@ public class Class {
     @Expose
     private ArrayList<Method> methods = new ArrayList<>();
 
-    public Class(final String className) {
+    public Class(final String className) throws IllegalArgumentException {
         if (className == null) {
             throw new IllegalArgumentException("Class name is null.");
         }
