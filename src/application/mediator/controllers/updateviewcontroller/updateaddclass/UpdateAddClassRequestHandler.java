@@ -23,7 +23,7 @@ public class UpdateAddClassRequestHandler implements IHandler<Void> {
         view.getClassPanes().clear();
         view.getClassList().add(umlClass);
         view.getClassAssets().clear();
-        view.addClassAssets(view.getClassList());
+        view.addClassAssets();
         view.addClassPanes();
         view.addClassPanesToPaneWindow();
     }

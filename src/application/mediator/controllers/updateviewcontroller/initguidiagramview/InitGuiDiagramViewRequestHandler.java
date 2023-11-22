@@ -29,7 +29,7 @@ public class InitGuiDiagramViewRequestHandler implements IHandler {
         view.getClassList().clear();
         view.getClassList().addAll(diagramClasses.values());
 
-        view.addClassAssets(view.getClassList());
+        view.addClassAssets();
         view.addClassPanes();
         view.addClassPanesToPaneWindow();
 

@@ -189,44 +189,19 @@ public class GUIDiagramProject extends javafx.application.Application {
         return relationshipList;
     }
 
-    /**
-     * 1. description: use this method to take contents from the diagram
-     * and store in the appropriate array lists (the classes should go to the classList,
-     * the relationships should go to the relationshipList)
-     *
-     * 2. then we will take the contents from the class and relationships list
-     * convert them to class and relationship assets
-     *
-     * 3. once converted, we will create panes from each asset list and store them in the panes arraylist
-     * (we need to separate the panes list so that classes and diagram have their own respective panes and they don't
-     * interfere with the methods that use them)
-     *
-     * 4. we will then take the newly created panes arraylist and populate the contentPane
-     *
-     */
 
 
-    public void initializeDiagramContents() {
-        HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
-        this.classList.addAll(diagramClasses.values());
 
-        this.addClassAssets(this.classList);
-        this.addClassPanes();
-        this.addClassPanesToPaneWindow();
-
-        HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
-        this.relationshipList.addAll(relationshipClasses.values());
-    }
 
     /**
      * description: takes in a list of classes and converts them to 'ClassAsset' objects
      * the 'ClassAsset' objects are then stored into the classAssets arraylist field
-     * @param classList
+     *
      */
 
-    public void addClassAssets(final ArrayList<Class> classList) {
+    public void addClassAssets() {
         int i = 0;
-        for (Class currentClass : classList) {
+        for (Class currentClass : this.classList) {
             ClassAsset temp = new ClassAsset(currentClass, i);
             this.classAssets.add(temp);
             i++;
