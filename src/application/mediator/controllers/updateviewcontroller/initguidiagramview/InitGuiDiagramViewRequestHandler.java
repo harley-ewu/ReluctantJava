@@ -30,6 +30,8 @@ public class InitGuiDiagramViewRequestHandler implements IHandler {
         view.getClassList().addAll(diagramClasses.values());
 
         view.addClassAssets();
+
+        if (view.getHasMoved()) view.onInitClassPaneCoordinates(); //if hasMoved has been set to true within the diagram, do not execute
         view.addClassPanes();
         view.addClassPanesToPaneWindow();
 

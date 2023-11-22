@@ -25,6 +25,8 @@ public class GUIDiagramProject extends javafx.application.Application {
     private  double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
+
+    private boolean hasMoved = false;
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
     //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
@@ -190,8 +192,9 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
 
-
-
+    public boolean getHasMoved() {
+        return this.hasMoved;
+    }
 
     /**
      * description: takes in a list of classes and converts them to 'ClassAsset' objects
@@ -257,6 +260,9 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         temp.setOnMouseReleased(e -> {
             this.updateClassPaneCoordinates();
+            if (!this.hasMoved) {
+                this.hasMoved = true;
+            }
         });
 
         return temp;

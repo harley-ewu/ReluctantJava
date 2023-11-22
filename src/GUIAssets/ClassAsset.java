@@ -92,30 +92,6 @@ public class ClassAsset {
     }
 
 
-/*    private void onMousePressed(final MouseEvent event) {
-        this.xOffset = event.getSceneX();
-        this.yOffset = event.getSceneY();
-    }*/
-
-/*    private void onMouseDragged(final MouseEvent event) {
-        double deltaX = event.getSceneX() - this.xOffset;
-        double deltaY = event.getSceneY() - this.yOffset;
-
-        Pane pane = new Pane();
-
-        if (event.getSource() instanceof Pane) {
-            pane = (Pane) event.getSource();
-        }
-
-        pane.setTranslateX(pane.getTranslateX() + deltaX);
-        pane.setTranslateY(pane.getTranslateY() + deltaY);
-
-
-        this.xOffset = event.getSceneX();
-        this.yOffset = event.getSceneY();
-    }*/
-
-
     /**
      * searches an existing array list and puts contents in a stringbuilder
      * @param contents
@@ -412,12 +388,12 @@ public class ClassAsset {
         ArrayList<Method> deletedMethods = new ArrayList<>();
 
 
-        System.out.println("current local list: " + newFields);
+        /*System.out.println("current local list: " + newFields);
         System.out.println("current actual list:" + returnFieldNames(currentClass));
         System.out.println();
         System.out.println();
         System.out.println();
-        System.out.println();
+        System.out.println();*/
 
         ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
         ObservableList<String> observableFieldsList = FXCollections.observableArrayList();
