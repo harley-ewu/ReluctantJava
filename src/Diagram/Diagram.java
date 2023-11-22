@@ -158,7 +158,7 @@ public class Diagram {
       }
       else {
          return c.toString() + "\n"
-         +"---------------------\n"
+         +"--------------------------\n"
          + this.listOneClassRelationships(c);
       }
    }
@@ -226,7 +226,7 @@ public class Diagram {
 
    //prints to screen all relationships in relationshipList
    public String listAllRelationships(){
-      String str = "Relationship List: \n";
+      String str = "Relationship List: \n\n";
       int i = 1;
       for (Relationship relationship : relationshipList.values()) {
          str += String.valueOf(i) +": ";
@@ -234,7 +234,7 @@ public class Diagram {
          i++;
       }
 
-      return str;
+      return "\n--------------------------\n" + str + "\n--------------------------\n";
    }
 
    //prints to screen all relationships for one class
@@ -255,6 +255,10 @@ public class Diagram {
       }
 
       return str;
+   }
+
+   public DiagramCaretaker getCaretaker() {
+      return this.caretaker;
    }
 
    public void createSnapshot() {
@@ -302,7 +306,7 @@ public class Diagram {
          diagramString += c.toString();
       }
       
-      return "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
+      return "\n--------------------------" + "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
    }
    
    public void setSaveLocation(String saveLocation){

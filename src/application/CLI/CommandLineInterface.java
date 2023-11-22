@@ -22,7 +22,6 @@ public class CommandLineInterface implements UserInterface {
 
     private static final int MAX_CHOICES = 8;
     private static AutoComplete ac = new AutoComplete();
-
     public CommandLineInterface(){}
 
     /*
@@ -160,7 +159,7 @@ public class CommandLineInterface implements UserInterface {
             System.out.println("There is no diagram loaded");
             return;
         }
-        char userChoice;
+        String userChoice;
         Scanner scan = new Scanner(System.in);
 
         System.out.println("""
@@ -172,20 +171,24 @@ public class CommandLineInterface implements UserInterface {
             Enter a number from menu above:
             (Any other key - Do Not Save)
             """);
-        System.out.print("--> ");
+        System.out.println("--> ");
 
-        userChoice = scan.next().charAt(0);
-
-        switch (userChoice) {
+        userChoice = scan.nextLine();
+        //When enter key is pressed
+        if(userChoice == ""){
+            System.out.println("\nContinuing without saving.");
+            return;
+        }
+        switch (userChoice.charAt(0)) {
             case '1' -> saveToDefaultPath(diagram);
             case '2' -> saveToCustomPath(diagram);
-            default -> System.out.println("Continuing without saving.");
+            default -> System.out.println("\nContinuing without saving.");
         }
     }
 
     private static void saveToDefaultPath(Diagram diagram) {
         SaveLoadSystem.saveDefaultCLI(diagram.getTitle(), diagram);
-        System.out.println("Saved to the default path.");
+        System.out.println("\nSaved to the default path.");
     }
 
     private static void saveToCustomPath(Diagram diagram) {
@@ -193,13 +196,13 @@ public class CommandLineInterface implements UserInterface {
         boolean saveSuccessful = false;
 
         while (!saveSuccessful) {
-            System.out.println("Enter the custom file path:");
+            System.out.println("\nEnter the custom file path:");
             String customPath = scan.nextLine();
 
             try {
                 Path filePath = Paths.get(customPath);
                 SaveLoadSystem.saveCustomCLI(filePath.toString(), diagram.getTitle(), diagram);
-                System.out.println("Saved to custom path: " + filePath);
+                System.out.println("\nSaved to custom path: " + filePath);
                 saveSuccessful = true;
             } catch (InvalidPathException e) {
                 System.out.println("Invalid file path. Please enter a valid path.");
@@ -225,7 +228,7 @@ public class CommandLineInterface implements UserInterface {
                         }
                     }
                     default -> {
-                        System.out.println("Exiting without saving.");
+                        System.out.println("\nExiting without saving.");
                         saveSuccessful = true;
                     }
                 }
@@ -259,7 +262,7 @@ public class CommandLineInterface implements UserInterface {
         MenuController.diagramMenuControl(false, currentDiagram);
         //currentDiagram.menu();
     }
-    private static void saveDiagram(Diagram currentDiagram){
+    public static void saveDiagram(Diagram currentDiagram){
         savePrompt(currentDiagram);
     }
     private static Diagram loadDiagram() {
@@ -327,7 +330,7 @@ public class CommandLineInterface implements UserInterface {
      * @returns: true (Assign value to menu flag)
      * */
 
-    private static boolean exit(Diagram currentDiagram) {
+    public static boolean exit(Diagram currentDiagram) {
         savePrompt(currentDiagram);
         return true;
     }
@@ -336,17 +339,18 @@ public class CommandLineInterface implements UserInterface {
         int numberInput = -99;
         Scanner scan = new Scanner(System.in);
         System.out.println("\n--------------------------");
-        System.out.println("UML Diagram Editor Menu  \n\t'" + Application.getCurrentDiagram().getTitle() + "'");
+        System.out.println(" UML Diagram Editor Menu  \n\t'" + Application.getCurrentDiagram().getTitle() + "'");
         System.out.println("""
-                             --------------------------
+                            --------------------------
                              1 - Add Class
                              2 - Delete Class
                              3 - Rename Class
                              4 - Edit Class
                              5 - View Class
                              6 - View Diagram
-                             7 - Help
-                             8 - Exit
+                             7 - Save Changes
+                             8 - Help
+                             9 - Exit
                             --------------------------
                             """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -398,23 +402,26 @@ public class CommandLineInterface implements UserInterface {
            
             Option 6 - View Diagram: Lists all classes and their properties in current diagram
            
-            Option 7 - Help: See how each option functions
+            Option 7 - Save Changes: Saves diagram to your location of your choice
 
-            Option 8 - Exit: Exit the program
+            Option 8 - Help: See how each option functions
+
+            Option 9 - Exit: Exit the program
                 """);
     }
 
-    public static String newClassMenuChoice(){
+    public static String newClassMenuChoice(final Class currentClass){
         int numberInput = -99;
         Scanner scan = new Scanner(System.in);
         System.out.println("\n--------------------------");
-        System.out.println("    New Class Editor");
+        System.out.println(" New Class Editor \n'" + currentClass.getClassName() + "'");
         System.out.println("""
                             -------------------------- 
                              1 - Add Attribute
                              2 - Add Relationship
-                             3 - Back to Diagram Menu
+                             3 - Save Changes
                              4 - Help
+                             5 - Back to Diagram Menu
                             --------------------------
                                 """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -456,30 +463,33 @@ public class CommandLineInterface implements UserInterface {
            
             Option 2 - Add Relationship: Opens up a sub-menu for adding a relationship between two classes
            
-            Option 3 - Back to Diagram Menu: Returns you to Edit Diagram Menu
-           
+            Option 3 - Save Changes: Saves current diagram to location of your choice
+            
             Option 4 - Help: See how each option functions
+
+            Option 5 - Back to Diagram Menu: Returns you to Edit Diagram Menu
                 """);
     }
 
-    public static String editClassMenuChoice(final Class currentClass) {
+    public static String editClassMenuChoice(final Class currentClass, final Diagram diagram) {
         int numberInput = -99;
         System.out.println("\n" + currentClass);
+        System.out.println(diagram.listOneClassRelationships(currentClass));
         Scanner scan = new Scanner(System.in);
         //the sub menu will loop until the user is done making necessary changes, they can step back to the previous menu
         System.out.println("\n--------------------------");
-        System.out.println("'" + currentClass.getClassName() + "''  - Class Editor");
+        System.out.println("'" + currentClass.getClassName() + "' - Class Editor");
         System.out.println("""
                             --------------------------
                              1 - Add Attribute
                              2 - Delete Field
                              3 - Delete Method
                              4 - Rename Attribute
-                             5 - Display Attributes
-                             6 - Edit Relationships
-                             7 - Display All Contents
-                             8 - Return to Diagram Menu
-                             9 - Help
+                             5 - Edit Relationships
+                             6 - Display All Contents
+                             7 - Save Changes
+                             8 - Help
+                             9 - Return to Diagram Menu
                             --------------------------
                             """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -527,30 +537,34 @@ public class CommandLineInterface implements UserInterface {
             Option 3 - Delete Method: Prompts user to enter a name of an (existing) method to delete
 
             Option 4 - Rename Attribute: Prompts the user to enter a name of an existing attribute, then prompts user to enter a new name for that attribute
-      
-            Option 5 - Display Attributes: Displays all attributes assigned to the class
             
-            Option 6 - Edit Relationships: Opens up sub-menu with relationship add/delete options
+            Option 5 - Edit Relationships: Opens up sub-menu with relationship add/delete options
 
-            Option 7 - Display All Contents: displays the contents of the class including name, attributes, and relationships
+            Option 6 - Display All Contents: displays the contents of the class including name, attributes, and relationships
 
-            Option 8 - Return to Diagram Menu: returns the user to the diagram menu holding the class
-
-            Option 9 - Help: Lists descriptions of each command
+            Option 7 - Save Changes: Saves current diagram to location of your choice
+           
+            Option 8 - Help: Lists descriptions of each command
+            
+            Option 9 - Return to Diagram Menu: returns the user to the diagram menu holding the class
                 """);
     }
 
-    public static String editRelationshipsMenuChoice() {
+    public static String editRelationshipsMenuChoice(final Diagram currentDiagram, final Class currentClass) {
         int numberInput = -99;
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n--------------------------");
-        System.out.println("Relationship Editor");
+        System.out.println(currentDiagram.listAllRelationships());
+        System.out.println("\n--------------------------\n");
+        System.out.println("\n--------------------------");
+        System.out.println("Relationship Editor \n'" + currentClass.getClassName() +"'");
         System.out.println("""
                             --------------------------
                              1 - Add Relationship
                              2 - Delete Relationship
                              3 - View Relationships
-                             4 - Back to Diagram Menu
+                             4 - Save Changes
+                             5 - Back to Diagram Menu
                             --------------------------   
                             """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -606,9 +620,10 @@ public class CommandLineInterface implements UserInterface {
                 help();
                 break;
             case "gui":
+                System.out.println("Please enter number 7");
                 break;
             case "exit":
-                return true;
+                return exit(currentDiagram);
             default:
                 System.out.println("Not a recognized command.");
         }
