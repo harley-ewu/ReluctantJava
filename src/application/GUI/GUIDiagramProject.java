@@ -215,12 +215,13 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassPanes() {
-        double x = 50;
-        double y = 50;
-        for (ClassAsset classAsset : this.classAssets) {
-            Pane temp = this.createDraggablePane(x,y,classAsset);
-            x+=temp.getWidth()+300;
 
+        for (int i = 0; i < this.classPanes.size(); i++) {
+
+            double x = this.classPanesCoordinates.get(i).getX();
+            double y = this.classPanesCoordinates.get(i).getY();
+            ClassAsset classAsset = this.classAssets.get(i);
+            Pane temp = this.createDraggablePane(x,y,classAsset);
             this.classPanes.add(temp);
         }
     }
@@ -252,6 +253,10 @@ public class GUIDiagramProject extends javafx.application.Application {
                 temp.setLayoutY(newY);
             }
             e.consume();
+        });
+
+        temp.setOnMouseReleased(e -> {
+            this.updateClassPaneCoordinates();
         });
 
         return temp;
@@ -366,13 +371,6 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.classPanesCoordinates.clear();
 
-/*        for (int i = 0; i < this.relationshipPanes.size(); i++) {
-            this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
-            this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
-            this.contentPane.getChildren().add(this.relationshipPanes.get(i));
-        }
-
-        this.relationshipPanesCoordinates.clear();*/
     }
 
     /**
@@ -400,6 +398,29 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.relationshipPanesCoordinates.clear();
     }
 
+    /**
+     * description: this method is used in the first initialization of a diagram -- the default init positions of class panes
+     * it will be used during the first initialization of a diagram, and once the user begins to move panes around,
+     * the coords should be replaced by the users new pane layout
+     */
+    public void onInitClassPaneCoordinates() {
+        this.classPanesCoordinates.clear();
+        double x = 50;
+        double y = 50;
+        for (int i = 0; i < this.classPanes.size(); i++) {
+            Point2D initCoords = new Point2D(x,y);
+            this.classPanesCoordinates.add(initCoords);
+            x += this.classPanes.get(i).getWidth() + 300;
+        }
+    }
+
+    public void updateClassPaneCoordinates() {
+        this.classPanesCoordinates.clear();
+        for (Pane classPane : this.classPanes) {
+            Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
+            this.classPanesCoordinates.add(coordinates);
+        }
+    }
 
 
 }
