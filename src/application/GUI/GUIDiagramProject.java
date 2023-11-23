@@ -225,6 +225,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void initializeDiagramContents() {
         HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
+        this.classList.clear();
         this.classList.addAll(diagramClasses.values());
 
         this.addClassAssets(this.classList);
@@ -448,21 +449,20 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     public void undo() {
-        System.out.println("Undoing..");
-        System.out.println(diagram.toString());
         this.diagram.undo();
-        this.classAssets.clear();
-        this.addClassAssets(this.classList);
-        this.addClassPanes();
-        System.out.println(diagram.toString());
+        System.out.println("Undoing..");
+        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        this.getClassAssets().clear();
+        this.getClassPanes().clear();
+        this.initializeDiagramContents();
     }
 
     public void redo() {
-        System.out.println("Redoing..");
         this.diagram.redo();
-        this.classAssets.clear();
-        this.addClassAssets(this.classList);
-        this.addClassPanes();
+        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        this.getClassAssets().clear();
+        this.getClassPanes().clear();
+        this.initializeDiagramContents();
     }
 
 
