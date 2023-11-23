@@ -259,7 +259,7 @@ public class Diagram {
 
    public void createSnapshot() {
       DiagramMemento memento = new DiagramMemento(this);
-      caretaker.makeBackupUp(memento);
+      //caretaker.makeBackupUp(memento);
    }
 
    private void applyMemento(DiagramMemento memento) {

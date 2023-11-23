@@ -22,11 +22,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUIDiagramProject extends javafx.application.Application {
-
-    //private Scene scene =
+    Pane root;
+    Scene scene;
+    ScrollPane scrollPane = new ScrollPane(this.contentPane);
     private  double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
+
     private boolean hasMoved = false;
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
     //Diagram diagram = new Diagram("test diagram");
@@ -68,14 +70,14 @@ public class GUIDiagramProject extends javafx.application.Application {
         //menu bar creation
         MenuBar menuBar = this.setUpMenuBar(stage);
         //setting up scene for stage
-        ScrollPane scrollPane = new ScrollPane(this.contentPane);
+        this.scrollPane = new ScrollPane(this.contentPane);
         scrollPane.setPrefSize(1280,678);
-        Pane root = new Pane(scrollPane, menuBar, zoomButtons);
-        Scene scene = new Scene(root,1280,720);
+        this.root = new Pane(scrollPane, menuBar, zoomButtons);
+        this.scene = new Scene(root,1280,720);
         stage.setResizable(false);
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
         //set stage
-        stage.setScene(scene);
+        stage.setScene(this.scene);
         stage.show();
     }
 
@@ -229,23 +231,31 @@ public class GUIDiagramProject extends javafx.application.Application {
 
 
         this.follow = true;
-        classPane.setOnMouseMoved(e -> {
+        this.contentPane.setOnMouseMoved(event -> {
+            // Update the moving pane position to follow the mouse
             if (this.follow) {
-                double newX = e.getSceneX() - classPane.getWidth()/2;
+                classPane.setLayoutX(event.getX() - classPane.getWidth() / 2);
+                classPane.setLayoutY(event.getY() - classPane.getHeight() / 2);
+            }
+        });
+
+/*        classPane.setOnMouseMoved(e -> {
+            if (this.follow) {
+                double newX = scene.getSceneX() - classPane.getWidth()/2;
                 double newY = e.getSceneY() - classPane.getHeight()/2;
                 classPane.setLayoutX(newX);
                 classPane.setLayoutY(newY);
             }
-        });
+        });*/
 
+        classPane.toFront();
         this.addSinglePane.add(classPane);
-        this.contentPane.getChildren().add(0,this.addSinglePane.get(0));
+        this.contentPane.getChildren().addAll(this.addSinglePane);
 
-        classPane.setOnMouseClicked(e -> {
+        this.contentPane.setOnMouseClicked(e -> {
             this.follow = false;
             this.addSinglePane.clear();
-            this.contentPane.getChildren().remove(0);
-            this.classAssets.add(classAsset);
+            //this.contentPane.getChildren().remove(0);
             Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
             this.classPanesCoordinates.add(coordinates);
         });
@@ -272,13 +282,35 @@ public class GUIDiagramProject extends javafx.application.Application {
         temp.relocate(x,y);
 
         temp.setOnMousePressed(e -> {
-            temp.toFront(); // Bring the node container to the front
-            e.consume();
+            //temp.toFront(); // Bring the node container to the front
+            temp.getProperties().put("startX", e.getSceneX());
+            temp.getProperties().put("startY", e.getSceneY());
+            //e.consume();
         });
 
         temp.setOnMouseDragged(e -> {
-            double newX = e.getSceneX() - temp.getWidth()/2;
-            double newY = e.getSceneY() - temp.getHeight()/2;
+/*            double newX = e.getX() - temp.getWidth()/2;
+            double newY = e.getY() - temp.getHeight()/2;
+
+            Point2D localToParent = temp.localToParent(newX, newY);
+            Point2D parentToContent = this.scrollPane.sceneToLocal(localToParent);
+
+            double contentX = parentToContent.getX();
+            double contentY = parentToContent.getY();
+
+            double scrollX = scrollPane.getHvalue() * (temp.getWidth() - scrollPane.getViewportBounds().getWidth());
+            double scrollY = scrollPane.getVvalue() * (temp.getHeight() - scrollPane.getViewportBounds().getHeight());*/
+
+            double deltaX = e.getSceneX() - (double) temp.getProperties().get("startX");
+            double deltaY = e.getSceneY() - (double) temp.getProperties().get("startY");
+
+            // Update the start position for the next drag event
+            temp.getProperties().put("startX", e.getSceneX());
+            temp.getProperties().put("startY", e.getSceneY());
+
+            // Calculate the new position
+            double newX = temp.getLayoutX() + deltaX;
+            double newY = temp.getLayoutY() + deltaY;
 
             boolean collisionDetected = false;
             for (Pane otherClassPane : this.classPanes) {
@@ -288,8 +320,8 @@ public class GUIDiagramProject extends javafx.application.Application {
             }
 
             if (!collisionDetected) {
-                temp.setLayoutX(newX);
-                temp.setLayoutY(newY);
+               temp.setLayoutX(newX);
+               temp.setLayoutY(newY);
             }
             e.consume();
         });
@@ -301,21 +333,37 @@ public class GUIDiagramProject extends javafx.application.Application {
             }
         });
 
+        this.scrollPane.setOnScroll(e -> {
+            // Adjust the node's position by the scroll delta
+            temp.setLayoutX(temp.getLayoutX() + e.getDeltaX());
+            temp.setLayoutY(temp.getLayoutY() + e.getDeltaY());
+
+            // Consume the event to prevent scrolling of the ScrollPane
+            e.consume();
+        });
+
         return temp;
     }
 
     private boolean isColliding(double x, double y, double width, double height, Pane otherClassPane) {
-        Bounds bounds = otherClassPane.localToScene(otherClassPane.getBoundsInLocal());
+/*        Bounds bounds = otherClassPane.localToScene(otherClassPane.getBoundsInLocal());
+        return bounds.intersects(x,y,width * this.scaleFactor,height * this.scaleFactor);*/
+        double x2 = otherClassPane.getLayoutX();
+        double y2 = otherClassPane.getLayoutY();
+        double width2 = otherClassPane.getWidth();
+        double height2 = otherClassPane.getHeight();
 
-        return bounds.intersects(x,y,width * this.scaleFactor,height * this.scaleFactor);
+        return x < x2 + width2 && x + width > x2 &&
+                y < y2 + height2 && y + height > y2;
+
     }
 
     public Pane getContentPane() {
-        return contentPane;
+        return this.contentPane;
     }
 
     public ArrayList<ClassAsset> getClassAssets() {
-        return classAssets;
+        return this.classAssets;
     }
 
     /**
@@ -364,7 +412,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     public ArrayList<Pane> getClassPanes() {
-        return classPanes;
+        return this.classPanes;
     }
 
     /**
@@ -452,7 +500,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         for (int i = 0; i < this.classAssets.size(); i++) {
             Point2D initCoords = new Point2D(x,y);
             this.classPanesCoordinates.add(initCoords);
-            x += 500;
+            x += 400;
         }
     }
 
@@ -462,6 +510,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
             this.classPanesCoordinates.add(coordinates);
         }
+        System.out.println("I was updated!");
     }
 
 
