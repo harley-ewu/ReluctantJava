@@ -9,16 +9,18 @@ public class DiagramCaretaker {
     private int currentIndex = -1;
 
     public void undo(Diagram diagram) {
+        if(this.currentIndex == this.diagramMementoList.size() -1){
+            diagram.createSnapshot();
+        }
         if (this.getCurrentIndex() != -1) {
             DiagramMemento memento = this.getDiagram(this.getCurrentIndex());
-
             diagram.applyMemento(memento);
             this.decrementIndex();
         }
     }
 
     public void redo(Diagram diagram) {
-        if (this.getCurrentIndex() < this.getDiagramMementoList().size() - 1) {
+        if (this.getCurrentIndex() < this.getDiagramMementoList().size()) {
             this.incrementIndex();
             DiagramMemento memento = this.getDiagram(this.getCurrentIndex());
             diagram.applyMemento(memento);
