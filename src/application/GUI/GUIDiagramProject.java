@@ -282,24 +282,12 @@ public class GUIDiagramProject extends javafx.application.Application {
         temp.relocate(x,y);
 
         temp.setOnMousePressed(e -> {
-            //temp.toFront(); // Bring the node container to the front
             temp.getProperties().put("startX", e.getSceneX());
             temp.getProperties().put("startY", e.getSceneY());
             //e.consume();
         });
 
         temp.setOnMouseDragged(e -> {
-/*            double newX = e.getX() - temp.getWidth()/2;
-            double newY = e.getY() - temp.getHeight()/2;
-
-            Point2D localToParent = temp.localToParent(newX, newY);
-            Point2D parentToContent = this.scrollPane.sceneToLocal(localToParent);
-
-            double contentX = parentToContent.getX();
-            double contentY = parentToContent.getY();
-
-            double scrollX = scrollPane.getHvalue() * (temp.getWidth() - scrollPane.getViewportBounds().getWidth());
-            double scrollY = scrollPane.getVvalue() * (temp.getHeight() - scrollPane.getViewportBounds().getHeight());*/
 
             double deltaX = e.getSceneX() - (double) temp.getProperties().get("startX");
             double deltaY = e.getSceneY() - (double) temp.getProperties().get("startY");
@@ -346,8 +334,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     private boolean isColliding(double x, double y, double width, double height, Pane otherClassPane) {
-/*        Bounds bounds = otherClassPane.localToScene(otherClassPane.getBoundsInLocal());
-        return bounds.intersects(x,y,width * this.scaleFactor,height * this.scaleFactor);*/
+
         double x2 = otherClassPane.getLayoutX();
         double y2 = otherClassPane.getLayoutY();
         double width2 = otherClassPane.getWidth();
