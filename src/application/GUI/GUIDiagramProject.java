@@ -264,7 +264,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     public void addClassPanes() {
-
+        classPanes.clear();
         for (int i = 0; i < this.classAssets.size(); i++) {
 
             double x = this.classPanesCoordinates.get(i).getX();
@@ -425,9 +425,12 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void refreshClassPanes() {
         this.classPanes.clear();
-        for (ClassAsset classAsset : this.classAssets) {
-            Pane temp = classAsset.createClassAsset(this.classList, this.classPanes,
-                    this.classAssets, this.classPanesCoordinates, this.relationshipPanes, this.relationshipPanesCoordinates, this);
+
+        for (int i = 0; i < this.classAssets.size(); i++) {
+            double x = this.classPanesCoordinates.get(i).getX();
+            double y = this.classPanesCoordinates.get(i).getY();
+            ClassAsset classAsset = this.classAssets.get(i);
+            Pane temp = this.createDraggablePane(x,y,classAsset);
             this.classPanes.add(temp);
         }
     }

@@ -306,7 +306,7 @@ public class ClassAsset {
             //update the class asset list by taking the new class list and creating new class assets from them
             this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
-            guiDiagramProject.refreshClassPanes();
+            guiDiagramProject.addClassPanes();
             guiDiagramProject.refreshClassPanesToPaneWindow();
 
         }
