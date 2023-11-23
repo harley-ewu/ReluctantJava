@@ -1,5 +1,6 @@
 package Diagram;
 
+import Attributes.Method;
 import Relationships.Relationship;
 import Class.Class;
 
@@ -29,5 +30,16 @@ public class DiagramMemento {
     public HashMap<String, Class> getClassList() {return this.classList;}
 
     public HashMap<String, Relationship> getRelationshipList() {return this.relationshipList;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiagramMemento memento = (DiagramMemento) o;
+        return this.diagram.equals(memento.getDiagram()) &&
+                this.title.equals(memento.getTitle()) &&
+                this.classList.equals(memento.getClassList()) &&
+                this.relationshipList.equals(memento.getRelationshipList());
+    }
 
 }
