@@ -45,7 +45,6 @@ public class Diagram {
    
    /*Setter for diagram title*/
    public void setTitle(final String title){
-      createSnapshot();
       this.title = title;
    }
    
@@ -266,7 +265,7 @@ public class Diagram {
       caretaker.makeBackupUp(memento);
    }
 
-   private void applyMemento(DiagramMemento memento) {
+   public void applyMemento(DiagramMemento memento) {
       this.setTitle(memento.getTitle());
       this.setSaveLocation(memento.getSaveLocation());
       this.setClassList(new HashMap<>(memento.getClassList()));
@@ -274,23 +273,11 @@ public class Diagram {
    }
 
    public void undo() {
-      if (caretaker.getCurrentIndex() != -1) {
-         DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
-         applyMemento(memento);
-         if(caretaker.getCurrentIndex() != 0) {
-            caretaker.setCurrentIndex(caretaker.getCurrentIndex() - 2);
-         }
-      }
+      this.caretaker.undo(this);
    }
 
    public void redo() {
-      if (caretaker.getCurrentIndex() < caretaker.getDiagramMementoList().size() - 1) {
-         if (caretaker.getCurrentIndex() <= 1) {
-            caretaker.setCurrentIndex(caretaker.getCurrentIndex() + 2);
-         }
-         DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
-         applyMemento(memento);
-      }
+      this.caretaker.redo(this);
    }
    
    /*
