@@ -17,15 +17,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUIDiagramProject extends javafx.application.Application {
 
+    //private Scene scene =
     private  double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
     private final Scale scaleTransform = new Scale(1, 1);
-
     private boolean hasMoved = false;
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
     //Diagram diagram = new Diagram("test diagram");
@@ -38,6 +39,8 @@ public class GUIDiagramProject extends javafx.application.Application {
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
 
+    private ArrayList<Pane> addSinglePane = new ArrayList<>();
+
     public ArrayList<Pane> getRelationshipPanes() {
         return relationshipPanes;
     }
@@ -45,6 +48,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     public ArrayList<RelationshipAsset> getRelationshipAssets() {
         return relationshipAssets;
     }
+
 
     public static void startGUI(String[] args){
         try{
@@ -217,9 +221,41 @@ public class GUIDiagramProject extends javafx.application.Application {
      * createClassAsset method and then stores them into the classPanes arraylist
      */
 
+    boolean follow;
+    public void addSingleClassAsset(Class umlClass) {
+        ClassAsset classAsset = new ClassAsset(umlClass, this.classAssets.size());
+        Pane classPane = classAsset.createClassAsset(this.classList, this.classPanes, this.classAssets,this.classPanesCoordinates,
+                this.relationshipPanes, this.relationshipPanesCoordinates, this);
+
+
+        this.follow = true;
+        classPane.setOnMouseMoved(e -> {
+            if (this.follow) {
+                double newX = e.getSceneX() - classPane.getWidth()/2;
+                double newY = e.getSceneY() - classPane.getHeight()/2;
+                classPane.setLayoutX(newX);
+                classPane.setLayoutY(newY);
+            }
+        });
+
+        this.addSinglePane.add(classPane);
+        this.contentPane.getChildren().add(0,this.addSinglePane.get(0));
+
+        classPane.setOnMouseClicked(e -> {
+            this.follow = false;
+            this.addSinglePane.clear();
+            this.contentPane.getChildren().remove(0);
+            this.classAssets.add(classAsset);
+            Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
+            this.classPanesCoordinates.add(coordinates);
+        });
+
+
+    }
+
     public void addClassPanes() {
 
-        for (int i = 0; i < this.classPanes.size(); i++) {
+        for (int i = 0; i < this.classAssets.size(); i++) {
 
             double x = this.classPanesCoordinates.get(i).getX();
             double y = this.classPanesCoordinates.get(i).getY();
@@ -413,10 +449,10 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classPanesCoordinates.clear();
         double x = 50;
         double y = 50;
-        for (int i = 0; i < this.classPanes.size(); i++) {
+        for (int i = 0; i < this.classAssets.size(); i++) {
             Point2D initCoords = new Point2D(x,y);
             this.classPanesCoordinates.add(initCoords);
-            x += this.classPanes.get(i).getWidth() + 300;
+            x += 500;
         }
     }
 

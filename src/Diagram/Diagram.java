@@ -76,7 +76,7 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
-         createSnapshot();
+         //createSnapshot();
          this.classList.put(className, new Class(className));
       }
       else {

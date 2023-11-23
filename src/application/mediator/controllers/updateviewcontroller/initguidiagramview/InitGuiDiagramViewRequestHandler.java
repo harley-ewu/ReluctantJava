@@ -31,7 +31,9 @@ public class InitGuiDiagramViewRequestHandler implements IHandler {
 
         view.addClassAssets();
 
-        if (view.getHasMoved()) view.onInitClassPaneCoordinates(); //if hasMoved has been set to true within the diagram, do not execute
+        if (!view.getHasMoved()) {
+            view.onInitClassPaneCoordinates(); //if hasMoved has been set to true within the diagram, do not execute -- need to save this boolean in json file
+        }
         view.addClassPanes();
         view.addClassPanesToPaneWindow();
 

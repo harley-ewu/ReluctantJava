@@ -22,8 +22,9 @@ public class UpdateAddClassRequestHandler implements IHandler<Void> {
         view.getContentPane().getChildren().removeAll(view.getClassPanes());
         view.getClassPanes().clear();
         view.getClassList().add(umlClass);
-        view.getClassAssets().clear();
-        view.addClassAssets();
+        view.addSingleClassAsset(umlClass);
+        //view.getClassAssets().clear();
+        //view.addClassAssets();
         view.addClassPanes();
         view.addClassPanesToPaneWindow();
     }
