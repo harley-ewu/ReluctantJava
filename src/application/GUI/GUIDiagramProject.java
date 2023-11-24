@@ -243,41 +243,50 @@ public class GUIDiagramProject extends javafx.application.Application {
             }
         });
 
-
-
         this.contentPane.getChildren().addLast(classPane);
 
         this.contentPane.setOnMouseClicked(e -> {
-
+            //to be used
+            double currentX = e.getX() - classPane.getWidth()/2;
+            double currentY = e.getY() - classPane.getHeight()/2;
             if (this.wasAdded) {
-                this.follow = false;
-                this.contentPane.getChildren().removeLast();
-
-                diagram.getClassList().put(umlClass.getClassName(), new Class(umlClass.getClassName()));
-
-                Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
-                this.classPanesCoordinates.addLast(coordinates);
-                this.classList.addLast(umlClass);
-                this.refreshClassHashMap();
-                this.getContentPane().getChildren().removeAll(this.getClassPanes());
-                this.getClassPanes().clear();
-                this.getClassAssets().clear();
-                this.addClassAssets();
-                this.addClassPanes();
-                this.addClassPanesToPaneWindow();
-                System.out.println("I'm inside");
-                System.out.println("class panes: " + this.classPanes);
-                System.out.println("class coords: " + this.classPanesCoordinates);
-                this.wasAdded = false;
+                this.executeSingleClassAdd(umlClass, classPane);
             }
-
-            System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);
+//keep for debugging purposes
+/*            System.out.println("class panes: " + this.classPanes);
+            System.out.println("class coords: " + this.classPanesCoordinates);*/
 
             });
 
 
     }
+
+    public void executeSingleClassAdd(Class umlClass, Pane classPane) {
+
+        if (this.wasAdded) {
+            this.follow = false;
+            this.contentPane.getChildren().removeLast();
+
+            diagram.getClassList().put(umlClass.getClassName(), new Class(umlClass.getClassName()));
+
+            Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
+            this.classPanesCoordinates.addLast(coordinates);
+            this.classList.addLast(umlClass);
+            this.refreshClassHashMap();
+            this.getContentPane().getChildren().removeAll(this.getClassPanes());
+            this.getClassPanes().clear();
+            this.getClassAssets().clear();
+            this.addClassAssets();
+            this.addClassPanes();
+            this.addClassPanesToPaneWindow();
+            //keeping for debugging purposes
+/*            System.out.println("I'm inside");
+            System.out.println("class panes: " + this.classPanes);
+            System.out.println("class coords: " + this.classPanesCoordinates);*/
+            this.wasAdded = false;
+        }
+    }
+
 
     public void refreshClassHashMap() {
         this.diagram.getClassList().clear();
