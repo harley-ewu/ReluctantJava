@@ -257,11 +257,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
                 Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
                 this.classPanesCoordinates.addLast(coordinates);
-
-                //this.classList.clear();
-                //this.classList.addAll(diagram.getClassList().values());
                 this.classList.addLast(umlClass);
-                //if this works, I need to add the classList values back to the diagram class hashmap so backend stays updated
                 this.refreshClassHashMap();
                 this.getContentPane().getChildren().removeAll(this.getClassPanes());
                 this.getClassPanes().clear();
