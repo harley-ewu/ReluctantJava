@@ -272,6 +272,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
             this.classPanesCoordinates.addLast(coordinates);
             this.classList.addLast(umlClass);
+            //add new values in classList to the diagram class hashmap
             this.refreshClassHashMap();
             this.getContentPane().getChildren().removeAll(this.getClassPanes());
             this.getClassPanes().clear();

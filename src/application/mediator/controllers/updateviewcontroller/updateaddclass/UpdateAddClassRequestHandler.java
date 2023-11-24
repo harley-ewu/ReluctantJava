@@ -19,7 +19,7 @@ public class UpdateAddClassRequestHandler implements IHandler<Void> {
     }
 
     private void updateAddClass(GUIDiagramProject view, Class umlClass) {
-        view.setWasAddedToTrue();
+        view.setWasAddedToTrue(); //sets the boolean to true in addSingleClassAsset
         view.addSingleClassAsset(umlClass);
 
     }
