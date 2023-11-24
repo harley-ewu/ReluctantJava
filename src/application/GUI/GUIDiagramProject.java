@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.IntStream;
 
 public class GUIDiagramProject extends javafx.application.Application {
     Pane root;
@@ -79,8 +80,8 @@ public class GUIDiagramProject extends javafx.application.Application {
         stage.show();
     }
 
-    public void setWasAdded() {
-        this.wasAdded = !this.wasAdded;
+    public void setWasAddedToTrue() {
+        this.wasAdded = true;
     }
 
     public Diagram getDiagram() {
@@ -214,7 +215,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         int i = 0;
         for (Class currentClass : this.classList) {
             ClassAsset temp = new ClassAsset(currentClass, i);
-            this.classAssets.add(temp);
+            this.classAssets.addLast(temp);
             i++;
         }
 
@@ -255,20 +256,23 @@ public class GUIDiagramProject extends javafx.application.Application {
                 diagram.getClassList().put(umlClass.getClassName(), new Class(umlClass.getClassName()));
 
                 Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
-                this.classPanesCoordinates.add(coordinates);
+                this.classPanesCoordinates.addLast(coordinates);
 
-
-                this.classList.clear();
-                this.classList.addAll(diagram.getClassList().values());
-
+                //this.classList.clear();
+                //this.classList.addAll(diagram.getClassList().values());
+                this.classList.addLast(umlClass);
+                //if this works, I need to add the classList values back to the diagram class hashmap so backend stays updated
+                this.refreshClassHashMap();
                 this.getContentPane().getChildren().removeAll(this.getClassPanes());
                 this.getClassPanes().clear();
                 this.getClassAssets().clear();
                 this.addClassAssets();
                 this.addClassPanes();
                 this.addClassPanesToPaneWindow();
-
-                this.setWasAdded();
+                System.out.println("I'm inside");
+                System.out.println("class panes: " + this.classPanes);
+                System.out.println("class coords: " + this.classPanesCoordinates);
+                this.wasAdded = false;
             }
 
             System.out.println("class panes: " + this.classPanes);
@@ -276,6 +280,12 @@ public class GUIDiagramProject extends javafx.application.Application {
 
             });
 
+
+    }
+
+    public void refreshClassHashMap() {
+        this.diagram.getClassList().clear();
+        IntStream.range(0, this.classList.size()).forEach(i -> this.diagram.getClassList().put(this.classList.get(i).getClassName(), this.classList.get(i)));
     }
 
     public void addClassPanes() {
@@ -374,7 +384,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void addClassPanesToPaneWindow() {
         for (Pane classAsset : this.classPanes) {
-            this.contentPane.getChildren().add(classAsset);
+            this.contentPane.getChildren().addLast(classAsset);
         }
     }
 
