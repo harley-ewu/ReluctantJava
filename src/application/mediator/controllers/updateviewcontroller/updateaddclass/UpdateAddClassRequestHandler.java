@@ -19,13 +19,8 @@ public class UpdateAddClassRequestHandler implements IHandler<Void> {
     }
 
     private void updateAddClass(GUIDiagramProject view, Class umlClass) {
-        view.getContentPane().getChildren().removeAll(view.getClassPanes());
-        view.getClassPanes().clear();
-        view.getClassList().add(umlClass);
+        view.setWasAdded();
         view.addSingleClassAsset(umlClass);
-        //view.getClassAssets().clear();
-        //view.addClassAssets();
-        view.addClassPanes();
-        view.addClassPanesToPaneWindow();
+
     }
 }

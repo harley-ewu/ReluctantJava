@@ -30,6 +30,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     private final Scale scaleTransform = new Scale(1, 1);
 
     private boolean hasMoved = false;
+    private Boolean wasAdded = false;
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
     //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
@@ -40,9 +41,6 @@ public class GUIDiagramProject extends javafx.application.Application {
     private ArrayList<Point2D> relationshipPanesCoordinates = new ArrayList<>();
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
-
-    private ArrayList<Pane> addSinglePane = new ArrayList<>();
-
     public ArrayList<Pane> getRelationshipPanes() {
         return relationshipPanes;
     }
@@ -79,6 +77,10 @@ public class GUIDiagramProject extends javafx.application.Application {
         //set stage
         stage.setScene(this.scene);
         stage.show();
+    }
+
+    public void setWasAdded() {
+        this.wasAdded = !this.wasAdded;
     }
 
     public Diagram getDiagram() {
@@ -225,10 +227,11 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     boolean follow;
     public void addSingleClassAsset(Class umlClass) {
-        ClassAsset classAsset = new ClassAsset(umlClass, this.classAssets.size());
+        ClassAsset classAsset = new ClassAsset(umlClass);
         Pane classPane = classAsset.createClassAsset(this.classList, this.classPanes, this.classAssets,this.classPanesCoordinates,
                 this.relationshipPanes, this.relationshipPanesCoordinates, this);
 
+        classPane.setOpacity(0.6);
 
         this.follow = true;
         this.contentPane.setOnMouseMoved(event -> {
@@ -239,27 +242,39 @@ public class GUIDiagramProject extends javafx.application.Application {
             }
         });
 
-/*        classPane.setOnMouseMoved(e -> {
-            if (this.follow) {
-                double newX = scene.getSceneX() - classPane.getWidth()/2;
-                double newY = e.getSceneY() - classPane.getHeight()/2;
-                classPane.setLayoutX(newX);
-                classPane.setLayoutY(newY);
-            }
-        });*/
 
-        classPane.toFront();
-        this.addSinglePane.add(classPane);
-        this.contentPane.getChildren().addAll(this.addSinglePane);
+
+        this.contentPane.getChildren().addLast(classPane);
 
         this.contentPane.setOnMouseClicked(e -> {
-            this.follow = false;
-            this.addSinglePane.clear();
-            //this.contentPane.getChildren().remove(0);
-            Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
-            this.classPanesCoordinates.add(coordinates);
-        });
 
+            if (this.wasAdded) {
+                this.follow = false;
+                this.contentPane.getChildren().removeLast();
+
+                diagram.getClassList().put(umlClass.getClassName(), new Class(umlClass.getClassName()));
+
+                Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
+                this.classPanesCoordinates.add(coordinates);
+
+
+                this.classList.clear();
+                this.classList.addAll(diagram.getClassList().values());
+
+                this.getContentPane().getChildren().removeAll(this.getClassPanes());
+                this.getClassPanes().clear();
+                this.getClassAssets().clear();
+                this.addClassAssets();
+                this.addClassPanes();
+                this.addClassPanesToPaneWindow();
+
+                this.setWasAdded();
+            }
+
+            System.out.println("class panes: " + this.classPanes);
+            System.out.println("class coords: " + this.classPanesCoordinates);
+
+            });
 
     }
 

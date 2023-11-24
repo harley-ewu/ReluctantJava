@@ -45,11 +45,17 @@ public class ClassAsset {
 
     private int pos;
 
+    public ClassAsset(final Class currentClass) {
+        this.currentClass = currentClass;
+    }
+
     public ClassAsset(final Class currentClass, final int pos) {
         this.currentClass = currentClass;
         this.pos = pos;
         this.initAttributeList(currentClass);
     }
+
+
 
     /**
      * Creates and returns a graphical representation of a class asset within a GUI diagram project.
@@ -386,14 +392,6 @@ public class ClassAsset {
 
         ArrayList<Method> newMethods = new ArrayList<>(currentClass.getMethods());
         ArrayList<Method> deletedMethods = new ArrayList<>();
-
-
-        /*System.out.println("current local list: " + newFields);
-        System.out.println("current actual list:" + returnFieldNames(currentClass));
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();*/
 
         ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
         ObservableList<String> observableFieldsList = FXCollections.observableArrayList();

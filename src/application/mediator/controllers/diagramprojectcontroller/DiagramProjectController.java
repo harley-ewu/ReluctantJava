@@ -162,7 +162,7 @@ public class DiagramProjectController {
             } else {
                 newClass.setClassName(inputText);
                 System.out.println("Submitted Class name: " + inputText);
-                diagram.addClass(newClass.getClassName());
+                //diagram.addClass(newClass.getClassName());
                 UpdateViewController.updateAddClass(view, newClass);
                 popupStage.close();
             }
