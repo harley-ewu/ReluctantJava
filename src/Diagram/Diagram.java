@@ -45,7 +45,6 @@ public class Diagram {
    
    /*Setter for diagram title*/
    public void setTitle(final String title){
-      createSnapshot();
       this.title = title;
    }
    
@@ -158,7 +157,7 @@ public class Diagram {
       }
       else {
          return c.toString() + "\n"
-         +"---------------------\n"
+         +"--------------------------\n"
          + this.listOneClassRelationships(c);
       }
    }
@@ -226,7 +225,7 @@ public class Diagram {
 
    //prints to screen all relationships in relationshipList
    public String listAllRelationships(){
-      String str = "Relationship List: \n";
+      String str = "Relationship List: \n\n";
       int i = 1;
       for (Relationship relationship : relationshipList.values()) {
          str += String.valueOf(i) +": ";
@@ -234,7 +233,7 @@ public class Diagram {
          i++;
       }
 
-      return str;
+      return "\n--------------------------\n" + str + "\n--------------------------\n";
    }
 
    //prints to screen all relationships for one class
@@ -257,12 +256,16 @@ public class Diagram {
       return str;
    }
 
+   public DiagramCaretaker getCaretaker() {
+      return this.caretaker;
+   }
+
    public void createSnapshot() {
       DiagramMemento memento = new DiagramMemento(this);
       //caretaker.makeBackupUp(memento);
    }
 
-   private void applyMemento(DiagramMemento memento) {
+   public void applyMemento(DiagramMemento memento) {
       this.setTitle(memento.getTitle());
       this.setSaveLocation(memento.getSaveLocation());
       this.setClassList(new HashMap<>(memento.getClassList()));
@@ -270,23 +273,11 @@ public class Diagram {
    }
 
    public void undo() {
-      if (caretaker.getCurrentIndex() != -1) {
-         DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
-         applyMemento(memento);
-         if(caretaker.getCurrentIndex() != 0) {
-            caretaker.setCurrentIndex(caretaker.getCurrentIndex() - 2);
-         }
-      }
+      this.caretaker.undo(this);
    }
 
    public void redo() {
-      if (caretaker.getCurrentIndex() < caretaker.getDiagramMementoList().size() - 1) {
-         if (caretaker.getCurrentIndex() <= 1) {
-            caretaker.setCurrentIndex(caretaker.getCurrentIndex() + 2);
-         }
-         DiagramMemento memento = caretaker.getDiagram(caretaker.getCurrentIndex());
-         applyMemento(memento);
-      }
+      this.caretaker.redo(this);
    }
    
    /*
@@ -302,7 +293,7 @@ public class Diagram {
          diagramString += c.toString();
       }
       
-      return "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
+      return "\n--------------------------" + "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
    }
    
    public void setSaveLocation(String saveLocation){

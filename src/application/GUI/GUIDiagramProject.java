@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
@@ -35,15 +36,16 @@ public class GUIDiagramProject extends javafx.application.Application {
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
     //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
-    private ArrayList<Pane> relationshipPanes = new ArrayList<>();
+    private ArrayList<Line> relationshipLines = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
     private ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
     private ArrayList<Point2D> classPanesCoordinates = new ArrayList<>();
     private ArrayList<Point2D> relationshipPanesCoordinates = new ArrayList<>();
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
-    public ArrayList<Pane> getRelationshipPanes() {
-        return relationshipPanes;
+    public ArrayList<Line> getRelationshipLines() {
+        return relationshipLines;
+
     }
 
     public ArrayList<RelationshipAsset> getRelationshipAssets() {
@@ -145,8 +147,9 @@ public class GUIDiagramProject extends javafx.application.Application {
         Menu fileMenu = setUpFileMenu(stage);
         //class menu creation
         Menu classMenu = this.setUpClassMenu();
+        Menu editMenu = this.setUpEditMenu();
         //adding menus to menu bar
-        menuBar.getMenus().addAll(fileMenu,classMenu);
+        menuBar.getMenus().addAll(fileMenu,classMenu, editMenu);
         return menuBar;
     }
 
@@ -172,6 +175,21 @@ public class GUIDiagramProject extends javafx.application.Application {
         fileMenu.getItems().addAll(openItem, saveItem, loadItem, exitItem);
         return fileMenu;
     }
+
+    private Menu setUpEditMenu() {
+        Menu editMenu = new Menu("Edit");
+
+        MenuItem undoItem = new MenuItem("Undo");
+        undoItem.setOnAction(e -> this.undo());
+
+        MenuItem redoItem = new MenuItem("Redo");
+        redoItem.setOnAction(e -> this.redo());
+
+        editMenu.getItems().addAll(undoItem, redoItem);
+
+        return editMenu;
+    }
+
 
     /**
      * setup for the class menu and its items
@@ -200,6 +218,28 @@ public class GUIDiagramProject extends javafx.application.Application {
         return relationshipList;
     }
 
+
+    /**
+     * 1. description: use this method to take contents from the diagram
+     * and store in the appropriate array lists (the classes should go to the classList,
+     * the relationships should go to the relationshipList)
+     *
+     * 2. then we will take the contents from the class and relationships list
+     * convert them to class and relationship assets
+     *
+     * 3. once converted, we will create panes from each asset list and store them in the panes arraylist
+     * (we need to separate the panes list so that classes and diagram have their own respective panes and they don't
+     * interfere with the methods that use them)
+     *
+     * 4. we will then take the newly created panes arraylist and populate the contentPane
+     *
+     */
+
+
+    public void initializeDiagramContents() {
+        HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
+        this.classList.clear();
+        this.classList.addAll(diagramClasses.values());
 
     public boolean getHasMoved() {
         return this.hasMoved;
@@ -308,7 +348,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     private Pane createDraggablePane(double x, double y, ClassAsset classAsset) {
         Pane temp = classAsset.createClassAsset(this.classList, this.classPanes, this.classAssets, this.classPanesCoordinates,
-                this.relationshipPanes, this.relationshipPanesCoordinates, this);
+                this.relationshipLines, this.relationshipPanesCoordinates, this.relationshipAssets, this);
 
         temp.relocate(x,y);
 
@@ -350,6 +390,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             if (!this.hasMoved) {
                 this.hasMoved = true;
             }
+
         });
 
         this.scrollPane.setOnScroll(e -> {
@@ -358,7 +399,12 @@ public class GUIDiagramProject extends javafx.application.Application {
             temp.setLayoutY(temp.getLayoutY() + e.getDeltaY());
 
             // Consume the event to prevent scrolling of the ScrollPane
+
             e.consume();
+
+            for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            }
         });
 
         return temp;
@@ -414,17 +460,17 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
     public void addRelationshipPanes() {
         for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
-            Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipPanes, this.relationshipAssets,
-                    this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this);
-            this.relationshipPanes.add(temp);
+            Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
+                    this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            this.relationshipLines.add(temp);
         }
     }
 
     /**
      * description: populates the contentPane with the relationshipAssets list
      */
-    public void addRelationshipPanesToPaneWindow() {
-        for (Pane relationshipAsset : this.relationshipPanes) {
+    public void addRelationshipLinesToPaneWindow() {
+        for (Line relationshipAsset : this.relationshipLines) {
             this.contentPane.getChildren().add(relationshipAsset);
         }
     }
@@ -439,12 +485,12 @@ public class GUIDiagramProject extends javafx.application.Application {
      * 2. takes the elements from the updated relationshipAssets list and stores them in the newly cleared relationshipPanes list
      */
 
-    public void refreshRelationshipPanes() {
-        this.relationshipPanes.clear();
+    public void refreshRelationshipLines() {
+        this.relationshipLines.clear();
         for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
-            Pane temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipPanes, this.relationshipAssets,
-                    this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this);
-            this.relationshipPanes.add(temp);
+            Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
+                    this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this.classAssets);
+            this.relationshipLines.add(temp);
         }
     }
 
@@ -456,6 +502,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void refreshClassPanes() {
         this.classPanes.clear();
+
 
         for (int i = 0; i < this.classAssets.size(); i++) {
             double x = this.classPanesCoordinates.get(i).getX();
@@ -500,14 +547,15 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.classPanesCoordinates.clear();
 
-        for (int i = 0; i < this.relationshipPanes.size(); i++) {
-            this.relationshipPanes.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
-            this.relationshipPanes.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
-            this.contentPane.getChildren().add(this.relationshipPanes.get(i));
+        for (int i = 0; i < this.relationshipLines.size(); i++) {
+            this.relationshipLines.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
+            this.relationshipLines.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
+            this.contentPane.getChildren().add(this.relationshipLines.get(i));
         }
 
         this.relationshipPanesCoordinates.clear();
     }
+
 
     /**
      * description: this method is used in the first initialization of a diagram -- the default init positions of class panes
@@ -534,5 +582,20 @@ public class GUIDiagramProject extends javafx.application.Application {
         System.out.println("I was updated!");
     }
 
+    public void undo() {
+        this.diagram.undo();
+        System.out.println("Undoing..");
+        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        this.getClassAssets().clear();
+        this.getClassPanes().clear();
+        this.initializeDiagramContents();
+    }
 
+    public void redo() {
+        this.diagram.redo();
+        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        this.getClassAssets().clear();
+        this.getClassPanes().clear();
+        this.initializeDiagramContents();
+    }
 }

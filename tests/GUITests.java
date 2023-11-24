@@ -4,7 +4,7 @@ import Diagram.Diagram;
 import Class.Class;
 import Relationships.Relationship;
 import application.Application;
-import application.CLI.CommandLineInterface;
+
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +32,7 @@ public class GUITests {
         assertNotNull(testGUI.getClassAssets());
         assertNotNull(testGUI.getRelationshipAssets());
         assertNotNull(testGUI.getClassPanes());
-        assertNotNull(testGUI.getRelationshipPanes());
+        assertNotNull(testGUI.getRelationshipLines());
         assertNotNull(testGUI.getClassList());
         assertNotNull(testGUI.getRelationshipList());
 

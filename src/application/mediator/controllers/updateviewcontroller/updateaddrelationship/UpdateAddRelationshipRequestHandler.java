@@ -19,12 +19,12 @@ public class UpdateAddRelationshipRequestHandler implements IHandler<Void> {
     }
 
     private void updateAddRelationship(GUIDiagramProject view, Relationship relationship) {
-        view.getContentPane().getChildren().removeAll(view.getRelationshipPanes());
-        view.getRelationshipPanes().clear();
+        view.getContentPane().getChildren().removeAll(view.getRelationshipLines());
+        view.getRelationshipLines().clear();
         view.getRelationshipList().add(relationship);
         view.getRelationshipAssets().clear();
         view.addRelationshipAsset(view.getRelationshipList());
         view.addRelationshipPanes();
-        view.addRelationshipPanesToPaneWindow();
+        view.addRelationshipLinesToPaneWindow();
     }
 }

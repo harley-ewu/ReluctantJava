@@ -14,7 +14,7 @@ public class Class {
     @Expose
     private ArrayList<Method> methods = new ArrayList<>();
 
-    public Class(final String className) {
+    public Class(final String className) throws IllegalArgumentException {
         if (className == null) {
             throw new IllegalArgumentException("Class name is null.");
         }
@@ -279,11 +279,12 @@ public class Class {
             methodsString.append(method.toString().replaceAll("[\\[\\]]", "")).append("\n");
         }
 
-        return "Class Name: " + this.getClassName() + "\n"
-                +"---------------------\n"
+        return "\n--------------------------\n" + "Class Name: " + this.getClassName() + "\n"
+                +"--------------------------\n"
                 + "Fields: \n" + fieldsString
                 + "Methods: \n" + methodsString
-                + "\n";
+                + "\n"
+                + "--------------------------\n";
     }
 
 }

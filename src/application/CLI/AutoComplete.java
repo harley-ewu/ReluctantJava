@@ -16,11 +16,10 @@ public class AutoComplete {
     public AutoComplete() {
         try {
             this.terminal = TerminalBuilder.builder()
+                            .dumb(false)
                             .build();
         } catch(Exception e) {
-            System.out.println("You tryna crash the program??");
-        }
-        
+            System.out.println("You tryna crash the program??"); }
     }
 
     /**
@@ -29,7 +28,7 @@ public class AutoComplete {
     public void classLineReader(){
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add-class", "delete-class", "rename-class", "edit-class", "view-class", "view-diagram", "help", "exit")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-class", "delete-class", "rename-class", "edit-class", "view-class", "view-diagram", "save", "help", "exit")))
                     .build();
     }
 
@@ -49,7 +48,7 @@ public class AutoComplete {
     public void newClassLineReader(){
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add-attribute", "add-relationship", "view-relationships", "back", "help")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-attribute", "add-relationship", "save", "back", "help")))
                     .build();
     }
 
@@ -59,7 +58,7 @@ public class AutoComplete {
     public void editClassLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add-attribute", "delete-field", "delete-method", "rename-attribute", "display-attributes", "add-relationship", "delete-relationship", "edit-relationships", "display-relationships", "display-all", "back", "help")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-attribute", "delete-field", "delete-method", "rename-attribute", "display-attributes", "add-relationship", "delete-relationship", "edit-relationships", "display-relationships", "display-all", "add-class", "save", "back", "help")))
                     .build();
     }
 
@@ -69,7 +68,7 @@ public class AutoComplete {
     public void relationshipEditorLineReader() {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add-relationship", "delete-relationship", "back", "exit")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-relationship", "delete-relationship", "view-relationships", "save", "back", "exit")))
                     .build();
     }
 
@@ -87,14 +86,13 @@ public class AutoComplete {
             while (true) {
                 line = this.lineReader.readLine();
 
-                if (line == "") {
+                if (line.isEmpty()) {
                     break; // User pressed Enter
                 }
                 return line ;
             }
         } catch (Exception e) {
-            System.out.println("\nYou tryna crash the program??");
-        }
+            System.out.println("\nYou tryna crash the program??");}
         return line;
     }
 
@@ -115,7 +113,7 @@ public class AutoComplete {
         return false;
     }
 
-    private class SimpleCompleter implements Completer {
+    public static class SimpleCompleter implements Completer {
         private final SortedSet<String> candidates = new TreeSet<>();
 
         public SimpleCompleter(List<String> suggestions) {
@@ -123,12 +121,12 @@ public class AutoComplete {
         }
 
         /**
-        * Completes the given line. This is called by Parser#complete ( ParsedLine Candidate ) when it encounters a line that doesn't start with a word or is part of a word.
-        * 
-        * @param reader - the line reader to use. Can be null in which case the parser is not used.
-        * @param line - the line to complete. Can be null in which case the parser is not used.
-        * @param candidates - the list to fill with completions for the given
-        */
+         * Completes the given line. This is called by Parser#complete ( ParsedLine Candidate ) when it encounters a line that doesn't start with a word or is part of a word.
+         *
+         * @param reader     - the line reader to use. Can be null in which case the parser is not used.
+         * @param line       - the line to complete. Can be null in which case the parser is not used.
+         * @param candidates - the list to fill with completions for the given
+         */
         @Override
         public void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
             String word = line.word().toLowerCase();
