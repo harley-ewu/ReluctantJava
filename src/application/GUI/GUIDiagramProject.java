@@ -267,7 +267,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.addAll(diagramClasses.values());
 
         this.addClassAssets();
-        this.addClassPanes();
+        this.addMementoPanes();
         this.addClassPanesToPaneWindow();
 
         HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
@@ -382,6 +382,16 @@ public class GUIDiagramProject extends javafx.application.Application {
             double y = this.classPanesCoordinates.get(i).getY();
             ClassAsset classAsset = this.classAssets.get(i);
             Pane temp = this.createDraggablePane(x,y,classAsset);
+            this.classPanes.add(temp);
+        }
+    }
+
+    public void addMementoPanes() {
+        double x = 50;
+        double y = 50;
+        for (ClassAsset classAsset : this.classAssets) {
+            Pane temp = this.createDraggablePane(x, y, classAsset);
+            x+=temp.getWidth()+300;
             this.classPanes.add(temp);
         }
     }

@@ -16,7 +16,7 @@ public class DiagramCaretaker {
         if(this.currentIndex == this.diagramMementoList.size() -1 && !this.diagramMementoList.contains(duplicateCheck)){
             diagram.createSnapshot();
         }
-        if (this.getCurrentIndex() > 0) {
+        if (this.getCurrentIndex() != 0) {
             DiagramMemento memento = this.getDiagram(this.getCurrentIndex() - 1);
             diagram.applyMemento(memento);
             this.decrementIndex();
