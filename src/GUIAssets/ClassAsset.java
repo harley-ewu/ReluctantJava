@@ -602,6 +602,7 @@ public class ClassAsset {
             }
 
             //for fields and methods, we will clear the attributes list once and update with the local lists
+
             this.currentClass.getFields().clear();
             this.currentClass.getMethods().clear();
             this.currentClass.getFields().addAll(newFields);
@@ -613,10 +614,10 @@ public class ClassAsset {
             }
 
             for (Method deletedMethod : deletedMethods) {
-                this.currentClass.getFields().remove(deletedMethod);
+                this.currentClass.getMethods().remove(deletedMethod);
             }
 
-            Application.getCurrentDiagram().createSnapshot();
+            guiDiagramProject.getDiagram().createSnapshot();
 
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
