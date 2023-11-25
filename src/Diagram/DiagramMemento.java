@@ -3,15 +3,21 @@ package Diagram;
 import Attributes.Method;
 import Relationships.Relationship;
 import Class.Class;
+import com.google.gson.annotations.Expose;
 
 import java.util.HashMap;
 
 public class DiagramMemento {
 
+    @Expose
     private Diagram diagram;
+    @Expose
     private String saveLocation = null;
+    @Expose
     private String title;
+    @Expose
     private HashMap<String, Class> classList;
+    @Expose
     private HashMap<String, Relationship> relationshipList;
 
     public DiagramMemento(Diagram diagram) {

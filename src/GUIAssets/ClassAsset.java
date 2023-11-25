@@ -391,6 +391,7 @@ public class ClassAsset {
                 return;
             }
         }
+        //Application.getCurrentDiagram().createSnapshot();
     }
 
     public void deleteMethod(ArrayList<Method> newMethods, ArrayList<Method> deletedMethods, ComboBox<String> comboBox) {
@@ -402,6 +403,7 @@ public class ClassAsset {
                 return;
             }
         }
+        //Application.getCurrentDiagram().createSnapshot();
     }
 
     /**
@@ -494,7 +496,11 @@ public class ClassAsset {
         //add field button
         Button addFieldButton = new Button();
         addFieldButton.setText("Add Field");
-        addFieldButton.setOnAction(e -> this.addField(newFields, comboBoxFields, observableFieldsList));
+        addFieldButton.setOnAction(e ->
+                {
+                    this.addField(newFields, comboBoxFields, observableFieldsList);
+                }
+        );
 
         //delete field button
         Button deleteFieldButton = new Button();
@@ -550,7 +556,10 @@ public class ClassAsset {
         //add method button
         Button addMethodButton = new Button();
         addMethodButton.setText("Add Method");
-        addMethodButton.setOnAction(e -> this.addMethod(newMethods, comboBoxMethods, observableMethodsList));
+        addMethodButton.setOnAction(e ->
+        {
+            this.addMethod(newMethods, comboBoxMethods, observableMethodsList);
+        });
 
         //delete method button
         Button deleteMethodButton = new Button();
@@ -606,6 +615,8 @@ public class ClassAsset {
             for (Method deletedMethod : deletedMethods) {
                 this.currentClass.getFields().remove(deletedMethod);
             }
+
+            Application.getCurrentDiagram().createSnapshot();
 
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
@@ -824,6 +835,7 @@ public class ClassAsset {
                     return;
                 }
         }
+
         });
 
         //add parameter button

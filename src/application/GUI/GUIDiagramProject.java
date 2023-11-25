@@ -261,6 +261,19 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.addAll(diagramClasses.values());
     }
 
+    public void refreshDiagramContents() {
+        HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
+        this.classList.clear();
+        this.classList.addAll(diagramClasses.values());
+
+        this.addClassAssets();
+        this.addClassPanes();
+        this.addClassPanesToPaneWindow();
+
+        HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
+        this.relationshipList.addAll(relationshipClasses.values());
+    }
+
     public boolean getHasMoved() {
         return this.hasMoved;
     }
@@ -615,7 +628,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.getContentPane().getChildren().removeAll(this.getClassPanes());
         this.getClassAssets().clear();
         this.getClassPanes().clear();
-        this.initializeDiagramContents();
+        this.refreshDiagramContents();
     }
 
     public void redo() {
@@ -623,6 +636,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.getContentPane().getChildren().removeAll(this.getClassPanes());
         this.getClassAssets().clear();
         this.getClassPanes().clear();
-        this.initializeDiagramContents();
+        this.refreshDiagramContents();
     }
 }

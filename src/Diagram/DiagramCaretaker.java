@@ -1,11 +1,14 @@
 package Diagram;
 
 import application.Application;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 
 public class DiagramCaretaker {
+    @Expose
     private ArrayList<DiagramMemento> diagramMementoList = new ArrayList<>();
+    @Expose
     private int currentIndex = -1;
 
     public void undo(Diagram diagram) {
@@ -13,7 +16,7 @@ public class DiagramCaretaker {
         if(this.currentIndex == this.diagramMementoList.size() -1 && !this.diagramMementoList.contains(duplicateCheck)){
             diagram.createSnapshot();
         }
-        if (this.getCurrentIndex() != 0) {
+        if (this.getCurrentIndex() > 0) {
             DiagramMemento memento = this.getDiagram(this.getCurrentIndex() - 1);
             diagram.applyMemento(memento);
             this.decrementIndex();
