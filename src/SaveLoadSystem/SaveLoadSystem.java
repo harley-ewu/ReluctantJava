@@ -156,6 +156,10 @@ public class SaveLoadSystem {
         }
     }
 
+    /**
+     * Description: Inner class used to convert Point2D objects into Json. The Point2D objects
+     * are used to save the position of ClassAsset's in the Diagram view.
+     */
     private static class Point2DSerializer implements JsonSerializer<Point2D>{
 
         @Override
@@ -167,6 +171,10 @@ public class SaveLoadSystem {
         }
     }
 
+    /**
+     * Description: Inner class used to convert Json into Point2D objects. The Point2D objects
+     * are used to save the position of ClassAsset's in the Diagram view.
+     */
     private static class Point2DDeserializer implements JsonDeserializer<Point2D>{
 
         @Override
