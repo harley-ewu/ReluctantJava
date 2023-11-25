@@ -294,8 +294,8 @@ public class GUIDiagramProject extends javafx.application.Application {
                 this.executeSingleClassAdd(umlClass, classPane);
             }
 //keep for debugging purposes
-/*            System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);*/
+           System.out.println("class panes: " + this.classPanes);
+            System.out.println("class coords: " + this.classPanesCoordinates);
 
             });
 
@@ -322,9 +322,9 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.addClassPanes();
             this.addClassPanesToPaneWindow();
             //keeping for debugging purposes
-/*            System.out.println("I'm inside");
+            System.out.println("I'm inside");
             System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);*/
+            System.out.println("class coords: " + this.classPanesCoordinates);
             this.wasAdded = false;
         }
     }
@@ -495,24 +495,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
     }
 
-    /**
-     * description: method used to refresh the classPanes list
-     * 1. clears the current elements in the classPanes list
-     * 2. takes the elements from the updated classAssets list and stores them in the newly cleared classPanes list
-     */
-
-    public void refreshClassPanes() {
-        this.classPanes.clear();
-
-
-        for (int i = 0; i < this.classAssets.size(); i++) {
-            double x = this.classPanesCoordinates.get(i).getX();
-            double y = this.classPanesCoordinates.get(i).getY();
-            ClassAsset classAsset = this.classAssets.get(i);
-            Pane temp = this.createDraggablePane(x,y,classAsset);
-            this.classPanes.add(temp);
-        }
-    }
 
     /**
      * description: clears the contents of the contentPane and repopulates

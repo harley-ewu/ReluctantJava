@@ -607,15 +607,8 @@ public class ClassAsset {
                 this.currentClass.getFields().remove(deletedMethod);
             }
 
-            this.updateCoordinates(classAssetPaneList, classCoordinates);
-
-            //need to refresh the window with a newly created pane
-
-            //update the class asset list by taking the new class list and creating new class assets from them
-            //this.updateClassAssetListPos(classList, classAssets);
-
             //refresh the class asset panes and the window
-            guiDiagramProject.refreshClassPanes();
+            guiDiagramProject.addClassPanes();
             guiDiagramProject.refreshClassPanesToPaneWindow();
             popUpStage.close();
         });
@@ -1372,6 +1365,8 @@ public class ClassAsset {
      * @param classCoordinates
      */
     public void updateCoordinates(final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates) {
+        classCoordinates.clear();
+
         for (int i = 0; i < classAssetPaneList.size(); i++) {
             double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX();
             double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY();
