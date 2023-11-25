@@ -282,8 +282,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     /**
-     * description: takes the classAssets list, converts them to pane modules using the built in
-     * createClassAsset method and then stores them into the classPanes arraylist
+     * description: create a
      */
 
     boolean follow;
@@ -321,6 +320,11 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     }
 
+    /**
+     * Description: method for creating the new class in addSingleClassAsset()
+     * @param umlClass
+     * @param classPane
+     */
     public void executeSingleClassAdd(Class umlClass, Pane classPane) {
 
         if (this.wasAdded) {
@@ -348,11 +352,14 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
     }
 
-
     public void refreshClassHashMap() {
         this.diagram.getClassList().clear();
         IntStream.range(0, this.classList.size()).forEach(i -> this.diagram.getClassList().put(this.classList.get(i).getClassName(), this.classList.get(i)));
     }
+
+    /**
+     * description: converts class assets to draggable
+     */
 
     public void addClassPanes() {
         classPanes.clear();
@@ -365,6 +372,14 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.classPanes.add(temp);
         }
     }
+
+    /**
+     * description: turns a class box into a draggable box
+     * @param x
+     * @param y
+     * @param classAsset
+     * @return
+     */
 
     private Pane createDraggablePane(double x, double y, ClassAsset classAsset) {
         Pane temp = classAsset.createClassAsset(this.classList, this.classPanes, this.classAssets, this.classPanesCoordinates,
@@ -429,6 +444,16 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         return temp;
     }
+
+    /**
+     * description: checks if two class assets are colliding
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param otherClassPane
+     * @return
+     */
 
     private boolean isColliding(double x, double y, double width, double height, Pane otherClassPane) {
 
