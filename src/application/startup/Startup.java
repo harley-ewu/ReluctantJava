@@ -1,6 +1,9 @@
 package application.startup;
 
 import application.mediator.common.Mediator;
+import application.mediator.controllers.menubarcontroller.close.CloseRequest;
+import application.mediator.controllers.menubarcontroller.close.CloseRequestHandler;
+import application.mediator.controllers.menubarcontroller.close.CloseRequestValidator;
 import application.mediator.controllers.updateviewcontroller.initguidiagramview.InitGuiDiagramViewRequest;
 import application.mediator.controllers.updateviewcontroller.initguidiagramview.InitGuiDiagramViewRequestHandler;
 import application.mediator.controllers.updateviewcontroller.initguidiagramview.InitGuiDiagramViewRequestValidator;
@@ -21,5 +24,7 @@ public class Startup {
         Mediator.registerService(new InitGuiDiagramViewRequestValidator(), new InitGuiDiagramViewRequestHandler(), new InitGuiDiagramViewRequest(null));
         Mediator.registerService(new UpdateAddClassRequestValidator(), new UpdateAddClassRequestHandler(), new UpdateAddClassRequest(null, null));
         Mediator.registerService(new UpdateAddRelationshipRequestValidator(), new UpdateAddRelationshipRequestHandler(), new UpdateAddRelationshipRequest(null, null));
+
+        Mediator.registerService(new CloseRequestValidator(), new CloseRequestHandler(), new CloseRequest(null));
     }
 }
