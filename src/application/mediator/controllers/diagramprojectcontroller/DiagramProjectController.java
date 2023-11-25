@@ -160,11 +160,25 @@ public class DiagramProjectController {
             if(inputText.isEmpty() || inputText.length() > 50) {
                 errorLabel.setText("Please enter a non-empty name less than 50 characters.");
             } else {
-                newClass.setClassName(inputText);
-                System.out.println("Submitted Class name: " + inputText);
-                diagram.addClass(newClass.getClassName());
-                UpdateViewController.updateAddClass(view, newClass);
-                popupStage.close();
+                boolean notDuplicate = false;
+                String name = tf.getText();
+                for (Class curClass : view.getClassList()) {
+                    if (curClass.getClassName().equals(name)) {
+                        notDuplicate = true;
+                        break;
+                    }
+                }
+                if (notDuplicate) {
+                    Alert duplicateNameAlert = new Alert(Alert.AlertType.ERROR);
+                    duplicateNameAlert.setContentText("Class cannot contain duplicate name!");
+                    duplicateNameAlert.showAndWait();
+                } else {
+                    newClass.setClassName(inputText);
+                    System.out.println("Submitted Class name: " + inputText);
+                    diagram.addClass(newClass.getClassName());
+                    UpdateViewController.updateAddClass(view, newClass);
+                    popupStage.close();
+                }
             }
         });
 

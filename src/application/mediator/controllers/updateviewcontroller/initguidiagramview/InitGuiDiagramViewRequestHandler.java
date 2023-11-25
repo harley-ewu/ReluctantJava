@@ -1,5 +1,6 @@
 package application.mediator.controllers.updateviewcontroller.initguidiagramview;
 
+import GUIAssets.GUIDiagramProjectDto;
 import Relationships.Relationship;
 import Class.Class;
 import application.Application;
@@ -29,7 +30,18 @@ public class InitGuiDiagramViewRequestHandler implements IHandler {
         view.getClassList().clear();
         view.getClassList().addAll(diagramClasses.values());
 
-        view.addClassAssets(view.getClassList());
+        view.addClassAssets();
+
+        if(Application.getCurrentDiagram().getCoordinates() != null){
+            view.setHasMoved(Application.getCurrentDiagram().getCoordinates().isHasMoved());
+        }
+
+        if (!view.getHasMoved()) {
+            view.onInitClassPaneCoordinates(); //if hasMoved has been set to true within the diagram, do not execute -- need to save this boolean in json file
+        }else{
+            view.setClassPanesCoordinates(Application.getCurrentDiagram().getCoordinates().getClassPanesCoordinates());
+        }
+
         view.addClassPanes();
         view.addClassPanesToPaneWindow();
 

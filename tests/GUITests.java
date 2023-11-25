@@ -25,7 +25,7 @@ public class GUITests {
         testDiagram.addClass("Class1");
         testDiagram.addClass("Class2");
         testDiagram.addRelationship(relationship);
-        testGUI.addClassAssets(classAssets);
+        testGUI.addClassAssets();
 
         Application.setCurrentDiagram(testDiagram);
 

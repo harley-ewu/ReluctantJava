@@ -40,11 +40,16 @@ public class ClassAsset {
 
     private int pos;
 
+    public ClassAsset(final Class currentClass) {
+        this.currentClass = currentClass;
+    }
+
     public ClassAsset(final Class currentClass, final int pos) {
         this.currentClass = currentClass;
         this.pos = pos;
         this.initAttributeList(currentClass);
     }
+
 
     public Class getCurrentClass() {
         return this.currentClass;
@@ -90,6 +95,7 @@ public class ClassAsset {
 
         return this.classContainer;
     }
+
 
 
 /*    private void onMousePressed(final MouseEvent event) {
@@ -335,7 +341,7 @@ public class ClassAsset {
             //update the class asset list by taking the new class list and creating new class assets from them
             this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
-            guiDiagramProject.refreshClassPanes();
+            guiDiagramProject.addClassPanes();
             guiDiagramProject.refreshClassPanesToPaneWindow();
 
         }
@@ -415,14 +421,6 @@ public class ClassAsset {
 
         ArrayList<Method> newMethods = new ArrayList<>(currentClass.getMethods());
         ArrayList<Method> deletedMethods = new ArrayList<>();
-
-
-        System.out.println("current local list: " + newFields);
-        System.out.println("current actual list:" + returnFieldNames(currentClass));
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
 
         ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
         ObservableList<String> observableFieldsList = FXCollections.observableArrayList();
@@ -609,15 +607,8 @@ public class ClassAsset {
                 this.currentClass.getFields().remove(deletedMethod);
             }
 
-            this.updateCoordinates(classAssetPaneList, classCoordinates);
-
-            //need to refresh the window with a newly created pane
-
-            //update the class asset list by taking the new class list and creating new class assets from them
-            //this.updateClassAssetListPos(classList, classAssets);
-
             //refresh the class asset panes and the window
-            guiDiagramProject.refreshClassPanes();
+            guiDiagramProject.addClassPanes();
             guiDiagramProject.refreshClassPanesToPaneWindow();
             popUpStage.close();
         });
@@ -1374,6 +1365,8 @@ public class ClassAsset {
      * @param classCoordinates
      */
     public void updateCoordinates(final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates) {
+        classCoordinates.clear();
+
         for (int i = 0; i < classAssetPaneList.size(); i++) {
             double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinX();
             double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getMinY();

@@ -1,6 +1,7 @@
 package Diagram;
 
 import Class.Class;
+import GUIAssets.GUIDiagramProjectDto;
 import Relationships.Relationship;
 import MenuPrompts.MenuPrompts;
 import com.google.gson.annotations.Expose;
@@ -21,7 +22,10 @@ public class Diagram {
    private HashMap<String, Class> classList;
    @Expose
    private HashMap<String, Relationship> relationshipList;
+   @Expose
    private DiagramCaretaker caretaker;
+   @Expose
+   private GUIDiagramProjectDto coordinates;
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -262,7 +266,7 @@ public class Diagram {
 
    public void createSnapshot() {
       DiagramMemento memento = new DiagramMemento(this);
-      caretaker.makeBackupUp(memento);
+      //caretaker.makeBackupUp(memento);
    }
 
    public void applyMemento(DiagramMemento memento) {
@@ -279,10 +283,18 @@ public class Diagram {
    public void redo() {
       this.caretaker.redo(this);
    }
-   
+
+   public GUIDiagramProjectDto getCoordinates() {
+      return this.coordinates;
+   }
+
+   public void setCoordinates(GUIDiagramProjectDto coordinates) {
+      this.coordinates = coordinates;
+   }
+
    /*
-   Printing out entire diagram
-   */
+      Printing out entire diagram
+      */
    public String toString(){
       if (this.classList.isEmpty()) {
          return "\nDiagram " + this.title + " is empty.\n";
