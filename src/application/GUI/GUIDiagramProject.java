@@ -240,6 +240,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
         this.classList.clear();
         this.classList.addAll(diagramClasses.values());
+    }
 
     public boolean getHasMoved() {
         return this.hasMoved;
@@ -255,7 +256,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         int i = 0;
         for (Class currentClass : this.classList) {
             ClassAsset temp = new ClassAsset(currentClass, i);
-            this.classAssets.addLast(temp);
+            this.classAssets.add(temp);
             i++;
         }
 
@@ -270,7 +271,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     public void addSingleClassAsset(Class umlClass) {
         ClassAsset classAsset = new ClassAsset(umlClass);
         Pane classPane = classAsset.createClassAsset(this.classList, this.classPanes, this.classAssets,this.classPanesCoordinates,
-                this.relationshipPanes, this.relationshipPanesCoordinates, this);
+                this.relationshipLines, this.relationshipPanesCoordinates, this.relationshipAssets, this);
 
         classPane.setOpacity(0.6);
 
@@ -283,7 +284,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             }
         });
 
-        this.contentPane.getChildren().addLast(classPane);
+        this.contentPane.getChildren().add(classPane);
 
         this.contentPane.setOnMouseClicked(e -> {
             //to be used
@@ -305,13 +306,13 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         if (this.wasAdded) {
             this.follow = false;
-            this.contentPane.getChildren().removeLast();
+            this.contentPane.getChildren().remove(this.contentPane.getChildren().size() - 1);
 
             diagram.getClassList().put(umlClass.getClassName(), new Class(umlClass.getClassName()));
 
             Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
-            this.classPanesCoordinates.addLast(coordinates);
-            this.classList.addLast(umlClass);
+            this.classPanesCoordinates.add(coordinates);
+            this.classList.add(umlClass);
             //add new values in classList to the diagram class hashmap
             this.refreshClassHashMap();
             this.getContentPane().getChildren().removeAll(this.getClassPanes());
@@ -436,7 +437,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void addClassPanesToPaneWindow() {
         for (Pane classAsset : this.classPanes) {
-            this.contentPane.getChildren().addLast(classAsset);
+            this.contentPane.getChildren().add(classAsset);
         }
     }
 

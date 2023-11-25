@@ -160,11 +160,11 @@ public class DiagramProjectController {
             if(inputText.isEmpty() || inputText.length() > 50) {
                 errorLabel.setText("Please enter a non-empty name less than 50 characters.");
             } else {
-                boolean notDuplicate = true;
+                boolean notDuplicate = false;
                 String name = tf.getText();
                 for (Class curClass : view.getClassList()) {
                     if (curClass.getClassName().equals(name)) {
-                        notDuplicate = false;
+                        notDuplicate = true;
                         break;
                     }
                 }
