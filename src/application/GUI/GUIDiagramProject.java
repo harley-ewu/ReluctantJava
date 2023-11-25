@@ -3,11 +3,13 @@ package application.GUI;
 import Class.Class;
 import Diagram.Diagram;
 import GUIAssets.ClassAsset;
+import GUIAssets.GUIDiagramProjectDto;
 import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
 import application.Application;
 import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
 import application.mediator.controllers.updateviewcontroller.UpdateViewController;
+import com.google.gson.annotations.Expose;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -95,7 +97,8 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     public void setClassPanesCoordinates(ArrayList<Point2D> classPanesCoordinates) {
-        this.classPanesCoordinates = classPanesCoordinates;
+        this.classPanesCoordinates.clear();
+        this.classPanesCoordinates.addAll(classPanesCoordinates);
     }
 
     public void setWasAddedToTrue() {
@@ -407,7 +410,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             if (!this.hasMoved) {
                 this.hasMoved = true;
             }
-
+            Application.getCurrentDiagram().setCoordinates(new GUIDiagramProjectDto(true, this.classPanesCoordinates));
         });
 
         this.scrollPane.setOnScroll(e -> {
