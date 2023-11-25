@@ -25,7 +25,7 @@ public class Diagram {
    @Expose
    private DiagramCaretaker caretaker;
    @Expose
-   private static GUIDiagramProjectDto coordinates;
+   private GUIDiagramProjectDto coordinates;
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -284,12 +284,12 @@ public class Diagram {
       this.caretaker.redo(this);
    }
 
-   public static GUIDiagramProjectDto getCoordinates() {
-      return coordinates;
+   public GUIDiagramProjectDto getCoordinates() {
+      return this.coordinates;
    }
 
-   public static void setCoordinates(GUIDiagramProjectDto coords) {
-      coordinates = coords;
+   public void setCoordinates(GUIDiagramProjectDto coordinates) {
+      this.coordinates = coordinates;
    }
 
    /*

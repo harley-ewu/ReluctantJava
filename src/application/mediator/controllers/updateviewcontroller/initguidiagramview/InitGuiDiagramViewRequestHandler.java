@@ -31,9 +31,15 @@ public class InitGuiDiagramViewRequestHandler implements IHandler {
 
         view.addClassAssets();
 
+        if(!(Application.getCurrentDiagram().getCoordinates() == null)){
+            view.setHasMoved(Application.getCurrentDiagram().getCoordinates().isHasMoved());
+            view.setClassPanesCoordinates(Application.getCurrentDiagram().getCoordinates().getClassPanesCoordinates());
+        }
+
         if (!view.getHasMoved()) {
             view.onInitClassPaneCoordinates(); //if hasMoved has been set to true within the diagram, do not execute -- need to save this boolean in json file
         }
+
         view.addClassPanes();
         view.addClassPanesToPaneWindow();
 

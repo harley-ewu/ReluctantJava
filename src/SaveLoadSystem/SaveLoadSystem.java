@@ -118,7 +118,7 @@ public class SaveLoadSystem {
 
         Diagram diagram;
 
-        if(fileToBeLoaded.exists()){
+        if(fileToBeLoaded != null && fileToBeLoaded.exists()){
             try{
                 FileReader fileReader = new FileReader(fileToBeLoaded);
                 Gson gson = new GsonBuilder()

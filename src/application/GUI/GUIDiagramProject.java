@@ -82,6 +82,22 @@ public class GUIDiagramProject extends javafx.application.Application {
         stage.show();
     }
 
+    public boolean isHasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+
+    public ArrayList<Point2D> getClassPanesCoordinates() {
+        return classPanesCoordinates;
+    }
+
+    public void setClassPanesCoordinates(ArrayList<Point2D> classPanesCoordinates) {
+        this.classPanesCoordinates = classPanesCoordinates;
+    }
+
     public void setWasAddedToTrue() {
         this.wasAdded = true;
     }
