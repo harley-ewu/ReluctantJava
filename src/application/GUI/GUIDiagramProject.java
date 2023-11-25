@@ -313,8 +313,8 @@ public class GUIDiagramProject extends javafx.application.Application {
                 this.executeSingleClassAdd(umlClass, classPane);
             }
 //keep for debugging purposes
-           System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);
+           /*System.out.println("class panes: " + this.classPanes);
+            System.out.println("class coords: " + this.classPanesCoordinates);*/
 
             });
 
@@ -341,9 +341,9 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.addClassPanes();
             this.addClassPanesToPaneWindow();
             //keeping for debugging purposes
-            System.out.println("I'm inside");
+            /*System.out.println("I'm inside");
             System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);
+            System.out.println("class coords: " + this.classPanesCoordinates);*/
             this.wasAdded = false;
         }
     }
