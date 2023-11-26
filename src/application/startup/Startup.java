@@ -1,6 +1,22 @@
 package application.startup;
 
 import application.mediator.common.Mediator;
+import application.mediator.controllers.diagramprojectcontroller.addclass.*;
+import application.mediator.controllers.diagramprojectcontroller.addrelationship.*;
+import application.mediator.controllers.diagramprojectcontroller.exit.*;
+import application.mediator.controllers.diagramprojectcontroller.loadfile.LoadFileRequest;
+import application.mediator.controllers.diagramprojectcontroller.loadfile.LoadFileRequestHandler;
+import application.mediator.controllers.diagramprojectcontroller.loadfile.LoadFileRequestValidator;
+import application.mediator.controllers.diagramprojectcontroller.saveasfile.SaveAsFileRequest;
+import application.mediator.controllers.diagramprojectcontroller.saveasfile.SaveAsFileRequestHandler;
+import application.mediator.controllers.diagramprojectcontroller.saveasfile.SaveAsFileRequestValidator;
+import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequest;
+import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequestHandler;
+import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequestValidator;
+import application.mediator.controllers.mainmenucontroller.creatediagramgui.*;
+import application.mediator.controllers.mainmenucontroller.exitui.*;
+import application.mediator.controllers.mainmenucontroller.helpmaingui.*;
+import application.mediator.controllers.mainmenucontroller.viewdiagramgui.*;
 import application.mediator.controllers.menubarcontroller.close.*;
 import application.mediator.controllers.menubarcontroller.guiLoad.*;
 import application.mediator.controllers.menubarcontroller.guiSave.*;
@@ -28,5 +44,17 @@ public class Startup {
         Mediator.registerService(new GuiSaveAsRequestValidator(), new GuiSaveAsRequestHandler(), new GuiSaveAsRequest(null, null));
         Mediator.registerService(new MaximizeRequestValidator(), new MaximizeRequestHandler(), new MaximizeRequest(null));
         Mediator.registerService(new MinimizeRequestValidator(), new MinimizeRequestHandler(), new MinimizeRequest(null));
+
+        Mediator.registerService(new CreateDiagramGuiRequestValidator(), new CreateDiagramGuiRequestHandler(), new CreateDiagramGuiRequest());
+        Mediator.registerService(new ExitUiRequestValidator(), new ExitUiRequestHandler(), new ExitUiRequest());
+        Mediator.registerService(new HelpMainGuiRequestValidator(), new HelpMainGuiRequestHandler(), new HelpMainGuiRequest());
+        Mediator.registerService(new ViewDiagramGuiRequestValidator(), new ViewDiagramGuiRequestHandler(), new ViewDiagramGuiRequest());
+
+        Mediator.registerService(new AddClassRequestValidator(), new AddClassRequestHandler(), new AddClassRequest());
+        Mediator.registerService(new AddRelationshipRequestValidator(), new AddRelationshipRequestHandler(), new AddRelationshipRequest());
+        Mediator.registerService(new ExitRequestValidator(), new ExitRequestHandler(), new ExitRequest());
+        Mediator.registerService(new LoadFileRequestValidator(), new LoadFileRequestHandler(), new LoadFileRequest(null));
+        Mediator.registerService(new SaveAsFileRequestValidator(), new SaveAsFileRequestHandler(), new SaveAsFileRequest(null));
+        Mediator.registerService(new SaveFileRequestValidator(), new SaveFileRequestHandler(), new SaveFileRequest());
     }
 }

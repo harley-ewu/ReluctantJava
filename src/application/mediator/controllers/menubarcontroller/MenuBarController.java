@@ -19,7 +19,7 @@ public class MenuBarController {
 
     @FXML
     public void handleSaveAs(ActionEvent event) {
-        Request request = new GuiSaveAsRequest(event, this.hbMenuBar);
+        Request request = new GuiSaveAsRequest(event, hbMenuBar);
         Mediator.send(request);
     }
 
@@ -31,7 +31,7 @@ public class MenuBarController {
 
     @FXML
     public void handleLoad(ActionEvent event) {
-        Request request = new GuiLoadRequest(event, this.hbMenuBar);
+        Request request = new GuiLoadRequest(event, hbMenuBar);
         Mediator.send(request);
     }
 

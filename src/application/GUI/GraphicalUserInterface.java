@@ -4,6 +4,7 @@ import Diagram.Diagram;
 import application.Application;
 import application.UserInterface;
 import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
+import application.mediator.controllers.menubarcontroller.MenuBarController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -154,7 +155,7 @@ public class GraphicalUserInterface extends javafx.application.Application imple
 
     private static void save() {
         if(Application.getCurrentDiagram().getSaveLocation() == null){
-            DiagramProjectController.saveAsFile(mainMenuStage);
+            DiagramProjectController.saveAsFile(diagramStage);
         }else{
             DiagramProjectController.saveFile();
         }

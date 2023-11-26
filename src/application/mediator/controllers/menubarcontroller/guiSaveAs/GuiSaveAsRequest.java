@@ -9,7 +9,7 @@ public class GuiSaveAsRequest extends Request {
     private final HBox menuBar;
 
     public GuiSaveAsRequest(ActionEvent event, HBox menuBar){
-        super("GuiLoadRequest");
+        super("GuiSaveAsRequest");
         this.event = event;
         this.menuBar = menuBar;
     }

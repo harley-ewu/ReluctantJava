@@ -8,6 +8,7 @@ import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
 import application.Application;
 import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
+import application.mediator.controllers.menubarcontroller.MenuBarController;
 import application.mediator.controllers.updateviewcontroller.UpdateViewController;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
