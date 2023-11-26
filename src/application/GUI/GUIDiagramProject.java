@@ -35,19 +35,19 @@ public class GUIDiagramProject extends javafx.application.Application {
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
     //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
-    private ArrayList<Line> relationshipLines = new ArrayList<>();
+    private static ArrayList<Line> relationshipLines = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
-    private ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
+    private static ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
     private ArrayList<Point2D> classPanesCoordinates = new ArrayList<>();
     private ArrayList<Point2D> relationshipPanesCoordinates = new ArrayList<>();
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
-    public ArrayList<Line> getRelationshipLines() {
+    public static ArrayList<Line> getRelationshipLines() {
         return relationshipLines;
 
     }
 
-    public ArrayList<RelationshipAsset> getRelationshipAssets() {
+    public static ArrayList<RelationshipAsset> getRelationshipAssets() {
         return relationshipAssets;
     }
 
@@ -97,6 +97,8 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classPanesCoordinates.clear();
         this.classPanesCoordinates.addAll(classPanesCoordinates);
     }
+
+    public ArrayList<Point2D> getRelationshipPanesCoordinates() { return relationshipPanesCoordinates; }
 
     public void setWasAddedToTrue() {
         this.wasAdded = true;
