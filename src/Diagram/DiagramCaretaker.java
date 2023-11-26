@@ -14,7 +14,7 @@ public class DiagramCaretaker {
     public void undo(Diagram diagram) {
         DiagramMemento duplicateCheck = new DiagramMemento(diagram);
         if(this.currentIndex == this.diagramMementoList.size() -1 && !this.diagramMementoList.contains(duplicateCheck)){
-            diagram.createSnapshot();
+            //diagram.createSnapshot();
         }
         if (this.getCurrentIndex() != 0) {
             DiagramMemento memento = this.getDiagram(this.getCurrentIndex() - 1);
@@ -43,8 +43,6 @@ public class DiagramCaretaker {
     public int getCurrentIndex() {
         return this.currentIndex;
     }
-
-    public void setCurrentIndex(int index) { this.currentIndex = index;}
     public void incrementIndex() {
         if (currentIndex != diagramMementoList.size()) {
             this.currentIndex++;

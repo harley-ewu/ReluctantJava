@@ -79,8 +79,11 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
-         createSnapshot();
+         if (classList.isEmpty()){
+            createSnapshot();
+         }
          this.classList.put(className, new Class(className));
+         createSnapshot();
       }
       else {
          System.out.println("Class already exists.");

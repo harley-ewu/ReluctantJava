@@ -498,7 +498,7 @@ public class ClassAsset {
         addFieldButton.setText("Add Field");
         addFieldButton.setOnAction(e ->
                 {
-                    Application.getCurrentDiagram().createSnapshot();
+                    //Application.getCurrentDiagram().createSnapshot();
                     this.addField(newFields, comboBoxFields, observableFieldsList);
                 }
         );
@@ -559,8 +559,8 @@ public class ClassAsset {
         addMethodButton.setText("Add Method");
         addMethodButton.setOnAction(e ->
         {
-            Application.getCurrentDiagram().createSnapshot();
             this.addMethod(newMethods, comboBoxMethods, observableMethodsList);
+            //Application.getCurrentDiagram().createSnapshot();
         });
 
         //delete method button
@@ -619,6 +619,7 @@ public class ClassAsset {
                 this.currentClass.getMethods().remove(deletedMethod);
             }
 
+            
             guiDiagramProject.getDiagram().createSnapshot();
 
             //refresh the class asset panes and the window
