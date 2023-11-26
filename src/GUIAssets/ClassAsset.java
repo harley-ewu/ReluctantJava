@@ -422,13 +422,18 @@ public class ClassAsset {
         ArrayList<Method> newMethods = new ArrayList<>(currentClass.getMethods());
         ArrayList<Method> deletedMethods = new ArrayList<>();
 
+        //TODO:this needs to be displayed in the combobox
+        ArrayList<Relationship> currentRelationships = new ArrayList<>();
+        //TODO:this is where you will send a relationship when the "delete" button is clicked
+        ArrayList<Relationship> deletedRelationships = new ArrayList<>();
+
         ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
         ObservableList<String> observableFieldsList = FXCollections.observableArrayList();
 
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(640);
-        popUpStage.setHeight(540);
+        popUpStage.setHeight(640);
         popUpStage.setResizable(false);
         Pane root = new Pane();
         Scene scene = new Scene(root, 640, 540);
@@ -446,7 +451,7 @@ public class ClassAsset {
 
         miscText.getChildren().addAll(onSubmit, deletedList);
         miscText.setLayoutX(20);
-        miscText.setLayoutY(scene.getHeight()-200);
+        miscText.setLayoutY(scene.getHeight()-100);
 
         //edit class name
         Text currentName = new Text("Current class name: " + this.currentClass.getClassName());
@@ -570,6 +575,28 @@ public class ClassAsset {
         methodsButtonContainer.getChildren().addAll(editMethodButton, addMethodButton, deleteMethodButton);
         methodsHBox.getChildren().addAll(methodsButtonContainer);
 
+        HBox relationshipsHBox = new HBox();
+        relationshipsHBox.setSpacing(130);
+
+        ComboBox<String> comboBoxRelationships = new ComboBox();
+
+
+        relationshipsHBox.getChildren().add(comboBoxRelationships);
+        relationshipsHBox.setLayoutX(scene.getWidth()/8);
+        relationshipsHBox.setLayoutY(scene.getHeight()-180);
+        comboBoxRelationships.setValue("Relationships");
+        comboBoxRelationships.setPrefWidth(140);
+
+        //edit field button
+        Button deleteRelationshipButton = new Button();
+        deleteRelationshipButton.setText("Delete Relationship");
+        deleteRelationshipButton.setOnAction(e -> {
+            System.out.println("write delete code here");
+            //TODO: add the logic here for deleting a relationship (you will need to add to the "deletedRelationships" list)
+
+        });
+
+        relationshipsHBox.getChildren().add(deleteRelationshipButton);
         //Submit button
         HBox submitButtonContainer = new HBox();
         submitButtonContainer.setSpacing(50);
@@ -591,12 +618,15 @@ public class ClassAsset {
                     this.currentClass.setClassName(newNameField.getText());
                 }
             }
-
+            //TODO: this will need to be the case for relationships too
             //for fields and methods, we will clear the attributes list once and update with the local lists
             this.currentClass.getFields().clear();
             this.currentClass.getMethods().clear();
             this.currentClass.getFields().addAll(newFields);
             this.currentClass.getMethods().addAll(newMethods);
+
+
+            //TODO: this will need to be the case for relationships too
 
             //apply deleted attributes
             for (Field deletedField : deletedFields) {
@@ -622,13 +652,14 @@ public class ClassAsset {
             newMethods.clear();
             deletedFields.clear();
             deletedMethods.clear();
+            deletedRelationships.clear();
             popUpStage.close();
         }
         );
 
         submitButtonContainer.getChildren().addAll(submitButton, cancelButton);
         submitButtonContainer.setLayoutX(root.getWidth()/2-80);
-        submitButtonContainer.setLayoutY(root.getHeight()-100);
+        submitButtonContainer.setLayoutY(root.getHeight()-20);
 
 
         for (String method : this.methods) {
@@ -640,9 +671,9 @@ public class ClassAsset {
         Rectangle background = new Rectangle();
         background.setStyle("-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;");
         background.setWidth(scene.getWidth()-18);
-        background.setHeight(scene.getHeight()-110);
+        background.setHeight(scene.getHeight()-40);
 
-        root.getChildren().addAll(background, currentName,newNameAddContainer,fieldsHBox, methodsHBox, submitButtonContainer, miscText);
+        root.getChildren().addAll(background, currentName,newNameAddContainer,fieldsHBox, methodsHBox, relationshipsHBox,submitButtonContainer, miscText);
 
         popUpStage.setTitle("Class Editor");
         popUpStage.setScene(scene);
