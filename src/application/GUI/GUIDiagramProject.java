@@ -9,8 +9,6 @@ import Relationships.Relationship;
 import application.Application;
 import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
 import application.mediator.controllers.updateviewcontroller.UpdateViewController;
-import com.google.gson.annotations.Expose;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,7 +18,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.IntStream;
@@ -418,6 +415,10 @@ public class GUIDiagramProject extends javafx.application.Application {
                temp.setLayoutY(newY);
             }
             e.consume();
+
+            for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            }
         });
 
         temp.setOnMouseReleased(e -> {
@@ -426,6 +427,10 @@ public class GUIDiagramProject extends javafx.application.Application {
                 this.hasMoved = true;
             }
             Application.getCurrentDiagram().setCoordinates(new GUIDiagramProjectDto(true, this.classPanesCoordinates));
+
+            for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            }
         });
 
         this.scrollPane.setOnScroll(e -> {
