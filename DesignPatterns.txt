@@ -34,7 +34,7 @@ Strategy:
 
 Chain of Responsibilities:
 
-    In the controllers package, there are a multitude of subpackages, that represnet controllers,
+    In the controllers package, there are a multitude of subpackages, that represent controllers,
     and subpackages for each controller function with a request, validator, and handler. An
     initial request is created, and then sent to a mediator for validation and handling.
 
