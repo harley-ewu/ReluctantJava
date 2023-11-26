@@ -12,7 +12,7 @@ import javafx.stage.Window;
 import java.io.File;
 
 public class GuiLoadRequestHandler implements IHandler {
-    public Void handle(Request request){
+    public Void handle(Request request) {
         GuiLoadRequest newRequest = (GuiLoadRequest) request;
         HBox menuBar = newRequest.getMenuBar();
 
@@ -27,15 +27,17 @@ public class GuiLoadRequestHandler implements IHandler {
                 new FileChooser.ExtensionFilter("JSON file", "*.json")
         );
 
-        try{
+        try {
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
             Application.setCurrentDiagram(diagram);
-            System.out.println("Successfully loaded project. \n");
-        }catch(NullPointerException nullPointerException){
+            if (diagram != null) {
+                System.out.println("Successfully loaded project. \n");
+            }
+        } catch (NullPointerException nullPointerException) {
             nullPointerException.printStackTrace();
             System.out.println("Cancelled Load. \n");
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println("There was an error trying to load the project. \n");
         }
         return null;

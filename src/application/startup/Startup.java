@@ -1,18 +1,15 @@
 package application.startup;
 
 import application.mediator.common.Mediator;
-import application.mediator.controllers.menubarcontroller.close.CloseRequest;
-import application.mediator.controllers.menubarcontroller.close.CloseRequestHandler;
-import application.mediator.controllers.menubarcontroller.close.CloseRequestValidator;
-import application.mediator.controllers.updateviewcontroller.initguidiagramview.InitGuiDiagramViewRequest;
-import application.mediator.controllers.updateviewcontroller.initguidiagramview.InitGuiDiagramViewRequestHandler;
-import application.mediator.controllers.updateviewcontroller.initguidiagramview.InitGuiDiagramViewRequestValidator;
-import application.mediator.controllers.updateviewcontroller.updateaddclass.UpdateAddClassRequest;
-import application.mediator.controllers.updateviewcontroller.updateaddclass.UpdateAddClassRequestHandler;
-import application.mediator.controllers.updateviewcontroller.updateaddclass.UpdateAddClassRequestValidator;
-import application.mediator.controllers.updateviewcontroller.updateaddrelationship.UpdateAddRelationshipRequest;
-import application.mediator.controllers.updateviewcontroller.updateaddrelationship.UpdateAddRelationshipRequestHandler;
-import application.mediator.controllers.updateviewcontroller.updateaddrelationship.UpdateAddRelationshipRequestValidator;
+import application.mediator.controllers.menubarcontroller.close.*;
+import application.mediator.controllers.menubarcontroller.guiLoad.*;
+import application.mediator.controllers.menubarcontroller.guiSave.*;
+import application.mediator.controllers.menubarcontroller.guiSaveAs.*;
+import application.mediator.controllers.menubarcontroller.maximize.*;
+import application.mediator.controllers.menubarcontroller.minimize.*;
+import application.mediator.controllers.updateviewcontroller.initguidiagramview.*;
+import application.mediator.controllers.updateviewcontroller.updateaddclass.*;
+import application.mediator.controllers.updateviewcontroller.updateaddrelationship.*;
 
 
 public class Startup {
@@ -26,5 +23,10 @@ public class Startup {
         Mediator.registerService(new UpdateAddRelationshipRequestValidator(), new UpdateAddRelationshipRequestHandler(), new UpdateAddRelationshipRequest(null, null));
 
         Mediator.registerService(new CloseRequestValidator(), new CloseRequestHandler(), new CloseRequest(null));
+        Mediator.registerService(new GuiLoadRequestValidator(), new GuiLoadRequestHandler(), new GuiLoadRequest(null, null));
+        Mediator.registerService(new GuiSaveRequestValidator(), new GuiSaveRequestHandler(), new GuiSaveRequest());
+        Mediator.registerService(new GuiSaveAsRequestValidator(), new GuiSaveAsRequestHandler(), new GuiSaveAsRequest(null, null));
+        Mediator.registerService(new MaximizeRequestValidator(), new MaximizeRequestHandler(), new MaximizeRequest(null));
+        Mediator.registerService(new MinimizeRequestValidator(), new MinimizeRequestHandler(), new MinimizeRequest(null));
     }
 }

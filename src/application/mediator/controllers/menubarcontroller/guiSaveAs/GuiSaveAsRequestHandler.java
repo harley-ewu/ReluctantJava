@@ -21,7 +21,7 @@ public class GuiSaveAsRequestHandler implements IHandler {
         String homeFolder = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
         Diagram diagram = Application.getCurrentDiagram();
-        Window stage =  menuBar.getScene().getWindow();
+        Window stage = menuBar.getScene().getWindow();
 
         if(diagram == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
