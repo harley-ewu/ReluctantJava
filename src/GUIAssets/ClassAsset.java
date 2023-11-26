@@ -498,6 +498,7 @@ public class ClassAsset {
         addFieldButton.setText("Add Field");
         addFieldButton.setOnAction(e ->
                 {
+                    Application.getCurrentDiagram().createSnapshot();
                     this.addField(newFields, comboBoxFields, observableFieldsList);
                 }
         );
@@ -558,6 +559,7 @@ public class ClassAsset {
         addMethodButton.setText("Add Method");
         addMethodButton.setOnAction(e ->
         {
+            Application.getCurrentDiagram().createSnapshot();
             this.addMethod(newMethods, comboBoxMethods, observableMethodsList);
         });
 

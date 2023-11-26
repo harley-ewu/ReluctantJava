@@ -6,6 +6,7 @@ import Class.Class;
 import com.google.gson.annotations.Expose;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class DiagramMemento {
 
@@ -23,7 +24,7 @@ public class DiagramMemento {
     public DiagramMemento(Diagram diagram) {
         this.diagram = diagram;
         this.title = diagram.getTitle();
-        this.classList = new HashMap<>(diagram.getClassList());
+        this.classList = deepCopy(diagram.getClassList());
         this.relationshipList = new HashMap<>(diagram.getRelationshipList());
     }
 
@@ -36,6 +37,14 @@ public class DiagramMemento {
     public HashMap<String, Class> getClassList() {return this.classList;}
 
     public HashMap<String, Relationship> getRelationshipList() {return this.relationshipList;}
+
+    private HashMap<String, Class> deepCopy(HashMap<String, Class> original) {
+        HashMap<String, Class> copy = new HashMap<>();
+        for (Map.Entry<String, Class> entry : original.entrySet()) {
+            copy.put(entry.getKey(), entry.getValue().clone());
+        }
+        return copy;
+    }
 
     @Override
     public boolean equals(Object o) {
