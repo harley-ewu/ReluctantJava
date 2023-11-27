@@ -266,9 +266,9 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.clear();
         this.classList.addAll(diagramClasses.values());
 
-        this.classAssets.clear();
+        //this.classAssets.clear();
         this.addClassAssets();
-        this.addClassPanes();
+        this.addMementoPanes();
         this.addClassPanesToPaneWindow();
 
         HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();

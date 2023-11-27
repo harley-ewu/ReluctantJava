@@ -51,7 +51,8 @@ public class DiagramMemento {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DiagramMemento memento = (DiagramMemento) o;
-        return this.title.equals(memento.getTitle()) &&
+        return this.diagram.equals(memento.getDiagram()) &&
+                this.title.equals(memento.getTitle()) &&
                 this.classList.equals(memento.getClassList()) &&
                 this.relationshipList.equals(memento.getRelationshipList());
     }

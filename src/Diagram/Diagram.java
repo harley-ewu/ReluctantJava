@@ -101,8 +101,9 @@ public class Diagram {
       if (deletedClass.getClassName().isEmpty()) {
          return;
       }
-      createSnapshot();
+
       classList.remove(deletedClass.getClassName());
+      createSnapshot();
       
       for(Class item : classList.values()){
          this.deleteRelationship(deletedClass, item);
