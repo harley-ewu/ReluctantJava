@@ -52,3 +52,9 @@ Command:
     the command.
 
 Memento:
+
+    The DiagramMemento class stores the current condition of a Diagram before any changes are applied.
+    Inside a Diagram object is an instance of a DiagramCaretaker. Inside this caretaker is a list of all the
+    DiagramMemento's made over the course of a project and the logic required to set the Diagram to a previous
+    instance of itself. The Diagram itself has a method called createSnapshot() that allows it to make a memento
+    of itself during each change.
