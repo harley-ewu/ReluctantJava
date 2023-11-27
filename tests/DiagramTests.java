@@ -148,10 +148,10 @@ public class DiagramTests {
 
 		Class wrongClass = new Class("classTestWrong");
 		UMLDiagram.renameClass(wrongClass, "newName");
-		assertEquals("Class does not exist to rename.\r\n", outContent.toString());
+		assertEquals("Class does not exist to rename.\n", outContent.toString().replace("\r\n", "\n"));
 
 		UMLDiagram.renameClass(null, "newName");
-		assertEquals("Class does not exist to rename.\r\nBad Parameters\r\n", outContent.toString());
+		assertEquals("Class does not exist to rename.\nBad Parameters\n", outContent.toString().replace("\r\n", "\n"));
 	}
 
 	@Test
