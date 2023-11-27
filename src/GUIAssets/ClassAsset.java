@@ -289,6 +289,7 @@ public class ClassAsset {
 
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
+
             //get the x/y positions from the remaining class asset panes
 
             this.updateCoordinates(classAssetPaneList, classCoordinates);
@@ -455,7 +456,12 @@ public class ClassAsset {
         //add field button
         Button addFieldButton = new Button();
         addFieldButton.setText("Add Field");
-        addFieldButton.setOnAction(e -> this.addField(newFields, comboBoxFields, observableFieldsList));
+        addFieldButton.setOnAction(e ->
+                {
+                    //Application.getCurrentDiagram().createSnapshot();
+                    this.addField(newFields, comboBoxFields, observableFieldsList);
+                }
+        );
 
         //delete field button
         Button deleteFieldButton = new Button();
@@ -511,7 +517,11 @@ public class ClassAsset {
         //add method button
         Button addMethodButton = new Button();
         addMethodButton.setText("Add Method");
-        addMethodButton.setOnAction(e -> this.addMethod(newMethods, comboBoxMethods, observableMethodsList));
+        addMethodButton.setOnAction(e ->
+        {
+            this.addMethod(newMethods, comboBoxMethods, observableMethodsList);
+            //Application.getCurrentDiagram().createSnapshot();
+        });
 
         //delete method button
         Button deleteMethodButton = new Button();
@@ -582,6 +592,7 @@ public class ClassAsset {
                 }
             }
             //for fields and methods, we will clear the attributes list once and update with the local lists
+
             this.currentClass.getFields().clear();
             this.currentClass.getMethods().clear();
             this.currentClass.getFields().addAll(newFields);
@@ -599,7 +610,7 @@ public class ClassAsset {
             }
 
             for (Method deletedMethod : deletedMethods) {
-                this.currentClass.getFields().remove(deletedMethod);
+                this.currentClass.getMethods().remove(deletedMethod);
             }
             //apply deleted relationships
             for(Relationship deletedRelationship : deletedRelationships) {
@@ -614,7 +625,11 @@ public class ClassAsset {
                 }
             }
 
+            
+            guiDiagramProject.getDiagram().createSnapshot();
+
             //refresh the class asset panes and the window
+            guiDiagramProject.getContentPane().getChildren().clear();
             guiDiagramProject.addClassPanes();
             guiDiagramProject.addClassPanesToPaneWindow();
             //guiDiagramProject.refreshClassPanesToPaneWindow();
@@ -833,6 +848,7 @@ public class ClassAsset {
                     return;
                 }
         }
+
         });
 
         //add parameter button

@@ -268,26 +268,29 @@ public class CommandLineInterface implements UserInterface {
     private static Diagram loadDiagram() {
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Enter the path to the file you want to load:");
+        System.out.println("Enter the path to the file you want to load: (Type \"quit\" if you want to return)");
         System.out.print("--> ");
         String filePath = scan.nextLine();
 
-        System.out.println("Enter the name of the file you want to load (without .json extension):");
+        if(filePath.equals("quit")){
+            return Application.getCurrentDiagram();
+        }
+
+        System.out.println("Enter the name of the file you want to load (without .json extension): (Type \"quit\" if you want to return)");
         System.out.print("--> ");
         String fileName = scan.nextLine();
 
-        /*
-        try {
-            //var loadedClasses = SaveLoadSystem.load(filePath);
-            System.out.println("Diagram loaded successfully.");
-            Diagram diagram = new Diagram("");
-            //diagram.setClassList(loadedClasses);
-            return new Diagram("");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid file path. Please enter a valid path.");
-        } catch (Exception e) {
-            System.out.println("An error occurred while loading the diagram.");
-        }*/
+        if(fileName.equals("quit")){
+            return Application.getCurrentDiagram();
+        }
+
+        if(filePath.isEmpty()){
+            System.out.println("You must enter a valid file path.");
+            return null;
+        }else if(fileName.isEmpty()){
+            System.out.println("You must enter a valid file name.");
+            return null;
+        }
         Diagram loadedDiagram = SaveLoadSystem.loadDiagramCLI(filePath, fileName);
         if (loadedDiagram == null) {
             System.out.println("Diagram was not found!");

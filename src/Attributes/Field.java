@@ -3,7 +3,7 @@ package Attributes;
 import com.google.gson.annotations.Expose;
 
 
-public class Field{
+public class Field implements Cloneable{
     @Expose
     private String primitive;
 
@@ -80,5 +80,14 @@ public class Field{
     @Override
     public String toString() {
         return ( this.name + ": " + this.primitive.replaceAll("[\\[\\]]", ""));
+    }
+
+    @Override
+    public Field clone() {
+        try {
+            return (Field) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

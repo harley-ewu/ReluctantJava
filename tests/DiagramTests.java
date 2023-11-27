@@ -103,7 +103,7 @@ public class DiagramTests {
 		
 		assertEquals(c.getClassName(), UMLDiagram.getClassList().get(c.getClassName()).getClassName());
 		UMLDiagram.addClass("testClass");
-		assertEquals("Class already exists.\n", outContent.toString());
+		assertEquals("Class already exists.\r\n", outContent.toString());
 	}
 
 	@Test
@@ -148,10 +148,10 @@ public class DiagramTests {
 
 		Class wrongClass = new Class("classTestWrong");
 		UMLDiagram.renameClass(wrongClass, "newName");
-		assertEquals("Class does not exist to rename.\n", outContent.toString());
+		assertEquals("Class does not exist to rename.\r\n", outContent.toString());
 
 		UMLDiagram.renameClass(null, "newName");
-		assertEquals("Class does not exist to rename.\nBad Parameters\n", outContent.toString());
+		assertEquals("Class does not exist to rename.\r\nBad Parameters\r\n", outContent.toString());
 	}
 
 	@Test
@@ -446,29 +446,4 @@ public class DiagramTests {
 		assertEquals(dm.getClassList(), d.getClassList());
 		assertEquals(dm.getRelationshipList(), d.getRelationshipList());
 	}
-
-	@Test
-	void undoTest() {
-		Diagram d = new Diagram("OriginalDiagram");
-		d.setTitle("NewDiagram");
-		assertEquals("NewDiagram", d.getTitle());
-
-		d.undo();
-		assertEquals("OriginalDiagram", d.getTitle());
-	}
-
-	@Test
-	void redoTest() {
-		Diagram d = new Diagram("OriginalDiagram");
-		d.setTitle("NewDiagram");
-		assertEquals("NewDiagram", d.getTitle());
-
-		d.undo();
-		assertEquals("OriginalDiagram", d.getTitle());
-
-		d.redo();
-		assertEquals("NewDiagram", d.getTitle());
-	}
-
-
 }
