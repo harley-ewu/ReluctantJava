@@ -34,12 +34,21 @@ Strategy:
 
 Chain of Responsibilities:
 
-    Everything in the requests, validators, and handlers package is related to the chain of
-    responsibilities pattern. An initial request is created, and then sent to a mediator for
-    validation and handling.
+    In the controllers package, there are a multitude of subpackages, that represent controllers,
+    and subpackages for each controller function with a request, validator, and handler. An
+    initial request is created, and then sent to a mediator for validation and handling.
 
 Mediator:
 
     The mediator registers services (request, validator, and handler), and serves as a central
     point to allow requests to hit each component in a service
 
+Command:
+
+    There is an abstract 'Request' class, representing a wrapper object for arguments to be sent
+    to validators and request handlers through the mediator. This slightly varies, as instead of
+    holding an abstract method in the command itself, the commands are passed into handlers, with
+    an abstract method taking the place of the abstract method that is typically stored within
+    the command.
+
+Memento:

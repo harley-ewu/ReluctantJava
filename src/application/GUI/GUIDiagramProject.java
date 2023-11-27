@@ -8,9 +8,8 @@ import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
 import application.Application;
 import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
+import application.mediator.controllers.menubarcontroller.MenuBarController;
 import application.mediator.controllers.updateviewcontroller.UpdateViewController;
-import com.google.gson.annotations.Expose;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,7 +19,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.IntStream;
@@ -38,19 +36,19 @@ public class GUIDiagramProject extends javafx.application.Application {
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
     //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
-    private ArrayList<Line> relationshipLines = new ArrayList<>();
+    private static ArrayList<Line> relationshipLines = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
-    private ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
+    private static ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
     private ArrayList<Point2D> classPanesCoordinates = new ArrayList<>();
     private ArrayList<Point2D> relationshipPanesCoordinates = new ArrayList<>();
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
-    public ArrayList<Line> getRelationshipLines() {
+    public static ArrayList<Line> getRelationshipLines() {
         return relationshipLines;
 
     }
 
-    public ArrayList<RelationshipAsset> getRelationshipAssets() {
+    public static ArrayList<RelationshipAsset> getRelationshipAssets() {
         return relationshipAssets;
     }
 
@@ -100,6 +98,8 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classPanesCoordinates.clear();
         this.classPanesCoordinates.addAll(classPanesCoordinates);
     }
+
+    public ArrayList<Point2D> getRelationshipPanesCoordinates() { return relationshipPanesCoordinates; }
 
     public void setWasAddedToTrue() {
         this.wasAdded = true;
@@ -443,6 +443,10 @@ public class GUIDiagramProject extends javafx.application.Application {
                temp.setLayoutY(newY);
             }
             e.consume();
+
+            for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            }
         });
 
         temp.setOnMouseReleased(e -> {
@@ -451,6 +455,10 @@ public class GUIDiagramProject extends javafx.application.Application {
                 this.hasMoved = true;
             }
             Application.getCurrentDiagram().setCoordinates(new GUIDiagramProjectDto(true, this.classPanesCoordinates));
+
+            for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            }
         });
 
         this.scrollPane.setOnScroll(e -> {

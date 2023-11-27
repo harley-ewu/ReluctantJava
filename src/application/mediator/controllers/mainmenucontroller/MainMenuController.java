@@ -3,35 +3,32 @@ package application.mediator.controllers.mainmenucontroller;
 import application.Application;
 import application.CLI.CommandLineInterface;
 import application.GUI.GraphicalUserInterface;
+import application.mediator.common.Mediator;
+import application.mediator.common.Request;
+import application.mediator.controllers.mainmenucontroller.creatediagramgui.CreateDiagramGuiRequest;
+import application.mediator.controllers.mainmenucontroller.exitui.ExitUiRequest;
+import application.mediator.controllers.mainmenucontroller.helpmaingui.HelpMainGuiRequest;
+import application.mediator.controllers.mainmenucontroller.viewdiagramgui.ViewDiagramGuiRequest;
 
 public class MainMenuController {
 
     public void createDiagramGUI() throws Exception{
-        if(GraphicalUserInterface.getCurrentDiagram() != null) {
-            GraphicalUserInterface.showSavePrompt();
-        }
-        else{
-            GraphicalUserInterface.openPopup();
-            System.out.println("Diagram created");
-        }     
+        Request request = new CreateDiagramGuiRequest();
+        Mediator.send(request);
     }
 
     public void viewDiagramGUI() throws Exception{
-        if(Application.getCurrentDiagram() != null) {
-            GraphicalUserInterface.openDiagram(Application.getCurrentDiagram());
-            System.out.println("Editing/Viewing Diagram");
-        }else{
-            GraphicalUserInterface.noDiagramLoadedAlert();
-        }
-        
+        Request request = new ViewDiagramGuiRequest();
+        Mediator.send(request);
     }
 
     public void helpMainGUI(){
-        GraphicalUserInterface.displayHelpPopup();
-        System.out.println("Help Menu");
+        Request request = new HelpMainGuiRequest();
+        Mediator.send(request);
     }
 
     public void exitUI(){
-        System.exit(0);
+        Request request = new ExitUiRequest();
+        Mediator.send(request);
     }
 }

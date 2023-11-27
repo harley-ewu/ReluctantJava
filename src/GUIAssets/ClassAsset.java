@@ -424,13 +424,17 @@ public class ClassAsset {
         ArrayList<Method> newMethods = new ArrayList<>(currentClass.getMethods());
         ArrayList<Method> deletedMethods = new ArrayList<>();
 
+        ArrayList<Relationship> currentRelationships = new ArrayList<>(Application.getCurrentDiagram().getSingleClassRelationships(this.currentClass));
+        ArrayList<Relationship> deletedRelationships = new ArrayList<>();
+
         ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
         ObservableList<String> observableFieldsList = FXCollections.observableArrayList();
+        ObservableList<String> observableRelatinoshipsList = FXCollections.observableArrayList();
 
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(640);
-        popUpStage.setHeight(540);
+        popUpStage.setHeight(640);
         popUpStage.setResizable(false);
         Pane root = new Pane();
         Scene scene = new Scene(root, 640, 540);
@@ -448,7 +452,7 @@ public class ClassAsset {
 
         miscText.getChildren().addAll(onSubmit, deletedList);
         miscText.setLayoutX(20);
-        miscText.setLayoutY(scene.getHeight()-200);
+        miscText.setLayoutY(scene.getHeight()-100);
 
         //edit class name
         Text currentName = new Text("Current class name: " + this.currentClass.getClassName());
@@ -581,6 +585,34 @@ public class ClassAsset {
         methodsButtonContainer.getChildren().addAll(editMethodButton, addMethodButton, deleteMethodButton);
         methodsHBox.getChildren().addAll(methodsButtonContainer);
 
+        //setup drop down menu for Relationships
+        HBox relationshipsHBox = new HBox();
+        relationshipsHBox.setSpacing(150);
+        ComboBox<String> comboBoxRelationships = new ComboBox();
+
+
+        relationshipsHBox.getChildren().add(comboBoxRelationships);
+        relationshipsHBox.setLayoutX(scene.getWidth()/8);
+        relationshipsHBox.setLayoutY(scene.getHeight()-180);
+        comboBoxRelationships.setValue("Relationships");
+        comboBoxRelationships.setPrefWidth(140);
+
+        updateRelationshipComboBox(currentRelationships, comboBoxRelationships, observableRelatinoshipsList);
+
+        //delete relationship button
+        Button deleteRelationshipButton = new Button();
+        deleteRelationshipButton.setText("Delete Relationship");
+        deleteRelationshipButton.setOnAction(e -> {
+            for(Relationship relationship : currentRelationships) {
+                String comboBoxName = comboBoxRelationships.getValue();
+                if(relationship.getClass1().getClassName() == comboBoxName || relationship.getClass2().getClassName() ==comboBoxName){
+                    currentRelationships.remove(relationship);
+                    deletedRelationships.add(relationship);
+                }
+            }
+        });
+
+        relationshipsHBox.getChildren().add(deleteRelationshipButton);
         //Submit button
         HBox submitButtonContainer = new HBox();
         submitButtonContainer.setSpacing(50);
@@ -602,13 +634,17 @@ public class ClassAsset {
                     this.currentClass.setClassName(newNameField.getText());
                 }
             }
-
             //for fields and methods, we will clear the attributes list once and update with the local lists
 
             this.currentClass.getFields().clear();
             this.currentClass.getMethods().clear();
             this.currentClass.getFields().addAll(newFields);
             this.currentClass.getMethods().addAll(newMethods);
+            //for relationships, we will clear the relationship list once and update with the local lists
+            Application.getCurrentDiagram().getRelationshipList().clear();
+            for(Relationship relationship : currentRelationships) {
+                Application.getCurrentDiagram().addRelationship(relationship);
+            }
 
             //apply deleted attributes
             for (Field deletedField : deletedFields) {
@@ -617,6 +653,18 @@ public class ClassAsset {
 
             for (Method deletedMethod : deletedMethods) {
                 this.currentClass.getMethods().remove(deletedMethod);
+            }
+            //apply deleted relationships
+            for(Relationship deletedRelationship : deletedRelationships) {
+                Application.getCurrentDiagram().deleteRelationship(deletedRelationship.getClass1(), deletedRelationship.getClass2());
+                for(RelationshipAsset relationshipAsset : GUIDiagramProject.getRelationshipAssets()) {
+                    if(relationshipAsset.getRelationship() == deletedRelationship) {
+                        relationshipAsset.deleteRelationship( guiDiagramProject.getRelationshipList(),
+                                GUIDiagramProject.getRelationshipLines(), GUIDiagramProject.getRelationshipAssets(),
+                                guiDiagramProject.getRelationshipPanesCoordinates(), guiDiagramProject.getClassPanes(),
+                                guiDiagramProject.getClassPanesCoordinates(), guiDiagramProject);
+                    }
+                }
             }
 
             
@@ -637,13 +685,14 @@ public class ClassAsset {
             newMethods.clear();
             deletedFields.clear();
             deletedMethods.clear();
+            deletedRelationships.clear();
             popUpStage.close();
         }
         );
 
         submitButtonContainer.getChildren().addAll(submitButton, cancelButton);
         submitButtonContainer.setLayoutX(root.getWidth()/2-80);
-        submitButtonContainer.setLayoutY(root.getHeight()-100);
+        submitButtonContainer.setLayoutY(root.getHeight()-20);
 
 
         for (String method : this.methods) {
@@ -655,9 +704,9 @@ public class ClassAsset {
         Rectangle background = new Rectangle();
         background.setStyle("-fx-fill: lightblue; -fx-stroke: black; -fx-stroke-width: 1;");
         background.setWidth(scene.getWidth()-18);
-        background.setHeight(scene.getHeight()-110);
+        background.setHeight(scene.getHeight()-40);
 
-        root.getChildren().addAll(background, currentName,newNameAddContainer,fieldsHBox, methodsHBox, submitButtonContainer, miscText);
+        root.getChildren().addAll(background, currentName,newNameAddContainer,fieldsHBox, methodsHBox, relationshipsHBox,submitButtonContainer, miscText);
 
         popUpStage.setTitle("Class Editor");
         popUpStage.setScene(scene);
@@ -1346,6 +1395,21 @@ public class ClassAsset {
         }
 
         AttributeComboBox.setItems(observableAttributeList);
+    }
+
+    public void updateRelationshipComboBox(ArrayList<Relationship> currentRelationships, ComboBox<String> RelationshipComboBox,
+                                           ObservableList<String> observableRelationshipList) {
+        observableRelationshipList.clear();
+        for(Relationship relationship : currentRelationships) {
+            if(relationship.getClass1() == this.currentClass) {
+                observableRelationshipList.add(relationship.getClass2().getClassName());
+            }
+            else {
+                observableRelationshipList.add(relationship.getClass1().getClassName());
+            }
+        }
+
+        RelationshipComboBox.setItems(observableRelationshipList);
     }
 
     /**
