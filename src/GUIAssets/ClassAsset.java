@@ -90,42 +90,9 @@ public class ClassAsset {
                 classAssets, classCoordinates, relationshipListArrayList, relationshipCoordinates, guiDiagramProject);
 
         this.classContainer.getChildren().add(textContainer);
-        //this.classContainer.setOnMousePressed(this::onMousePressed);
-        //this.classContainer.setOnMouseDragged(event -> onMouseDragged(event, classPaneArrayList, classAssets, classCoordinates, relationshipAssets));
 
         return this.classContainer;
     }
-
-
-
-/*    private void onMousePressed(final MouseEvent event) {
-        this.xOffset = event.getSceneX();
-        this.yOffset = event.getSceneY();
-    }*/
-    /*
-    private void onMouseDragged(final MouseEvent event, final ArrayList<Pane> classPaneArrayList, final ArrayList<ClassAsset> classAssets,
-                                final ArrayList<Point2D> classCoordinates, final ArrayList<RelationshipAsset> relationshipAssets) {
-        double deltaX = event.getSceneX() - this.xOffset;
-        double deltaY = event.getSceneY() - this.yOffset;
-
-        Pane pane = new Pane();
-
-        if (event.getSource() instanceof Pane) {
-            pane = (Pane) event.getSource();
-        }
-
-        pane.setTranslateX(pane.getTranslateX() + deltaX);
-        pane.setTranslateY(pane.getTranslateY() + deltaY);
-
-
-        this.xOffset = event.getSceneX();
-        this.yOffset = event.getSceneY();
-
-        for (RelationshipAsset relationshipAsset :relationshipAssets) {
-            RelationshipAsset.updateRelationshipLines(relationshipAsset, classPaneArrayList, classCoordinates, classAssets);
-        }
-    }
-    */
 
     /**
      * searches an existing array list and puts contents in a stringbuilder
@@ -311,12 +278,11 @@ public class ClassAsset {
             classList.remove(this.pos);
 
             ArrayList<Relationship> classRelationships = Application.getCurrentDiagram().getSingleClassRelationships(currentClass);
+
             for(Relationship relationship : classRelationships) {
-                if(guiDiagramProject.getRelationshipAssetFromList(relationship) != null) {
-                    guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
-                            relationshipAssetLineList, guiDiagramProject.getRelationshipAssets(), relationshipCoordinates,
-                            classAssetPaneList, classCoordinates, guiDiagramProject);
-                }
+                guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
+                        relationshipAssetLineList, guiDiagramProject.getRelationshipAssets(), relationshipCoordinates,
+                        classAssetPaneList, classCoordinates, guiDiagramProject);
             }
 
             Application.getCurrentDiagram().deleteClass(currentClass);
@@ -326,13 +292,6 @@ public class ClassAsset {
             //get the x/y positions from the remaining class asset panes
 
             this.updateCoordinates(classAssetPaneList, classCoordinates);
-
-            for (int i = 0; i < relationshipAssetLineList.size(); i++) {
-                double currentXCoordinate = relationshipAssetLineList.get(i).localToScene(relationshipAssetLineList.get(i).getBoundsInLocal()).getMinX();
-                double currentYCoordinate = relationshipAssetLineList.get(i).localToScene(relationshipAssetLineList.get(i).getBoundsInLocal()).getMinY();
-                Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
-                relationshipCoordinates.add(coords);
-            }
 
             //update the class asset list by taking the new class list and creating new class assets from them
             this.updateClassAssetListPos(classList, classAssets);
@@ -591,9 +550,10 @@ public class ClassAsset {
         deleteRelationshipButton.setOnAction(e -> {
             for(Relationship relationship : currentRelationships) {
                 String comboBoxName = comboBoxRelationships.getValue();
-                if(relationship.getClass1().getClassName() == comboBoxName || relationship.getClass2().getClassName() ==comboBoxName){
+                if(relationship.getClass1().getClassName().equals(comboBoxName) || relationship.getClass2().getClassName().equals(comboBoxName)){
                     currentRelationships.remove(relationship);
                     deletedRelationships.add(relationship);
+                    updateRelationshipComboBox(currentRelationships, comboBoxRelationships, observableRelatinoshipsList);
                 }
             }
         });
@@ -626,11 +586,12 @@ public class ClassAsset {
             this.currentClass.getFields().addAll(newFields);
             this.currentClass.getMethods().addAll(newMethods);
             //for relationships, we will clear the relationship list once and update with the local lists
+            /*
             Application.getCurrentDiagram().getRelationshipList().clear();
             for(Relationship relationship : currentRelationships) {
                 Application.getCurrentDiagram().addRelationship(relationship);
             }
-
+            */
             //apply deleted attributes
             for (Field deletedField : deletedFields) {
                 this.currentClass.getFields().remove(deletedField);
@@ -641,9 +602,9 @@ public class ClassAsset {
             }
             //apply deleted relationships
             for(Relationship deletedRelationship : deletedRelationships) {
-                Application.getCurrentDiagram().deleteRelationship(deletedRelationship.getClass1(), deletedRelationship.getClass2());
+                //Application.getCurrentDiagram().deleteRelationship(deletedRelationship.getClass1(), deletedRelationship.getClass2());
                 for(RelationshipAsset relationshipAsset : GUIDiagramProject.getRelationshipAssets()) {
-                    if(relationshipAsset.getRelationship() == deletedRelationship) {
+                    if(relationshipAsset.getRelationship().equals(deletedRelationship)) {
                         relationshipAsset.deleteRelationship( guiDiagramProject.getRelationshipList(),
                                 GUIDiagramProject.getRelationshipLines(), GUIDiagramProject.getRelationshipAssets(),
                                 guiDiagramProject.getRelationshipPanesCoordinates(), guiDiagramProject.getClassPanes(),
@@ -1383,7 +1344,7 @@ public class ClassAsset {
                                            ObservableList<String> observableRelationshipList) {
         observableRelationshipList.clear();
         for(Relationship relationship : currentRelationships) {
-            if(relationship.getClass1() == this.currentClass) {
+            if(relationship.getClass1().getClassName().equals(this.currentClass.getClassName())) {
                 observableRelationshipList.add(relationship.getClass2().getClassName());
             }
             else {

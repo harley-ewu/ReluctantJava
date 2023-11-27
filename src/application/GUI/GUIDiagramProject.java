@@ -8,7 +8,6 @@ import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
 import application.Application;
 import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
-import application.mediator.controllers.menubarcontroller.MenuBarController;
 import application.mediator.controllers.updateviewcontroller.UpdateViewController;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -517,6 +516,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
             Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
                     this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            temp.toBack();
             this.relationshipLines.add(temp);
         }
     }
@@ -545,6 +545,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
             Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
                     this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this.classAssets);
+            temp.toBack();
             this.relationshipLines.add(temp);
         }
     }
@@ -577,20 +578,21 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.contentPane.getChildren().clear();
 
         for (int i = 0; i < this.classPanes.size(); i++) {
+            double currentXCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getCenterY();
+            Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
+            this.classPanesCoordinates.set(i, coords);
+        }
+
+        for (int i = 0; i < this.classPanes.size(); i++) {
             this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
             this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.classPanes.get(i));
         }
 
-        this.classPanesCoordinates.clear();
-
-        for (int i = 0; i < this.relationshipLines.size(); i++) {
-            this.relationshipLines.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
-            this.relationshipLines.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
-            this.contentPane.getChildren().add(this.relationshipLines.get(i));
+        for(RelationshipAsset relationshipAsset : GUIDiagramProject.getRelationshipAssets()) {
+            RelationshipAsset.updateRelationshipLines(relationshipAsset, classPanes, classPanesCoordinates, classAssets);
         }
-
-        this.relationshipPanesCoordinates.clear();
     }
 
 
