@@ -261,6 +261,19 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.addAll(diagramClasses.values());
     }
 
+    public void refreshDiagramContents() {
+        HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
+        this.classList.clear();
+        this.classList.addAll(diagramClasses.values());
+
+        this.addClassAssets();
+        this.addMementoPanes();
+        this.addClassPanesToPaneWindow();
+
+        HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
+        this.relationshipList.addAll(relationshipClasses.values());
+    }
+
     public boolean getHasMoved() {
         return this.hasMoved;
     }
@@ -311,10 +324,12 @@ public class GUIDiagramProject extends javafx.application.Application {
             double currentY = e.getY() - classPane.getHeight()/2;
             if (this.wasAdded) {
                 this.executeSingleClassAdd(umlClass, classPane);
+                this.updateClassPaneCoordinates();
             }
+
 //keep for debugging purposes
-           System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);
+           //System.out.println("class panes: " + this.classPanes);
+            //System.out.println("class coords: " + this.classPanesCoordinates);
 
             });
 
@@ -346,9 +361,9 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.addClassPanes();
             this.addClassPanesToPaneWindow();
             //keeping for debugging purposes
-            System.out.println("I'm inside");
-            System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);
+            //System.out.println("I'm inside");
+            //System.out.println("class panes: " + this.classPanes);
+            //System.out.println("class coords: " + this.classPanesCoordinates);
             this.wasAdded = false;
         }
     }
@@ -363,13 +378,23 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassPanes() {
-        classPanes.clear();
+        this.classPanes.clear();
         for (int i = 0; i < this.classAssets.size(); i++) {
 
             double x = this.classPanesCoordinates.get(i).getX();
             double y = this.classPanesCoordinates.get(i).getY();
             ClassAsset classAsset = this.classAssets.get(i);
             Pane temp = this.createDraggablePane(x,y,classAsset);
+            this.classPanes.add(temp);
+        }
+    }
+
+    public void addMementoPanes() {
+        double x = 50;
+        double y = 50;
+        for (ClassAsset classAsset : this.classAssets) {
+            Pane temp = this.createDraggablePane(x, y, classAsset);
+            x+=temp.getWidth()+300;
             this.classPanes.add(temp);
         }
     }
@@ -616,23 +641,23 @@ public class GUIDiagramProject extends javafx.application.Application {
             Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
             this.classPanesCoordinates.add(coordinates);
         }
-        System.out.println("I was updated!");
+        //System.out.println("I was updated!");
     }
 
     public void undo() {
         this.diagram.undo();
-        System.out.println("Undoing..");
-        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        //System.out.println("Undoing..");
+        this.getContentPane().getChildren().clear();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
-        this.initializeDiagramContents();
+        this.refreshDiagramContents();
     }
 
     public void redo() {
         this.diagram.redo();
-        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        this.getContentPane().getChildren().clear();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
-        this.initializeDiagramContents();
+        this.refreshDiagramContents();;
     }
 }
