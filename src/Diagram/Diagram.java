@@ -102,9 +102,9 @@ public class Diagram {
          return;
       }
 
-      classList.remove(deletedClass.getClassName());
       createSnapshot();
-      
+      classList.remove(deletedClass.getClassName());
+
       for(Class item : classList.values()){
          this.deleteRelationship(deletedClass, item);
       }
@@ -185,7 +185,6 @@ public class Diagram {
     * Finds out both classes belonging to the relationship and deletes the relationship from both of the classes corresponding lists
     */
    public void deleteRelationship(final Class c1, final Class c2){
-      createSnapshot();
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
