@@ -1,6 +1,7 @@
 package Diagram;
 
 import Class.Class;
+import GUIAssets.GUIDiagramProjectDto;
 import Relationships.Relationship;
 import MenuPrompts.MenuPrompts;
 import com.google.gson.annotations.Expose;
@@ -21,6 +22,10 @@ public class Diagram {
    private HashMap<String, Class> classList;
    @Expose
    private HashMap<String, Relationship> relationshipList;
+   @Expose
+   private DiagramCaretaker caretaker;
+   @Expose
+   private GUIDiagramProjectDto coordinates;
    private Scanner scanner = new Scanner(System.in);
    
    public Diagram(final String title) {
@@ -32,6 +37,7 @@ public class Diagram {
       this.title = title;
       this.classList = new HashMap<>();
       this.relationshipList = new HashMap<>();
+      this.caretaker = new DiagramCaretaker();
    }
    
    /*
@@ -73,7 +79,11 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
+         if(this.classList.isEmpty()){
+            createSnapshot();
+         }
          this.classList.put(className, new Class(className));
+         createSnapshot();
       }
       else {
          System.out.println("Class already exists.");
@@ -91,8 +101,10 @@ public class Diagram {
       if (deletedClass.getClassName().isEmpty()) {
          return;
       }
+
+      createSnapshot();
       classList.remove(deletedClass.getClassName());
-      
+
       for(Class item : classList.values()){
          this.deleteRelationship(deletedClass, item);
       }
@@ -102,9 +114,12 @@ public class Diagram {
    Renames a class in the classList
    */
    public void renameClass(final Class old, final String newName) {
-      //need to delete from hashmap while retaining temp class object and then read with new name
-      //also need to change the name of the actual class object
-      if(old != null && !(newName.isEmpty())){
+      if(old != null && findSingleClass(old.getClassName()) == null){
+         System.out.println("Class does not exist to rename.");
+         return;
+      }
+      else if(old != null && !(newName.isEmpty())){
+         createSnapshot();
          Class temp = this.classList.get(old.getClassName());
          this.classList.remove(temp.getClassName());
          temp.setClassName(newName);
@@ -118,13 +133,13 @@ public class Diagram {
    /*
    Lists out all of the classes present in the classList
    */
-   public void listClasses() {
+   public String listClasses() {
       if(this.classList.size() == 0){
-         System.out.println("Diagram is empty.");
+         return "Diagram is empty.";
       }
       else {
-         System.out.println("Classes: ");
-         System.out.println(this.classList.values());
+         return "Classes: " +
+         this.classList.values();
          }
       
    } 
@@ -133,7 +148,7 @@ public class Diagram {
    Finds out if class exists
    */
    public Class findSingleClass(final String className) {
-      if(className == null) {
+      if(className == null || className.isEmpty()) {
          System.out.println("Invalid class name.");
          return null;
       }
@@ -144,14 +159,14 @@ public class Diagram {
    /*
    Prints out all information about a given class
    */
-   public void printSingleClass(final Class c) {
+   public String printSingleClass(final Class c) {
       if (c == null){
-         System.out.println("Class does not exist.");
+         return "Class does not exist.";
       }
       else {
-         System.out.println(c.toString() + "\n"
-         +"---------------------\n"
-         + this.listOneClassRelationships(c));
+         return c.toString() + "\n"
+         +"--------------------------\n"
+         + this.listOneClassRelationships(c);
       }
    }
 
@@ -159,34 +174,8 @@ public class Diagram {
       return classList.get(className);
    }
 
-   /*
-    * Prompts user for both class names, then prompts for all relevant relationship information 
-    * and builds relationships between the classes, then adds it to either of their relationship lists
-    */
-   public void addRelationship(Class c1, Class c2) {
-      if (c1 == c2) return;
-
-      Relationship.RelationshipType relationshipType = null;
-      int c1Cardinality = -2;
-      int c2Cardinality = -2;
-      Boolean owner = false;
-
-      relationshipType = MenuPrompts.relationshipTypePrompt();
-      if(relationshipType == null){
-         return;
-      }
-      c1Cardinality = MenuPrompts.class1CardinalityPrompt(c1);
-      if(c1Cardinality < -1) {
-         return;
-      }
-      c2Cardinality = MenuPrompts.class2CardinalityPrompt(c2);
-      owner = MenuPrompts.whichClassIsOwnerPrompt(c1, c2);
-
-      Relationship relationship = new Relationship(relationshipType, c1, c2, c1Cardinality, c2Cardinality, owner);
-      addRelationship(relationship);
-   }
-
    public void addRelationship(final Relationship relationship) {
+      createSnapshot();
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
       this.relationshipList.put(relationshipName, relationship);
    }
@@ -196,7 +185,6 @@ public class Diagram {
     * Finds out both classes belonging to the relationship and deletes the relationship from both of the classes corresponding lists
     */
    public void deleteRelationship(final Class c1, final Class c2){
-
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
@@ -244,7 +232,7 @@ public class Diagram {
 
    //prints to screen all relationships in relationshipList
    public String listAllRelationships(){
-      String str = "Relationship List: \n";
+      String str = "Relationship List: \n\n";
       int i = 1;
       for (Relationship relationship : relationshipList.values()) {
          str += String.valueOf(i) +": ";
@@ -252,7 +240,7 @@ public class Diagram {
          i++;
       }
 
-      return str;
+      return "\n--------------------------\n" + str + "\n--------------------------\n";
    }
 
    //prints to screen all relationships for one class
@@ -274,10 +262,42 @@ public class Diagram {
 
       return str;
    }
-   
+
+   public DiagramCaretaker getCaretaker() {
+      return this.caretaker;
+   }
+
+   public void createSnapshot() {
+      DiagramMemento memento = new DiagramMemento(this);
+      caretaker.makeBackupUp(memento);
+   }
+
+   public void applyMemento(DiagramMemento memento) {
+      this.setTitle(memento.getTitle());
+      this.setSaveLocation(memento.getSaveLocation());
+      this.setClassList(new HashMap<>(memento.getClassList()));
+      this.setRelationshipList(new HashMap<>(memento.getRelationshipList()));
+   }
+
+   public void undo() {
+      this.caretaker.undo(this);
+   }
+
+   public void redo() {
+      this.caretaker.redo(this);
+   }
+
+   public GUIDiagramProjectDto getCoordinates() {
+      return this.coordinates;
+   }
+
+   public void setCoordinates(GUIDiagramProjectDto coordinates) {
+      this.coordinates = coordinates;
+   }
+
    /*
-   Printing out entire diagram
-   */
+      Printing out entire diagram
+      */
    public String toString(){
       if (this.classList.isEmpty()) {
          return "\nDiagram " + this.title + " is empty.\n";
@@ -288,7 +308,7 @@ public class Diagram {
          diagramString += c.toString();
       }
       
-      return "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
+      return "\n--------------------------" + "\nDiagram: " + diagramString + "\n" + this.listAllRelationships();
    }
    
    public void setSaveLocation(String saveLocation){

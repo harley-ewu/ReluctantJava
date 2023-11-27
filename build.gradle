@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    implementation 'org.jline:jline:3.23.0'
+    testImplementation 'org.jmock:jmock:2.12.0'
+    testImplementation 'org.jmock:jmock-junit5:2.12.0'
+    testImplementation 'org.jmockit:jmockit:1.49'
+//    implementation 'org.openjfx:javafx-base:19.0.2.1'
+//    implementation 'org.openjfx:javafx-controls:19.0.2.1'
+//    implementation 'org.openjfx:javafx-fxml:19.0.2.1'
+//    implementation 'org.openjfx:javafx-graphics:19.0.2.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src']
+            }
+            resources {
+                srcDirs = ['src/resources']
+            }
+        }
+    }
+    test {
+        java {
+            srcDirs = ['tests']
+        }
+    }
+}
+
+javafx {
+    version = "17"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+application {
+    mainClass = 'application.Application'
+}
+

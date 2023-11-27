@@ -1,10 +1,11 @@
 package SaveLoadSystem;
 
 import Diagram.Diagram;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
+import javafx.geometry.Point2D;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -98,6 +99,7 @@ public class SaveLoadSystem {
         try{
             FileWriter fileWriter = new FileWriter(fileToBeSaved);
             Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Point2D.class, new Point2DSerializer())
                     .excludeFieldsWithoutExposeAnnotation()
                     .create();
             String jsonText = gson.toJson(diagram);
@@ -118,10 +120,11 @@ public class SaveLoadSystem {
 
         Diagram diagram;
 
-        if(fileToBeLoaded.exists()){
+        if(fileToBeLoaded != null && fileToBeLoaded.exists()){
             try{
                 FileReader fileReader = new FileReader(fileToBeLoaded);
                 Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(Point2D.class, new Point2DDeserializer())
                         .excludeFieldsWithoutExposeAnnotation()
                         .create();
                 diagram = gson.fromJson(fileReader, Diagram.class);
@@ -150,6 +153,36 @@ public class SaveLoadSystem {
 
         if(fileName == null || fileName.isEmpty()){
             throw new IllegalArgumentException("The file name cannot be null or empty.");
+        }
+    }
+
+    /**
+     * Description: Inner class used to convert Point2D objects into Json. The Point2D objects
+     * are used to save the position of ClassAsset's in the Diagram view.
+     */
+    private static class Point2DSerializer implements JsonSerializer<Point2D>{
+
+        @Override
+        public JsonElement serialize(Point2D src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("x", src.getX());
+            jsonObject.addProperty("y", src.getY());
+            return jsonObject;
+        }
+    }
+
+    /**
+     * Description: Inner class used to convert Json into Point2D objects. The Point2D objects
+     * are used to save the position of ClassAsset's in the Diagram view.
+     */
+    private static class Point2DDeserializer implements JsonDeserializer<Point2D>{
+
+        @Override
+        public Point2D deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            double x = jsonObject.get("x").getAsDouble();
+            double y = jsonObject.get("y").getAsDouble();
+            return new Point2D(x, y);
         }
     }
 }

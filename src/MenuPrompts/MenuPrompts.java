@@ -40,7 +40,7 @@ public class MenuPrompts {
      * @return The deleted class or null if the class could not be found or not deleted by the user in the diagram
      */
     public static Class deleteClassPrompt(final Diagram diagram) {
-        listClasses(diagram);
+        listClasses(diagram, null);
         System.out.println("Enter a class name to delete from the list above: ");
         System.out.print("--> ");
         String className = scanner.nextLine();
@@ -65,7 +65,7 @@ public class MenuPrompts {
      * @return The class that was renamed or null if user chose to rename the class without input from the user
      */
     public static Class renameClassPromptOriginalName(final Diagram diagram) {
-        listClasses(diagram);
+        listClasses(diagram, null);
         String oldClassName;
         System.out.println("Enter the original name of the class from the list above.");
         System.out.print("--> ");
@@ -113,7 +113,7 @@ public class MenuPrompts {
      * @return the class or null if not found in the diagram or the user cancels the search ( in which case null is returned
      */
     public static Class printSingleClassPrompt(final Diagram diagram){
-        listClasses(diagram);
+        listClasses(diagram, null);
         System.out.println("Enter name of class to view from list above: ");
         System.out.print("--> ");
         String className = scanner.nextLine();
@@ -135,8 +135,8 @@ public class MenuPrompts {
     public static Relationship.RelationshipType relationshipTypePrompt() {
         Relationship.RelationshipType relationshipType = null;
         int choice;
-        System.out.println("What Type of Relationship?\n" +
-                "1 - Association \n2 - Aggregation \n3 - Composition \n4 - Generalization");
+        System.out.println("\nWhat Type of Relationship?\n" +
+                "1 - Realization \n2 - Aggregation \n3 - Composition \n4 - Inheritance");
         System.out.println("Enter a number (or press blank enter to exit):");
         System.out.print("--> ");
         while(relationshipType == null) {
@@ -162,6 +162,7 @@ public class MenuPrompts {
             } catch(NumberFormatException e) {
                 //System.out.println("Please enter a valid number");
                 //System.out.print("--> ");
+                System.out.println("\nExiting...");
                 break;
             }
 
@@ -193,6 +194,7 @@ public class MenuPrompts {
             }catch(NumberFormatException e){
                 //System.out.println("Please enter a valid cardinality");
                 //System.out.print("--> ");
+                System.out.println("\nExiting...");
                 break;
             }
         }
@@ -222,8 +224,10 @@ public class MenuPrompts {
                     c2Cardinality = Integer.parseInt(scanner.nextLine());
                 }
             }catch(NumberFormatException e){
-                System.out.println("Please enter a valid cardinality");
-                System.out.print("--> ");
+                //System.out.println("Please enter a valid cardinality");
+                //System.out.print("--> ");
+                System.out.println("\nExiting...");
+                break;
             }
         }
 
@@ -241,7 +245,7 @@ public class MenuPrompts {
     public static boolean whichClassIsOwnerPrompt(final Class c1, final Class c2){
         int choice = 0;
         boolean owner = true;
-        System.out.println("Which class is the owner of the relationship?\n" +
+        System.out.println("\nWhich class is the owner of the relationship?\n" +
                 "1. "+c1.getClassName()+"\n2. "+c2.getClassName()+"\n");
         System.out.println("Please enter 1 or 2 as your choice (or press blank enter to exit)");
         System.out.print("--> ");
@@ -278,7 +282,11 @@ public class MenuPrompts {
      * @return class name or " " if class doesn't exist in the diagram or if user cancels the
      */
     public static Class editClassPrompt(final Diagram diagram) {
-        listClasses(diagram);
+        if(diagram.getClassList().size() < 1){
+            System.out.println("\nNo classes have been created to edit.");
+            return null;
+        }
+        listClasses(diagram, null);
         System.out.println("Enter name of class to edit from list above (or press blank enter to exit):");
         System.out.print("--> ");
         String className = scanner.nextLine();
@@ -298,42 +306,16 @@ public class MenuPrompts {
         return c1;
     }
 
-    public static int editRelationshipsMenuChoice() {
-        int userInput = -99;
-        System.out.println("Relationship Editor");
-        System.out.println("""
-            
-                                1 - Add Relationship
-                                2 - Delete Relationship
-                                3 - Back to Diagram Menu
-                                
-                                Enter a number:""");
-        System.out.print("--> ");
-
-        while (true) {
-            try {
-                userInput = Integer.parseInt(scanner.nextLine());
-                if (userInput >= 1 && userInput <= 3) {
-                    break;
-                } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and 3");
-                    System.out.print("--> ");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number");
-                System.out.print("--> ");
-            }
-        }
-        return userInput;
-    }
+    
 
     public static Class promptClass1Relationship(final Diagram diagram) {
-        listClasses(diagram);
+        listClasses(diagram, null);
         System.out.println("What is the name of the first class?");
         System.out.println("Type the name from the list above. (or press blank enter to exit)");
         System.out.print("--> ");
         String ownerString = scanner.nextLine();
         if(ownerString.isEmpty()) {
+            System.out.println("\nExiting...");
             return null;
         }
         Class c1 = diagram.findSingleClass(ownerString);
@@ -344,14 +326,15 @@ public class MenuPrompts {
         return c1;
     }
 
-    public static Class promptClass2Relationship(final Diagram diagram) {
-        listClasses(diagram);
+    public static Class promptClass2Relationship(final Diagram diagram, final Class currentClass) {
+        listClasses(diagram, currentClass);
         //System.out.print("\nChoose between 1 and " + (diagram.getClassList().size()) + " -> ");
-        System.out.println("\nWhat is the name of the class to form the relationship?");
+        System.out.println("\nWhat is the name of the class you wish to use in a relationship?");
         System.out.println("Type the name from the list above. (or press blank enter to exit)");
         System.out.print("--> ");
         String otherString = scanner.nextLine();
         if(otherString.isEmpty()){
+            System.out.println("\nExiting...");
             return null;
         }
         Class c2 = diagram.findSingleClass(otherString);
@@ -365,7 +348,7 @@ public class MenuPrompts {
     public static int promptAttributeType() {
         int userInput = -99;
 
-        System.out.println("What type of attribute would you like to modify?:\n" +
+        System.out.println("\nWhat type of attribute would you like to modify?:\n" +
                 "1 - Field\n" +
                 "2 - Method\n");
         System.out.println("Enter a number:");
@@ -446,13 +429,13 @@ public class MenuPrompts {
         return newParam;
     }
 
-    public static int deleteAttributePrompts(final Class currentClass) {
+    public static int deleteFieldPrompts(final Class currentClass) {
         int choice = -99;
         do {
             System.out.println("Delete an attribute:");
             //need to add message if no attributes exist
             System.out.println(currentClass.displayAttributes());
-            System.out.print("\nChoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
+            System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
@@ -460,23 +443,57 @@ public class MenuPrompts {
                 System.out.print("--> ");
             }
 
-        } while (choice < 1 || choice > currentClass.getAttributes().size()+1);
+        } while (choice < 1 || choice > currentClass.getFields().size()+1);
         return choice;
     }
 
-    public static int renameAttributePrompt(final Class currentClass) {
+    public static int deleteMethodPrompts(final Class currentClass) {
         int choice = -99;
         do {
-            System.out.println("Rename an attribute: ");
+            System.out.println("Delete an attribute:");
+            //need to add message if no attributes exist
             System.out.println(currentClass.displayAttributes());
-            System.out.print("\nChoose between 1 and " + (currentClass.getAttributes().size()) + " -> ");
+            System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
                 System.out.print("--> ");
             }
-        }while (choice < 1 || choice > currentClass.getAttributes().size()+1);
+
+        } while (choice < 1 || choice > currentClass.getMethods().size()+1);
+        return choice;
+    }
+
+    public static int renameFieldPrompt(final Class currentClass) {
+        int choice = -99;
+        do {
+            System.out.println("Rename a field: ");
+            System.out.println(currentClass.displayAttributes());
+            System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " -> ");
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+                System.out.print("--> ");
+            }
+        }while (choice < 1 || choice > currentClass.getFields().size()+1);
+        return choice;
+    }
+
+    public static int renameMethodPrompt(final Class currentClass) {
+        int choice = -99;
+        do {
+            System.out.println("Rename a method: ");
+            System.out.println(currentClass.displayAttributes());
+            System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " -> ");
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+                System.out.print("--> ");
+            }
+        }while (choice < 1 || choice > currentClass.getMethods().size()+1);
         return choice;
     }
 
@@ -490,11 +507,24 @@ public class MenuPrompts {
         return newName;
     }
 
-    public static void listClasses (final Diagram diagram) {
-        System.out.println("\nClass List:");
+    public static void listClasses (final Diagram diagram, final Class currentClass) {
+        if(diagram.getClassList().size() < 1){
+            System.out.println("\nClass list is empty. Please add a class.");
+            return;
+        }
+        System.out.println("\n---------------------");
+        System.out.println("    Class List:");
         System.out.println("---------------------");
         diagram.getClassList().forEach((key, value) -> {
-            System.out.println(key);
+            //Don't want to print the current class
+            if(!(currentClass == null)){
+                if(!key.equals(currentClass.getClassName()))
+                    System.out.println(key);
+            }
+            else {
+                System.out.println(key);
+            }
+            
         });
         System.out.println("\n");
     }
