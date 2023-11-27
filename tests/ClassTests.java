@@ -65,20 +65,11 @@ public class ClassTests {
                 () -> {
                     Class newClass = new Class(null);
                 },
-                "Class name is null or empty."
+                "Class name is null."
         );
 
-        assertTrue(badInput.getMessage().contains("Class name is null or empty."));
+        assertTrue(badInput.getMessage().contains("Class name is null."));
 
-        badInput = assertThrows(
-                IllegalArgumentException.class,
-                () -> {
-                    Class newClass = new Class("");
-                },
-                "Class name is null or empty."
-        );
-
-        assertTrue(badInput.getMessage().contains("Class name is null or empty."));
     }
 
     @Test
