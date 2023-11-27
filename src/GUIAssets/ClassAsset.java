@@ -329,7 +329,7 @@ public class ClassAsset {
 
             //get the x/y positions from the remaining class asset panes
 
-            this.updateCoordinates(classAssetPaneList, classCoordinates);
+            //this.updateCoordinates(classAssetPaneList, classCoordinates);
 
             for (int i = 0; i < relationshipAssetLineList.size(); i++) {
                 double currentXCoordinate = relationshipAssetLineList.get(i).localToScene(relationshipAssetLineList.get(i).getBoundsInLocal()).getMinX();
@@ -339,10 +339,11 @@ public class ClassAsset {
             }
 
             //update the class asset list by taking the new class list and creating new class assets from them
-            this.updateClassAssetListPos(classList, classAssets);
+            //this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
-            guiDiagramProject.refreshClassPanesToPaneWindow();
+            guiDiagramProject.addClassPanesToPaneWindow();
+            //guiDiagramProject.refreshClassPanesToPaneWindow();
 
         }
 
@@ -657,7 +658,8 @@ public class ClassAsset {
 
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
-            guiDiagramProject.refreshClassPanesToPaneWindow();
+            guiDiagramProject.addClassPanesToPaneWindow();
+            //guiDiagramProject.refreshClassPanesToPaneWindow();
             popUpStage.close();
         });
 
