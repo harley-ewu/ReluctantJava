@@ -1,24 +1,62 @@
-Model:
--Attribute
--Field
--Method
--Class
--Diagram
--Relationship
--SaveLoadSystem
+Model-View-Controller:
 
-View:
--CommandLineInterface
--GraphicalUserInterface
--GUIDiagramProject
--ClassAsset
--RelationshipAsset
--MenuPrompts
+    Model:
+    -Attribute
+    -Field
+    -Method
+    -Class
+    -Diagram
+    -Relationship
+    -SaveLoadSystem
 
-Controller:
--CommandLineInterface
--MenuController
--DiagramProjectController
--MainMenuController
--MenuBarController
--ClassAsset
+    View:
+    -CommandLineInterface
+    -GraphicalUserInterface
+    -GUIDiagramProject
+    -ClassAsset
+    -RelationshipAsset
+    -MenuPrompts
+
+    Controller:
+    -CommandLineInterface
+    -MenuController
+    -DiagramProjectController
+    -MainMenuController
+    -MenuBarController
+    -ClassAsset
+
+Strategy:
+
+    Algorithm: launchUmlEditor in UserInterface interface
+
+    The launchUmlEditor implementation is selected at runtime, between the GUI and CLI version
+    based on arguments received in the main method on line 17 in the Application class
+
+Chain of Responsibilities:
+
+    In the controllers package, there are a multitude of subpackages, that represent controllers,
+    and subpackages for each controller function with a request, validator, and handler. An
+    initial request is created, and then sent to a mediator for validation and handling.
+
+Mediator:
+
+    The mediator registers services (request, validator, and handler), and serves as a central
+    point to allow requests to hit each component in a service. Starting on line 37 in the
+    Startup class, services are registered to the mediator, and mediator.send calls are 
+    made in the controllers. 
+
+Command:
+
+    There is an abstract 'Request' class, representing a wrapper object for arguments to be sent
+    to validators and request handlers through the mediator. This slightly varies, as instead of
+    holding an abstract method in the command itself, the commands are passed into handlers, with
+    an abstract method taking the place of the abstract method that is typically stored within
+    the command.
+
+Memento:
+
+    The DiagramMemento class stores the current condition of a Diagram before any changes are applied.
+    Inside a Diagram object is an instance of a DiagramCaretaker. Inside this caretaker is a list of all the
+    DiagramMemento's made over the course of a project and the logic required to set the Diagram to a previous
+    instance of itself. The Diagram itself has a method called createSnapshot() that allows it to make a memento
+    of itself during each change.
