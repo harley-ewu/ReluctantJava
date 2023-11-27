@@ -266,7 +266,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.clear();
         this.classList.addAll(diagramClasses.values());
 
-        //this.classAssets.clear();
         this.addClassAssets();
         this.addMementoPanes();
         this.addClassPanesToPaneWindow();
@@ -645,9 +644,8 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void undo() {
         this.diagram.undo();
-        System.out.println("Undoing..");
-        //this.updateClassPaneCoordinates();
-        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        //System.out.println("Undoing..");
+        this.getContentPane().getChildren().clear();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
         this.refreshDiagramContents();
@@ -655,8 +653,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void redo() {
         this.diagram.redo();
-        //this.updateClassPaneCoordinates();
-        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        this.getContentPane().getChildren().clear();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
         this.refreshDiagramContents();;
