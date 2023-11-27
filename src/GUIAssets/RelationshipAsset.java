@@ -47,43 +47,7 @@ public class RelationshipAsset {
         this.index = index;
     }
 
-    /**
-     * Creates and returns a graphical representation of a relationship asset within a GUI diagram project.
-     *
-     * @param relationshipList
-     * @param relationshipAssetLineList
-     * @param relationshipAssets
-     * @param relationshipCoordinates
-     * @param classAssetPaneList
-     * @param classCoordinates
-     *
-     * @return                  A JavaFX Pane representing the class asset.
-     */
-    /*
-    public Pane createRelationshipAsset(final ArrayList<Relationship> relationshipList, final ArrayList<Pane> relationshipAssetLineList,
-                                        final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> relationshipCoordinates,
-                                        final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates,
-                                        final GUIDiagramProject guiDiagramProject) {
-        int textSize = 12;
-        String fontType = "Verdana";
 
-        this.relationshipContainer = new Pane();
-        this.relationshipContainer.setStyle("-fx-background-color: lightblue;" +
-                "-fx-background-radius: 10;" +
-                "-fx-border-color: black;" +
-                "-fx-border-width: 1;" +
-                "-fx-border-radius: 10");
-        Insets margins = new Insets(5, 5,5, 5);
-        VBox textContainer = this.setupTextContainer(fontType, textSize, margins, relationshipList, relationshipAssetLineList,
-                relationshipAssets, relationshipCoordinates, classAssetPaneList, classCoordinates, guiDiagramProject);
-
-        this.relationshipContainer.getChildren().add(textContainer);
-        this.relationshipContainer.setOnMousePressed(this::onMousePressed);
-        this.relationshipContainer.setOnMouseDragged(this::onMouseDragged);
-
-        return this.relationshipContainer;
-    }
-    */
     public Line createRelationshipAsset(final ArrayList<Relationship> relationshipList, final ArrayList<Line> relationshipAssetLineList,
                                         final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> relationshipCoordinates,
                                         final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates, final ArrayList<ClassAsset> classAssets) {
@@ -118,15 +82,14 @@ public class RelationshipAsset {
             }
         }
 
-        double currentOwnerXCoor = classAssetPaneList.get(ownerIndex).localToScene(classAssetPaneList.get(ownerIndex).getBoundsInLocal()).getCenterX();
-        double currentOwnerYCoor = classAssetPaneList.get(ownerIndex).localToScene(classAssetPaneList.get(ownerIndex).getBoundsInLocal()).getCenterY();
-        Point2D ownerCoords = new Point2D(currentOwnerXCoor, currentOwnerYCoor);
-        classCoordinates.set(ownerIndex, ownerCoords);
+        classCoordinates.clear();
 
-        double currentOtherXCoor = classAssetPaneList.get(otherIndex).localToScene(classAssetPaneList.get(otherIndex).getBoundsInLocal()).getCenterX();
-        double currentOtherYCoor = classAssetPaneList.get(otherIndex).localToScene(classAssetPaneList.get(otherIndex).getBoundsInLocal()).getCenterY();
-        Point2D otherCoords = new Point2D(currentOtherXCoor, currentOtherYCoor);
-        classCoordinates.set(otherIndex, otherCoords);
+        for (int i = 0; i < classAssetPaneList.size(); i++) {
+            double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
+            Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
+            classCoordinates.add(coords);
+        }
 
         relationshipContainer.toBack();
 
@@ -209,16 +172,16 @@ public class RelationshipAsset {
             relationshipAssetLineList.remove(this.relationshipContainer);
             relationshipAssets.remove(this);
 
+            //update the class asset list by taking the new class list and creating new class assets from them
+            //this.updateRelationshipAssetListIndex(relationshipList, relationshipAssets); //to be removed
+
             for(RelationshipAsset relationshipAsset : relationshipAssets) {
                 RelationshipAsset.updateRelationshipLines(relationshipAsset, classAssetPaneList, classCoordinates, guiDiagramProject.getClassAssets());
             }
 
-            //update the class asset list by taking the new class list and creating new class assets from them
-            this.updateRelationshipAssetListIndex(relationshipList, relationshipAssets); //to be removed
-
             //refresh the class asset panes and the window
             guiDiagramProject.refreshRelationshipLines();
-            guiDiagramProject.refreshRelationshipPanesToPaneWindow();
+            guiDiagramProject.refreshRelationshipLinesToPaneWindow();
 
         }
 
@@ -266,15 +229,14 @@ public class RelationshipAsset {
             }
         }
 
-        double currentOwnerXCoor = classAssetPaneList.get(ownerIndex).localToScene(classAssetPaneList.get(ownerIndex).getBoundsInLocal()).getCenterX();
-        double currentOwnerYCoor = classAssetPaneList.get(ownerIndex).localToScene(classAssetPaneList.get(ownerIndex).getBoundsInLocal()).getCenterY();
-        Point2D ownerCoords = new Point2D(currentOwnerXCoor, currentOwnerYCoor);
-        classCoordinates.set(ownerIndex, ownerCoords);
+        classCoordinates.clear();
 
-        double currentOtherXCoor = classAssetPaneList.get(otherIndex).localToScene(classAssetPaneList.get(otherIndex).getBoundsInLocal()).getCenterX();
-        double currentOtherYCoor = classAssetPaneList.get(otherIndex).localToScene(classAssetPaneList.get(otherIndex).getBoundsInLocal()).getCenterY();
-        Point2D otherCoords = new Point2D(currentOtherXCoor, currentOtherYCoor);
-        classCoordinates.set(otherIndex, otherCoords);
+        for (int i = 0; i < classAssetPaneList.size(); i++) {
+            double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
+            Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
+            classCoordinates.add(coords);
+        }
 
         relationshipLine.toBack();
 

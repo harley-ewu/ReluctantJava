@@ -574,12 +574,12 @@ public class GUIDiagramProject extends javafx.application.Application {
      * the contentPane (the project window) with the relationshipPanes and their respective coordinates
      * and does the same for classPanes and their respective coordinates
      * */
-    public void refreshRelationshipPanesToPaneWindow() {
+    public void refreshRelationshipLinesToPaneWindow() {
         this.contentPane.getChildren().clear();
 
         for (int i = 0; i < this.classPanes.size(); i++) {
-            double currentXCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getCenterX();
-            double currentYCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getCenterY();
+            double currentXCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getMinX();
+            double currentYCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getMinY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
             this.classPanesCoordinates.set(i, coords);
         }
@@ -588,6 +588,10 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
             this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.classPanes.get(i));
+        }
+
+        for (Line line : this.relationshipLines) {
+            this.contentPane.getChildren().add(line);
         }
 
         for(RelationshipAsset relationshipAsset : GUIDiagramProject.getRelationshipAssets()) {
