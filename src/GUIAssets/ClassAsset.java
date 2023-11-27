@@ -324,8 +324,8 @@ public class ClassAsset {
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
 
-            relationshipCoordinates.clear();
-            classCoordinates.clear();
+            //relationshipCoordinates.clear();
+            //classCoordinates.clear();
 
             //get the x/y positions from the remaining class asset panes
 
@@ -342,7 +342,8 @@ public class ClassAsset {
             this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
-            guiDiagramProject.refreshClassPanesToPaneWindow();
+            guiDiagramProject.addClassPanesToPaneWindow();
+            //guiDiagramProject.refreshClassPanesToPaneWindow();
 
         }
 
@@ -391,7 +392,6 @@ public class ClassAsset {
                 return;
             }
         }
-        //Application.getCurrentDiagram().createSnapshot();
     }
 
     public void deleteMethod(ArrayList<Method> newMethods, ArrayList<Method> deletedMethods, ComboBox<String> comboBox) {
@@ -403,7 +403,6 @@ public class ClassAsset {
                 return;
             }
         }
-        //Application.getCurrentDiagram().createSnapshot();
     }
 
     /**
@@ -668,11 +667,12 @@ public class ClassAsset {
             }
 
             
-            guiDiagramProject.getDiagram().createSnapshot();
+            Application.getCurrentDiagram().createSnapshot();
 
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
-            guiDiagramProject.refreshClassPanesToPaneWindow();
+            guiDiagramProject.addClassPanesToPaneWindow();
+            //guiDiagramProject.refreshClassPanesToPaneWindow();
             popUpStage.close();
         });
 
