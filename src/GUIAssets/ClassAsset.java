@@ -324,9 +324,6 @@ public class ClassAsset {
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
 
-            //relationshipCoordinates.clear();
-            //classCoordinates.clear();
-
             //get the x/y positions from the remaining class asset panes
 
             this.updateCoordinates(classAssetPaneList, classCoordinates);

@@ -266,7 +266,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.clear();
         this.classList.addAll(diagramClasses.values());
 
-        //this.classAssets.clear();
         this.addClassAssets();
         this.addMementoPanes();
         this.addClassPanesToPaneWindow();
@@ -286,6 +285,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassAssets() {
+        this.classAssets.clear();
         int i = 0;
         for (Class currentClass : this.classList) {
             ClassAsset temp = new ClassAsset(currentClass, i);
@@ -328,8 +328,8 @@ public class GUIDiagramProject extends javafx.application.Application {
             }
 
 //keep for debugging purposes
-           /*System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);*/
+           System.out.println("class panes: " + this.classPanes);
+            System.out.println("class coords: " + this.classPanesCoordinates);
 
             });
 
@@ -361,9 +361,9 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.addClassPanes();
             this.addClassPanesToPaneWindow();
             //keeping for debugging purposes
-            /*System.out.println("I'm inside");
+            System.out.println("I'm inside");
             System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);*/
+            System.out.println("class coords: " + this.classPanesCoordinates);
             this.wasAdded = false;
         }
     }
@@ -514,6 +514,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassPanesToPaneWindow() {
+        this.contentPane.getChildren().clear();
         for (Pane classAsset : this.classPanes) {
             this.contentPane.getChildren().add(classAsset);
         }
@@ -645,9 +646,8 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void undo() {
         this.diagram.undo();
-        System.out.println("Undoing..");
-        //this.updateClassPaneCoordinates();
-        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        //System.out.println("Undoing..");
+        this.getContentPane().getChildren().clear();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
         this.refreshDiagramContents();
@@ -655,8 +655,7 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void redo() {
         this.diagram.redo();
-        //this.updateClassPaneCoordinates();
-        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        this.getContentPane().getChildren().clear();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
         this.refreshDiagramContents();;
