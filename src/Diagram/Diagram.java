@@ -79,7 +79,7 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
-         if (classList.isEmpty()){
+         if(this.classList.isEmpty()){
             createSnapshot();
          }
          this.classList.put(className, new Class(className));

@@ -323,7 +323,9 @@ public class GUIDiagramProject extends javafx.application.Application {
             double currentY = e.getY() - classPane.getHeight()/2;
             if (this.wasAdded) {
                 this.executeSingleClassAdd(umlClass, classPane);
+                this.updateClassPaneCoordinates();
             }
+
 //keep for debugging purposes
            /*System.out.println("class panes: " + this.classPanes);
             System.out.println("class coords: " + this.classPanesCoordinates);*/
@@ -635,8 +637,8 @@ public class GUIDiagramProject extends javafx.application.Application {
     public void undo() {
         this.diagram.undo();
         System.out.println("Undoing..");
+        //this.updateClassPaneCoordinates();
         this.getContentPane().getChildren().removeAll(this.getClassPanes());
-        //updateClassPaneCoordinates();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
         this.refreshDiagramContents();
@@ -644,10 +646,10 @@ public class GUIDiagramProject extends javafx.application.Application {
 
     public void redo() {
         this.diagram.redo();
+        //this.updateClassPaneCoordinates();
         this.getContentPane().getChildren().removeAll(this.getClassPanes());
-        //updateClassPaneCoordinates();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
-        this.refreshDiagramContents();
+        this.refreshDiagramContents();;
     }
 }
