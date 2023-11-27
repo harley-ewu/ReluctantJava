@@ -103,7 +103,7 @@ public class DiagramTests {
 		
 		assertEquals(c.getClassName(), UMLDiagram.getClassList().get(c.getClassName()).getClassName());
 		UMLDiagram.addClass("testClass");
-		assertEquals("Class already exists.\r\n", outContent.toString());
+		assertEquals("Class already exists.\n", outContent.toString().replace("\r\n", "\n"));
 	}
 
 	@Test
