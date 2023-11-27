@@ -30,7 +30,7 @@ Strategy:
     Algorithm: launchUmlEditor in UserInterface interface
 
     The launchUmlEditor implementation is selected at runtime, between the GUI and CLI version
-    based on arguments received in the main method
+    based on arguments received in the main method on line 17 in the Application class
 
 Chain of Responsibilities:
 
@@ -41,7 +41,9 @@ Chain of Responsibilities:
 Mediator:
 
     The mediator registers services (request, validator, and handler), and serves as a central
-    point to allow requests to hit each component in a service
+    point to allow requests to hit each component in a service. Starting on line 37 in the
+    Startup class, services are registered to the mediator, and mediator.send calls are 
+    made in the controllers. 
 
 Command:
 
