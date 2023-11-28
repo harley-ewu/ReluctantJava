@@ -17,6 +17,7 @@ public class AutoComplete {
         try {
             this.terminal = TerminalBuilder.builder()
                             .dumb(false)
+                            .jna(true)
                             .build();
         } catch(Exception e) {
             System.out.println("You tryna crash the program??"); }
@@ -28,7 +29,7 @@ public class AutoComplete {
     public void classLineReader(){
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
-                    .completer(new SimpleCompleter(Arrays.asList("add-class", "delete-class", "rename-class", "edit-class", "view-class", "view-diagram", "save", "help", "exit")))
+                    .completer(new SimpleCompleter(Arrays.asList("add-class", "delete-class", "rename-class", "edit-class", "view-class", "view-diagram", "save", "help", "back")))
                     .build();
     }
 
