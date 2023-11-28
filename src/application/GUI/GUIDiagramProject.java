@@ -614,7 +614,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
             this.classPanesCoordinates.add(coordinates);
         }
-        System.out.println("I was updated!");
+        //System.out.println("I was updated!");
     }
 
     public void undo() {

@@ -867,9 +867,10 @@ public class ClassAsset {
         editParametersButton.setText("Edit Parameter");
         editParametersButton.setOnAction(e -> {
 
-        for (int i = 0; i < method.getParameters().size(); i++) {
-                if (method.getParameters().get(i).equals(comboBoxParameters.getValue())) {
-                    this.editParameter(newParameters, newParameters.get(i).toString(), i, comboBoxParameters, observableParameterList);
+        String comboBoxParamValue = comboBoxParameters.getValue();
+        for (int i = 0; i < newParameters.size(); i++) {
+                if (newParameters.get(i).equals(comboBoxParameters.getValue())) {
+                    this.editParameter(newParameters, newParameters.get(i), i, comboBoxParameters, observableParameterList);
                     return;
                 }
         }
@@ -879,9 +880,10 @@ public class ClassAsset {
         Button addParameterButton = new Button();
         addParameterButton.setText("Add Parameter");
         addParameterButton.setOnAction(e ->  {
-            this.addParameter(newParameters, observableParameterList, comboBoxParameters);
+
+            this.addParameter(method, newMethodsList,newParameters, observableParameterList, comboBoxParameters);
             //update combo box
-            System.out.println("new parameters:" + newParameters);
+            //System.out.println("new parameters:" + newParameters);
         }
         );
 
@@ -915,12 +917,29 @@ public class ClassAsset {
         Button submitButton = new Button();
         submitButton.setText("Submit");
         submitButton.setOnAction(e -> {
-            //clear the attribute parameters list and add the new list (which will include previous parameters or if delete, not the previous params)
-            method.getParameters().clear();
-            method.getParameters().addAll(newParameters);
 
-            this.updateMethodComboBox(newMethodsList, comboBoxMethods, observableMethodsList);
-            popUpStage.close();
+            //clear the attribute parameters list and add the new list (which will include previous parameters or if delete, not the previous params)
+            Method tempMethod = new Method(method.getName());
+            tempMethod.getParameters().addAll(newParameters);
+
+            boolean isUnique = true;
+            for (Method currentMethod : newMethodsList) {
+                if (tempMethod.toString().equals(currentMethod.toString())) {
+                    isUnique = false;
+                    break;
+                }
+            }
+
+            if (isUnique) {
+                method.getParameters().clear();
+                method.getParameters().addAll(newParameters);
+                this.updateMethodComboBox(newMethodsList, comboBoxMethods, observableMethodsList);
+                popUpStage.close();
+            } else {
+                Alert notUnique = new Alert(Alert.AlertType.ERROR);
+                notUnique.setContentText("Duplicate method! Can't add!");
+                notUnique.showAndWait();
+            }
         });
 
         //Cancel button
@@ -948,6 +967,19 @@ public class ClassAsset {
         popUpStage.show();
 
     }
+
+    public boolean checkForDuplicateMethod(final Method method, final ArrayList<Method> newMethodsList) {
+        boolean isUnique = true;
+        for (Method curMethod : newMethodsList) {
+            if (method.toString().equals(curMethod.toString())) {
+                isUnique = false;
+                break;
+            }
+        }
+
+        return isUnique;
+    }
+
 
     /**
      * allows user to edit an existing parameter in a method
@@ -1043,7 +1075,8 @@ public class ClassAsset {
      * @param observableParametersList
      * @param comboBoxParameters
      */
-    private void addParameter(ArrayList<String> parametersList, final ObservableList<String> observableParametersList, final ComboBox comboBoxParameters) {
+    private void addParameter(final Method method, final ArrayList<Method> newMethodsList, final ArrayList<String> parametersList,
+                              final ObservableList<String> observableParametersList, final ComboBox comboBoxParameters) {
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(426);
@@ -1087,8 +1120,23 @@ public class ClassAsset {
                     String param = addParameterField.getText();
                     if (parameter.equals(param)) {
                         isUnique = false;
+                        break;
                     }
                 }
+
+
+                //check the methods list for duplicate method
+                Method tempMethod = new Method(method.getName());
+                tempMethod.getParameters().addAll(parametersList);
+                tempMethod.getParameters().add(addParameterField.getText());
+
+                for(Method currentMethod : newMethodsList) {
+                    if (tempMethod.toString().equals(currentMethod.toString())) {
+                        isUnique = false;
+                        break;
+                    }
+                }
+
                 //handle unique name
                 if (isUnique) {
                     parametersList.add(addParameterField.getText());
@@ -1098,8 +1146,9 @@ public class ClassAsset {
                     comboBoxParameters.setItems(observableParametersList);
                     popUpStage.close();
                 } else {
+                    parametersList.clear();
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.setContentText("Duplicate Method detected! \nPlease Enter a Unique Parameters!");
                     notUnique.showAndWait();
                 }
             } else {
@@ -1226,7 +1275,7 @@ public class ClassAsset {
      * @param comboBoxMethod
      * @param observableMethodsList
      */
-    public void addMethod(final ArrayList<Method> newMethodsList, final ComboBox<String> comboBoxMethod, final ObservableList<String> observableMethodsList) {
+    public void addMethod(final Method method, final ArrayList<Method> newMethodsList, final ComboBox<String> comboBoxMethod, final ObservableList<String> observableMethodsList) {
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(426);
@@ -1283,11 +1332,22 @@ public class ClassAsset {
                     }
                 }
 
+                Method tempMethod = new Method(method.getName());
+                method.getParameters().addAll(addedParameters);
+
+                for (Method currentMethod : newMethodsList) {
+                    if (tempMethod.toString().equals(currentMethod)) {
+                        isUnique = false;
+                    }
+                }
+
                 if (isUnique) {
                     addedParameters.add(addParameterField.getText());
                     displayAddedParameters.setText("parameters: " + addedParameters);
                 } else {
-
+                    Alert notUnique = new Alert(Alert.AlertType.WARNING);
+                    notUnique.setContentText("please enter a unique parameter");
+                    notUnique.showAndWait();
                 }
             }
         });
