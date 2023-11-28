@@ -294,7 +294,7 @@ public class MenuController {
             System.out.println("\nThere are no fields to delete");
             return;
         }
-        int size = currentClass.getMethods().size();
+        int size = currentClass.getFields().size();
         int choice = MenuPrompts.deleteFieldPrompts(currentClass);
         currentClass.deleteField(choice);
         if (size > currentClass.getFields().size()) {
