@@ -632,4 +632,8 @@ public class CommandLineInterface implements UserInterface {
         }
         return false;
     }
+
+    public static AutoComplete getAutoComplete(){
+        return ac;
+    }
 }

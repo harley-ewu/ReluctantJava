@@ -446,4 +446,11 @@ public class DiagramTests {
 		assertEquals(dm.getClassList(), d.getClassList());
 		assertEquals(dm.getRelationshipList(), d.getRelationshipList());
 	}
+
+	@Test
+	void getCoordinatesTest() {
+		Diagram d = new Diagram("test");
+		d.setCoordinates(null);
+		assertEquals(null, d.getCoordinates());
+	}
 }

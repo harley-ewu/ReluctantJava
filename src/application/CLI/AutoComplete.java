@@ -3,10 +3,17 @@ import org.jline.reader.*;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import Class.Class;
+import Attributes.Field;
+import Attributes.Method;
 
 public class AutoComplete {
 
@@ -70,6 +77,43 @@ public class AutoComplete {
         this.lineReader = LineReaderBuilder.builder()
                     .terminal(terminal)
                     .completer(new SimpleCompleter(Arrays.asList("add-relationship", "delete-relationship", "view-relationships", "save", "back", "exit")))
+                    .build();
+    }
+
+    public void listClassLineReader(final HashMap<String, Class> classList) {
+        List<String> stringList = new ArrayList<String>();
+        for (Map.Entry<String, Class> classEntity : classList.entrySet()) {
+            String className = classEntity.getKey();
+            stringList.add(className);
+        }
+        this.lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new SimpleCompleter(stringList))
+                    .build();
+        
+    }
+
+    public void listFieldsLineReader(final ArrayList<Field> fieldList) {
+        List<String> stringList = new ArrayList<String>();
+        for(int i = 0; i < fieldList.size(); i++){
+            String fieldName = fieldList.get(0).getName();
+            stringList.add(fieldName);
+        }
+        this.lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new SimpleCompleter(stringList))
+                    .build();
+    }
+
+    public void listMethodsLineReader(final ArrayList<Method> methodList) {
+        List<String> stringList = new ArrayList<String>();
+        for(int i = 0; i < methodList.size(); i++){
+            String fieldName = methodList.get(0).getName();
+            stringList.add(fieldName);
+        }
+        this.lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new SimpleCompleter(stringList))
                     .build();
     }
 
