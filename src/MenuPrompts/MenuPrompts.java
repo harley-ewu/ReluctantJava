@@ -432,10 +432,10 @@ public class MenuPrompts {
     public static int deleteFieldPrompts(final Class currentClass) {
         int choice = -99;
         do {
-            System.out.println("Delete an attribute:");
+            System.out.println("Delete a field:");
             //need to add message if no attributes exist
             System.out.println(currentClass.displayAttributes());
-            System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " -> ");
+            System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " or " + (currentClass.getFields().size()+1) + " to cancel." + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
@@ -450,10 +450,10 @@ public class MenuPrompts {
     public static int deleteMethodPrompts(final Class currentClass) {
         int choice = -99;
         do {
-            System.out.println("Delete an attribute:");
+            System.out.println("Delete an method:");
             //need to add message if no attributes exist
             System.out.println(currentClass.displayAttributes());
-            System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " -> ");
+            System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " or " + (currentClass.getMethods().size()+1) + " to cancel." + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
