@@ -442,7 +442,7 @@ public class MenuController {
             case("help"):
                 CommandLineInterface.diagramHelp();
                 break;
-            case("exit"):
+            case("back"):
                 return true;
             default:
                 System.out.println("Not a recognized command.");

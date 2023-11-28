@@ -353,7 +353,7 @@ public class CommandLineInterface implements UserInterface {
                              6 - View Diagram
                              7 - Save Changes
                              8 - Help
-                             9 - Exit
+                             9 - Back to Main Menu
                             --------------------------
                             """);
         System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
@@ -409,7 +409,7 @@ public class CommandLineInterface implements UserInterface {
 
             Option 8 - Help: See how each option functions
 
-            Option 9 - Exit: Exit the program
+            Option 9 - Back to Main Menu: Brings you back to main menu
                 """);
     }
 
