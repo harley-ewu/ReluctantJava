@@ -17,6 +17,7 @@ public class AutoComplete {
         try {
             this.terminal = TerminalBuilder.builder()
                             .dumb(false)
+                            .jna(true)
                             .build();
         } catch(Exception e) {
             System.out.println("You tryna crash the program??"); }
