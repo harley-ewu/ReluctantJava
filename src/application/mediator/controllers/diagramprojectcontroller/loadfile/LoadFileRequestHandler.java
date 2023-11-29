@@ -14,6 +14,10 @@ import java.io.File;
 
 public class LoadFileRequestHandler implements IHandler {
     public Void handle(Request request){
+        if(Application.getCurrentDiagram() != null){
+            GraphicalUserInterface.showSavePrompt();
+        }
+
         LoadFileRequest newRequest = (LoadFileRequest) request;
         Window stage = newRequest.getStage();
 
