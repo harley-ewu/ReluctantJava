@@ -1,13 +1,5 @@
 package application.mediator.controllers.diagramprojectcontroller;
 
-
-import application.Application;
-import Class.Class;
-import Diagram.Diagram;
-import Relationships.Relationship;
-import SaveLoadSystem.SaveLoadSystem;
-import application.GUI.GUIDiagramProject;
-import application.GUI.GraphicalUserInterface;
 import application.mediator.common.Mediator;
 import application.mediator.common.MediatorSingletonHandler;
 import application.mediator.common.Request;
@@ -18,20 +10,7 @@ import application.mediator.controllers.diagramprojectcontroller.loadfile.LoadFi
 import application.mediator.controllers.diagramprojectcontroller.saveasfile.SaveAsFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.snapshot.SnapshotRequest;
-import application.mediator.controllers.updateviewcontroller.UpdateViewController;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 
 public class DiagramProjectController {
