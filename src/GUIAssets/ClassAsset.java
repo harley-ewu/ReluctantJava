@@ -108,20 +108,14 @@ public class ClassAsset {
                                 final ArrayList<Point2D> classCoordinates, final ArrayList<RelationshipAsset> relationshipAssets) {
         double deltaX = event.getSceneX() - this.xOffset;
         double deltaY = event.getSceneY() - this.yOffset;
-
         Pane pane = new Pane();
-
         if (event.getSource() instanceof Pane) {
             pane = (Pane) event.getSource();
         }
-
         pane.setTranslateX(pane.getTranslateX() + deltaX);
         pane.setTranslateY(pane.getTranslateY() + deltaY);
-
-
         this.xOffset = event.getSceneX();
         this.yOffset = event.getSceneY();
-
         for (RelationshipAsset relationshipAsset :relationshipAssets) {
             RelationshipAsset.updateRelationshipLines(relationshipAsset, classPaneArrayList, classCoordinates, classAssets);
         }
@@ -561,15 +555,15 @@ public class ClassAsset {
         Button deleteMethodButton = new Button();
         deleteMethodButton.setText("Delete Method");
         deleteMethodButton.setOnAction(e -> {
-            this.deleteMethod(newMethods, deletedMethods, comboBoxMethods);
-            observableMethodsList.clear();
-            for (Method method : newMethods) {
-                observableMethodsList.add(method.toString());
-            }
-            comboBoxMethods.setValue("Methods");
-            comboBoxMethods.setItems(observableMethodsList);
-            deletedList.setText("*To be deleted: " + deletedMethods);
-        }
+                    this.deleteMethod(newMethods, deletedMethods, comboBoxMethods);
+                    observableMethodsList.clear();
+                    for (Method method : newMethods) {
+                        observableMethodsList.add(method.toString());
+                    }
+                    comboBoxMethods.setValue("Methods");
+                    comboBoxMethods.setItems(observableMethodsList);
+                    deletedList.setText("*To be deleted: " + deletedMethods);
+                }
         );
 
         methodsButtonContainer.getChildren().addAll(editMethodButton, addMethodButton, deleteMethodButton);
@@ -658,7 +652,7 @@ public class ClassAsset {
 
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
-            guiDiagramProject.refreshClassPanesToPaneWindow();
+            guiDiagramProject.addClassPanesToPaneWindow();
             popUpStage.close();
         });
 
@@ -666,14 +660,14 @@ public class ClassAsset {
         Button cancelButton = new Button();
         cancelButton.setText("Cancel");
         cancelButton.setOnAction(e ->
-        {
-            newFields.clear();
-            newMethods.clear();
-            deletedFields.clear();
-            deletedMethods.clear();
-            deletedRelationships.clear();
-            popUpStage.close();
-        }
+                {
+                    newFields.clear();
+                    newMethods.clear();
+                    deletedFields.clear();
+                    deletedMethods.clear();
+                    deletedRelationships.clear();
+                    popUpStage.close();
+                }
         );
 
         submitButtonContainer.getChildren().addAll(submitButton, cancelButton);
@@ -868,13 +862,13 @@ public class ClassAsset {
         editParametersButton.setText("Edit Parameter");
         editParametersButton.setOnAction(e -> {
 
-        String comboBoxParamValue = comboBoxParameters.getValue();
-        for (int i = 0; i < newParameters.size(); i++) {
+            String comboBoxParamValue = comboBoxParameters.getValue();
+            for (int i = 0; i < newParameters.size(); i++) {
                 if (newParameters.get(i).equals(comboBoxParameters.getValue())) {
                     this.editParameter(method, newMethodsList, newParameters, newParameters.get(i), i, comboBoxParameters, observableParameterList);
                     return;
                 }
-        }
+            }
         });
 
         //add parameter button
@@ -882,10 +876,10 @@ public class ClassAsset {
         addParameterButton.setText("Add Parameter");
         addParameterButton.setOnAction(e ->  {
 
-            this.addParameter(method, newMethodsList,newParameters, observableParameterList, comboBoxParameters);
-            //update combo box
-            //System.out.println("new parameters:" + newParameters);
-        }
+                    this.addParameter(method, newMethodsList,newParameters, observableParameterList, comboBoxParameters);
+                    //update combo box
+                    //System.out.println("new parameters:" + newParameters);
+                }
         );
 
         //delete parameter button
@@ -1054,9 +1048,9 @@ public class ClassAsset {
                 tempMethod.getParameters().set(index, editNameField.getText());
 
                 for (int i = 0; i < newMethodsList.size(); i ++) {
-                        if (tempMethod.toString().equals(newMethodsList.get(i).toString())) {
-                            isUnique = false;
-                        }
+                    if (tempMethod.toString().equals(newMethodsList.get(i).toString())) {
+                        isUnique = false;
+                    }
                 }
 
                 //handle unique name
@@ -1271,7 +1265,7 @@ public class ClassAsset {
                 popUpStage.close();
             } else {
                 Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                notUnique.setContentText("Please enter a unique name!");
+                notUnique.setContentText("Please enter a unique field name and type!");
                 notUnique.showAndWait();
             }
 
@@ -1356,7 +1350,6 @@ public class ClassAsset {
 
 /*                Method tempMethod = new Method(method.getName());
                 method.getParameters().addAll(addedParameters);
-
                 for (Method currentMethod : newMethodsList) {
                     if (tempMethod.toString().equals(currentMethod)) {
                         isUnique = false;
@@ -1394,10 +1387,10 @@ public class ClassAsset {
             if (!addNameField.getText().isEmpty()) {
                 //check the local methods list for duplicate methods
                 for (Method currentMethod : newMethodsList) {
-                        //take the to string from current index in attribute list and compare it to generate attribute
-                        if (currentMethod.toString().equals(newMethod.toString())) {
-                            isUnique = false;
-                        }
+                    //take the to string from current index in attribute list and compare it to generate attribute
+                    if (currentMethod.toString().equals(newMethod.toString())) {
+                        isUnique = false;
+                    }
                 }
                 //check the class attributes list for duplicate methods
                 for (Method currentAttribute : this.methodList) {
