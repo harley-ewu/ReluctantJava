@@ -9,6 +9,7 @@ import SaveLoadSystem.SaveLoadSystem;
 import application.GUI.GUIDiagramProject;
 import application.GUI.GraphicalUserInterface;
 import application.mediator.common.Mediator;
+import application.mediator.common.MediatorSingletonHandler;
 import application.mediator.common.Request;
 import application.mediator.controllers.diagramprojectcontroller.addclass.AddClassRequest;
 import application.mediator.controllers.diagramprojectcontroller.addrelationship.AddRelationshipRequest;
@@ -34,6 +35,7 @@ import java.io.File;
 
 public class DiagramProjectController {
 
+    private static final Mediator mediator = new MediatorSingletonHandler().getInstance();
     /**
      * Description: Opens the "Save As" from the project view so that the user
      * can save their work to a specified folder.
@@ -41,7 +43,7 @@ public class DiagramProjectController {
      */
     public static void saveAsFile(Stage stage) {
         Request request = new SaveAsFileRequest(stage);
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     /**
@@ -50,7 +52,7 @@ public class DiagramProjectController {
      */
     public static void saveFile() {
         Request request = new SaveFileRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     /**
@@ -60,12 +62,12 @@ public class DiagramProjectController {
      */
     public static void loadFile(Stage stage) {
         Request request = new LoadFileRequest(stage);
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     public static void exit() {
         Request request = new ExitRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     /**
@@ -74,7 +76,7 @@ public class DiagramProjectController {
      */
     public static void addClass() {
         Request request = new AddClassRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     /**
@@ -83,7 +85,7 @@ public class DiagramProjectController {
      */
     public static void addRelationship() {
         Request request = new AddRelationshipRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     public static void editClass() {
