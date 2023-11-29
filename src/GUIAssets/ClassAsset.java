@@ -870,7 +870,7 @@ public class ClassAsset {
         String comboBoxParamValue = comboBoxParameters.getValue();
         for (int i = 0; i < newParameters.size(); i++) {
                 if (newParameters.get(i).equals(comboBoxParameters.getValue())) {
-                    this.editParameter(newParameters, newParameters.get(i), i, comboBoxParameters, observableParameterList);
+                    this.editParameter(method, newMethodsList, newParameters, newParameters.get(i), i, comboBoxParameters, observableParameterList);
                     return;
                 }
         }
@@ -936,8 +936,16 @@ public class ClassAsset {
                 this.updateMethodComboBox(newMethodsList, comboBoxMethods, observableMethodsList);
                 popUpStage.close();
             } else {
-                Alert notUnique = new Alert(Alert.AlertType.ERROR);
-                notUnique.setContentText("Duplicate method! Can't add!");
+                if (!deletedParameters.isEmpty()) {
+                    newParameters.addAll(deletedParameters);
+                    deletedParameters.clear();
+                    deletedList.setText("To be deleted: " + deletedParameters);
+                    this.updateParameterComboBox(newParameters, comboBoxParameters, observableParameterList);
+
+
+                }
+                Alert notUnique = new Alert(Alert.AlertType.INFORMATION);
+                notUnique.setContentText("Duplicate method or no changes to submit! (hit cancel)\n");
                 notUnique.showAndWait();
             }
         });
@@ -990,7 +998,8 @@ public class ClassAsset {
      * @param observableParametersList
      */
 
-    private void editParameter(final ArrayList<String> newParameters, final String paramName, final int index, ComboBox menu, final ObservableList<String> observableParametersList) {
+    private void editParameter(final Method method, final ArrayList<Method> newMethodsList, final ArrayList<String> newParameters,
+                               final String paramName, final int index, ComboBox menu, final ObservableList<String> observableParametersList) {
 
         if (newParameters == null || paramName == null || menu == null || observableParametersList == null) {
             nullAlertMessage("editParameter");
@@ -1037,6 +1046,18 @@ public class ClassAsset {
                         isUnique = false;
                     }
                 }
+
+                //check method
+                Method tempMethod = new Method(method.getName());
+                tempMethod.getParameters().addAll(newParameters);
+                tempMethod.getParameters().set(index, editNameField.getText());
+
+                for (int i = 0; i < newMethodsList.size(); i ++) {
+                        if (tempMethod.toString().equals(newMethodsList.get(i).toString())) {
+                            isUnique = false;
+                        }
+                }
+
                 //handle unique name
                 if (isUnique) {
                     newParameters.set(index, editNameField.getText()); //needs to discard if user hits cancel
@@ -1275,7 +1296,7 @@ public class ClassAsset {
      * @param comboBoxMethod
      * @param observableMethodsList
      */
-    public void addMethod(final Method method, final ArrayList<Method> newMethodsList, final ComboBox<String> comboBoxMethod, final ObservableList<String> observableMethodsList) {
+    public void addMethod(final ArrayList<Method> newMethodsList, final ComboBox<String> comboBoxMethod, final ObservableList<String> observableMethodsList) {
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(426);
@@ -1332,14 +1353,14 @@ public class ClassAsset {
                     }
                 }
 
-                Method tempMethod = new Method(method.getName());
+/*                Method tempMethod = new Method(method.getName());
                 method.getParameters().addAll(addedParameters);
 
                 for (Method currentMethod : newMethodsList) {
                     if (tempMethod.toString().equals(currentMethod)) {
                         isUnique = false;
                     }
-                }
+                }*/
 
                 if (isUnique) {
                     addedParameters.add(addParameterField.getText());
@@ -1391,6 +1412,8 @@ public class ClassAsset {
                     System.out.println("temp method list elements: " + newMethodsList); //to be removed
                     popUpStage.close();
                 } else {
+                    addedParameters.clear();
+                    displayAddedParameters.setText("parameters: " + addedParameters);
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
                     notUnique.setContentText("Please enter a unique name!");
                     notUnique.showAndWait();
