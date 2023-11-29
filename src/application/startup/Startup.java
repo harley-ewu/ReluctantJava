@@ -14,6 +14,9 @@ import application.mediator.controllers.diagramprojectcontroller.saveasfile.Save
 import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequestHandler;
 import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequestValidator;
+import application.mediator.controllers.diagramprojectcontroller.snapshot.SnapshotRequest;
+import application.mediator.controllers.diagramprojectcontroller.snapshot.SnapshotRequestHandler;
+import application.mediator.controllers.diagramprojectcontroller.snapshot.SnapshotRequestValidator;
 import application.mediator.controllers.mainmenucontroller.creatediagramgui.*;
 import application.mediator.controllers.mainmenucontroller.exitui.*;
 import application.mediator.controllers.mainmenucontroller.helpmaingui.*;
@@ -60,6 +63,7 @@ public class Startup {
         mediator.registerService(new LoadFileRequestValidator(), new LoadFileRequestHandler(), new LoadFileRequest(null));
         mediator.registerService(new SaveAsFileRequestValidator(), new SaveAsFileRequestHandler(), new SaveAsFileRequest(null));
         mediator.registerService(new SaveFileRequestValidator(), new SaveFileRequestHandler(), new SaveFileRequest());
+        mediator.registerService(new SnapshotRequestValidator(), new SnapshotRequestHandler(), new SnapshotRequest());
     }
 
     private static void initMediator(){
