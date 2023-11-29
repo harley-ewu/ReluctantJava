@@ -17,6 +17,7 @@ import application.mediator.controllers.diagramprojectcontroller.exit.ExitReques
 import application.mediator.controllers.diagramprojectcontroller.loadfile.LoadFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.saveasfile.SaveAsFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequest;
+import application.mediator.controllers.diagramprojectcontroller.snapshot.SnapshotRequest;
 import application.mediator.controllers.updateviewcontroller.UpdateViewController;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -88,6 +89,13 @@ public class DiagramProjectController {
         mediator.send(request);
     }
 
+    /**
+     * Creates a snapshot of the users current diagram
+     * */
+    public static void snapshot(){
+        Request request = new SnapshotRequest();
+        mediator.send(request);
+    }
     public static void editClass() {
         System.out.println("editing class...");
     }
