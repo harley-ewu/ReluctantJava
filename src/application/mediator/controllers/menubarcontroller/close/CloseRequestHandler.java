@@ -1,5 +1,7 @@
 package application.mediator.controllers.menubarcontroller.close;
 
+import application.Application;
+import application.GUI.GraphicalUserInterface;
 import application.mediator.common.IHandler;
 import application.mediator.common.Request;
 import javafx.scene.Node;
@@ -10,6 +12,10 @@ import javafx.event.ActionEvent;
 
 public class CloseRequestHandler implements IHandler {
     public Void handle(Request request){
+        if(Application.getCurrentDiagram() != null && Application.getCurrentDiagram().getSaveLocation() == null){
+            GraphicalUserInterface.showSavePrompt();
+        }
+
         CloseRequest newRequest = (CloseRequest) request;
         ActionEvent event = newRequest.getEvent();
 
