@@ -3,6 +3,7 @@ package application.mediator.controllers.menubarcontroller.guiLoad;
 import Diagram.Diagram;
 import SaveLoadSystem.SaveLoadSystem;
 import application.Application;
+import application.GUI.GraphicalUserInterface;
 import application.mediator.common.IHandler;
 import application.mediator.common.Request;
 import javafx.scene.layout.HBox;
@@ -13,6 +14,10 @@ import java.io.File;
 
 public class GuiLoadRequestHandler implements IHandler {
     public Void handle(Request request) {
+        if(Application.getCurrentDiagram() != null){
+            GraphicalUserInterface.showSavePrompt();
+        }
+
         GuiLoadRequest newRequest = (GuiLoadRequest) request;
         HBox menuBar = newRequest.getMenuBar();
 

@@ -12,7 +12,7 @@ import javafx.event.ActionEvent;
 
 public class CloseRequestHandler implements IHandler {
     public Void handle(Request request){
-        if(Application.getCurrentDiagram() != null && Application.getCurrentDiagram().getSaveLocation() == null){
+        if(Application.getCurrentDiagram() != null){
             GraphicalUserInterface.showSavePrompt();
         }
 

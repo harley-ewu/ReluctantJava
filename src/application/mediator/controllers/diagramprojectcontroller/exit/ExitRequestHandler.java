@@ -7,7 +7,7 @@ import application.mediator.common.Request;
 
 public class ExitRequestHandler implements IHandler {
     public Void handle(Request request){
-        if(Application.getCurrentDiagram() != null && Application.getCurrentDiagram().getSaveLocation() == null){
+        if(Application.getCurrentDiagram() != null){
             GraphicalUserInterface.showSavePrompt();
         }
 
