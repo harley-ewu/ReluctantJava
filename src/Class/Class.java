@@ -5,7 +5,7 @@ import Attributes.Method;
 import com.google.gson.annotations.Expose;
 import java.util.*;
 
-public class Class {
+public class Class implements Cloneable{
 
     @Expose
     private String className;
@@ -285,6 +285,24 @@ public class Class {
                 + "Methods: \n" + methodsString
                 + "\n"
                 + "--------------------------\n";
+    }
+
+    @Override
+    public Class clone() {
+        try {
+            Class clonedClass = (Class) super.clone();
+            clonedClass.fields = new ArrayList<>(this.fields.size());
+            for (Field field : this.fields) {
+                clonedClass.fields.add(field.clone());
+            }
+            clonedClass.methods = new ArrayList<>(this.methods.size());
+            for (Method method : this.methods) {
+                clonedClass.methods.add(method.clone());
+            }
+            return clonedClass;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
