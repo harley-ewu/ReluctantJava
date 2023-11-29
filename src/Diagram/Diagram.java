@@ -22,7 +22,6 @@ public class Diagram {
    private HashMap<String, Class> classList;
    @Expose
    private HashMap<String, Relationship> relationshipList;
-   @Expose
    private DiagramCaretaker caretaker;
    @Expose
    private GUIDiagramProjectDto coordinates;
@@ -265,6 +264,10 @@ public class Diagram {
 
    public DiagramCaretaker getCaretaker() {
       return this.caretaker;
+   }
+
+   public void setCaretaker(DiagramCaretaker caretaker){
+      this.caretaker = caretaker;
    }
 
    public void createSnapshot() {
