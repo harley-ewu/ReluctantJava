@@ -769,7 +769,7 @@ public class ClassAsset {
                     popUpStage.close();
                 } else {
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.setContentText("A method with the same name and parameters already exists.");
                     notUnique.showAndWait();
                 }
 
@@ -1065,7 +1065,7 @@ public class ClassAsset {
                     popUpStage.close();
                 } else {
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.setContentText("A method with the same name and parameters already exists\nor a parameter of the same name already in method");
                     notUnique.showAndWait();
                 }
 
@@ -1169,7 +1169,7 @@ public class ClassAsset {
                 } else {
                     parametersList.clear();
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Duplicate Method detected! \nPlease Enter a Unique Parameters!");
+                    notUnique.setContentText("A method with the same name and parameters already exists\nPlease Enter a Unique Parameters!");
                     notUnique.showAndWait();
                 }
             } else {
@@ -1367,7 +1367,7 @@ public class ClassAsset {
                     displayAddedParameters.setText("parameters: " + addedParameters);
                 } else {
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("please enter a unique parameter");
+                    notUnique.setContentText("please enter a unique parameter name");
                     notUnique.showAndWait();
                 }
             }
@@ -1415,7 +1415,7 @@ public class ClassAsset {
                     addedParameters.clear();
                     displayAddedParameters.setText("parameters: " + addedParameters);
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.setContentText("Please enter a unique field name and type!");
                     notUnique.showAndWait();
                 }
             } else{
