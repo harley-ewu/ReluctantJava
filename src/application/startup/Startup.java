@@ -63,7 +63,7 @@ public class Startup {
         mediator.registerService(new LoadFileRequestValidator(), new LoadFileRequestHandler(), new LoadFileRequest(null));
         mediator.registerService(new SaveAsFileRequestValidator(), new SaveAsFileRequestHandler(), new SaveAsFileRequest(null));
         mediator.registerService(new SaveFileRequestValidator(), new SaveFileRequestHandler(), new SaveFileRequest());
-        mediator.registerService(new SnapshotRequestValidator(), new SnapshotRequestHandler(), new SnapshotRequest());
+        mediator.registerService(new SnapshotRequestValidator(), new SnapshotRequestHandler(), new SnapshotRequest(null));
     }
 
     private static void initMediator(){

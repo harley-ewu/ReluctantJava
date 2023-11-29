@@ -187,10 +187,13 @@ public class GUIDiagramProject extends javafx.application.Application {
         MenuItem loadItem = new MenuItem("Load...");
         loadItem.setOnAction(e -> DiagramProjectController.loadFile(stage));
 
+        MenuItem snapshotItem = new Menu("Take Snapshot");
+        snapshotItem.setOnAction(e -> DiagramProjectController.snapshot(stage));
+
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(e -> DiagramProjectController.exit());
 
-        fileMenu.getItems().addAll(openItem, saveItem, loadItem, exitItem);
+        fileMenu.getItems().addAll(openItem, saveItem, loadItem, snapshotItem, exitItem);
         return fileMenu;
     }
 
