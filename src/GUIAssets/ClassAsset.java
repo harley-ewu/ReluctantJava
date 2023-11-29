@@ -653,6 +653,7 @@ public class ClassAsset {
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
             guiDiagramProject.addClassPanesToPaneWindow();
+            guiDiagramProject.refreshRelationshipLinesToPaneWindow();
             popUpStage.close();
         });
 
