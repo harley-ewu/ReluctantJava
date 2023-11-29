@@ -1,3 +1,4 @@
+
 package GUIAssets;
 
 import Attributes.Field;
@@ -90,9 +91,36 @@ public class ClassAsset {
                 classAssets, classCoordinates, relationshipListArrayList, relationshipCoordinates, guiDiagramProject);
 
         this.classContainer.getChildren().add(textContainer);
+        //this.classContainer.setOnMousePressed(this::onMousePressed);
+        //this.classContainer.setOnMouseDragged(event -> onMouseDragged(event, classPaneArrayList, classAssets, classCoordinates, relationshipAssets));
 
         return this.classContainer;
     }
+
+
+
+/*    private void onMousePressed(final MouseEvent event) {
+        this.xOffset = event.getSceneX();
+        this.yOffset = event.getSceneY();
+    }*/
+    /*
+    private void onMouseDragged(final MouseEvent event, final ArrayList<Pane> classPaneArrayList, final ArrayList<ClassAsset> classAssets,
+                                final ArrayList<Point2D> classCoordinates, final ArrayList<RelationshipAsset> relationshipAssets) {
+        double deltaX = event.getSceneX() - this.xOffset;
+        double deltaY = event.getSceneY() - this.yOffset;
+        Pane pane = new Pane();
+        if (event.getSource() instanceof Pane) {
+            pane = (Pane) event.getSource();
+        }
+        pane.setTranslateX(pane.getTranslateX() + deltaX);
+        pane.setTranslateY(pane.getTranslateY() + deltaY);
+        this.xOffset = event.getSceneX();
+        this.yOffset = event.getSceneY();
+        for (RelationshipAsset relationshipAsset :relationshipAssets) {
+            RelationshipAsset.updateRelationshipLines(relationshipAsset, classPaneArrayList, classCoordinates, classAssets);
+        }
+    }
+    */
 
     /**
      * searches an existing array list and puts contents in a stringbuilder
@@ -278,11 +306,12 @@ public class ClassAsset {
             classList.remove(this.pos);
 
             ArrayList<Relationship> classRelationships = Application.getCurrentDiagram().getSingleClassRelationships(currentClass);
-
             for(Relationship relationship : classRelationships) {
-                guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
-                        relationshipAssetLineList, guiDiagramProject.getRelationshipAssets(), relationshipCoordinates,
-                        classAssetPaneList, classCoordinates, guiDiagramProject);
+                if(guiDiagramProject.getRelationshipAssetFromList(relationship) != null) {
+                    guiDiagramProject.getRelationshipAssetFromList(relationship).deleteRelationship(guiDiagramProject.getRelationshipList(),
+                            relationshipAssetLineList, guiDiagramProject.getRelationshipAssets(), relationshipCoordinates,
+                            classAssetPaneList, classCoordinates, guiDiagramProject);
+                }
             }
 
             Application.getCurrentDiagram().deleteClass(currentClass);
@@ -290,17 +319,25 @@ public class ClassAsset {
             //remove the class pane from the pane list next
             classAssetPaneList.remove(this.pos);
 
+            relationshipCoordinates.clear();
+            classCoordinates.clear();
+
             //get the x/y positions from the remaining class asset panes
 
             this.updateCoordinates(classAssetPaneList, classCoordinates);
 
+            for (int i = 0; i < relationshipAssetLineList.size(); i++) {
+                double currentXCoordinate = relationshipAssetLineList.get(i).localToScene(relationshipAssetLineList.get(i).getBoundsInLocal()).getMinX();
+                double currentYCoordinate = relationshipAssetLineList.get(i).localToScene(relationshipAssetLineList.get(i).getBoundsInLocal()).getMinY();
+                Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
+                relationshipCoordinates.add(coords);
+            }
+
             //update the class asset list by taking the new class list and creating new class assets from them
             this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
-            guiDiagramProject.getContentPane().getChildren().clear();
             guiDiagramProject.addClassPanes();
-            guiDiagramProject.addClassPanesToPaneWindow();
-            guiDiagramProject.refreshRelationshipLinesToPaneWindow();
+            guiDiagramProject.refreshClassPanesToPaneWindow();
 
         }
 
@@ -456,12 +493,7 @@ public class ClassAsset {
         //add field button
         Button addFieldButton = new Button();
         addFieldButton.setText("Add Field");
-        addFieldButton.setOnAction(e ->
-                {
-                    //Application.getCurrentDiagram().createSnapshot();
-                    this.addField(newFields, comboBoxFields, observableFieldsList);
-                }
-        );
+        addFieldButton.setOnAction(e -> this.addField(newFields, comboBoxFields, observableFieldsList));
 
         //delete field button
         Button deleteFieldButton = new Button();
@@ -517,25 +549,21 @@ public class ClassAsset {
         //add method button
         Button addMethodButton = new Button();
         addMethodButton.setText("Add Method");
-        addMethodButton.setOnAction(e ->
-        {
-            this.addMethod(newMethods, comboBoxMethods, observableMethodsList);
-            //Application.getCurrentDiagram().createSnapshot();
-        });
+        addMethodButton.setOnAction(e -> this.addMethod(newMethods, comboBoxMethods, observableMethodsList));
 
         //delete method button
         Button deleteMethodButton = new Button();
         deleteMethodButton.setText("Delete Method");
         deleteMethodButton.setOnAction(e -> {
-            this.deleteMethod(newMethods, deletedMethods, comboBoxMethods);
-            observableMethodsList.clear();
-            for (Method method : newMethods) {
-                observableMethodsList.add(method.toString());
-            }
-            comboBoxMethods.setValue("Methods");
-            comboBoxMethods.setItems(observableMethodsList);
-            deletedList.setText("*To be deleted: " + deletedMethods);
-        }
+                    this.deleteMethod(newMethods, deletedMethods, comboBoxMethods);
+                    observableMethodsList.clear();
+                    for (Method method : newMethods) {
+                        observableMethodsList.add(method.toString());
+                    }
+                    comboBoxMethods.setValue("Methods");
+                    comboBoxMethods.setItems(observableMethodsList);
+                    deletedList.setText("*To be deleted: " + deletedMethods);
+                }
         );
 
         methodsButtonContainer.getChildren().addAll(editMethodButton, addMethodButton, deleteMethodButton);
@@ -561,10 +589,9 @@ public class ClassAsset {
         deleteRelationshipButton.setOnAction(e -> {
             for(Relationship relationship : currentRelationships) {
                 String comboBoxName = comboBoxRelationships.getValue();
-                if(relationship.getClass1().getClassName().equals(comboBoxName) || relationship.getClass2().getClassName().equals(comboBoxName)){
+                if(relationship.getClass1().getClassName() == comboBoxName || relationship.getClass2().getClassName() ==comboBoxName){
                     currentRelationships.remove(relationship);
                     deletedRelationships.add(relationship);
-                    updateRelationshipComboBox(currentRelationships, comboBoxRelationships, observableRelatinoshipsList);
                 }
             }
         });
@@ -592,31 +619,29 @@ public class ClassAsset {
                 }
             }
             //for fields and methods, we will clear the attributes list once and update with the local lists
-
             this.currentClass.getFields().clear();
             this.currentClass.getMethods().clear();
             this.currentClass.getFields().addAll(newFields);
             this.currentClass.getMethods().addAll(newMethods);
             //for relationships, we will clear the relationship list once and update with the local lists
-            /*
             Application.getCurrentDiagram().getRelationshipList().clear();
             for(Relationship relationship : currentRelationships) {
                 Application.getCurrentDiagram().addRelationship(relationship);
             }
-            */
+
             //apply deleted attributes
             for (Field deletedField : deletedFields) {
                 this.currentClass.getFields().remove(deletedField);
             }
 
             for (Method deletedMethod : deletedMethods) {
-                this.currentClass.getMethods().remove(deletedMethod);
+                this.currentClass.getFields().remove(deletedMethod);
             }
             //apply deleted relationships
             for(Relationship deletedRelationship : deletedRelationships) {
-                //Application.getCurrentDiagram().deleteRelationship(deletedRelationship.getClass1(), deletedRelationship.getClass2());
+                Application.getCurrentDiagram().deleteRelationship(deletedRelationship.getClass1(), deletedRelationship.getClass2());
                 for(RelationshipAsset relationshipAsset : GUIDiagramProject.getRelationshipAssets()) {
-                    if(relationshipAsset.getRelationship().equals(deletedRelationship)) {
+                    if(relationshipAsset.getRelationship() == deletedRelationship) {
                         relationshipAsset.deleteRelationship( guiDiagramProject.getRelationshipList(),
                                 GUIDiagramProject.getRelationshipLines(), GUIDiagramProject.getRelationshipAssets(),
                                 guiDiagramProject.getRelationshipPanesCoordinates(), guiDiagramProject.getClassPanes(),
@@ -625,14 +650,9 @@ public class ClassAsset {
                 }
             }
 
-            
-            guiDiagramProject.getDiagram().createSnapshot();
-
             //refresh the class asset panes and the window
-            guiDiagramProject.getContentPane().getChildren().clear();
             guiDiagramProject.addClassPanes();
             guiDiagramProject.addClassPanesToPaneWindow();
-            //guiDiagramProject.refreshClassPanesToPaneWindow();
             popUpStage.close();
         });
 
@@ -640,14 +660,14 @@ public class ClassAsset {
         Button cancelButton = new Button();
         cancelButton.setText("Cancel");
         cancelButton.setOnAction(e ->
-        {
-            newFields.clear();
-            newMethods.clear();
-            deletedFields.clear();
-            deletedMethods.clear();
-            deletedRelationships.clear();
-            popUpStage.close();
-        }
+                {
+                    newFields.clear();
+                    newMethods.clear();
+                    deletedFields.clear();
+                    deletedMethods.clear();
+                    deletedRelationships.clear();
+                    popUpStage.close();
+                }
         );
 
         submitButtonContainer.getChildren().addAll(submitButton, cancelButton);
@@ -744,7 +764,7 @@ public class ClassAsset {
                     popUpStage.close();
                 } else {
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.setContentText("A method with the same name and parameters already exists.");
                     notUnique.showAndWait();
                 }
 
@@ -842,23 +862,24 @@ public class ClassAsset {
         editParametersButton.setText("Edit Parameter");
         editParametersButton.setOnAction(e -> {
 
-        for (int i = 0; i < method.getParameters().size(); i++) {
-                if (method.getParameters().get(i).equals(comboBoxParameters.getValue())) {
-                    this.editParameter(newParameters, newParameters.get(i).toString(), i, comboBoxParameters, observableParameterList);
+            String comboBoxParamValue = comboBoxParameters.getValue();
+            for (int i = 0; i < newParameters.size(); i++) {
+                if (newParameters.get(i).equals(comboBoxParameters.getValue())) {
+                    this.editParameter(method, newMethodsList, newParameters, newParameters.get(i), i, comboBoxParameters, observableParameterList);
                     return;
                 }
-        }
-
+            }
         });
 
         //add parameter button
         Button addParameterButton = new Button();
         addParameterButton.setText("Add Parameter");
         addParameterButton.setOnAction(e ->  {
-            this.addParameter(newParameters, observableParameterList, comboBoxParameters);
-            //update combo box
-            System.out.println("new parameters:" + newParameters);
-        }
+
+                    this.addParameter(method, newMethodsList,newParameters, observableParameterList, comboBoxParameters);
+                    //update combo box
+                    //System.out.println("new parameters:" + newParameters);
+                }
         );
 
         //delete parameter button
@@ -891,12 +912,37 @@ public class ClassAsset {
         Button submitButton = new Button();
         submitButton.setText("Submit");
         submitButton.setOnAction(e -> {
-            //clear the attribute parameters list and add the new list (which will include previous parameters or if delete, not the previous params)
-            method.getParameters().clear();
-            method.getParameters().addAll(newParameters);
 
-            this.updateMethodComboBox(newMethodsList, comboBoxMethods, observableMethodsList);
-            popUpStage.close();
+            //clear the attribute parameters list and add the new list (which will include previous parameters or if delete, not the previous params)
+            Method tempMethod = new Method(method.getName());
+            tempMethod.getParameters().addAll(newParameters);
+
+            boolean isUnique = true;
+            for (Method currentMethod : newMethodsList) {
+                if (tempMethod.toString().equals(currentMethod.toString())) {
+                    isUnique = false;
+                    break;
+                }
+            }
+
+            if (isUnique) {
+                method.getParameters().clear();
+                method.getParameters().addAll(newParameters);
+                this.updateMethodComboBox(newMethodsList, comboBoxMethods, observableMethodsList);
+                popUpStage.close();
+            } else {
+                if (!deletedParameters.isEmpty()) {
+                    newParameters.addAll(deletedParameters);
+                    deletedParameters.clear();
+                    deletedList.setText("To be deleted: " + deletedParameters);
+                    this.updateParameterComboBox(newParameters, comboBoxParameters, observableParameterList);
+
+
+                }
+                Alert notUnique = new Alert(Alert.AlertType.INFORMATION);
+                notUnique.setContentText("Duplicate method or no changes to submit! (hit cancel)\n");
+                notUnique.showAndWait();
+            }
         });
 
         //Cancel button
@@ -925,6 +971,19 @@ public class ClassAsset {
 
     }
 
+    public boolean checkForDuplicateMethod(final Method method, final ArrayList<Method> newMethodsList) {
+        boolean isUnique = true;
+        for (Method curMethod : newMethodsList) {
+            if (method.toString().equals(curMethod.toString())) {
+                isUnique = false;
+                break;
+            }
+        }
+
+        return isUnique;
+    }
+
+
     /**
      * allows user to edit an existing parameter in a method
      * @param newParameters
@@ -934,7 +993,8 @@ public class ClassAsset {
      * @param observableParametersList
      */
 
-    private void editParameter(final ArrayList<String> newParameters, final String paramName, final int index, ComboBox menu, final ObservableList<String> observableParametersList) {
+    private void editParameter(final Method method, final ArrayList<Method> newMethodsList, final ArrayList<String> newParameters,
+                               final String paramName, final int index, ComboBox menu, final ObservableList<String> observableParametersList) {
 
         if (newParameters == null || paramName == null || menu == null || observableParametersList == null) {
             nullAlertMessage("editParameter");
@@ -981,6 +1041,18 @@ public class ClassAsset {
                         isUnique = false;
                     }
                 }
+
+                //check method
+                Method tempMethod = new Method(method.getName());
+                tempMethod.getParameters().addAll(newParameters);
+                tempMethod.getParameters().set(index, editNameField.getText());
+
+                for (int i = 0; i < newMethodsList.size(); i ++) {
+                    if (tempMethod.toString().equals(newMethodsList.get(i).toString())) {
+                        isUnique = false;
+                    }
+                }
+
                 //handle unique name
                 if (isUnique) {
                     newParameters.set(index, editNameField.getText()); //needs to discard if user hits cancel
@@ -988,7 +1060,7 @@ public class ClassAsset {
                     popUpStage.close();
                 } else {
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.setContentText("A method with the same name and parameters already exists\nor a parameter of the same name already in method");
                     notUnique.showAndWait();
                 }
 
@@ -1019,7 +1091,8 @@ public class ClassAsset {
      * @param observableParametersList
      * @param comboBoxParameters
      */
-    private void addParameter(ArrayList<String> parametersList, final ObservableList<String> observableParametersList, final ComboBox comboBoxParameters) {
+    private void addParameter(final Method method, final ArrayList<Method> newMethodsList, final ArrayList<String> parametersList,
+                              final ObservableList<String> observableParametersList, final ComboBox comboBoxParameters) {
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setWidth(426);
@@ -1063,8 +1136,23 @@ public class ClassAsset {
                     String param = addParameterField.getText();
                     if (parameter.equals(param)) {
                         isUnique = false;
+                        break;
                     }
                 }
+
+
+                //check the methods list for duplicate method
+                Method tempMethod = new Method(method.getName());
+                tempMethod.getParameters().addAll(parametersList);
+                tempMethod.getParameters().add(addParameterField.getText());
+
+                for(Method currentMethod : newMethodsList) {
+                    if (tempMethod.toString().equals(currentMethod.toString())) {
+                        isUnique = false;
+                        break;
+                    }
+                }
+
                 //handle unique name
                 if (isUnique) {
                     parametersList.add(addParameterField.getText());
@@ -1074,8 +1162,9 @@ public class ClassAsset {
                     comboBoxParameters.setItems(observableParametersList);
                     popUpStage.close();
                 } else {
+                    parametersList.clear();
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.setContentText("A method with the same name and parameters already exists\nPlease Enter a Unique Parameters!");
                     notUnique.showAndWait();
                 }
             } else {
@@ -1176,7 +1265,7 @@ public class ClassAsset {
                 popUpStage.close();
             } else {
                 Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                notUnique.setContentText("Please enter a unique name!");
+                notUnique.setContentText("Please enter a unique field name and type!");
                 notUnique.showAndWait();
             }
 
@@ -1259,11 +1348,21 @@ public class ClassAsset {
                     }
                 }
 
+/*                Method tempMethod = new Method(method.getName());
+                method.getParameters().addAll(addedParameters);
+                for (Method currentMethod : newMethodsList) {
+                    if (tempMethod.toString().equals(currentMethod)) {
+                        isUnique = false;
+                    }
+                }*/
+
                 if (isUnique) {
                     addedParameters.add(addParameterField.getText());
                     displayAddedParameters.setText("parameters: " + addedParameters);
                 } else {
-
+                    Alert notUnique = new Alert(Alert.AlertType.WARNING);
+                    notUnique.setContentText("please enter a unique parameter name");
+                    notUnique.showAndWait();
                 }
             }
         });
@@ -1288,10 +1387,10 @@ public class ClassAsset {
             if (!addNameField.getText().isEmpty()) {
                 //check the local methods list for duplicate methods
                 for (Method currentMethod : newMethodsList) {
-                        //take the to string from current index in attribute list and compare it to generate attribute
-                        if (currentMethod.toString().equals(newMethod.toString())) {
-                            isUnique = false;
-                        }
+                    //take the to string from current index in attribute list and compare it to generate attribute
+                    if (currentMethod.toString().equals(newMethod.toString())) {
+                        isUnique = false;
+                    }
                 }
                 //check the class attributes list for duplicate methods
                 for (Method currentAttribute : this.methodList) {
@@ -1307,8 +1406,10 @@ public class ClassAsset {
                     System.out.println("temp method list elements: " + newMethodsList); //to be removed
                     popUpStage.close();
                 } else {
+                    addedParameters.clear();
+                    displayAddedParameters.setText("parameters: " + addedParameters);
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique name!");
+                    notUnique.setContentText("Please enter a unique field name and type!");
                     notUnique.showAndWait();
                 }
             } else{
@@ -1361,7 +1462,7 @@ public class ClassAsset {
                                            ObservableList<String> observableRelationshipList) {
         observableRelationshipList.clear();
         for(Relationship relationship : currentRelationships) {
-            if(relationship.getClass1().getClassName().equals(this.currentClass.getClassName())) {
+            if(relationship.getClass1() == this.currentClass) {
                 observableRelationshipList.add(relationship.getClass2().getClassName());
             }
             else {
