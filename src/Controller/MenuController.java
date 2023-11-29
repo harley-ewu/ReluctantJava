@@ -314,7 +314,7 @@ public class MenuController {
             return;
         }
         int size = currentClass.getMethods().size();
-        int choice = MenuPrompts.deleteMethodPrompts(currentClass);
+        int choice = MenuPrompts.deleteMethodPrompts(currentClass) + 1;
         currentClass.deleteMethod(choice);
         if (size > currentClass.getMethods().size()) {
             System.out.println("\nMethod has successfully been deleted!");

@@ -484,11 +484,11 @@ public class MenuPrompts {
             String method = CommandLineInterface.getAutoComplete().getCommands().trim();
             if(method.isEmpty())
                 return -99;
-            for (int i = 0; i < currentClass.getFields().size(); i++){
-                if(currentClass.getFields().get(i).getName().equals(method))
+            for (int i = 0; i < currentClass.getMethods().size(); i++){
+                if(currentClass.getMethods().get(i).getName().equals(method))
                     choice = i;
             }
-        } while (choice < 1 || choice > currentClass.getMethods().size()+1);
+        } while (choice < 0 || choice > currentClass.getMethods().size());
         return choice;
     }
 
