@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 
-public class Method{
+public class Method implements Cloneable{
 
     @Expose
     private ArrayList<String> parameters = new ArrayList<>();
@@ -117,5 +117,14 @@ public class Method{
     @Override
     public String toString() {
         return (this.name + "(" + parameters.toString().replaceAll("[\\[\\]]", "") + ")");
+    }
+
+    @Override
+    public Method clone() {
+        try {
+            return (Method) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
