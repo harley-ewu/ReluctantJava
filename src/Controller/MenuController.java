@@ -298,7 +298,7 @@ public class MenuController {
             return;
         }
         int size = currentClass.getFields().size();
-        int choice = MenuPrompts.deleteFieldPrompts(currentClass) + 1;
+        int choice = MenuPrompts.deleteFieldPrompts(currentClass);
         currentClass.deleteField(choice);
         if (size > currentClass.getFields().size()) {
             System.out.println("\nField has successfully been deleted!");
@@ -314,7 +314,7 @@ public class MenuController {
             return;
         }
         int size = currentClass.getMethods().size();
-        int choice = MenuPrompts.deleteMethodPrompts(currentClass) + 1;
+        int choice = MenuPrompts.deleteMethodPrompts(currentClass);
         currentClass.deleteMethod(choice);
         if (size > currentClass.getMethods().size()) {
             System.out.println("\nMethod has successfully been deleted!");

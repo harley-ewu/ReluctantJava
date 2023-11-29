@@ -442,25 +442,14 @@ public class MenuPrompts {
             System.out.println("\nDelete a field:");
             //need to add message if no attributes exist
             listFields(currentClass);
-            //System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " or " + (currentClass.getFields().size()+1) + " to cancel." + " -> ");
-            /*try {
+            System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " or " + (currentClass.getFields().size()+1) + " to cancel." + " -> ");
+            try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
                 System.out.print("--> ");
-            }*/
-            System.out.println("Type a field name to delete (or press blank enter to exit): ");
-            System.out.println("--> ");
-            CommandLineInterface.getAutoComplete().listFieldsLineReader(currentClass.getFields());
-            String field = CommandLineInterface.getAutoComplete().getCommands().trim();
-            if(field.isEmpty())
-                return -99;
-            for (int i = 0; i < currentClass.getFields().size(); i++){
-                if(currentClass.getFields().get(i).getName().equals(field))
-                    choice = i;
             }
-            //return choice;
-        } while (choice < 0 || choice > currentClass.getFields().size());
+        } while (choice < 1 || choice > currentClass.getFields().size()+1);
         return choice;
     }
 
@@ -469,26 +458,15 @@ public class MenuPrompts {
         do {
             System.out.println("Delete an method:");
             //need to add message if no attributes exist
-            /*System.out.println(currentClass.displayAttributes());
+            System.out.println(currentClass.displayAttributes());
             System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " or " + (currentClass.getMethods().size()+1) + " to cancel." + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number");
                 System.out.print("--> ");
-            }*/
-            listMethods(currentClass);
-            System.out.println("Type a method name to delete (or press blank enter to exit): ");
-            System.out.println("--> ");
-            CommandLineInterface.getAutoComplete().listMethodsLineReader(currentClass.getMethods());
-            String method = CommandLineInterface.getAutoComplete().getCommands().trim();
-            if(method.isEmpty())
-                return -99;
-            for (int i = 0; i < currentClass.getMethods().size(); i++){
-                if(currentClass.getMethods().get(i).getName().equals(method))
-                    choice = i;
             }
-        } while (choice < 0 || choice > currentClass.getMethods().size());
+        } while (choice < 1 || choice > currentClass.getMethods().size()+1);
         return choice;
     }
 
