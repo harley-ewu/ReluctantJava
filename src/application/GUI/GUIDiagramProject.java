@@ -8,7 +8,6 @@ import GUIAssets.RelationshipAsset;
 import Relationships.Relationship;
 import application.Application;
 import application.mediator.controllers.diagramprojectcontroller.DiagramProjectController;
-import application.mediator.controllers.menubarcontroller.MenuBarController;
 import application.mediator.controllers.updateviewcontroller.UpdateViewController;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -261,6 +260,19 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.classList.addAll(diagramClasses.values());
     }
 
+    public void refreshDiagramContents() {
+        HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
+        this.classList.clear();
+        this.classList.addAll(diagramClasses.values());
+
+        this.addClassAssets();
+        this.addMementoPanes();
+        this.addClassPanesToPaneWindow();
+
+        HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
+        this.relationshipList.addAll(relationshipClasses.values());
+    }
+
     public boolean getHasMoved() {
         return this.hasMoved;
     }
@@ -272,6 +284,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassAssets() {
+        this.classAssets.clear();
         int i = 0;
         for (Class currentClass : this.classList) {
             ClassAsset temp = new ClassAsset(currentClass, i);
@@ -310,10 +323,12 @@ public class GUIDiagramProject extends javafx.application.Application {
             double currentY = e.getY() - classPane.getHeight()/2;
             if (this.wasAdded) {
                 this.executeSingleClassAdd(umlClass, classPane);
+                this.updateClassPaneCoordinates();
             }
+
 //keep for debugging purposes
-           /*System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);*/
+           //System.out.println("class panes: " + this.classPanes);
+            //System.out.println("class coords: " + this.classPanesCoordinates);
 
             });
 
@@ -345,9 +360,9 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.addClassPanes();
             this.addClassPanesToPaneWindow();
             //keeping for debugging purposes
-            /*System.out.println("I'm inside");
-            System.out.println("class panes: " + this.classPanes);
-            System.out.println("class coords: " + this.classPanesCoordinates);*/
+            //System.out.println("I'm inside");
+            //System.out.println("class panes: " + this.classPanes);
+            //System.out.println("class coords: " + this.classPanesCoordinates);
             this.wasAdded = false;
         }
     }
@@ -362,13 +377,23 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassPanes() {
-        classPanes.clear();
+        this.classPanes.clear();
         for (int i = 0; i < this.classAssets.size(); i++) {
 
             double x = this.classPanesCoordinates.get(i).getX();
             double y = this.classPanesCoordinates.get(i).getY();
             ClassAsset classAsset = this.classAssets.get(i);
             Pane temp = this.createDraggablePane(x,y,classAsset);
+            this.classPanes.add(temp);
+        }
+    }
+
+    public void addMementoPanes() {
+        double x = 50;
+        double y = 50;
+        for (ClassAsset classAsset : this.classAssets) {
+            Pane temp = this.createDraggablePane(x, y, classAsset);
+            x+=temp.getWidth()+300;
             this.classPanes.add(temp);
         }
     }
@@ -488,6 +513,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
 
     public void addClassPanesToPaneWindow() {
+        this.contentPane.getChildren().clear();
         for (Pane classAsset : this.classPanes) {
             this.contentPane.getChildren().add(classAsset);
         }
@@ -515,6 +541,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
             Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
                     this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this.classAssets);
+            temp.toBack();
             this.relationshipLines.add(temp);
         }
     }
@@ -543,6 +570,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
             Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
                     this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this.classAssets);
+            temp.toBack();
             this.relationshipLines.add(temp);
         }
     }
@@ -571,8 +599,15 @@ public class GUIDiagramProject extends javafx.application.Application {
      * the contentPane (the project window) with the relationshipPanes and their respective coordinates
      * and does the same for classPanes and their respective coordinates
      * */
-    public void refreshRelationshipPanesToPaneWindow() {
+    public void refreshRelationshipLinesToPaneWindow() {
         this.contentPane.getChildren().clear();
+
+        for (int i = 0; i < this.classPanes.size(); i++) {
+            double currentXCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getMinX();
+            double currentYCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getMinY();
+            Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
+            this.classPanesCoordinates.set(i, coords);
+        }
 
         for (int i = 0; i < this.classPanes.size(); i++) {
             this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
@@ -580,15 +615,13 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.contentPane.getChildren().add(this.classPanes.get(i));
         }
 
-        this.classPanesCoordinates.clear();
-
-        for (int i = 0; i < this.relationshipLines.size(); i++) {
-            this.relationshipLines.get(i).setLayoutX(this.relationshipPanesCoordinates.get(i).getX());
-            this.relationshipLines.get(i).setLayoutY(this.relationshipPanesCoordinates.get(i).getY());
-            this.contentPane.getChildren().add(this.relationshipLines.get(i));
+        for (Line line : this.relationshipLines) {
+            this.contentPane.getChildren().add(line);
         }
 
-        this.relationshipPanesCoordinates.clear();
+        for(RelationshipAsset relationshipAsset : GUIDiagramProject.getRelationshipAssets()) {
+            RelationshipAsset.updateRelationshipLines(relationshipAsset, classPanes, classPanesCoordinates, classAssets);
+        }
     }
 
 
@@ -614,23 +647,23 @@ public class GUIDiagramProject extends javafx.application.Application {
             Point2D coordinates = new Point2D(classPane.getLayoutX(), classPane.getLayoutY());
             this.classPanesCoordinates.add(coordinates);
         }
-        System.out.println("I was updated!");
+        //System.out.println("I was updated!");
     }
 
     public void undo() {
         this.diagram.undo();
-        System.out.println("Undoing..");
-        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        //System.out.println("Undoing..");
+        this.getContentPane().getChildren().clear();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
-        this.initializeDiagramContents();
+        this.refreshDiagramContents();
     }
 
     public void redo() {
         this.diagram.redo();
-        this.getContentPane().getChildren().removeAll(this.getClassPanes());
+        this.getContentPane().getChildren().clear();
         this.getClassAssets().clear();
         this.getClassPanes().clear();
-        this.initializeDiagramContents();
+        this.refreshDiagramContents();;
     }
 }

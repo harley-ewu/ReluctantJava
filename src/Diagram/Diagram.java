@@ -22,7 +22,6 @@ public class Diagram {
    private HashMap<String, Class> classList;
    @Expose
    private HashMap<String, Relationship> relationshipList;
-   @Expose
    private DiagramCaretaker caretaker;
    @Expose
    private GUIDiagramProjectDto coordinates;
@@ -79,8 +78,11 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
-         createSnapshot();
+         if(this.classList.isEmpty()){
+            createSnapshot();
+         }
          this.classList.put(className, new Class(className));
+         createSnapshot();
       }
       else {
          System.out.println("Class already exists.");
@@ -98,9 +100,10 @@ public class Diagram {
       if (deletedClass.getClassName().isEmpty()) {
          return;
       }
+
       createSnapshot();
       classList.remove(deletedClass.getClassName());
-      
+
       for(Class item : classList.values()){
          this.deleteRelationship(deletedClass, item);
       }
@@ -181,7 +184,6 @@ public class Diagram {
     * Finds out both classes belonging to the relationship and deletes the relationship from both of the classes corresponding lists
     */
    public void deleteRelationship(final Class c1, final Class c2){
-      createSnapshot();
       String relationshipName = c1.getClassName()+c2.getClassName();
       String relationshipName2 = c2.getClassName()+c1.getClassName();
 
@@ -264,9 +266,13 @@ public class Diagram {
       return this.caretaker;
    }
 
+   public void setCaretaker(DiagramCaretaker caretaker){
+      this.caretaker = caretaker;
+   }
+
    public void createSnapshot() {
       DiagramMemento memento = new DiagramMemento(this);
-      //caretaker.makeBackupUp(memento);
+      caretaker.makeBackupUp(memento);
    }
 
    public void applyMemento(DiagramMemento memento) {

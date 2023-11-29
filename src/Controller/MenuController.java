@@ -294,9 +294,14 @@ public class MenuController {
             System.out.println("\nThere are no fields to delete");
             return;
         }
+        int size = currentClass.getFields().size();
         int choice = MenuPrompts.deleteFieldPrompts(currentClass);
         currentClass.deleteField(choice);
-        System.out.println("\nField has sucessfully been deleted!");
+        if (size > currentClass.getFields().size()) {
+            System.out.println("\nField has successfully been deleted!");
+        } else {
+            System.out.println("\nCancelling...");
+        }
 
     }
 
@@ -305,9 +310,14 @@ public class MenuController {
             System.out.println("\nThere are no methods to delete");
             return;
         }
+        int size = currentClass.getMethods().size();
         int choice = MenuPrompts.deleteMethodPrompts(currentClass);
         currentClass.deleteMethod(choice);
-        System.out.println("\nMethod has successfully been deleted!");
+        if (size > currentClass.getMethods().size()) {
+            System.out.println("\nMethod has successfully been deleted!");
+        } else {
+            System.out.println("\nCancelling...");
+        }
 
     }
 
@@ -442,7 +452,7 @@ public class MenuController {
             case("help"):
                 CommandLineInterface.diagramHelp();
                 break;
-            case("exit"):
+            case("back"):
                 return true;
             default:
                 System.out.println("Not a recognized command.");
