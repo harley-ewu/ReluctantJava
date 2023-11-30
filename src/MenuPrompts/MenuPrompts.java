@@ -458,7 +458,8 @@ public class MenuPrompts {
         do {
             System.out.println("Delete an method:");
             //need to add message if no attributes exist
-            System.out.println(currentClass.displayAttributes());
+            //System.out.println(currentClass.displayAttributes());
+            listMethods(currentClass);
             System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " or " + (currentClass.getMethods().size()+1) + " to cancel." + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
@@ -543,7 +544,7 @@ public class MenuPrompts {
         System.out.println("    Fields List:");
         System.out.println("---------------------");
         for(int i = 0; i < currentClass.getFields().size(); i++){
-            System.out.println(currentClass.getFields().get(i));
+            System.out.println(i+1 + ". " + currentClass.getFields().get(i));
         }
         System.out.println("\n");
     }
@@ -557,7 +558,7 @@ public class MenuPrompts {
         System.out.println("    Methods List:");
         System.out.println("---------------------");
         for(int i = 0; i < currentClass.getMethods().size(); i++){
-            System.out.println(currentClass.getMethods().get(i));
+            System.out.println(i+1 + ". " + currentClass.getMethods().get(i));
         }
         System.out.println("\n");
     }
