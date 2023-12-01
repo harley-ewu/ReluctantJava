@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 
 public class SaveLoadSystem {
 
-    public SaveLoadSystem(){}
+    private SaveLoadSystem(){}
 
     /**
      * Description: Saves a project to the default file directory which is the users home directory.
@@ -106,8 +106,8 @@ public class SaveLoadSystem {
             String jsonText = gson.toJson(diagram);
             fileWriter.write(jsonText);
             fileWriter.close();
-        } catch (IOException e) {
-            System.err.println("There was an error writing to the file");
+        } catch (Exception e) {
+            System.err.println("There was an error writing to the file\n");
         }
     }
 
@@ -121,7 +121,7 @@ public class SaveLoadSystem {
 
         Diagram diagram;
 
-        if(fileToBeLoaded != null && fileToBeLoaded.exists()){
+        //if(fileToBeLoaded != null && fileToBeLoaded.exists()){
             try{
                 FileReader fileReader = new FileReader(fileToBeLoaded);
                 Gson gson = new GsonBuilder()
@@ -135,11 +135,11 @@ public class SaveLoadSystem {
                 return diagram;
             } catch (FileNotFoundException e) {
                 System.err.println("There was an error trying to find the file.");
-                System.err.println("Try checking the file path and file name for typos.");
-            } catch (IOException e) {
-                System.err.println("There was an error opening or closing the file.");
+                System.err.println("Try checking the file path and file name for typos.\n");
+            } catch (Exception e) {
+                System.err.println("There was an error opening or closing the file.\n");
             }
-        }
+        //}
         return null;
     }
 
@@ -163,7 +163,7 @@ public class SaveLoadSystem {
      * Description: Inner class used to convert Point2D objects into Json. The Point2D objects
      * are used to save the position of ClassAsset's in the Diagram view.
      */
-    private static class Point2DSerializer implements JsonSerializer<Point2D>{
+    public static class Point2DSerializer implements JsonSerializer<Point2D>{
 
         @Override
         public JsonElement serialize(Point2D src, Type typeOfSrc, JsonSerializationContext context) {
@@ -178,7 +178,7 @@ public class SaveLoadSystem {
      * Description: Inner class used to convert Json into Point2D objects. The Point2D objects
      * are used to save the position of ClassAsset's in the Diagram view.
      */
-    private static class Point2DDeserializer implements JsonDeserializer<Point2D>{
+    public static class Point2DDeserializer implements JsonDeserializer<Point2D>{
 
         @Override
         public Point2D deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
