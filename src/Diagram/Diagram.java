@@ -265,10 +265,6 @@ public class Diagram {
       return this.caretaker;
    }
 
-   public void setCaretaker(DiagramCaretaker caretaker){
-      this.caretaker = caretaker;
-   }
-
    public void createSnapshot() {
       DiagramMemento memento = new DiagramMemento(this);
       caretaker.makeBackupUp(memento);
@@ -276,7 +272,6 @@ public class Diagram {
 
    public void applyMemento(DiagramMemento memento) {
       this.setTitle(memento.getTitle());
-      //this.setSaveLocation(memento.getSaveLocation());
       this.setClassList(new HashMap<>(memento.getClassList()));
       this.setRelationshipList(new HashMap<>(memento.getRelationshipList()));
    }

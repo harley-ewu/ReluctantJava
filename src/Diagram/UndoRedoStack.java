@@ -26,6 +26,9 @@ public class UndoRedoStack<E> {
     }
 
     public E undo(){
+        if(this.undoStack.isEmpty()){
+            throw new IllegalStateException("Nothing left to undo.");
+        }
         this.redoStack.push(this.undoStack.pop());
         return this.undoStack.get(this.undoStack.size() - 1);
     }
@@ -35,11 +38,22 @@ public class UndoRedoStack<E> {
     }
 
     public E redo(){
+        if(this.redoStack.isEmpty()){
+            throw new IllegalStateException("Nothing left to redo.");
+        }
         return this.undoStack.push(this.redoStack.pop());
     }
 
     public boolean stacksNotEmpty(){
-        return !this.undoStack.isEmpty() && !this.redoStack.isEmpty() && this.undoStack.size() > 1;
+        return !this.undoStack.isEmpty() || !this.redoStack.isEmpty();
+    }
+
+    public int sizeOfUndoStack(){
+        return this.undoStack.size();
+    }
+
+    public int sizeOfRedoStack(){
+        return this.redoStack.size();
     }
 
 }
