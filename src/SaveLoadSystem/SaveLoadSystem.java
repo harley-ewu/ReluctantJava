@@ -129,8 +129,6 @@ public class SaveLoadSystem {
                         .excludeFieldsWithoutExposeAnnotation()
                         .create();
                 diagram = gson.fromJson(fileReader, Diagram.class);
-                diagram.setCaretaker(new DiagramCaretaker());
-                diagram.createSnapshot();
                 fileReader.close();
                 return diagram;
             } catch (FileNotFoundException e) {

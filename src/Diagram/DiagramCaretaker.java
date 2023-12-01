@@ -22,4 +22,8 @@ public class DiagramCaretaker {
     public void makeBackupUp(DiagramMemento memento) {
         this.mementoStack.push(memento);
     }
+
+    public boolean stacksNotEmpty(){
+        return this.mementoStack.stacksNotEmpty();
+    }
 }

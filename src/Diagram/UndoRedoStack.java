@@ -38,5 +38,8 @@ public class UndoRedoStack<E> {
         return this.undoStack.push(this.redoStack.pop());
     }
 
+    public boolean stacksNotEmpty(){
+        return !this.undoStack.isEmpty() && !this.redoStack.isEmpty() && this.undoStack.size() > 1;
+    }
 
 }
