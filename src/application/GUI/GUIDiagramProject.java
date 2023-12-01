@@ -29,12 +29,10 @@ public class GUIDiagramProject extends javafx.application.Application {
     ScrollPane scrollPane = new ScrollPane(this.contentPane);
     private  double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
-    private final Scale scaleTransform = new Scale(1, 1);
 
     private boolean hasMoved = false;
     private Boolean wasAdded = false;
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
-    //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
     private static ArrayList<Line> relationshipLines = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
@@ -75,11 +73,8 @@ public class GUIDiagramProject extends javafx.application.Application {
         //HBox zoomButtons = this.setUpZoomButtons();
         //menu bar creation
         MenuBar menuBar = this.setUpMenuBar(stage);
-       //menuBar.prefWidthProperty().bind(root.widthProperty());
         //setting up scene for stage
         this.scrollPane = new ScrollPane(this.contentPane);
-
-        //scrollPane.setPrefSize(screenWidth-100,screenHeight-100);
         this.root = new Pane(scrollPane, menuBar);
         this.scene = new Scene(root,screenWidth-100,screenHeight-100);
         this.scrollPane.prefWidthProperty().bind(root.widthProperty());
@@ -89,10 +84,6 @@ public class GUIDiagramProject extends javafx.application.Application {
         //set stage
         stage.setScene(this.scene);
         stage.show();
-    }
-
-    public boolean isHasMoved() {
-        return hasMoved;
     }
 
     public void setHasMoved(boolean hasMoved) {
@@ -127,7 +118,6 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         return null;
     }
-
 
     /**
      * descrption: allows zoom in functionality
@@ -277,8 +267,8 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.addClassAssets();
         this.addMementoPanes();
-        this.addClassPanesToPaneWindow();
-
+        //this.addClassPanesToPaneWindow();
+        this.refreshRelationshipLinesToPaneWindow();
         HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
         this.relationshipList.addAll(relationshipClasses.values());
     }
@@ -305,7 +295,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     /**
-     * description: create a
+     * description: create a single class asset
      */
 
     boolean follow;
