@@ -847,7 +847,7 @@ public class ClassAsset {
 
         parametersHBox.getChildren().add(comboBoxParameters);
         parametersHBox.setLayoutX(scene.getWidth()/8);
-        parametersHBox.setLayoutY(scene.getHeight()-350);
+        parametersHBox.setLayoutY(scene.getHeight()-390);
         comboBoxParameters.setValue("Parameters");
         comboBoxParameters.setPrefWidth(120);
 
@@ -961,9 +961,10 @@ public class ClassAsset {
                 "*To add a parameter click the 'add parameter' button\n" +
                 "*To delete a parameter, select parameter in drop down menu, \n" +
                 "and click 'delete parameter'\n" +
-                "*Please enter a single name when adding or editing parameter \n(cannot enter multiple at once).");
+                "*Please enter a single UNIQUE name when adding or editing parameter \n(cannot enter multiple at once).\n" +
+                "*Only add names for parameters and not types!");
         instructions.setLayoutX(80);
-        instructions.setLayoutY(scene.getWidth()-390);
+        instructions.setLayoutY(scene.getHeight()-270);
 
         comboBoxParameters.setItems(observableParameterList);
         root.getChildren().addAll(currentName,newNameAddContainer,parametersHBox, instructions, submitButtonContainer, deletedList);
@@ -1310,9 +1311,9 @@ public class ClassAsset {
         createAMethod.setLayoutY(20);
         createAMethod.setText("*All changes will be applied when hitting the 'Submit' button\n" +
                 "*Hit add to add a parameter to the method\n" +
-                "*Duplicates of parameters aren't allowed\n" +
                 "*Method can share a name with another method as long \n as the parameters are different\n" +
-                "*Please enter a single name when adding a parameter \n(cannot input multiple at once)");
+                "*Please enter a single UNIQUE name when adding a parameter \n(cannot input multiple at once)\n" +
+                "*Only enter names for parameters and not types!");
 
         HBox addNameContainer = new HBox();
         addNameContainer.setSpacing(20);
