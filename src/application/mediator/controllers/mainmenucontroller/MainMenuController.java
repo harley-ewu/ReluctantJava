@@ -4,6 +4,7 @@ import application.Application;
 import application.CLI.CommandLineInterface;
 import application.GUI.GraphicalUserInterface;
 import application.mediator.common.Mediator;
+import application.mediator.common.MediatorSingletonHandler;
 import application.mediator.common.Request;
 import application.mediator.controllers.mainmenucontroller.creatediagramgui.CreateDiagramGuiRequest;
 import application.mediator.controllers.mainmenucontroller.exitui.ExitUiRequest;
@@ -12,23 +13,24 @@ import application.mediator.controllers.mainmenucontroller.viewdiagramgui.ViewDi
 
 public class MainMenuController {
 
+    private final Mediator mediator = new MediatorSingletonHandler().getInstance();
     public void createDiagramGUI() throws Exception{
         Request request = new CreateDiagramGuiRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     public void viewDiagramGUI() throws Exception{
         Request request = new ViewDiagramGuiRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     public void helpMainGUI(){
         Request request = new HelpMainGuiRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     public void exitUI(){
         Request request = new ExitUiRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 }

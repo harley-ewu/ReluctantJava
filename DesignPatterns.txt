@@ -60,3 +60,10 @@ Memento:
     DiagramMemento's made over the course of a project and the logic required to set the Diagram to a previous
     instance of itself. The Diagram itself has a method called createSnapshot() that allows it to make a memento
     of itself during each change.
+
+Singleton:
+
+    The MediatorSingletonHandler maintains one single instance of the protected
+    Mediator class. An accessor on line 9 allows for the single instance to be
+    retrieved by client code, and the init on line 13 allows for the instance
+    to be created if there isn't one already.
