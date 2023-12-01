@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -64,17 +65,26 @@ public class GUIDiagramProject extends javafx.application.Application {
     @Override
     public void start(final Stage stage) throws Exception {
         UpdateViewController.initView(this);
+        Screen screen = Screen.getPrimary();
+
+        double screenWidth = screen.getBounds().getWidth();
+        double screenHeight = screen.getBounds().getHeight();
+
         this.contentPane.setPrefSize(3840,2160);
         //hbox for zoom in and zoom out buttons
-        HBox zoomButtons = this.setUpZoomButtons();
+        //HBox zoomButtons = this.setUpZoomButtons();
         //menu bar creation
         MenuBar menuBar = this.setUpMenuBar(stage);
+       //menuBar.prefWidthProperty().bind(root.widthProperty());
         //setting up scene for stage
         this.scrollPane = new ScrollPane(this.contentPane);
-        scrollPane.setPrefSize(1280,678);
-        this.root = new Pane(scrollPane, menuBar, zoomButtons);
-        this.scene = new Scene(root,1280,720);
-        stage.setResizable(false);
+
+        //scrollPane.setPrefSize(screenWidth-100,screenHeight-100);
+        this.root = new Pane(scrollPane, menuBar);
+        this.scene = new Scene(root,screenWidth-100,screenHeight-100);
+        this.scrollPane.prefWidthProperty().bind(root.widthProperty());
+        this.scrollPane.prefHeightProperty().bind(root.heightProperty());
+        menuBar.prefWidthProperty().bind(root.widthProperty());
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
         //set stage
         stage.setScene(this.scene);
@@ -160,7 +170,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
     private MenuBar setUpMenuBar(Stage stage) {
         MenuBar menuBar = new MenuBar();
-        menuBar.setPrefWidth(1280);
+        //menuBar.setPrefWidth(stage.getMaxWidth());
         //file menu creation
         Menu fileMenu = setUpFileMenu(stage);
         //class menu creation
@@ -324,6 +334,9 @@ public class GUIDiagramProject extends javafx.application.Application {
             if (this.wasAdded) {
                 this.executeSingleClassAdd(umlClass, classPane);
                 this.updateClassPaneCoordinates();
+                this.addClassPanes();
+                this.addClassPanesToPaneWindow();
+                this.refreshRelationshipLinesToPaneWindow();
             }
 
 //keep for debugging purposes
@@ -410,7 +423,8 @@ public class GUIDiagramProject extends javafx.application.Application {
         Pane temp = classAsset.createClassAsset(this.classList, this.classPanes, this.classAssets, this.classPanesCoordinates,
                 this.relationshipLines, this.relationshipPanesCoordinates, this.relationshipAssets, this);
 
-        temp.relocate(x,y);
+        temp.setLayoutX(x);
+        temp.setLayoutY(y);
 
         temp.setOnMousePressed(e -> {
             temp.getProperties().put("startX", e.getSceneX());
@@ -603,19 +617,23 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.contentPane.getChildren().clear();
 
         for (int i = 0; i < this.classPanes.size(); i++) {
-            double currentXCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getMinX();
-            double currentYCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getMinY();
+            double currentXCoordinate = this.classPanes.get(i).localToParent(this.classPanes.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = this.classPanes.get(i).localToParent(this.classPanes.get(i).getBoundsInLocal()).getCenterY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
             this.classPanesCoordinates.set(i, coords);
         }
 
-        for (int i = 0; i < this.classPanes.size(); i++) {
+/*        for (int i = 0; i < this.classPanes.size(); i++) {
             this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
             this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.classPanes.get(i));
-        }
+        }*/
+
+        this.addClassPanes();
+        this.addClassPanesToPaneWindow();
 
         for (Line line : this.relationshipLines) {
+            line.toBack();
             this.contentPane.getChildren().add(line);
         }
 
