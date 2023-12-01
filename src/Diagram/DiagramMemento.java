@@ -10,10 +10,11 @@ import java.util.Map;
 
 public class DiagramMemento {
 
+    /*
     @Expose
-    private Diagram diagram;
-    @Expose
-    private String saveLocation = null;
+    private Diagram diagram;*/
+    //@Expose
+    //private String saveLocation;
     @Expose
     private String title;
     @Expose
@@ -22,15 +23,16 @@ public class DiagramMemento {
     private HashMap<String, Relationship> relationshipList;
 
     public DiagramMemento(Diagram diagram) {
-        this.diagram = diagram;
+        //this.diagram = diagram;
         this.title = diagram.getTitle();
+        //this.saveLocation = diagram.getSaveLocation();
         this.classList = deepCopy(diagram.getClassList());
         this.relationshipList = new HashMap<>(diagram.getRelationshipList());
     }
 
-    public Diagram getDiagram() {return this.diagram;}
+    //public Diagram getDiagram() {return this.diagram;}
 
-    public String getSaveLocation() {return this.saveLocation;}
+    //public String getSaveLocation() {return this.saveLocation;}
 
     public String getTitle() {return this.title;}
 
@@ -51,10 +53,11 @@ public class DiagramMemento {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DiagramMemento memento = (DiagramMemento) o;
-        return this.diagram.equals(memento.getDiagram()) &&
-                this.title.equals(memento.getTitle()) &&
+        return this.title.equals(memento.getTitle()) &&
                 this.classList.equals(memento.getClassList()) &&
                 this.relationshipList.equals(memento.getRelationshipList());
+
+        //this.diagram.equals(memento.getDiagram()) &&
     }
 
 }

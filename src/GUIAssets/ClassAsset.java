@@ -650,6 +650,8 @@ public class ClassAsset {
                 }
             }
 
+            Application.getCurrentDiagram().createSnapshot();
+
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
             guiDiagramProject.addClassPanesToPaneWindow();
