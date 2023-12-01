@@ -27,8 +27,7 @@ public class UndoRedoStack<E> {
 
     public E undo(){
         this.redoStack.push(this.undoStack.pop());
-        E value = (E) this.undoStack.pop();
-        return this.undoStack.push(value);
+        return this.undoStack.get(this.undoStack.size() - 1);
     }
 
     public boolean canRedo(){

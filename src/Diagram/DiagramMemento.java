@@ -36,7 +36,7 @@ public class DiagramMemento {
 
     public String getTitle() {return this.title;}
 
-    public HashMap<String, Class> getClassList() {return this.classList;}
+    public HashMap<String, Class> getClassList() {return deepCopy(this.classList);}
 
     public HashMap<String, Relationship> getRelationshipList() {return this.relationshipList;}
 
