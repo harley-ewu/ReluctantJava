@@ -959,7 +959,8 @@ public class ClassAsset {
                 "*All modifications to the method will update when clicking 'Submit\n" +
                 "*To add a parameter click the 'add parameter' button\n" +
                 "*To delete a parameter, select parameter in drop down menu, \n" +
-                "and click 'delete parameter'");
+                "and click 'delete parameter'\n" +
+                "*Please enter a single name when adding or editing parameter \n(cannot enter more than one).");
         instructions.setLayoutX(80);
         instructions.setLayoutY(scene.getWidth()-390);
 
@@ -1107,7 +1108,7 @@ public class ClassAsset {
         Text currentNames = new Text();
         currentNames.setLayoutX(20);
         currentNames.setLayoutY(20);
-        currentNames.setText("*Enter a parameter name\n" +
+        currentNames.setText("*Enter a the name of the parameter\n" +
                 "*Parameter name needs to be unique");
 
         HBox addNameContainer = new HBox();
@@ -1309,7 +1310,8 @@ public class ClassAsset {
         createAMethod.setText("*All changes will be applied when hitting the 'Submit' button\n" +
                 "*Hit add to add a parameter to the method\n" +
                 "*Duplicates of parameters aren't allowed\n" +
-                "*Method can share a name with another method as long \n as the parameters are different");
+                "*Method can share a name with another method as long \n as the parameters are different\n" +
+                "*Please enter a single name when adding a parameter \n(cannot input multiple at once)");
 
         HBox addNameContainer = new HBox();
         addNameContainer.setSpacing(20);
