@@ -960,7 +960,7 @@ public class ClassAsset {
                 "*To add a parameter click the 'add parameter' button\n" +
                 "*To delete a parameter, select parameter in drop down menu, \n" +
                 "and click 'delete parameter'\n" +
-                "*Please enter a single name when adding or editing parameter \n(cannot enter more than one).");
+                "*Please enter a single name when adding or editing parameter \n(cannot enter multiple at once).");
         instructions.setLayoutX(80);
         instructions.setLayoutY(scene.getWidth()-390);
 
