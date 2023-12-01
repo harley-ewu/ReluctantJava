@@ -1414,7 +1414,7 @@ public class ClassAsset {
                     addedParameters.clear();
                     displayAddedParameters.setText("parameters: " + addedParameters);
                     Alert notUnique = new Alert(Alert.AlertType.WARNING);
-                    notUnique.setContentText("Please enter a unique field name and type!");
+                    notUnique.setContentText("A method with the same name and parameters already exists!");
                     notUnique.showAndWait();
                 }
             } else{
