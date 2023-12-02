@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -28,12 +29,10 @@ public class GUIDiagramProject extends javafx.application.Application {
     ScrollPane scrollPane = new ScrollPane(this.contentPane);
     private  double scaleFactor = 1.1;
     private final Pane contentPane = new Pane();
-    private final Scale scaleTransform = new Scale(1, 1);
 
     private boolean hasMoved = false;
     private Boolean wasAdded = false;
     private Diagram diagram = Application.getCurrentDiagram(); // this should be set in the create diagram menu option
-    //Diagram diagram = new Diagram("test diagram");
     private ArrayList<Pane> classPanes = new ArrayList<>();
     private static ArrayList<Line> relationshipLines = new ArrayList<>();
     private ArrayList<ClassAsset> classAssets = new ArrayList<>();
@@ -64,25 +63,27 @@ public class GUIDiagramProject extends javafx.application.Application {
     @Override
     public void start(final Stage stage) throws Exception {
         UpdateViewController.initView(this);
+        Screen screen = Screen.getPrimary();
+
+        double screenWidth = screen.getBounds().getWidth();
+        double screenHeight = screen.getBounds().getHeight();
+
         this.contentPane.setPrefSize(3840,2160);
         //hbox for zoom in and zoom out buttons
-        HBox zoomButtons = this.setUpZoomButtons();
+        //HBox zoomButtons = this.setUpZoomButtons();
         //menu bar creation
         MenuBar menuBar = this.setUpMenuBar(stage);
         //setting up scene for stage
         this.scrollPane = new ScrollPane(this.contentPane);
-        scrollPane.setPrefSize(1280,678);
-        this.root = new Pane(scrollPane, menuBar, zoomButtons);
-        this.scene = new Scene(root,1280,720);
-        stage.setResizable(false);
+        this.root = new Pane(scrollPane, menuBar);
+        this.scene = new Scene(root,screenWidth-100,screenHeight-100);
+        this.scrollPane.prefWidthProperty().bind(root.widthProperty());
+        this.scrollPane.prefHeightProperty().bind(root.heightProperty());
+        menuBar.prefWidthProperty().bind(root.widthProperty());
         stage.setTitle(this.diagram.getTitle()); //place holder for where a diagram name should be
         //set stage
         stage.setScene(this.scene);
         stage.show();
-    }
-
-    public boolean isHasMoved() {
-        return hasMoved;
     }
 
     public void setHasMoved(boolean hasMoved) {
@@ -117,7 +118,6 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         return null;
     }
-
 
     /**
      * descrption: allows zoom in functionality
@@ -160,7 +160,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
     private MenuBar setUpMenuBar(Stage stage) {
         MenuBar menuBar = new MenuBar();
-        menuBar.setPrefWidth(1280);
+        //menuBar.setPrefWidth(stage.getMaxWidth());
         //file menu creation
         Menu fileMenu = setUpFileMenu(stage);
         //class menu creation
@@ -267,8 +267,8 @@ public class GUIDiagramProject extends javafx.application.Application {
 
         this.addClassAssets();
         this.addMementoPanes();
-        this.addClassPanesToPaneWindow();
-
+        //this.addClassPanesToPaneWindow();
+        this.refreshRelationshipLinesToPaneWindow();
         HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
         this.relationshipList.addAll(relationshipClasses.values());
     }
@@ -295,7 +295,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     /**
-     * description: create a
+     * description: create a single class asset
      */
 
     boolean follow;
@@ -324,6 +324,9 @@ public class GUIDiagramProject extends javafx.application.Application {
             if (this.wasAdded) {
                 this.executeSingleClassAdd(umlClass, classPane);
                 this.updateClassPaneCoordinates();
+                this.addClassPanes();
+                this.addClassPanesToPaneWindow();
+                this.refreshRelationshipLinesToPaneWindow();
             }
 
 //keep for debugging purposes
@@ -410,7 +413,8 @@ public class GUIDiagramProject extends javafx.application.Application {
         Pane temp = classAsset.createClassAsset(this.classList, this.classPanes, this.classAssets, this.classPanesCoordinates,
                 this.relationshipLines, this.relationshipPanesCoordinates, this.relationshipAssets, this);
 
-        temp.relocate(x,y);
+        temp.setLayoutX(x);
+        temp.setLayoutY(y);
 
         temp.setOnMousePressed(e -> {
             temp.getProperties().put("startX", e.getSceneX());
@@ -603,19 +607,23 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.contentPane.getChildren().clear();
 
         for (int i = 0; i < this.classPanes.size(); i++) {
-            double currentXCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getMinX();
-            double currentYCoordinate = classPanes.get(i).localToScene(classPanes.get(i).getBoundsInLocal()).getMinY();
+            double currentXCoordinate = this.classPanes.get(i).localToParent(this.classPanes.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = this.classPanes.get(i).localToParent(this.classPanes.get(i).getBoundsInLocal()).getCenterY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
             this.classPanesCoordinates.set(i, coords);
         }
 
-        for (int i = 0; i < this.classPanes.size(); i++) {
+/*        for (int i = 0; i < this.classPanes.size(); i++) {
             this.classPanes.get(i).setLayoutX(this.classPanesCoordinates.get(i).getX());
             this.classPanes.get(i).setLayoutY(this.classPanesCoordinates.get(i).getY());
             this.contentPane.getChildren().add(this.classPanes.get(i));
-        }
+        }*/
+
+        this.addClassPanes();
+        this.addClassPanesToPaneWindow();
 
         for (Line line : this.relationshipLines) {
+            line.toBack();
             this.contentPane.getChildren().add(line);
         }
 
