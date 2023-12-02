@@ -759,8 +759,11 @@ public class ClassAsset {
                 }
                 //handle unique name
                 if (isUnique) {
-                    field.setName(editNameField.getText());
-                    field.setPrimitive(editPrimitiveField.getText());
+                    if (!editNameField.getText().isEmpty())
+                        field.setName(editNameField.getText());
+
+                    if (!editPrimitiveField.getText().isEmpty())
+                        field.setPrimitive(editPrimitiveField.getText());
 
                     this.updateFieldComboBox(newFieldsList, comboBoxFields, observableListFields);
                     popUpStage.close();

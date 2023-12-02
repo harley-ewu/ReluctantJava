@@ -33,8 +33,8 @@ public class Field implements Cloneable{
      * @param primitive - The name of the primitive for the field.
      */
     public void setPrimitive(String primitive) {
-        if(primitive == null || primitive.isEmpty()){
-            throw new IllegalArgumentException("The field primitive cannot be null or empty");
+        if(primitive == null){
+            throw new IllegalArgumentException("The field primitive cannot be null");
         }
         this.primitive = primitive;
     }
