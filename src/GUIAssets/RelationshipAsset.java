@@ -84,8 +84,8 @@ public class RelationshipAsset {
         classCoordinates.clear();
 
         for (int i = 0; i < classAssetPaneList.size(); i++) {
-            double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
-            double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
+            double currentXCoordinate = classAssetPaneList.get(i).localToParent(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = classAssetPaneList.get(i).localToParent(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
             classCoordinates.add(coords);
         }
@@ -249,8 +249,8 @@ public class RelationshipAsset {
         classCoordinates.clear();
 
         for (int i = 0; i < classAssetPaneList.size(); i++) {
-            double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
-            double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
+            double currentXCoordinate = classAssetPaneList.get(i).localToParent(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = classAssetPaneList.get(i).localToParent(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
             classCoordinates.add(coords);
         }

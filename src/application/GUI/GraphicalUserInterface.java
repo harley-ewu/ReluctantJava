@@ -87,6 +87,9 @@ public class GraphicalUserInterface extends javafx.application.Application imple
                 System.out.println("Submitted text: " + inputText);
                 popupStage.close();
                 Application.setCurrentDiagram(diagram);
+                if(Application.getCurrentDiagram() != null){
+                    Application.getCurrentDiagram().createSnapshot();
+                }
                 try {
 
                     openDiagram(diagram);

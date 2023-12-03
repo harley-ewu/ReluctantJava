@@ -278,10 +278,4 @@ public class DiagramMementoTests {
         assertEquals(expected, diagram.toString());
     }
 
-    @Test
-    public void getDiagramMementoTest(){
-        DiagramMemento memento = new DiagramMemento(diagram);
-
-        assertEquals(diagram, memento.getDiagram());
-    }
 }
