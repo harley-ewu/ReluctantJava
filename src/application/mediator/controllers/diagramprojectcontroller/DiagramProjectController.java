@@ -1,13 +1,5 @@
 package application.mediator.controllers.diagramprojectcontroller;
 
-
-import application.Application;
-import Class.Class;
-import Diagram.Diagram;
-import Relationships.Relationship;
-import SaveLoadSystem.SaveLoadSystem;
-import application.GUI.GUIDiagramProject;
-import application.GUI.GraphicalUserInterface;
 import application.mediator.common.Mediator;
 import application.mediator.common.MediatorSingletonHandler;
 import application.mediator.common.Request;
@@ -17,20 +9,10 @@ import application.mediator.controllers.diagramprojectcontroller.exit.ExitReques
 import application.mediator.controllers.diagramprojectcontroller.loadfile.LoadFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.saveasfile.SaveAsFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequest;
-import application.mediator.controllers.updateviewcontroller.UpdateViewController;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
+import application.mediator.controllers.diagramprojectcontroller.snapshot.SnapshotRequest;
+import javafx.scene.Node;
 import javafx.stage.Stage;
-
-import java.io.File;
+import javafx.stage.Window;
 
 
 public class DiagramProjectController {
@@ -88,6 +70,13 @@ public class DiagramProjectController {
         mediator.send(request);
     }
 
+    /**
+     * Creates a snapshot of the users current diagram
+     * */
+    public static void snapshot(Node contentPane){
+        Request request = new SnapshotRequest(contentPane);
+        mediator.send(request);
+    }
     public static void editClass() {
         System.out.println("editing class...");
     }
