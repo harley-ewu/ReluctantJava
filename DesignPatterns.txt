@@ -70,7 +70,7 @@ Singleton:
 
 Facade:
 
-    The Facade pattern is exemplified in all the controller class. the
+    The Facade pattern is exemplified in all the controller classes. the
     DiagramProjectController within the application's architecture is an example of this.
     This controller acts as a unified interface to a set of interfaces in the mediator package,
     simplifying the user's interaction with more complex subsystems. For instance:
