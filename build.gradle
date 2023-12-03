@@ -20,10 +20,6 @@ dependencies {
     testImplementation 'org.jmock:jmock:2.12.0'
     testImplementation 'org.jmock:jmock-junit5:2.12.0'
     testImplementation 'org.jmockit:jmockit:1.49'
-//    implementation 'org.openjfx:javafx-base:19.0.2.1'
-//    implementation 'org.openjfx:javafx-controls:19.0.2.1'
-//    implementation 'org.openjfx:javafx-fxml:19.0.2.1'
-//    implementation 'org.openjfx:javafx-graphics:19.0.2.1'
 }
 
 test {
@@ -50,7 +46,7 @@ sourceSets {
 
 javafx {
     version = "17"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
 }
 
 application {

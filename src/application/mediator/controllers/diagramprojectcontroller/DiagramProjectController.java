@@ -10,6 +10,7 @@ import application.mediator.controllers.diagramprojectcontroller.loadfile.LoadFi
 import application.mediator.controllers.diagramprojectcontroller.saveasfile.SaveAsFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.snapshot.SnapshotRequest;
+import javafx.scene.Node;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -72,8 +73,8 @@ public class DiagramProjectController {
     /**
      * Creates a snapshot of the users current diagram
      * */
-    public static void snapshot(Window stage){
-        Request request = new SnapshotRequest(stage);
+    public static void snapshot(Node contentPane){
+        Request request = new SnapshotRequest(contentPane);
         mediator.send(request);
     }
     public static void editClass() {

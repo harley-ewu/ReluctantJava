@@ -9,8 +9,8 @@ public class SnapshotRequestValidator implements IValidator {
             throw new IllegalArgumentException("Request passed into SnapshotRequestValidator is not of type SnapshotRequest");
         }
 
-        if(newRequest.getStage() == null){
-            throw new IllegalArgumentException("Null stage passed into SnapshotRequestValidator");
+        if(newRequest.getContentRoot() == null){
+            throw new IllegalArgumentException("Null contentRoot passed into SnapshotRequestValidator");
         }
     }
 }

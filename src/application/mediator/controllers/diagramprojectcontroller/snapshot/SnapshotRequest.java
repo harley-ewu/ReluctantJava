@@ -1,17 +1,18 @@
 package application.mediator.controllers.diagramprojectcontroller.snapshot;
 
 import application.mediator.common.Request;
+import javafx.scene.Node;
 import javafx.stage.Window;
 
 public class SnapshotRequest extends Request {
 
-    private final Window stage;
-    public SnapshotRequest(Window stage){
+    private final Node contentRoot;
+    public SnapshotRequest(Node contentRoot){
         super("SnapshotRequest");
-        this.stage = stage;
+        this.contentRoot = contentRoot;
     }
 
-    public Window getStage(){
-        return this.stage;
+    public Node getContentRoot() {
+        return this.contentRoot;
     }
 }
