@@ -67,3 +67,25 @@ Singleton:
     Mediator class. An accessor on line 9 allows for the single instance to be
     retrieved by client code, and the init on line 13 allows for the instance
     to be created if there isn't one already.
+
+Facade:
+
+    The Facade pattern is exemplified in all the controller class. the
+    DiagramProjectController within the application's architecture is an example of this.
+    This controller acts as a unified interface to a set of interfaces in the mediator package,
+    simplifying the user's interaction with more complex subsystems. For instance:
+
+        - SaveAsFile, SaveFile, LoadFile, Exit, AddClass, AddRelationship, and Snapshot operations
+         in DiagramProjectController create respective Request objects and use the mediator to handle
+         these requests.
+
+        - Each public method in the DiagramProjectController represents a high-level functionality,
+          hiding the underlying complexity involved in executing these operations, such as interacting
+          with the model, view components, or other controllers.
+
+        - This approach simplifies the interaction for clients (like GUI or CLI components) by providing
+         a straightforward, high-level method for each operation, thus reducing the complexity of direct
+         interactions with the lower-level subsystems.
+
+        - The usage of the Facade pattern in the controller ensures a cleaner and more understandable
+         interface, promoting ease of use and maintainability.
