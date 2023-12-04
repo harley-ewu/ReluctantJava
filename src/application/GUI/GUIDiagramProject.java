@@ -40,6 +40,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     private static ArrayList<RelationshipAsset> relationshipAssets = new ArrayList<>();
     private ArrayList<Point2D> classPanesCoordinates = new ArrayList<>();
     private ArrayList<Point2D> relationshipPanesCoordinates = new ArrayList<>();
+    private ArrayList<Point2D> relationshipLinesCoordinates = new ArrayList<>();
     private ArrayList<Class> classList = new ArrayList<>();
     private ArrayList<Relationship> relationshipList = new ArrayList<>();
     public static ArrayList<Line> getRelationshipLines() {
@@ -279,12 +280,12 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.relationshipList.clear();
         this.relationshipList.addAll(relationshipClasses.values());
 
-        addClassAssets();
-        addMementoPanes();
-        addRelationshipAsset(this.relationshipList);
-        addRelationshipPanes();
-        //this.addClassPanesToPaneWindow();
-
+        this.addClassAssets();
+        this.addClassPanes();
+        //addMementoPanes();
+        this.addRelationshipAsset(this.relationshipList);
+        this.addRelationshipPanes();
+        this.addClassPanesToPaneWindow();
         refreshRelationshipLinesToPaneWindow();
     }
 
@@ -339,14 +340,14 @@ public class GUIDiagramProject extends javafx.application.Application {
             if (this.wasAdded) {
                 this.executeSingleClassAdd(umlClass, classPane);
                 this.updateClassPaneCoordinates();
-                this.addClassPanes();
-                this.addClassPanesToPaneWindow();
+  //              this.addClassPanes();
+  //              this.addClassPanesToPaneWindow();
                 this.refreshRelationshipLinesToPaneWindow();
             }
 
 //keep for debugging purposes
-           //System.out.println("class panes: " + this.classPanes);
-            //System.out.println("class coords: " + this.classPanesCoordinates);
+            System.out.println("class panes: " + this.classPanes);
+            System.out.println("class coords: " + this.classPanesCoordinates);
 
             });
 
@@ -619,13 +620,13 @@ public class GUIDiagramProject extends javafx.application.Application {
      * and does the same for classPanes and their respective coordinates
      * */
     public void refreshRelationshipLinesToPaneWindow() {
-        this.contentPane.getChildren().clear();
-
-        for (int i = 0; i < this.classPanes.size(); i++) {
+        //this.contentPane.getChildren().clear();
+        //this.relationshipLinesCoordinates.clear();
+        for (int i = 0; i < this.classAssets.size(); i++) {
             double currentXCoordinate = this.classPanes.get(i).localToParent(this.classPanes.get(i).getBoundsInLocal()).getCenterX();
             double currentYCoordinate = this.classPanes.get(i).localToParent(this.classPanes.get(i).getBoundsInLocal()).getCenterY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
-            this.classPanesCoordinates.set(i, coords);
+            this.relationshipLinesCoordinates.set(i, coords);
         }
 
 /*        for (int i = 0; i < this.classPanes.size(); i++) {
@@ -634,8 +635,8 @@ public class GUIDiagramProject extends javafx.application.Application {
             this.contentPane.getChildren().add(this.classPanes.get(i));
         }*/
 
-        this.addClassPanes();
-        this.addClassPanesToPaneWindow();
+        //this.addClassPanes();
+        //this.addClassPanesToPaneWindow();
 
         for (Line line : this.relationshipLines) {
             line.toBack();
@@ -643,7 +644,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
 
         for(RelationshipAsset relationshipAsset : GUIDiagramProject.getRelationshipAssets()) {
-            RelationshipAsset.updateRelationshipLines(relationshipAsset, classPanes, classPanesCoordinates, classAssets, this);
+            RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.relationshipLinesCoordinates, this.classAssets, this);
         }
     }
 

@@ -336,8 +336,8 @@ public class ClassAsset {
             //update the class asset list by taking the new class list and creating new class assets from them
             this.updateClassAssetListPos(classList, classAssets);
             //refresh the class asset panes and the window
-            //guiDiagramProject.addClassPanes();
-            //guiDiagramProject.addClassPanesToPaneWindow();
+            guiDiagramProject.addClassPanes();
+            guiDiagramProject.addClassPanesToPaneWindow();
             guiDiagramProject.refreshRelationshipLinesToPaneWindow();
 
         }
@@ -656,7 +656,8 @@ public class ClassAsset {
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
             guiDiagramProject.addClassPanesToPaneWindow();
-            guiDiagramProject.refreshRelationshipLinesToPaneWindow();
+            if (!guiDiagramProject.getRelationshipList().isEmpty())
+                guiDiagramProject.refreshRelationshipLinesToPaneWindow();
             popUpStage.close();
         });
 
