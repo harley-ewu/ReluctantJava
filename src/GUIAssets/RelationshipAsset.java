@@ -192,7 +192,7 @@ public class RelationshipAsset {
             //this.updateRelationshipAssetListIndex(relationshipList, relationshipAssets); //to be removed
 
             for(RelationshipAsset relationshipAsset : relationshipAssets) {
-                RelationshipAsset.updateRelationshipLines(relationshipAsset, classAssetPaneList, classCoordinates, guiDiagramProject.getClassAssets());
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, classAssetPaneList, classCoordinates, guiDiagramProject.getClassAssets(), guiDiagramProject);
             }
 
             //refresh the class asset panes and the window
