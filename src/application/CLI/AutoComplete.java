@@ -93,30 +93,6 @@ public class AutoComplete {
         
     }
 
-    public void listFieldsLineReader(final ArrayList<Field> fieldList) {
-        List<String> stringList = new ArrayList<String>();
-        for(int i = 0; i < fieldList.size(); i++){
-            String fieldName = fieldList.get(0).getName();
-            stringList.add(fieldName);
-        }
-        this.lineReader = LineReaderBuilder.builder()
-                    .terminal(terminal)
-                    .completer(new SimpleCompleter(stringList))
-                    .build();
-    }
-
-    public void listMethodsLineReader(final ArrayList<Method> methodList) {
-        List<String> stringList = new ArrayList<String>();
-        for(int i = 0; i < methodList.size(); i++){
-            String fieldName = methodList.get(0).getName();
-            stringList.add(fieldName);
-        }
-        this.lineReader = LineReaderBuilder.builder()
-                    .terminal(terminal)
-                    .completer(new SimpleCompleter(stringList))
-                    .build();
-    }
-
     /**
     * Gets commands from JLine and prompts user for input. This is used to create command and entity to edit
     * 

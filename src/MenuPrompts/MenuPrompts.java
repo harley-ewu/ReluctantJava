@@ -475,7 +475,8 @@ public class MenuPrompts {
         int choice = -99;
         do {
             System.out.println("Rename a field: ");
-            System.out.println(currentClass.displayAttributes());
+            //System.out.println(currentClass.displayAttributes());
+            listFields(currentClass);
             System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
@@ -491,7 +492,8 @@ public class MenuPrompts {
         int choice = -99;
         do {
             System.out.println("Rename a method: ");
-            System.out.println(currentClass.displayAttributes());
+            //System.out.println(currentClass.displayAttributes());
+            listMethods(currentClass);
             System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
