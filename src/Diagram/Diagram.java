@@ -79,9 +79,6 @@ public class Diagram {
       
       Class c = this.classList.get(className);
       if (c == null) {
-         if(this.classList.isEmpty()){
-            createSnapshot();
-         }
          this.classList.put(className, new Class(className));
          createSnapshot();
       }
@@ -102,12 +99,13 @@ public class Diagram {
          return;
       }
 
-      createSnapshot();
       classList.remove(deletedClass.getClassName());
 
       for(Class item : classList.values()){
          this.deleteRelationship(deletedClass, item);
       }
+
+      createSnapshot();
    }
 
    /*
@@ -119,11 +117,11 @@ public class Diagram {
          return;
       }
       else if(old != null && !(newName.isEmpty())){
-         createSnapshot();
          Class temp = this.classList.get(old.getClassName());
          this.classList.remove(temp.getClassName());
          temp.setClassName(newName);
          this.classList.put(newName, temp);
+         createSnapshot();
       }
       else{
          System.out.println("Bad Parameters");
@@ -175,9 +173,9 @@ public class Diagram {
    }
 
    public void addRelationship(final Relationship relationship) {
-      createSnapshot();
       String relationshipName = relationship.getClass1().getClassName() + relationship.getClass2().getClassName();
       this.relationshipList.put(relationshipName, relationship);
+      createSnapshot();
    }
    
 
@@ -274,7 +272,6 @@ public class Diagram {
 
    public void applyMemento(DiagramMemento memento) {
       this.setTitle(memento.getTitle());
-      this.setSaveLocation(memento.getSaveLocation());
       this.setClassList(new HashMap<>(memento.getClassList()));
       this.setRelationshipList(new HashMap<>(memento.getRelationshipList()));
    }

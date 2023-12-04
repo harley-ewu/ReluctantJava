@@ -90,7 +90,7 @@ public class CommandLineInterface implements UserInterface {
             System.out.println(" The diagram '"+ Application.getCurrentDiagram().getTitle() + "' \nis your current diagram");
         }
         System.out.println("--------------------------\n");
-        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("Enter a number from menu above \n\tOR \nType a command \n(hit tab to see available commands):");
         System.out.println("--> ");
         ac.mainLineReader();
         String userInput = ac.getCommands();
@@ -353,10 +353,10 @@ public class CommandLineInterface implements UserInterface {
                              6 - View Diagram
                              7 - Save Changes
                              8 - Help
-                             9 - Exit
+                             9 - Back to Main Menu
                             --------------------------
                             """);
-        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("Enter a number from menu above \n\tOR \nType a command \n(hit tab to see available commands):");
         System.out.println("--> ");
         ac.classLineReader();
         String userInput = ac.getCommands();
@@ -409,7 +409,7 @@ public class CommandLineInterface implements UserInterface {
 
             Option 8 - Help: See how each option functions
 
-            Option 9 - Exit: Exit the program
+            Option 9 - Back to Main Menu: Brings you back to main menu
                 """);
     }
 
@@ -427,7 +427,7 @@ public class CommandLineInterface implements UserInterface {
                              5 - Back to Diagram Menu
                             --------------------------
                                 """);
-        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("Enter a number from menu above \n\tOR \nType a command \n(hit tab to see available commands):");
         System.out.println("--> ");
         ac.newClassLineReader();
         String userInput = ac.getCommands();
@@ -495,7 +495,7 @@ public class CommandLineInterface implements UserInterface {
                              9 - Return to Diagram Menu
                             --------------------------
                             """);
-        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("Enter a number from menu above \n\tOR \nType a command \n(hit tab to see available commands):");
         System.out.println("--> ");
         ac.editClassLineReader();
         String userInput = ac.getCommands();
@@ -570,7 +570,7 @@ public class CommandLineInterface implements UserInterface {
                              5 - Back to Diagram Menu
                             --------------------------   
                             """);
-        System.out.println("Enter a number from menu above \n\tOR \nType a command (use tab to autocomplete):");
+        System.out.println("Enter a number from menu above \n\tOR \nType a command \n(hit tab to see available commands):");
         System.out.println("--> ");
         ac.relationshipEditorLineReader();
         String userInput = ac.getCommands();
@@ -631,5 +631,9 @@ public class CommandLineInterface implements UserInterface {
                 System.out.println("Not a recognized command.");
         }
         return false;
+    }
+
+    public static AutoComplete getAutoComplete(){
+        return ac;
     }
 }

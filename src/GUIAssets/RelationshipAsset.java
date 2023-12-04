@@ -50,9 +50,8 @@ public class RelationshipAsset {
 
     public Line createRelationshipAsset(final ArrayList<Relationship> relationshipList, final ArrayList<Line> relationshipAssetLineList,
                                         final ArrayList<RelationshipAsset> relationshipAssets, final ArrayList<Point2D> relationshipCoordinates,
-                                        final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates, final ArrayList<ClassAsset> classAssets) {
-        int textSize = 12;
-        String fontType = "Verdana";
+                                        final ArrayList<Pane> classAssetPaneList, final ArrayList<Point2D> classCoordinates,
+                                        final ArrayList<ClassAsset> classAssets, GUIDiagramProject guiDiagramProject) {
 
         this.relationshipContainer = new Line();
         this.relationshipContainer.setStroke(Color.BLACK);
@@ -85,8 +84,8 @@ public class RelationshipAsset {
         classCoordinates.clear();
 
         for (int i = 0; i < classAssetPaneList.size(); i++) {
-            double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
-            double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
+            double currentXCoordinate = classAssetPaneList.get(i).localToParent(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = classAssetPaneList.get(i).localToParent(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
             classCoordinates.add(coords);
         }
@@ -101,32 +100,49 @@ public class RelationshipAsset {
 
         relationshipContainer.toBack();
 
+        VBox ownerCardinality;
+        VBox otherCardinality;
+
+        if(this.currentRelationship.getIsOwner()) {
+            ownerCardinality = this.setupTextContainer(this.currentRelationship.getClass1Cardinality());
+            otherCardinality = this.setupTextContainer(this.currentRelationship.getClass2Cardinality());
+        }
+        else {
+            ownerCardinality = this.setupTextContainer(this.currentRelationship.getClass2Cardinality());
+            otherCardinality = this.setupTextContainer(this.currentRelationship.getClass1Cardinality());
+        }
+
+        ownerCardinality.setLayoutX(this.relationshipContainer.getStartX());
+        ownerCardinality.setLayoutY(this.relationshipContainer.getStartY());
+        otherCardinality.setLayoutX(this.relationshipContainer.getEndX());
+        otherCardinality.setLayoutY(this.relationshipContainer.getEndY());
+
+        GUIDiagramProject.addRelationshipLineCardinalityToPaneWindow(ownerCardinality, guiDiagramProject);
+        GUIDiagramProject.addRelationshipLineCardinalityToPaneWindow(otherCardinality, guiDiagramProject);
+
         return this.relationshipContainer;
     }
 
     /**
      * description: setup for the contents of the relationship
-     * @param fontType
-     * @param textSize
-     * @param margins
-     * @param relationshipList
-     * @param relationshipAssetLineList
-     * @param relationshipAssets
-     * @param relationshipCoordinates
-     * @param classAssetPaneList
-     * @param classCoordinates
-     * @param guiDiagramProject
+     * @param cardinality
      * @return
      */
-    public VBox setupTextContainer(final String fontType, final int textSize, final Insets margins, final ArrayList<Relationship> relationshipList,
-                                   final ArrayList<Line> relationshipAssetLineList, final ArrayList<RelationshipAsset> relationshipAssets,
-                                   final ArrayList<Point2D> relationshipCoordinates, final ArrayList<Pane> classAssetPaneList,
-                                   final ArrayList<Point2D> classCoordinates, final GUIDiagramProject guiDiagramProject) {
+    public VBox setupTextContainer(final int cardinality) {
+        int textSize = 12;
+        String fontType = "Verdana";
+        Insets margins = new Insets(5, 5,5, 5);
+
         VBox textContainer = new VBox();
         Text relationshipInfo = new Text();
         relationshipInfo.setFont(Font.font(fontType, textSize));
 
-        relationshipInfo.setText(this.currentRelationship.toString());
+        if(cardinality == -1) {
+            relationshipInfo.setText("*");
+        }
+        else {
+            relationshipInfo.setText(String.valueOf(cardinality));
+        }
         VBox.setMargin(relationshipInfo, margins);
 
         return textContainer;
@@ -176,7 +192,7 @@ public class RelationshipAsset {
             //this.updateRelationshipAssetListIndex(relationshipList, relationshipAssets); //to be removed
 
             for(RelationshipAsset relationshipAsset : relationshipAssets) {
-                RelationshipAsset.updateRelationshipLines(relationshipAsset, classAssetPaneList, classCoordinates, guiDiagramProject.getClassAssets());
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, classAssetPaneList, classCoordinates, guiDiagramProject.getClassAssets(), guiDiagramProject);
             }
 
             //refresh the class asset panes and the window
@@ -203,7 +219,8 @@ public class RelationshipAsset {
     }
 
     public static void updateRelationshipLines(final RelationshipAsset relationshipAsset, final ArrayList<Pane> classAssetPaneList,
-                                               final ArrayList<Point2D> classCoordinates, final ArrayList<ClassAsset> classAssets) {
+                                               final ArrayList<Point2D> classCoordinates, final ArrayList<ClassAsset> classAssets,
+                                               GUIDiagramProject guiDiagramProject) {
         Line relationshipLine = relationshipAsset.relationshipContainer;
 
         Class ownerClass;
@@ -232,8 +249,8 @@ public class RelationshipAsset {
         classCoordinates.clear();
 
         for (int i = 0; i < classAssetPaneList.size(); i++) {
-            double currentXCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
-            double currentYCoordinate = classAssetPaneList.get(i).localToScene(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
+            double currentXCoordinate = classAssetPaneList.get(i).localToParent(classAssetPaneList.get(i).getBoundsInLocal()).getCenterX();
+            double currentYCoordinate = classAssetPaneList.get(i).localToParent(classAssetPaneList.get(i).getBoundsInLocal()).getCenterY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
             classCoordinates.add(coords);
         }
@@ -247,5 +264,25 @@ public class RelationshipAsset {
         relationshipLine.setEndY(classCoordinates.get(otherIndex).getY());
 
         relationshipLine.toBack();
+
+        VBox ownerCardinality;
+        VBox otherCardinality;
+
+        if(relationshipAsset.currentRelationship.getIsOwner()) {
+            ownerCardinality = relationshipAsset.setupTextContainer(relationshipAsset.currentRelationship.getClass1Cardinality());
+            otherCardinality = relationshipAsset.setupTextContainer(relationshipAsset.currentRelationship.getClass2Cardinality());
+        }
+        else {
+            ownerCardinality = relationshipAsset.setupTextContainer(relationshipAsset.currentRelationship.getClass2Cardinality());
+            otherCardinality = relationshipAsset.setupTextContainer(relationshipAsset.currentRelationship.getClass1Cardinality());
+        }
+
+        ownerCardinality.setLayoutX(relationshipAsset.relationshipContainer.getStartX());
+        ownerCardinality.setLayoutY(relationshipAsset.relationshipContainer.getStartY());
+        otherCardinality.setLayoutX(relationshipAsset.relationshipContainer.getEndX());
+        otherCardinality.setLayoutY(relationshipAsset.relationshipContainer.getEndY());
+
+        GUIDiagramProject.addRelationshipLineCardinalityToPaneWindow(ownerCardinality, guiDiagramProject);
+        GUIDiagramProject.addRelationshipLineCardinalityToPaneWindow(otherCardinality, guiDiagramProject);
     }
 }

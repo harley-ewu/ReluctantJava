@@ -433,17 +433,22 @@ public class DiagramTests {
 		DiagramCaretaker dc = d.getCaretaker();
 		DiagramMemento dm = new DiagramMemento(d);
 
-		assertNotNull(dc.getDiagramMementoList().get(0));
+		assertTrue(dc.stacksNotEmpty());
 	}
 
 	@Test
 	void applyMementoTest() {
 		Diagram d = new Diagram("test");
 		DiagramMemento dm = new DiagramMemento(d);
-		//d.applyMemento(dm);
 		assertEquals(dm.getTitle(), d.getTitle());
-		assertEquals(dm.getSaveLocation(), d.getSaveLocation());
 		assertEquals(dm.getClassList(), d.getClassList());
 		assertEquals(dm.getRelationshipList(), d.getRelationshipList());
+	}
+
+	@Test
+	void getCoordinatesTest() {
+		Diagram d = new Diagram("test");
+		d.setCoordinates(null);
+		assertEquals(null, d.getCoordinates());
 	}
 }
