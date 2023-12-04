@@ -194,6 +194,7 @@ public class AddRelationshipRequestHandler implements IHandler {
                 try{
                     relationship = new Relationship(relationshipType,classOne, classTwo, classOneCard, classTwoCard, ownerClass);
                     diagram.addRelationship(relationship);
+                    view.refreshRelationshipLinesToPaneWindow();
                     UpdateViewController.updateAddRelationship(view, relationship);
                     popupStage.close();
                 }catch(Exception errorMakingRelationship){
