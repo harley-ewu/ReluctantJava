@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
 import javafx.stage.Screen;
@@ -452,7 +453,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             e.consume();
 
             for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
-                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets, this);
             }
         });
 
@@ -464,7 +465,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             Application.getCurrentDiagram().setCoordinates(new GUIDiagramProjectDto(true, this.classPanesCoordinates));
 
             for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
-                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets, this);
             }
         });
 
@@ -478,7 +479,7 @@ public class GUIDiagramProject extends javafx.application.Application {
             e.consume();
 
             for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
-                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets);
+                RelationshipAsset.updateRelationshipLines(relationshipAsset, this.classPanes, this.classPanesCoordinates, this.classAssets, this);
             }
         });
 
@@ -547,7 +548,7 @@ public class GUIDiagramProject extends javafx.application.Application {
     public void addRelationshipPanes() {
         for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
             Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
-                    this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this.classAssets);
+                    this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this.classAssets, this);
             temp.toBack();
             this.relationshipLines.add(temp);
         }
@@ -576,7 +577,7 @@ public class GUIDiagramProject extends javafx.application.Application {
         this.relationshipLines.clear();
         for (RelationshipAsset relationshipAsset : this.relationshipAssets) {
             Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
-                    this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this.classAssets);
+                    this.relationshipPanesCoordinates,this.classPanes, this.classPanesCoordinates, this.classAssets, this);
             temp.toBack();
             this.relationshipLines.add(temp);
         }
@@ -631,8 +632,12 @@ public class GUIDiagramProject extends javafx.application.Application {
         }
 
         for(RelationshipAsset relationshipAsset : GUIDiagramProject.getRelationshipAssets()) {
-            RelationshipAsset.updateRelationshipLines(relationshipAsset, classPanes, classPanesCoordinates, classAssets);
+            RelationshipAsset.updateRelationshipLines(relationshipAsset, classPanes, classPanesCoordinates, classAssets, this);
         }
+    }
+
+    public static void addRelationshipLineCardinalityToPaneWindow(VBox cardinalityBox, GUIDiagramProject guiDiagramProject) {
+        guiDiagramProject.contentPane.getChildren().add(cardinalityBox);
     }
 
 
