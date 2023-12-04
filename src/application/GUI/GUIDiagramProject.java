@@ -558,7 +558,7 @@ public class GUIDiagramProject extends javafx.application.Application {
      */
     public void addRelationshipPanes() {
         for(RelationshipAsset relationshipAsset : this.relationshipAssets) {
-            Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, this.relationshipLines, this.relationshipAssets,
+            Line temp = relationshipAsset.createRelationshipAsset(this.relationshipList, relationshipLines, relationshipAssets,
                     this.relationshipPanesCoordinates, this.classPanes, this.classPanesCoordinates, this.classAssets, this);
             temp.toBack();
             this.relationshipLines.add(temp);
@@ -620,12 +620,12 @@ public class GUIDiagramProject extends javafx.application.Application {
      * */
     public void refreshRelationshipLinesToPaneWindow() {
         this.contentPane.getChildren().clear();
-
+        this.classPanesCoordinates.clear();
         for (int i = 0; i < this.classPanes.size(); i++) {
             double currentXCoordinate = this.classPanes.get(i).localToParent(this.classPanes.get(i).getBoundsInLocal()).getCenterX();
             double currentYCoordinate = this.classPanes.get(i).localToParent(this.classPanes.get(i).getBoundsInLocal()).getCenterY();
             Point2D coords = new Point2D(currentXCoordinate, currentYCoordinate);
-            this.classPanesCoordinates.set(i, coords);
+            this.classPanesCoordinates.add(coords);
         }
 
 /*        for (int i = 0; i < this.classPanes.size(); i++) {
