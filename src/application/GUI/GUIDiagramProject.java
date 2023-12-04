@@ -264,16 +264,27 @@ public class GUIDiagramProject extends javafx.application.Application {
     }
 
     public void refreshDiagramContents() {
+        getContentPane().getChildren().clear();
+        getClassAssets().clear();
+        getClassPanes().clear();
+        getRelationshipAssets().clear();
+        getRelationshipLines().clear();
+
         HashMap<String, Class> diagramClasses = Application.getCurrentDiagram().getClassList();
         this.classList.clear();
         this.classList.addAll(diagramClasses.values());
 
-        this.addClassAssets();
-        this.addMementoPanes();
-        //this.addClassPanesToPaneWindow();
-        this.refreshRelationshipLinesToPaneWindow();
         HashMap<String, Relationship> relationshipClasses = Application.getCurrentDiagram().getRelationshipList();
+        this.relationshipList.clear();
         this.relationshipList.addAll(relationshipClasses.values());
+
+        addClassAssets();
+        addMementoPanes();
+        addRelationshipAsset(this.relationshipList);
+        addRelationshipPanes();
+        //this.addClassPanesToPaneWindow();
+
+        refreshRelationshipLinesToPaneWindow();
     }
 
     public boolean getHasMoved() {
@@ -664,17 +675,17 @@ public class GUIDiagramProject extends javafx.application.Application {
     public void undo() {
         this.diagram.undo();
         //System.out.println("Undoing..");
-        this.getContentPane().getChildren().clear();
-        this.getClassAssets().clear();
-        this.getClassPanes().clear();
+        //this.getContentPane().getChildren().clear();
+        //this.getClassAssets().clear();
+        //this.getClassPanes().clear();
         this.refreshDiagramContents();
     }
 
     public void redo() {
         this.diagram.redo();
-        this.getContentPane().getChildren().clear();
-        this.getClassAssets().clear();
-        this.getClassPanes().clear();
-        this.refreshDiagramContents();;
+        //this.getContentPane().getChildren().clear();
+        //this.getClassAssets().clear();
+        //this.getClassPanes().clear();
+        this.refreshDiagramContents();
     }
 }
