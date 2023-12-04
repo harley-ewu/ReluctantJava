@@ -259,7 +259,7 @@ public class MenuController {
         int choice = MenuPrompts.promptAttributeType();
         String name = MenuPrompts.promptParameterName();
         ArrayList<String> parameters = new ArrayList<>();
-
+        boolean added = false;
         if (choice == 1) {
             do {
                 String type = MenuPrompts.promptParameterType();
@@ -267,7 +267,7 @@ public class MenuController {
 
             }while(parameters == null && parameters.isEmpty());
 
-            currentClass.createField(name, parameters);
+            added = currentClass.createField(name, parameters);
 
         } else {
             int option = -99;
@@ -281,12 +281,15 @@ public class MenuController {
 
             }while (option != 2);
 
-            currentClass.createMethod(name, parameters);
+            added = currentClass.createMethod(name, parameters);
 
         }
 
         //currentClass.createAttribute(name, parameters, choice);
-        System.out.println("\nAn attribute has successfully been added!");
+        if (added == true)
+            System.out.println("\nAn attribute has successfully been added!");
+        else 
+            System.out.println("\nAttribute already exists!");
     }
 
     public static void deleteField(Class currentClass, Scanner scanner) {
