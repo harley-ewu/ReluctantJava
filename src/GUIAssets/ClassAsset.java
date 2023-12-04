@@ -683,7 +683,7 @@ public class ClassAsset {
             this.currentClass.getFields().addAll(newFields);
             this.currentClass.getMethods().addAll(newMethods);
             //for relationships, we will clear the relationship list once and update with the local lists
-            Application.getCurrentDiagram().getRelationshipList().clear();
+            //Application.getCurrentDiagram().getRelationshipList().clear();
             for(Relationship relationship : currentRelationships) {
                 Application.getCurrentDiagram().addRelationship(relationship);
             }
