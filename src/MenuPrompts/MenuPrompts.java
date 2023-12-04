@@ -3,6 +3,7 @@ package MenuPrompts;
 import Class.Class;
 import Diagram.Diagram;
 import Relationships.Relationship;
+import application.CLI.CommandLineInterface;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -42,8 +43,9 @@ public class MenuPrompts {
     public static Class deleteClassPrompt(final Diagram diagram) {
         listClasses(diagram, null);
         System.out.println("Enter a class name to delete from the list above: ");
-        System.out.print("--> ");
-        String className = scanner.nextLine();
+        System.out.println("--> ");
+        //String className = scanner.nextLine();
+        String className = pickClass(diagram).trim();
         while (className.isEmpty()) {
             System.out.println("Please enter a name between 1 and 50 characters inclusive");
             System.out.print("--> ");
@@ -68,8 +70,9 @@ public class MenuPrompts {
         listClasses(diagram, null);
         String oldClassName;
         System.out.println("Enter the original name of the class from the list above.");
-        System.out.print("--> ");
-        oldClassName = scanner.nextLine();
+        System.out.println("--> ");
+        //oldClassName = scanner.nextLine();
+        oldClassName = pickClass(diagram).trim();
         Class c = diagram.findSingleClass(oldClassName);
         if(c != null){
             System.out.println("Class exists.");
@@ -115,8 +118,9 @@ public class MenuPrompts {
     public static Class printSingleClassPrompt(final Diagram diagram){
         listClasses(diagram, null);
         System.out.println("Enter name of class to view from list above: ");
-        System.out.print("--> ");
-        String className = scanner.nextLine();
+        System.out.println("--> ");
+        //String className = scanner.nextLine();
+        String className = pickClass(diagram).trim();
         Class c = diagram.findSingleClass(className);
         if(c != null) {
             return c;
@@ -288,8 +292,9 @@ public class MenuPrompts {
         }
         listClasses(diagram, null);
         System.out.println("Enter name of class to edit from list above (or press blank enter to exit):");
-        System.out.print("--> ");
-        String className = scanner.nextLine();
+        System.out.println("--> ");
+        //String className = scanner.nextLine();
+        String className = pickClass(diagram).trim();
         if(className.isEmpty()){
             return null;
         }
@@ -312,8 +317,9 @@ public class MenuPrompts {
         listClasses(diagram, null);
         System.out.println("What is the name of the first class?");
         System.out.println("Type the name from the list above. (or press blank enter to exit)");
-        System.out.print("--> ");
-        String ownerString = scanner.nextLine();
+        System.out.println("--> ");
+        //String ownerString = scanner.nextLine();
+        String ownerString = pickClass(diagram).trim();
         if(ownerString.isEmpty()) {
             System.out.println("\nExiting...");
             return null;
@@ -331,8 +337,9 @@ public class MenuPrompts {
         //System.out.print("\nChoose between 1 and " + (diagram.getClassList().size()) + " -> ");
         System.out.println("\nWhat is the name of the class you wish to use in a relationship?");
         System.out.println("Type the name from the list above. (or press blank enter to exit)");
-        System.out.print("--> ");
-        String otherString = scanner.nextLine();
+        System.out.println("--> ");
+        //String otherString = scanner.nextLine();
+        String otherString = pickClass(diagram);
         if(otherString.isEmpty()){
             System.out.println("\nExiting...");
             return null;
@@ -432,9 +439,9 @@ public class MenuPrompts {
     public static int deleteFieldPrompts(final Class currentClass) {
         int choice = -99;
         do {
-            System.out.println("Delete a field:");
+            System.out.println("\nDelete a field:");
             //need to add message if no attributes exist
-            System.out.println(currentClass.displayAttributes());
+            listFields(currentClass);
             System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " or " + (currentClass.getFields().size()+1) + " to cancel." + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
@@ -442,7 +449,6 @@ public class MenuPrompts {
                 System.out.println("Please enter a valid number");
                 System.out.print("--> ");
             }
-
         } while (choice < 1 || choice > currentClass.getFields().size()+1);
         return choice;
     }
@@ -452,7 +458,8 @@ public class MenuPrompts {
         do {
             System.out.println("Delete an method:");
             //need to add message if no attributes exist
-            System.out.println(currentClass.displayAttributes());
+            //System.out.println(currentClass.displayAttributes());
+            listMethods(currentClass);
             System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " or " + (currentClass.getMethods().size()+1) + " to cancel." + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
@@ -460,7 +467,6 @@ public class MenuPrompts {
                 System.out.println("Please enter a valid number");
                 System.out.print("--> ");
             }
-
         } while (choice < 1 || choice > currentClass.getMethods().size()+1);
         return choice;
     }
@@ -469,7 +475,8 @@ public class MenuPrompts {
         int choice = -99;
         do {
             System.out.println("Rename a field: ");
-            System.out.println(currentClass.displayAttributes());
+            //System.out.println(currentClass.displayAttributes());
+            listFields(currentClass);
             System.out.print("\nChoose between 1 and " + (currentClass.getFields().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
@@ -485,7 +492,8 @@ public class MenuPrompts {
         int choice = -99;
         do {
             System.out.println("Rename a method: ");
-            System.out.println(currentClass.displayAttributes());
+            //System.out.println(currentClass.displayAttributes());
+            listMethods(currentClass);
             System.out.print("\nChoose between 1 and " + (currentClass.getMethods().size()) + " -> ");
             try {
                 choice = Integer.parseInt(scanner.nextLine());
@@ -527,5 +535,39 @@ public class MenuPrompts {
             
         });
         System.out.println("\n");
+    }
+
+    public static void listFields(final Class currentClass){
+        if(currentClass.getFields().size() < 1){
+            System.out.println("\n" + currentClass.getClassName() + " has no fields.");
+            return;
+        }
+        System.out.println("\n---------------------");
+        System.out.println("    Fields List:");
+        System.out.println("---------------------");
+        for(int i = 0; i < currentClass.getFields().size(); i++){
+            System.out.println(i+1 + ". " + currentClass.getFields().get(i));
+        }
+        System.out.println("\n");
+    }
+
+    public static void listMethods(final Class currentClass){
+        if(currentClass.getMethods().size() < 1){
+            System.out.println("\n" + currentClass.getClassName() + " has no methods.");
+            return;
+        }
+        System.out.println("\n---------------------");
+        System.out.println("    Methods List:");
+        System.out.println("---------------------");
+        for(int i = 0; i < currentClass.getMethods().size(); i++){
+            System.out.println(i+1 + ". " + currentClass.getMethods().get(i));
+        }
+        System.out.println("\n");
+    }
+
+    //uses autocomplete to pick a class from the class list
+    public static String pickClass(final Diagram diagram){
+        CommandLineInterface.getAutoComplete().listClassLineReader(diagram.getClassList());
+        return CommandLineInterface.getAutoComplete().getCommands();
     }
 }
