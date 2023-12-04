@@ -714,8 +714,7 @@ public class ClassAsset {
             //refresh the class asset panes and the window
             guiDiagramProject.addClassPanes();
             guiDiagramProject.addClassPanesToPaneWindow();
-            if (!guiDiagramProject.getRelationshipList().isEmpty())
-                guiDiagramProject.refreshRelationshipLinesToPaneWindow();
+            guiDiagramProject.refreshRelationshipLinesToPaneWindow();
             popUpStage.close();
         });
 
@@ -1472,7 +1471,7 @@ public class ClassAsset {
                 if (isUnique) {
                     newMethodsList.add(newMethod);
                     this.updateMethodComboBox(newMethodsList, comboBoxMethod, observableMethodsList);
-                    System.out.println("temp method list elements: " + newMethodsList); //to be removed
+                    //System.out.println("temp method list elements: " + newMethodsList); //to be removed
                     popUpStage.close();
                 } else {
                     addedParameters.clear();
