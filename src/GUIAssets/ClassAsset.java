@@ -183,6 +183,59 @@ public class ClassAsset {
         return methodNamesList;
     }
 
+    private ArrayList<String> returnRelationshipInfo(final Class currentClass) {
+        if (currentClass == null) {
+            return null;
+        }
+
+        ArrayList<String> relationshipInfo = new ArrayList<>();
+        ArrayList<Relationship> currentClassRelationships = Application.getCurrentDiagram().getSingleClassRelationships(this.currentClass);
+
+        for(Relationship relationship : currentClassRelationships) {
+            String info = relationship.getRelationshipType() + " with ";
+
+            int thisClass;
+            if(relationship.getClass1().getClassName().equals(this.currentClass.getClassName())) {
+                info = info + (relationship.getClass2().getClassName()+"\n");
+                thisClass = 1;
+            }
+            else if(relationship.getClass2().getClassName().equals(this.currentClass.getClassName())){
+                info = info + (relationship.getClass1().getClassName()+"\n");
+                thisClass = 2;
+            }
+            else {
+                continue;
+            }
+
+            if(relationship.getIsOwner() && thisClass == 1) {
+                info = info + ("Owner; ");
+            } else if (!relationship.getIsOwner() && thisClass == 2) {
+                info = info + ("Owner; ");
+            }
+
+            if(thisClass == 1) {
+                if(relationship.getClass1Cardinality() == -1) {
+                    info = info + ("Cardinality: *");
+                }
+                else {
+                    info = info + ("Cardinality: "+relationship.getClass1Cardinality());
+                }
+            }
+            else {
+                if(relationship.getClass2Cardinality() == -1) {
+                    info = info + ("Cardinality: *");
+                }
+                else {
+                    info = info + ("Cardinality: "+relationship.getClass2Cardinality());
+                }
+            }
+
+            relationshipInfo.add(info);
+        }
+
+        return relationshipInfo;
+    }
+
     /**
      * descriptions: setup method for the edit and delete buttons
      * @param fontType
@@ -269,11 +322,16 @@ public class ClassAsset {
         methodsNames.setText("Methods:\n" + this.displayContents(this.methods));
         VBox.setMargin(methodsNames, margins);
 
+        Text relationshipNames = new Text();
+        relationshipNames.setFont(Font.font(fontType, textSize));
+        ArrayList<String> relationshipInfo = this.returnRelationshipInfo(this.currentClass);
+        relationshipNames.setText("Relationships:\n" + this.displayContents(relationshipInfo));
+        VBox.setMargin(relationshipNames, margins);
 
         HBox buttonContainer = this.setUpButtons(fontType, textSize, margins,classList, classPaneArrayList,
                 classAssets, classCoordinates, relationshipLineArrayList, relationshipCoordinates, guiDiagramProject);
 
-        textContainer.getChildren().addAll(className, fieldsNames, methodsNames, buttonContainer);
+        textContainer.getChildren().addAll(className, fieldsNames, methodsNames, relationshipNames, buttonContainer);
 
         return textContainer;
     }
@@ -423,7 +481,7 @@ public class ClassAsset {
 
         ObservableList<String> observableMethodsList = FXCollections.observableArrayList();
         ObservableList<String> observableFieldsList = FXCollections.observableArrayList();
-        ObservableList<String> observableRelatinoshipsList = FXCollections.observableArrayList();
+        ObservableList<String> observableRelationshipsList = FXCollections.observableArrayList();
 
         Stage popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
@@ -582,7 +640,7 @@ public class ClassAsset {
         comboBoxRelationships.setValue("Relationships");
         comboBoxRelationships.setPrefWidth(140);
 
-        updateRelationshipComboBox(currentRelationships, comboBoxRelationships, observableRelatinoshipsList);
+        updateRelationshipComboBox(currentRelationships, comboBoxRelationships, observableRelationshipsList);
 
         //delete relationship button
         Button deleteRelationshipButton = new Button();
@@ -1473,7 +1531,7 @@ public class ClassAsset {
                                            ObservableList<String> observableRelationshipList) {
         observableRelationshipList.clear();
         for(Relationship relationship : currentRelationships) {
-            if(relationship.getClass1() == this.currentClass) {
+            if(relationship.getClass1().getClassName().equals(this.currentClass.getClassName())) {
                 observableRelationshipList.add(relationship.getClass2().getClassName());
             }
             else {
