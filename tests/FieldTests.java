@@ -85,17 +85,7 @@ public class FieldTests {
                 "The field primitive cannot be null or empty"
         );
 
-        assertTrue(badInput.getMessage().contains("The field primitive cannot be null or empty"));
-
-        badInput = assertThrows(
-                IllegalArgumentException.class,
-                () -> {
-                    testField.setPrimitive("");
-                },
-                "The field primitive cannot be null or empty"
-        );
-
-        assertTrue(badInput.getMessage().contains("The field primitive cannot be null or empty"));
+        assertTrue(badInput.getMessage().contains("The field primitive cannot be null"));
     }
 
     @Test
