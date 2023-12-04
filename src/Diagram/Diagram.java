@@ -211,7 +211,7 @@ public class Diagram {
    public ArrayList<Relationship> getSingleClassRelationships(final Class c1) {
       ArrayList<Relationship> classRelationships = new ArrayList<Relationship>();
 
-      System.out.println(this.getRelationshipList());
+      //System.out.println(this.getRelationshipList());
 
       for(Class item : this.classList.values()){
          if(item.equals(c1)) continue;
@@ -223,7 +223,7 @@ public class Diagram {
             classRelationships.add(this.relationshipList.get(item.getClassName() + c1.getClassName()));
          }
       }
-      System.out.println(classRelationships);
+      //System.out.println(classRelationships);
 
       return classRelationships;
    }

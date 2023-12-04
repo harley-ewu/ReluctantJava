@@ -84,7 +84,7 @@ public class GraphicalUserInterface extends javafx.application.Application imple
                 errorLabel.setText("Please enter a non-empty name less than 50 characters.");
             } else {
                 diagram.setTitle(inputText);
-                System.out.println("Submitted text: " + inputText);
+                //System.out.println("Submitted text: " + inputText);
                 popupStage.close();
                 Application.setCurrentDiagram(diagram);
                 if(Application.getCurrentDiagram() != null){
