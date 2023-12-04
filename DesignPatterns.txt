@@ -89,3 +89,11 @@ Facade:
 
         - The usage of the Facade pattern in the controller ensures a cleaner and more understandable
          interface, promoting ease of use and maintainability.
+
+Prototype:
+    The Prototype pattern has been implemented into our fields and methods classes, serving as a crucial 
+    component for snapshotting our program. This implementation allows us to create copies of our original 
+    diagram, preserving distinct snapshots without impacting the original reference of the diagram. This 
+    approach ensures that each copy remains independent to further alterations, providing a robust 
+    mechanism for managing program states for our undo/redo system.
+    
