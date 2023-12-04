@@ -14,6 +14,10 @@ import java.io.File;
 
 public class LoadFileRequestHandler implements IHandler {
     public Void handle(Request request){
+        if(Application.getCurrentDiagram() != null){
+            GraphicalUserInterface.showSavePrompt();
+        }
+
         LoadFileRequest newRequest = (LoadFileRequest) request;
         Window stage = newRequest.getStage();
 
@@ -33,6 +37,9 @@ public class LoadFileRequestHandler implements IHandler {
             File file = fileChooser.showOpenDialog(stage);
             diagram = SaveLoadSystem.loadProjectGUI(file);
             Application.setCurrentDiagram(diagram);
+            if(!Application.getCurrentDiagram().getCaretaker().stacksNotEmpty()){
+                Application.getCurrentDiagram().createSnapshot();
+            }
             if(view != null){
                 GraphicalUserInterface.closeDiagram();
                 GraphicalUserInterface.openDiagram(diagram);

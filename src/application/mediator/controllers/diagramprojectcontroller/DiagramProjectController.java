@@ -1,14 +1,7 @@
 package application.mediator.controllers.diagramprojectcontroller;
 
-
-import application.Application;
-import Class.Class;
-import Diagram.Diagram;
-import Relationships.Relationship;
-import SaveLoadSystem.SaveLoadSystem;
-import application.GUI.GUIDiagramProject;
-import application.GUI.GraphicalUserInterface;
 import application.mediator.common.Mediator;
+import application.mediator.common.MediatorSingletonHandler;
 import application.mediator.common.Request;
 import application.mediator.controllers.diagramprojectcontroller.addclass.AddClassRequest;
 import application.mediator.controllers.diagramprojectcontroller.addrelationship.AddRelationshipRequest;
@@ -16,24 +9,15 @@ import application.mediator.controllers.diagramprojectcontroller.exit.ExitReques
 import application.mediator.controllers.diagramprojectcontroller.loadfile.LoadFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.saveasfile.SaveAsFileRequest;
 import application.mediator.controllers.diagramprojectcontroller.savefile.SaveFileRequest;
-import application.mediator.controllers.updateviewcontroller.UpdateViewController;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
+import application.mediator.controllers.diagramprojectcontroller.snapshot.SnapshotRequest;
+import javafx.scene.Node;
 import javafx.stage.Stage;
-
-import java.io.File;
+import javafx.stage.Window;
 
 
 public class DiagramProjectController {
 
+    private static final Mediator mediator = new MediatorSingletonHandler().getInstance();
     /**
      * Description: Opens the "Save As" from the project view so that the user
      * can save their work to a specified folder.
@@ -41,7 +25,7 @@ public class DiagramProjectController {
      */
     public static void saveAsFile(Stage stage) {
         Request request = new SaveAsFileRequest(stage);
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     /**
@@ -50,7 +34,7 @@ public class DiagramProjectController {
      */
     public static void saveFile() {
         Request request = new SaveFileRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     /**
@@ -60,12 +44,12 @@ public class DiagramProjectController {
      */
     public static void loadFile(Stage stage) {
         Request request = new LoadFileRequest(stage);
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     public static void exit() {
         Request request = new ExitRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     /**
@@ -74,7 +58,7 @@ public class DiagramProjectController {
      */
     public static void addClass() {
         Request request = new AddClassRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
     /**
@@ -83,9 +67,16 @@ public class DiagramProjectController {
      */
     public static void addRelationship() {
         Request request = new AddRelationshipRequest();
-        Mediator.send(request);
+        mediator.send(request);
     }
 
+    /**
+     * Creates a snapshot of the users current diagram
+     * */
+    public static void snapshot(Node contentPane){
+        Request request = new SnapshotRequest(contentPane);
+        mediator.send(request);
+    }
     public static void editClass() {
         System.out.println("editing class...");
     }
