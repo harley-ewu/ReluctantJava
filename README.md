@@ -11,3 +11,15 @@ This currently is a UML diagram editor created by the Reluctant Java team for ou
 4. Double click on the ReluctantJava.bat.
 
 5. Follow the prompts from there!
+
+Application Preview:
+
+GUI Diagram Example:
+![GUI Example](https://github.com/user-attachments/assets/eff1ca4b-4179-43b9-9062-6af86276f893)
+
+Editing a Class:
+![UML_Editor_Class_Editor](https://github.com/user-attachments/assets/4a90ca91-a2c2-414c-b787-b6ef40404a01)
+
+Adding a Method:
+![adding_a_method_UML](https://github.com/user-attachments/assets/43fb34a2-8f01-450b-a4ca-8c5a0dce3878)
+
